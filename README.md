@@ -1,0 +1,1 @@
+# AdapType
