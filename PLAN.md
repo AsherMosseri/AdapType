@@ -461,6 +461,109 @@ back. It adjusts four things, aiming for rounds just below your speed goal:
 - The difficulty curve and round explanations are covered by new engine test
   vectors.
 
+## Phase 3 in detail
+
+### Spaced repetition and mistake replay
+
+- **Two timescales:** weak keys and pairs come back a few rounds later in the
+  same session, and on a growing schedule across days (for example tomorrow,
+  then in 3 days, then in a week). Each success stretches the gap; a miss
+  shrinks it.
+- **Botched words return** on the same schedule.
+- **Mistakes list:** your most-missed words, on a new Progress screen.
+
+### Smart warm-up
+
+About 20 seconds on last session's trouble spots at the start of each
+session, with a Skip button.
+
+### Fatigue
+
+The engine watches for speed and accuracy dropping across a session compared
+with its start. When it spots fatigue, it:
+
+- suggests a break ("You're slowing down. Take 5?")
+- eases the next rounds until you recover
+- offers to end with a session summary
+- counts tired rounds less toward weakness scores, so fatigue doesn't look
+  like weakness
+
+### Rhythm coaching
+
+- **Consistency score** on results: how even your typing was.
+- **Rhythm graph:** the gap between each keystroke, so stalls stand out.
+- **Metronome (optional):** a visual beat at your goal pace in phase 3; an
+  audio beat arrives with sound in phase 6.
+- **Live pulse:** a subtle glow that steadies when your rhythm is even.
+
+### Hesitation
+
+A hesitation is a pause noticeably longer than your own usual time for that
+key, even if the key is correct. Hesitant keys get extra practice, and a key
+that is accurate but hesitant is flagged as "needs confidence" rather than
+"weak".
+
+### Error types
+
+- **Kinds:** swapped letters (`teh`), neighbor hits (`r` for `t`), doubled or
+  missed double letters (`lettter`, `leter`), and skipped letters.
+- **Breakdown on results:** for example "3 swaps, 2 neighbor hits, 1 double
+  letter".
+- **Targeted drills:** swaps get letter-pair drills, neighbor hits get
+  precision drills, double-letter errors get rhythm drills.
+- **Per-key detail:** tap a key on the heatmap to see which errors it causes
+  and what you typed instead.
+
+### Finger tracking (physical)
+
+AdapType can't see your fingers, so it asks once whether you touch-type:
+
+- **Yes:** it uses the standard touch-typing finger map and reports your
+  weakest finger.
+- **No:** it tracks by keyboard zone (left, center, right, and by row)
+  instead.
+
+### Thumb and tap drift (touch)
+
+- **Grip:** a quick picker each session (one thumb or two), with
+  auto-detection suggesting a change when your taps don't match. Stats are
+  kept separately per grip.
+- **Thumb tracking:** which thumb and which screen zone is weakest.
+- **Drift map:** where your taps land on each key compared with its center.
+- **Drift drills:** words using the keys you miss most at the edges.
+- **Hit zones, as a setting:**
+  - *Train (default):* keys stay fixed, so drills fix your aim and carry
+    over to your real phone keyboard.
+  - *Assist:* each key's tap area quietly shifts toward where you actually
+    tap, for comfort.
+- Raw tap positions are always recorded, whichever setting is on.
+
+### Self-correction score
+
+Results show how many errors you caught and fixed yourself, using the
+corrections recorded since phase 1.
+
+### Made-up drill words (full version)
+
+- Pronounceable, built from real English sound patterns (`brenty`,
+  `quolid`).
+- Shown in a slightly different style so they don't look like typos.
+- A ratio setting caps how many appear per round.
+- Filtered so they never accidentally spell an offensive word.
+
+### Progress screen (new)
+
+A home for longer-term stats: the mistakes list, per-key history, finger or
+thumb breakdown, the drift map, and spaced-repetition schedule ("`p` is due
+again tomorrow").
+
+### Done when
+
+- Every feature above works on physical and touch where it applies.
+- Spaced repetition, fatigue detection, hesitation and error-type
+  classification are covered by new engine test vectors.
+- Saved data from phase 2 migrates cleanly.
+
 ## Phases
 
 This is a lot, and it's meant to be built over time. Each phase is playable on
@@ -493,6 +596,7 @@ its own; nothing waits for a later phase to be fun.
    - Tap-drift map, self-correction score
    - Made-up drill words (a simple version ships in phase 1 to support early
      unlocking)
+   - Progress screen
 4. **Arcade**
    - Falling words and survival
    - Ghost race and rubber-band rival
@@ -504,7 +608,7 @@ its own; nothing waits for a later phase to be fun.
    - Offline daily challenge
    - Typing fingerprint card
 6. **Polish and reach**
-   - All four themes and sound
+   - All four themes and sound (including the audio metronome)
    - Code and quote packs, your own words
    - Accessibility modes, keyboard layouts
    - Shortcut packs: OS-wide, browser, popular apps
