@@ -564,6 +564,87 @@ again tomorrow").
   classification are covered by new engine test vectors.
 - Saved data from phase 2 migrates cleanly.
 
+## Phase 4 in detail
+
+### Modes
+
+- **Falling words:** words drop from the top; type them before they land.
+  Auto-targeting: start typing any visible word and the game locks onto the
+  one matching your first letter.
+- **Survival:** falling words with a speed that keeps climbing until you
+  break. Lives are a setting:
+  - *3 lives:* lose one per word that lands or per run of errors.
+  - *Health bar:* errors chip away, clean streaks heal a little.
+  - *Hardcore:* one mistake ends it.
+- **Ghost race:** race your own best run on the same text. A faded ghost
+  cursor moves through your text, and a small race track at the top shows
+  both of you.
+- **Rubber-band rival:** a race against an opponent whose speed is a
+  setting: just ahead (about 5% faster than your recent pace, catching up if
+  you pull away), at your goal speed, or a custom WPM.
+
+### Levels and bosses
+
+- Falling words and survival have levels. Speed rises each level, and every
+  fifth level is a **boss round**.
+- **Boss rounds:**
+  - The boss has a health bar. Correct words deal damage; errors heal it.
+  - Its words are packed with your weakest keys and pairs.
+  - At half health it enters a second phase: faster, or with modifiers added.
+  - A timer: beat it before time runs out.
+
+### Nemesis key
+
+- Your worst key becomes a character with a generated name and face
+  (for example "Quentin the Q").
+- It taunts you when it trips you up. In the clean theme the taunts are
+  plain; theme-matched tones arrive in phase 6.
+- It shows up as a boss from time to time.
+- Master the key and the nemesis is defeated; your next-worst key takes its
+  place.
+- Defeated nemeses are kept as trophies in a "Hall of defeated" on the
+  Progress screen.
+
+### Scoring
+
+- Local high scores: top 10 per mode, per input profile.
+- Combo multiplier for clean streaks.
+- Bonus points for words containing your weak keys.
+- A small celebration animation for a personal best (static when reduced
+  motion is on).
+
+### Power-ups
+
+Earned by typing: a glowing power-up word appears now and then, built from
+your weak keys, and typing it triggers the power-up. Starting set:
+
+- *Slow time:* everything falls slower for a few seconds.
+- *Clear screen:* wipes all visible words.
+- *Shield:* the next landed word or error costs nothing.
+- *Double points:* for a few seconds.
+
+### Learning from arcade
+
+- Arcade play counts toward weak spots, but with less weight than practice,
+  since pressure changes how you type.
+- Modifiers follow your practice settings and levels.
+
+### Touch
+
+- **Portrait (default):** words fall in the space above the keyboard, slower
+  to make up for the shorter distance.
+- **Landscape (option):** a split keyboard on both sides with the play area
+  in the middle.
+
+### Done when
+
+- All four modes, bosses, the nemesis and power-ups work on physical and
+  touch (portrait and landscape).
+- Arcade weighting and power-up word generation are covered by new engine
+  test vectors.
+- High scores and the hall of defeated survive a reload and are included in
+  export and import.
+
 ## Phases
 
 This is a lot, and it's meant to be built over time. Each phase is playable on
