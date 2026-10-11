@@ -1,0 +1,18 @@
+import { App } from "./app";
+import { aboutScreen } from "./screens/about";
+import { practiceScreen } from "./screens/practice";
+import { resultsScreen } from "./screens/results";
+import { settingsScreen } from "./screens/settings";
+import { goalScreen, welcomeScreen } from "./screens/setup";
+import "./styles.css";
+
+const root = document.getElementById("app")!;
+const app = new App(root);
+app.register("welcome", welcomeScreen);
+app.register("calibration", practiceScreen);
+app.register("goal", goalScreen);
+app.register("practice", practiceScreen);
+app.register("results", resultsScreen);
+app.register("settings", settingsScreen);
+app.register("about", aboutScreen);
+app.home();

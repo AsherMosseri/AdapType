@@ -4,7 +4,7 @@ A typing game that learns your weak spots and keeps targeting them. It starts
 as a fun web project. Much later it becomes a micro-app inside a larger app,
 ported to Swift and Kotlin.
 
-Status: planning. No code yet.
+Status: phase 1 built (web). Phases 2 to 7 planned.
 
 ## Principles
 
