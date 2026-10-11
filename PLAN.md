@@ -89,6 +89,14 @@ placed at random, and each has its own on/off switch and frequency setting
 - **Symbols:** random `@ # $ % & * ( ) [ ] { } < > / \ | _ + = ~ ^` mixed in.
 - **Numbers:** random `0-9`, alone or inside words and symbols (`42`, `v2`,
   `$15`). Its own modifier, separate from symbols.
+- **Accented letters:** `é ñ ü ç å ø` and similar, typed with dead keys or
+  Option on Mac, AltGr on Windows and Linux, and long-press on touch.
+- **Extra characters:** characters behind Option and Option+Shift on Mac, or
+  AltGr on Windows and Linux: `© ™ • – — … ≠ ± ° ¶ § ∞`. Each OS gets its own
+  character map, because the same character sits on different keys (or isn't
+  available) depending on the OS and layout. On a Windows US layout, which has
+  no AltGr, the pool shrinks to what can be typed, with Alt codes as an
+  optional advanced setting. On touch, these come from long-press menus.
 
 The engine tracks these like any other key, so a weak `;` or a slow Shift gets
 targeted too. Extra weaknesses it watches for:
@@ -97,6 +105,26 @@ targeted too. Extra weaknesses it watches for:
   wrong hand's Shift.
 - **Layer switching (touch):** the cost of switching to the number and symbol
   keyboard and back.
+- **Modifier chords:** Option, Option+Shift and AltGr combos, and the
+  long-press delay on touch.
+
+### Shortcut drill
+
+Ctrl and Cmd combos don't type characters, so they get their own drill instead
+of being a modifier. It can run as a separate round type or be mixed into
+regular rounds.
+
+- **Two styles, as a setting:**
+  - *Shown combos:* displays `⌘ + Z` and you press it.
+  - *Named actions:* displays "Undo" and you press the right combo for your OS.
+  - Start with shown combos and switch to named actions once you know them.
+- **Per OS:** Cmd on Mac, Ctrl on Windows and Linux.
+- **Safe combos only:** some shortcuts can't be blocked by a web page or app
+  (Cmd+W and Ctrl+W close the tab, Cmd+Q quits). The drill only uses combos
+  that are safe to press on that platform, and each platform keeps its own
+  allowlist.
+- Tracked like keys: slow or wrong shortcuts come back more often.
+- Physical keyboards only. Touch has no equivalent.
 
 ## Unlocking and calibration
 
@@ -118,8 +146,9 @@ every unlocked letter, measured over recent rounds rather than one lucky run.
 ### Modifier unlocks
 
 After all letters are unlocked, modifiers unlock in stages: capitals, then
-punctuation, then numbers, then symbols. Any modifier can also be turned on
-early in settings.
+punctuation, then numbers, then symbols, then the last stage: accented
+letters, extra characters and the shortcut drill. Any of them can also be
+turned on early in settings.
 
 ### Calibration
 
@@ -191,8 +220,9 @@ are usually lower.
   keyboard
 - **Content mix:** which packs, and how much of each
 - **Modifiers:** capitalization (first letter only or any letter),
-  punctuation, numbers and symbols, each with a frequency, plus "unlock
-  early" switches
+  punctuation, numbers, symbols, accented letters and extra characters, each
+  with a frequency, plus "unlock early" switches
+- **Shortcut drill:** on or off, shown combos or named actions
 - **Unlock order:** most common first or home row first
 - **Calibration:** re-run the test
 - **Speed goal:** target WPM and accuracy, per input profile
@@ -253,6 +283,8 @@ its own; nothing waits for a later phase to be fun.
    - Capitalization (first letter only or any letter), punctuation,
      numbers, symbols, with staged unlocks and "unlock early" switches
    - Shift timing and touch layer-switching tracking
+   - Accented letters and extra characters, with per-OS character maps
+   - Shortcut drill (shown combos and named actions, safe combos only)
    - Difficulty curve, with pacing toward your speed goal
    - Explain the round
 3. **Smarter engine**
