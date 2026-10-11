@@ -131,8 +131,9 @@ regular rounds.
 ### Gradual unlock
 
 You start with about 6 letters. When you've mastered the current set, the next
-letter unlocks. Mastery means reaching your speed goal and accuracy target on
-every unlocked letter, measured over recent rounds rather than one lucky run.
+letter unlocks. A letter is mastered when you reach your speed goal and 95%
+accuracy on it across 3 recent rounds, so one lucky run doesn't count. The
+next letter unlocks when every unlocked letter is mastered.
 
 - **Unlock order** is a setting:
   - *Most common first* (`e t a o i n s r ...`), so real words appear early.
@@ -263,6 +264,114 @@ Phases below.
   motion, color-blind-safe heatmaps.
 - **Keyboard layouts:** QWERTY, AZERTY, QWERTZ, Dvorak, Colemak.
 
+## Phase 1 in detail
+
+### Tech and hosting
+
+- **TypeScript + Vite**, no UI framework. The engine has no dependencies and
+  never touches the page, so it can be reimplemented in Swift and Kotlin.
+- **GitHub Pages**, deployed by a GitHub Actions workflow on every push to
+  `main`. (Pages on a private repo needs a paid GitHub plan.)
+
+### Project layout
+
+```
+engine/        framework-free engine (TypeScript)
+  spec.md      engine rulebook for the ports
+  vectors/     shared JSON test vectors
+content/       word pack JSON + build script that generates it
+web/           web UI (screens, on-screen keyboard, storage)
+.github/       Pages deploy workflow
+```
+
+### Screens
+
+1. **Welcome:** pick input profile (auto-detected), then take the calibration
+   test or skip it.
+2. **Calibration test:** 1 minute. Sets starting level, tests out known
+   letters, suggests a goal.
+3. **Goal picker:** shown after the test (with the suggested goal filled in),
+   or on its own if the test was skipped.
+4. **Practice:** the round, with live WPM and accuracy and the unlocked
+   letters shown. Touch mode shows the on-screen keyboard.
+5. **Results:** after each round (see below).
+6. **Settings:** round type, error mode, unlock order, goal, input profile,
+   re-calibrate, data.
+7. **About:** credits for wordfreq and SCOWL.
+
+### Rounds
+
+A setting picks the round type:
+
+- **Word count** (default 25 words)
+- **Timed** (30 or 60 seconds)
+- **Endless** (stats update live; stop anytime)
+
+### Errors
+
+A setting picks the error mode:
+
+- **Backspace allowed (default):** errors stay until you backspace and fix
+  them, like real typing. Corrections are recorded for the phase 3
+  self-correction score.
+- **Must fix to continue:** a wrong key blocks progress until the right one.
+- **Mark and move on:** the error shows in red and you keep going.
+
+### Touch keyboard
+
+- AdapType's own keyboard, QWERTY in phase 1.
+- Key pop-up above the thumb on each tap.
+- Haptic tap where allowed. Android browsers support it; iPhone Safari does
+  not, so iOS gets haptics only in the native port.
+- Locked letters are dimmed but still register.
+- Tap positions are recorded from day one, so the phase 3 tap-drift map
+  starts with history.
+
+### Results screen
+
+- WPM and accuracy, with change compared to your recent average
+- Keyboard heatmap of weak keys
+- Unlock progress toward the next letter
+- Goal bar: recent average against your speed goal
+
+### Speed goal
+
+- Set after calibration, or picked on first launch if the test is skipped.
+- Separate goals for physical and touch.
+- Accuracy target defaults to 95%.
+
+### Weakness scoring (outline; the engine spec will define it exactly)
+
+- For each key and each letter pair, keep a running average of time to press
+  and an error rate, weighted toward recent rounds.
+- Combine them into one weakness score per key and pair.
+- Pick the next round's words by weighting words that contain high-scoring
+  keys and pairs, using only unlocked letters. Fill gaps with made-up drill
+  words.
+- All randomness uses a seeded generator, so test vectors are reproducible.
+
+### Saved data
+
+- Stored in the browser, per input profile.
+- **Reset:** one profile or everything, with an on-page confirmation step.
+- **Export and import** as a file.
+- **Copy as text code** to paste into another browser or device.
+- The saved format has a version number so later phases can migrate it.
+
+### Testing
+
+- Unit tests for the engine.
+- Shared JSON test vectors for weakness scoring, unlocking and round
+  generation, which the Swift and Kotlin ports must also pass.
+- UI checked by hand.
+
+### Done when
+
+- The game is playable on GitHub Pages on a laptop and on a phone.
+- Letters unlock as you master them, and calibration can test you out.
+- Progress survives a reload and can be exported, imported and reset.
+- Engine tests and test vectors pass in CI.
+
 ## Phases
 
 This is a lot, and it's meant to be built over time. Each phase is playable on
@@ -320,12 +429,11 @@ its own; nothing waits for a later phase to be fun.
 | [google-10000-english](https://github.com/first20hours/google-10000-english) | Built on LDC data | **Avoid.** The author advises against commercial use without an LDC license. |
 | [SUBTLEX-US](https://osf.io/djpqz) | Unclear | **Avoid for now.** Free for research. Broader permission is only reported secondhand. |
 
-Plan: take wordfreq's top English words, keep those found in SCOWL size 50 or
+Decision (approved): take wordfreq's top English words, keep those found in SCOWL size 50 or
 below, remove offensive words, and keep about 10,000. Credit wordfreq (and its
 sources) and SCOWL on an About screen.
 
 ## Open questions
 
-- Sign-off on the word list approach above.
 - How the micro-app will be embedded in the host app (web view, native
   screen, or both).
