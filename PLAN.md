@@ -645,6 +645,67 @@ your weak keys, and typing it triggers the power-up. Starting set:
 - High scores and the hall of defeated survive a reload and are included in
   export and import.
 
+## Phase 5 in detail
+
+### Key creatures
+
+- One creature per key, symbols included.
+- **Stages:** egg, baby, grown, legendary, as the key improves.
+- **Health reflects skill:** it drops if the key gets weak or goes
+  unpracticed for a while, and recovers with practice.
+- **Collection screen:** a grid of every creature, with ones you haven't met
+  yet shown as silhouettes.
+- **Drawn by code:** each key's creature has the same body and features in
+  every theme, and the theme sets the drawing style. Phase 5 ships the clean
+  theme's style; the other styles (pixel art for terminal, soft blobs for
+  cute, keycap critters for mechanical) arrive with their themes in phase 6.
+
+### Forecasts
+
+- **What they predict:** when you'll reach your speed goal, when a weak key
+  stops being weak, and when the next letter unlocks.
+- **Honest about uncertainty:**
+  - plenty of data: one estimate ("about 3 weeks")
+  - some data: a range ("2 to 5 weeks")
+  - too little data: no forecast ("Keep practicing to see a forecast")
+
+### Slow-motion replay
+
+- Playback at 0.25x, 0.5x, 1x and 2x.
+- Hesitations and errors marked on a timeline you can jump to.
+- Side-by-side comparison with your best run (the ghost).
+- Keeps your last few runs plus personal bests.
+
+### Offline daily challenge
+
+- **Same for everyone:** the text is built from the date using the seeded
+  generator, so every player and every version gets the same challenge with
+  no server. The engine spec pins the generator and the word list version so
+  the web, Swift and Kotlin versions always match.
+- Uses all letters and a fixed set of modifiers, regardless of what you've
+  unlocked, so results are comparable.
+- **One scored attempt:** the first try counts; later tries are practice.
+- **Streaks:** consecutive days played.
+- **Shareable result:** copy a short text result, Wordle-style.
+
+### Typing fingerprint card
+
+- Best and worst keys, speed, accuracy, and style traits such as "steady" or
+  "bursty".
+- A mini keyboard heatmap.
+- Your most evolved creatures.
+- Rendered as an image you can save, copy, or share (using the phone's share
+  sheet where available).
+
+### Done when
+
+- Creatures, forecasts, replays, the daily challenge and the fingerprint card
+  work on physical and touch.
+- The daily challenge's text for a set of sample dates is locked in test
+  vectors, so every port produces the same challenge.
+- Forecast ranges and creature stages are covered by engine test vectors.
+- Replays, streaks and creatures are included in export and import.
+
 ## Phases
 
 This is a lot, and it's meant to be built over time. Each phase is playable on
@@ -693,7 +754,8 @@ its own; nothing waits for a later phase to be fun.
    - Code and quote packs, your own words
    - Accessibility modes, keyboard layouts
    - Shortcut packs: OS-wide, browser, popular apps
-   - Theme-matched tones for round explanations
+   - Theme-matched tones for round explanations and nemesis taunts
+   - Theme-matched creature styles
 7. **Port (far future):** Swift and Kotlin versions, verified against the
    test vectors. Not planned in detail yet.
 
