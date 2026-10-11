@@ -78,21 +78,39 @@ What changes per profile:
 ### Modifiers
 
 Modifiers add symbols, punctuation and capitals on top of any pack. They are
-placed at random, and each has its own on/off switch and frequency setting
-(low, medium, high).
+placed at random, and each has its own on/off switch and frequency level.
+
+**Frequency levels are ranges, and the engine adapts inside them:**
+
+| Level | Share of words with that modifier |
+| --- | --- |
+| Low | up to 10% |
+| Medium | up to 25% |
+| High | up to 50% |
+| Auto | the engine picks the range too |
+
+If you're weak at a modifier, it moves toward the top of its range. Once you
+handle it well, it drops toward the bottom, but never to zero, so the skill
+doesn't fade. Even the highest level leaves at least half your words plain.
 
 - **Capitalization:** two settings:
   - *First letter only:* random words start with a capital (`Apple`).
   - *Any letter:* random letters anywhere in a word are capitals (`apPle`).
-- **Punctuation:** random `. , ! ? ; : ' " -` attached to words the way they
-  appear in real text (`word,` `word.` `"word"`).
+- **Punctuation:** `. , ! ? ; : ' " -`, with two settings:
+  - *Sentence-like:* periods end sentences and the next word gets a capital;
+    commas and quotes go where real text has them.
+  - *Fully random:* any punctuation attaches to any word.
 - **Symbols:** random `@ # $ % & * ( ) [ ] { } < > / \ | _ + = ~ ^` mixed in.
 - **Numbers:** random `0-9`, alone or inside words and symbols (`42`, `v2`,
   `$15`). Its own modifier, separate from symbols.
-- **Accented letters:** `é ñ ü ç å ø` and similar, typed with dead keys or
-  Option on Mac, AltGr on Windows and Linux, and long-press on touch.
+- **Accented letters:** real English loanwords such as `café`, `jalapeño`,
+  `naïve`, `façade`, `über`, `résumé`, so the text reads naturally. Typed
+  with dead keys or Option on Mac, AltGr on Windows and Linux, and
+  long-press on touch.
 - **Extra characters:** characters behind Option and Option+Shift on Mac, or
-  AltGr on Windows and Linux: `© ™ • – — … ≠ ± ° ¶ § ∞`. Each OS gets its own
+  AltGr on Windows and Linux. A curated set of about 20 useful ones by
+  default (`— – … • © ™ ® ° ± ≠ ≤ ≥ × ÷ € £`), and a setting opens up the
+  full OS map. Each OS gets its own
   character map, because the same character sits on different keys (or isn't
   available) depending on the OS and layout. On a Windows US layout, which has
   no AltGr, the pool shrinks to what can be typed, with Alt codes as an
@@ -104,7 +122,9 @@ targeted too. Extra weaknesses it watches for:
 - **Shift timing (physical):** slow or missed Shift presses, and using the
   wrong hand's Shift.
 - **Layer switching (touch):** the cost of switching to the number and symbol
-  keyboard and back.
+  keyboard and back. The on-screen symbol layers match your device (iOS
+  style on iPhone, Android style on Android), so practice carries over to
+  your real keyboard.
 - **Modifier chords:** Option, Option+Shift and AltGr combos, and the
   long-press delay on touch.
 
@@ -119,10 +139,25 @@ regular rounds.
   - *Named actions:* displays "Undo" and you press the right combo for your OS.
   - Start with shown combos and switch to named actions once you know them.
 - **Per OS:** Cmd on Mac, Ctrl on Windows and Linux.
-- **Safe combos only:** some shortcuts can't be blocked by a web page or app
-  (Cmd+W and Ctrl+W close the tab, Cmd+Q quits). The drill only uses combos
-  that are safe to press on that platform, and each platform keeps its own
-  allowlist.
+- **Packs,** each switched on separately. The goal is to cover every
+  shortcut worth knowing:
+  - *Text editing:* editing, navigation, selection, formatting, find and save
+  - *OS-wide:* macOS, Windows and Linux system shortcuts (switch apps,
+    screenshots, search, lock screen, window management)
+  - *Browser:* tabs, history, zoom, address bar, developer tools
+  - *Popular apps:* separate packs added over time (for example VS Code,
+    Google Docs, Figma, Slack)
+- **Shortcuts the page can't safely catch** (Cmd+Q quits, Cmd+Tab switches
+  apps, Ctrl+W closes the tab). Each platform keeps a list of what is safe,
+  and the rest are handled like this:
+  - *Keyboard lock in fullscreen:* Chrome and Edge let a fullscreen page
+    capture more shortcuts, so you can press them for real. Safari and
+    Firefox don't support this.
+  - *Build-the-combo mode:* for shortcuts that can never be captured, you tap
+    on-screen modifier chips (`⌘` `⇧` `⌥` `⌃` plus the key) instead of
+    pressing them.
+  - *Native apps:* the Swift and Kotlin ports capture whatever their OS
+    allows.
 - Tracked like keys: slow or wrong shortcuts come back more often.
 - Physical keyboards only. Touch has no equivalent.
 
@@ -372,6 +407,60 @@ A setting picks the error mode:
 - Progress survives a reload and can be exported, imported and reset.
 - Engine tests and test vectors pass in CI.
 
+## Phase 2 in detail
+
+### Modifiers
+
+- Capitalization (first letter only or any letter), punctuation
+  (sentence-like or fully random), numbers, symbols, accented loanwords and
+  extra characters (curated set, expandable).
+- Frequency levels Low, Medium, High and Auto, each a range the engine
+  adapts inside.
+- Staged unlocks after all letters: capitals, punctuation, numbers, symbols,
+  then accented letters, extra characters and shortcuts. Each has an
+  "unlock early" switch.
+- Per-OS character maps for accented letters and extra characters, with the
+  OS auto-detected and a manual override.
+- Shift timing, modifier chord timing and touch layer switching tracked as
+  weaknesses.
+- Touch symbol layers match the device (iOS or Android style).
+
+### Shortcut drill
+
+- Text-editing pack only. The OS, browser and app packs come in phase 6.
+- Shown combos and named actions, as a setting.
+- Keyboard lock in fullscreen where supported, and build-the-combo mode for
+  everything else.
+
+### Difficulty curve
+
+Gentle: changes build over several rounds, so one bad round doesn't drop you
+back. It adjusts four things, aiming for rounds just below your speed goal:
+
+- word length
+- word rarity (how far down the frequency list it reaches)
+- modifier density (within each modifier's range)
+- weak-spot intensity (how hard rounds lean on your weak keys)
+
+### Explain the round
+
+- **Before the round:** a one-line banner, for example "Focusing on `q` and
+  `br`."
+- **On results:** what was targeted and how you did on it.
+- **Tap for detail:** tap a key on the heatmap to see its stats and why it's
+  being targeted.
+- **Tone matches the theme.** Phase 2 only has the clean and minimal theme,
+  so it ships with a plain, factual tone. Terminal (terse), cute (playful)
+  and mechanical keyboard tones arrive with their themes in phase 6.
+
+### Done when
+
+- Every modifier works on physical and touch, and adapts inside its range.
+- The text-editing shortcut drill works in Chrome, Edge, Safari and
+  Firefox, with build-the-combo mode covering what each browser can't catch.
+- The difficulty curve and round explanations are covered by new engine test
+  vectors.
+
 ## Phases
 
 This is a lot, and it's meant to be built over time. Each phase is playable on
@@ -393,7 +482,8 @@ its own; nothing waits for a later phase to be fun.
      numbers, symbols, with staged unlocks and "unlock early" switches
    - Shift timing and touch layer-switching tracking
    - Accented letters and extra characters, with per-OS character maps
-   - Shortcut drill (shown combos and named actions, safe combos only)
+   - Shortcut drill: text-editing pack, shown combos and named actions,
+     keyboard lock and build-the-combo mode
    - Difficulty curve, with pacing toward your speed goal
    - Explain the round
 3. **Smarter engine**
@@ -417,6 +507,8 @@ its own; nothing waits for a later phase to be fun.
    - All four themes and sound
    - Code and quote packs, your own words
    - Accessibility modes, keyboard layouts
+   - Shortcut packs: OS-wide, browser, popular apps
+   - Theme-matched tones for round explanations
 7. **Port (far future):** Swift and Kotlin versions, verified against the
    test vectors. Not planned in detail yet.
 
