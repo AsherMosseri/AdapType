@@ -706,6 +706,75 @@ your weak keys, and typing it triggers the power-up. Starting set:
 - Forecast ranges and creature stages are covered by engine test vectors.
 - Replays, streaks and creatures are included in export and import.
 
+## Phase 6 in detail
+
+### Themes
+
+- All four: clean and minimal, retro terminal, cute and colorful, mechanical
+  keyboard.
+- Each has a light and a dark version, following the device setting with a
+  manual override.
+- Each theme brings its own tone for round explanations and nemesis taunts
+  (terminal terse, cute playful, mechanical matter-of-fact, clean plain), and
+  its own creature drawing style.
+
+### Sound
+
+- Synthesized in code: tiny, no audio licensing, and easy to vary per theme.
+- Key clicks, combo chimes, error buzz, level-up, boss hits, and the audio
+  metronome beat.
+- Each theme has its own sound set. Volume control and an off switch; sound
+  starts only after your first tap or keypress, as browsers require.
+
+### Content packs
+
+- **Code:** Swift, Kotlin, JavaScript, TypeScript, Python, Java, C++, HTML and
+  CSS, each a sub-pack you can switch on separately. More languages over
+  time. Snippets are written for AdapType, so there are no licensing
+  questions.
+- **Quotes:** public-domain sources only (classic books, speeches, and
+  similar), each credited.
+
+### Your own words
+
+- Paste text or import a `.txt` or `.md` file.
+- **Words only:** AdapType keeps the word list and how often each word
+  appears, not your original text.
+- **Multiple custom packs,** each with a name (for example "Work" and
+  "School"), mixable like any other pack.
+- Stays on the device, and is included in export and import.
+
+### Accessibility
+
+- Dyslexia-friendly font option, with adjustable letter and line spacing.
+- Adjustable text size, independent of the device setting.
+- Color-blind-safe heatmap palettes, with patterns as well as color.
+- Screen reader support: announces the current word, errors, and results.
+- Reduced motion respected everywhere (already true since phase 1; audited
+  here).
+
+### Keyboard layouts
+
+- QWERTY (US, UK, international), AZERTY, QWERTZ, Dvorak, Colemak and
+  Colemak-DH.
+- Every layout on both physical and the on-screen keyboard.
+- Unlock order, finger maps and stats are kept per layout.
+- Content stays English for now; other languages would be their own future
+  word packs.
+
+### Shortcut packs
+
+- OS-wide (macOS, Windows, Linux) and browser packs.
+- First app packs: VS Code, Google Docs and Sheets, Figma, Slack. More over
+  time.
+
+### Done when
+
+- Every theme works in light and dark, with its tone, sounds and creature
+  style.
+- All packs, layouts and accessibility options work on physical and touch.
+- An accessibility pass with a screen reader on desktop and phone.
+
 ## Phases
 
 This is a lot, and it's meant to be built over time. Each phase is playable on
@@ -750,10 +819,13 @@ its own; nothing waits for a later phase to be fun.
    - Offline daily challenge
    - Typing fingerprint card
 6. **Polish and reach**
-   - All four themes and sound (including the audio metronome)
-   - Code and quote packs, your own words
-   - Accessibility modes, keyboard layouts
-   - Shortcut packs: OS-wide, browser, popular apps
+   - All four themes, each in light and dark
+   - Synthesized sound per theme (including the audio metronome)
+   - Code pack (9 languages to start) and public-domain quote pack
+   - Your own words, as named custom packs
+   - Accessibility modes, keyboard layouts (physical and touch)
+   - Shortcut packs: OS-wide, browser, and VS Code, Google Docs and Sheets,
+     Figma, Slack
    - Theme-matched tones for round explanations and nemesis taunts
    - Theme-matched creature styles
 7. **Port (far future):** Swift and Kotlin versions, verified against the
