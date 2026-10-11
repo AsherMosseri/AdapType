@@ -1,0 +1,57 @@
+{
+ "goal": {
+  "wpm": 40,
+  "accuracy": 0.95
+ },
+ "cases": [
+  {
+   "entry": null,
+   "weakness": 1
+  },
+  {
+   "entry": {
+    "n": 2,
+    "timedN": 1,
+    "msAvg": 400,
+    "errAvg": 0.5
+   },
+   "weakness": 3.933333333333333
+  },
+  {
+   "entry": {
+    "n": 50,
+    "timedN": 40,
+    "msAvg": 250,
+    "errAvg": 0.01
+   },
+   "weakness": 0.1
+  },
+  {
+   "entry": {
+    "n": 50,
+    "timedN": 40,
+    "msAvg": 450,
+    "errAvg": 0.08
+   },
+   "weakness": 1.3
+  },
+  {
+   "entry": {
+    "n": 50,
+    "timedN": 40,
+    "msAvg": 2000,
+    "errAvg": 0.6
+   },
+   "weakness": 5
+  },
+  {
+   "entry": {
+    "n": 6,
+    "timedN": 0,
+    "msAvg": 0,
+    "errAvg": 0
+   },
+   "weakness": 0
+  }
+ ]
+}

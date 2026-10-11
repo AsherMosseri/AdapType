@@ -1,0 +1,187 @@
+{
+ "target": "tent ten",
+ "records": [
+  {
+   "index": 0,
+   "expected": "t",
+   "actual": "t",
+   "t": 1180,
+   "correct": true,
+   "first": true,
+   "interval": null
+  },
+  {
+   "index": 1,
+   "expected": "e",
+   "actual": "e",
+   "t": 1360,
+   "correct": true,
+   "first": true,
+   "interval": 180
+  },
+  {
+   "index": 2,
+   "expected": "n",
+   "actual": "x",
+   "t": 1540,
+   "correct": false,
+   "first": true,
+   "interval": 180
+  },
+  {
+   "index": 2,
+   "expected": "n",
+   "actual": "n",
+   "t": 1900,
+   "correct": true,
+   "first": false,
+   "interval": null
+  },
+  {
+   "index": 3,
+   "expected": "t",
+   "actual": "x",
+   "t": 2080,
+   "correct": false,
+   "first": true,
+   "interval": null
+  },
+  {
+   "index": 3,
+   "expected": "t",
+   "actual": "t",
+   "t": 2440,
+   "correct": true,
+   "first": false,
+   "interval": null
+  },
+  {
+   "index": 4,
+   "expected": " ",
+   "actual": "x",
+   "t": 2620,
+   "correct": false,
+   "first": true,
+   "interval": null
+  },
+  {
+   "index": 4,
+   "expected": " ",
+   "actual": " ",
+   "t": 2980,
+   "correct": true,
+   "first": false,
+   "interval": null
+  },
+  {
+   "index": 5,
+   "expected": "t",
+   "actual": "t",
+   "t": 3160,
+   "correct": true,
+   "first": true,
+   "interval": null
+  },
+  {
+   "index": 6,
+   "expected": "e",
+   "actual": "x",
+   "t": 3340,
+   "correct": false,
+   "first": true,
+   "interval": 180
+  },
+  {
+   "index": 6,
+   "expected": "e",
+   "actual": "e",
+   "t": 3700,
+   "correct": true,
+   "first": false,
+   "interval": null
+  },
+  {
+   "index": 7,
+   "expected": "n",
+   "actual": "n",
+   "t": 3880,
+   "correct": true,
+   "first": true,
+   "interval": null
+  }
+ ],
+ "expected": {
+  "keys": {
+   "t": {
+    "n": 3,
+    "timedN": 0,
+    "msAvg": 0,
+    "errAvg": 0.33333333333333337
+   },
+   "e": {
+    "n": 2,
+    "timedN": 2,
+    "msAvg": 180,
+    "errAvg": 0.5
+   },
+   "n": {
+    "n": 2,
+    "timedN": 1,
+    "msAvg": 180,
+    "errAvg": 0.5
+   },
+   " ": {
+    "n": 1,
+    "timedN": 0,
+    "msAvg": 0,
+    "errAvg": 1
+   }
+  },
+  "pairs": {
+   "te": {
+    "n": 2,
+    "timedN": 2,
+    "msAvg": 180,
+    "errAvg": 0.5
+   },
+   "en": {
+    "n": 2,
+    "timedN": 1,
+    "msAvg": 180,
+    "errAvg": 0.5
+   },
+   "nt": {
+    "n": 1,
+    "timedN": 0,
+    "msAvg": 0,
+    "errAvg": 1
+   }
+  },
+  "perKey": {
+   "t": {
+    "n": 3,
+    "correct": 2,
+    "msTotal": 0,
+    "msN": 0
+   },
+   "e": {
+    "n": 2,
+    "correct": 1,
+    "msTotal": 360,
+    "msN": 2
+   },
+   "n": {
+    "n": 2,
+    "correct": 1,
+    "msTotal": 180,
+    "msN": 1
+   },
+   " ": {
+    "n": 1,
+    "correct": 0,
+    "msTotal": 0,
+    "msN": 0
+   }
+  }
+ }
+}

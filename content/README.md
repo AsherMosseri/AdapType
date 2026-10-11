@@ -1,0 +1,22 @@
+# Content
+
+Shared content packs, read by every version of AdapType (web now, Swift and
+Kotlin later).
+
+| File | What it is | License |
+| --- | --- | --- |
+| `words-en.json` | 10,000 common English words, most common first. | CC BY-SA 4.0 (derived from wordfreq) |
+| `blocklist.json` | Words never shown in practice, also used to filter made-up words. | Part of AdapType |
+
+## Credits
+
+- Word frequencies from [wordfreq](https://github.com/rspeer/wordfreq) by
+  Robyn Speer, licensed CC BY-SA 4.0. wordfreq draws on many sources; see its
+  README for the full list. Because `words-en.json` is derived from wordfreq
+  data, it is shared under the same CC BY-SA 4.0 license.
+- Filtered with the [English Speller Database (SCOWL)](https://github.com/en-wl/wordlist),
+  copyright 2000-2026 Kevin Atkinson, used under its MIT-like license.
+
+## Rebuilding the word pack
+
+See `build/build_words.py` for the exact steps.

@@ -1,0 +1,14 @@
+{
+  "about": "Words never shown in practice. 'words' must match exactly; 'roots' block any word or made-up word that contains them. Used by the word pack build and by the made-up word generator.",
+  "words": [
+    "anal", "anus", "arse", "ass", "asses", "asshole", "bastard", "bastards", "bollocks", "boob", "boobs",
+    "butt", "chink", "clit", "cock", "cocks", "crap", "cum", "damn", "damned", "dildo", "dyke", "fag",
+    "hell", "hoe", "homo", "horny", "jizz", "kike", "naked", "nazi", "nazis", "negro", "nude", "orgasm",
+    "penis", "piss", "pissed", "porn", "porno", "prick", "pube", "pussy", "rape", "raped", "rapes",
+    "raping", "rapist", "retard", "retarded", "scrotum", "semen", "sex", "sexual", "sexy", "spic",
+    "sperm", "suck", "sucks", "tit", "tits", "twat", "vagina", "wank", "wanker", "whore"
+  ],
+  "roots": [
+    "bitch", "cunt", "fuck", "nigg", "shit", "slut", "whore", "fagg", "dick", "porn", "rapist", "wank"
+  ]
+}
