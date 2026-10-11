@@ -74,10 +74,31 @@ What changes per profile:
 - **Quotes and sentences:** real phrases with punctuation and capitals.
 - **Mixing:** pick one pack, or mix several with adjustable weights.
 
+### Modifiers
+
+Modifiers add symbols, punctuation and capitals on top of any pack. They are
+placed at random, and each has its own on/off switch and frequency setting
+(low, medium, high).
+
+- **Capitalization:** two settings:
+  - *First letter only:* random words start with a capital (`Apple`).
+  - *Any letter:* random letters anywhere in a word are capitals (`apPle`).
+- **Punctuation:** random `. , ! ? ; : ' " -` attached to words the way they
+  appear in real text (`word,` `word.` `"word"`).
+- **Symbols:** random `@ # $ % & * ( ) [ ] { } < > / \ | _ + = ~ ^` mixed in.
+
+The engine tracks these like any other key, so a weak `;` or a slow Shift gets
+targeted too. Extra weaknesses it watches for:
+
+- **Shift timing (physical):** slow or missed Shift presses, and using the
+  wrong hand's Shift.
+- **Layer switching (touch):** the cost of switching to the number and symbol
+  keyboard and back.
+
 ## How it adapts
 
-All of these are planned. Phase 1 covers the first two; the rest arrive in
-phase 2.
+All of these are planned. Phase 1 covers the first two, phase 2 adds the
+difficulty curve, and phases 3 and 4 cover the rest.
 
 1. **Weak keys:** letters you miss or hit slowly appear more often.
 2. **Weak letter pairs:** awkward combinations (`br`, `ce`, `ny`) get drilled.
@@ -95,6 +116,20 @@ phase 2.
     doubled letters, and drills each differently.
 11. **Ghost racer:** race a replay of your own best run.
 12. **Smart warm-up:** each session opens with last session's trouble spots.
+
+## Speed goal
+
+You set a target speed (for example 60 WPM), and optionally a target
+accuracy. Goals are set separately for physical and touch, since phone speeds
+are usually lower.
+
+- **Pacing:** the difficulty curve aims for rounds that sit just below your
+  goal, so you stretch toward it without being overwhelmed.
+- **Goal bar:** shows your recent average against the goal.
+- **Forecast:** "At this rate you'll reach 60 WPM in about 3 weeks."
+- **Rival at goal speed:** the rubber-band rival can be set to race at your
+  goal speed instead of just ahead of you.
+- **Next goal:** when you reach a goal, AdapType suggests the next one.
 
 ## Modes
 
@@ -117,33 +152,36 @@ phase 2.
 - **Theme:** retro terminal, cute and colorful, clean and minimal, mechanical
   keyboard
 - **Content mix:** which packs, and how much of each
+- **Modifiers:** capitalization (first letter only or any letter),
+  punctuation and symbols, each with a frequency
+- **Speed goal:** target WPM and accuracy, per input profile
 - **Sound:** key clicks and effects (combo chimes, error buzz), can be turned
   off
 - **Input profile:** physical or touch, auto-detected with a manual override
 
-## Ideas pool (not yet decided)
+## Extra features
 
-Features that typing trainers usually don't have. Pick which to promote into
-the phases.
+All of these are in the plan. The phase each one lands in is listed under
+Phases below.
 
 - **Explain the round:** the engine says why it chose this round ("You
   hesitate on `q`, and miss `br` 1 time in 4").
-- **Tap-drift calibration (touch):** learns where your thumb really lands on
-  each key and shows it as a map.
-- **Pseudo-word drills:** when real words can't target a weakness well
+- **Tap-drift map (touch):** learns where your thumb really lands on each key
+  and shows it as a map.
+- **Made-up drill words:** when real words can't target a weakness well
   enough, generate pronounceable made-up words packed with the weak pairs.
 - **Your own words:** paste your own text (notes, messages) and train on the
   words you actually use. Stays on the device.
-- **Self-correction score:** counts errors you caught and fixed yourself, not
-  just the final result.
+- **Self-correction score:** credit for errors you caught and fixed yourself,
+  not just the final result.
 - **Slow-motion replay:** replay a run with its real timing to see exactly
   where you stalled.
 - **Key creatures:** each key is a little creature with a health bar that
   levels up as you improve. Collect them all.
 - **Nemesis key:** your single worst key gets a name and personality, and
   becomes a recurring boss.
-- **Rubber-band rival:** an opponent that always stays just slightly faster
-  than you.
+- **Rubber-band rival:** an opponent that stays just slightly faster than you,
+  or races at your goal speed.
 - **Improvement forecast:** "At this rate, `p` stops being a weak key in
   about 5 days."
 - **Offline daily challenge:** the same daily round for everyone, built from
@@ -156,23 +194,48 @@ the phases.
 
 ## Phases
 
-1. **Core**
+This is a lot, and it's meant to be built over time. Each phase is playable on
+its own; nothing waits for a later phase to be fun.
+
+1. **Core: something to play**
    - Engine: keystroke recording, weak keys, weak pairs, input profiles
    - Engine spec and first test vectors
    - English word pack (several thousand words)
-   - Practice mode on web, physical keyboard and the touch on-screen keyboard
+   - Practice mode on web, for physical keyboards and the touch on-screen
+     keyboard
    - One theme, keyboard heatmap, live WPM and accuracy
-2. **Smarter engine:** adaptive features 3 to 12.
-3. **Arcade:** falling words and survival first, then ghost race and boss
-   rounds.
-4. **Polish:** all four themes, sound, code and quote packs, chosen ideas
-   from the pool.
-5. **Port (far future):** Swift and Kotlin versions, verified against the
+   - Speed goal: set a target and see the goal bar
+2. **Modifiers and goals**
+   - Capitalization (first letter only or any letter), punctuation, symbols
+   - Shift timing and touch layer-switching tracking
+   - Difficulty curve, with pacing toward your speed goal
+   - Explain the round
+3. **Smarter engine**
+   - Mistake replay, spaced repetition, smart warm-up
+   - Hesitation detection, error-type analysis
+   - Finger and thumb tracking, rhythm coaching, fatigue detection
+   - Tap-drift map, self-correction score
+   - Made-up drill words
+4. **Arcade**
+   - Falling words and survival
+   - Ghost race and rubber-band rival
+   - Boss rounds and the nemesis key
+5. **Progress and personality**
+   - Key creatures
+   - Improvement and goal forecasts
+   - Slow-motion replay
+   - Offline daily challenge
+   - Typing fingerprint card
+6. **Polish and reach**
+   - All four themes and sound
+   - Code and quote packs, your own words
+   - Accessibility modes, keyboard layouts
+7. **Port (far future):** Swift and Kotlin versions, verified against the
    test vectors. Not planned in detail yet.
 
 ## Open questions
 
-- Which ideas from the pool to promote, and into which phase.
 - Which word list to use, once its license is checked.
 - How the micro-app will be embedded in the host app (web view, native
   screen, or both).
+- Whether to include numbers (`0-9`) as their own modifier.
