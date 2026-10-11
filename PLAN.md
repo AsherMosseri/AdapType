@@ -67,8 +67,9 @@ What changes per profile:
   engine can start with common words and widen out. The engine pre-indexes
   which letters and letter pairs each word contains, so it can quickly find
   words that hit your weak spots.
-  - Source: a frequency-ranked list with a license that allows bundling in an
-    app. Verify the license before adding it.
+  - Source (recommended, pending sign-off): the top words from **wordfreq**,
+    checked against **SCOWL** so only real, correctly spelled words remain,
+    then run through a profanity filter. See "Word list research" below.
   - Filter out offensive words and obscure proper nouns.
 - **Code snippets:** symbols, brackets and keywords.
 - **Quotes and sentences:** real phrases with punctuation and capitals.
@@ -86,6 +87,8 @@ placed at random, and each has its own on/off switch and frequency setting
 - **Punctuation:** random `. , ! ? ; : ' " -` attached to words the way they
   appear in real text (`word,` `word.` `"word"`).
 - **Symbols:** random `@ # $ % & * ( ) [ ] { } < > / \ | _ + = ~ ^` mixed in.
+- **Numbers:** random `0-9`, alone or inside words and symbols (`42`, `v2`,
+  `$15`). Its own modifier, separate from symbols.
 
 The engine tracks these like any other key, so a weak `;` or a slow Shift gets
 targeted too. Extra weaknesses it watches for:
@@ -94,6 +97,41 @@ targeted too. Extra weaknesses it watches for:
   wrong hand's Shift.
 - **Layer switching (touch):** the cost of switching to the number and symbol
   keyboard and back.
+
+## Unlocking and calibration
+
+### Gradual unlock
+
+You start with about 6 letters. When you've mastered the current set, the next
+letter unlocks. Mastery means reaching your speed goal and accuracy target on
+every unlocked letter, measured over recent rounds rather than one lucky run.
+
+- **Unlock order** is a setting:
+  - *Most common first* (`e t a o i n s r ...`), so real words appear early.
+  - *Home row first* (physical keyboards): home row, then top row, then
+    bottom row. On touch, this falls back to most common first.
+- Each newly unlocked letter gets extra attention for a while.
+- Words in a round only use unlocked letters. Early on, when few real words
+  fit, made-up drill words fill the gap.
+- Unlocking is tracked per input profile and per keyboard layout.
+
+### Modifier unlocks
+
+After all letters are unlocked, modifiers unlock in stages: capitals, then
+punctuation, then numbers, then symbols. Any modifier can also be turned on
+early in settings.
+
+### Calibration
+
+- **First-launch test:** a 1-minute test, offered the first time each input
+  profile (physical or touch) is used. It measures your speed and accuracy,
+  suggests a speed goal, and **tests you out** of letters and modifiers you
+  already handle well, so they start unlocked.
+- **Skippable:** skip the test and AdapType calibrates silently from your
+  first few rounds instead.
+- **Silent tuning:** the engine keeps adjusting its picture of you as you
+  play, test or no test.
+- **Re-calibrate anytime** from settings, for example after a long break.
 
 ## How it adapts
 
@@ -153,7 +191,10 @@ are usually lower.
   keyboard
 - **Content mix:** which packs, and how much of each
 - **Modifiers:** capitalization (first letter only or any letter),
-  punctuation and symbols, each with a frequency
+  punctuation, numbers and symbols, each with a frequency, plus "unlock
+  early" switches
+- **Unlock order:** most common first or home row first
+- **Calibration:** re-run the test
 - **Speed goal:** target WPM and accuracy, per input profile
 - **Sound:** key clicks and effects (combo chimes, error buzz), can be turned
   off
@@ -203,10 +244,14 @@ its own; nothing waits for a later phase to be fun.
    - English word pack (several thousand words)
    - Practice mode on web, for physical keyboards and the touch on-screen
      keyboard
+   - Gradual letter unlocking (both orders)
+   - Calibration: first-launch test with test-out, skip option, silent
+     tuning, re-calibrate
    - One theme, keyboard heatmap, live WPM and accuracy
    - Speed goal: set a target and see the goal bar
 2. **Modifiers and goals**
-   - Capitalization (first letter only or any letter), punctuation, symbols
+   - Capitalization (first letter only or any letter), punctuation,
+     numbers, symbols, with staged unlocks and "unlock early" switches
    - Shift timing and touch layer-switching tracking
    - Difficulty curve, with pacing toward your speed goal
    - Explain the round
@@ -215,7 +260,8 @@ its own; nothing waits for a later phase to be fun.
    - Hesitation detection, error-type analysis
    - Finger and thumb tracking, rhythm coaching, fatigue detection
    - Tap-drift map, self-correction score
-   - Made-up drill words
+   - Made-up drill words (a simple version ships in phase 1 to support early
+     unlocking)
 4. **Arcade**
    - Falling words and survival
    - Ghost race and rubber-band rival
@@ -233,9 +279,21 @@ its own; nothing waits for a later phase to be fun.
 7. **Port (far future):** Swift and Kotlin versions, verified against the
    test vectors. Not planned in detail yet.
 
+## Word list research
+
+| Source | License | Verdict |
+| --- | --- | --- |
+| [wordfreq](https://github.com/rspeer/wordfreq) | Data: CC BY-SA 4.0. Code: Apache. | **Recommended for ranking.** High-quality frequencies from many sources. Requires credit, and the word list file we ship must stay under CC BY-SA. Frozen at about 2021 data, which is fine for common words. |
+| [SCOWL](https://github.com/en-wl/wordlist) | MIT-like | **Recommended as a filter.** No exact frequencies, but size tiers (35 small, 50 medium, higher means rarer) confirm real, correctly spelled words. |
+| [google-10000-english](https://github.com/first20hours/google-10000-english) | Built on LDC data | **Avoid.** The author advises against commercial use without an LDC license. |
+| [SUBTLEX-US](https://osf.io/djpqz) | Unclear | **Avoid for now.** Free for research. Broader permission is only reported secondhand. |
+
+Plan: take wordfreq's top English words, keep those found in SCOWL size 50 or
+below, remove offensive words, and keep about 10,000. Credit wordfreq (and its
+sources) and SCOWL on an About screen.
+
 ## Open questions
 
-- Which word list to use, once its license is checked.
+- Sign-off on the word list approach above.
 - How the micro-app will be embedded in the host app (web view, native
   screen, or both).
-- Whether to include numbers (`0-9`) as their own modifier.
