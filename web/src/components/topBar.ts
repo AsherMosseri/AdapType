@@ -45,5 +45,8 @@ export function topBar(app: App, options: TopBarOptions = {}): HTMLElement {
         { type: "button", class: "icon-button", "aria-label": "Progress", onclick: () => app.go({ name: "progress", returnTo: options.returnTo }) },
         icon([...ICONS.progress]),
       );
-  return h("header", { class: "top-bar" }, left, h("div", { class: "top-actions" }, chip, progress, settings));
+  const arcade = options.noSettings
+    ? null
+    : h("button", { type: "button", class: "icon-button", "aria-label": "Arcade", onclick: () => app.go({ name: "arcade" }) }, icon([...ICONS.arcade]));
+  return h("header", { class: "top-bar" }, left, h("div", { class: "top-actions" }, chip, arcade, progress, settings));
 }

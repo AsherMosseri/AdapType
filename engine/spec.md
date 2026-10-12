@@ -1,4 +1,4 @@
-# AdapType engine spec (phases 1 to 3)
+# AdapType engine spec (phases 1 to 4)
 
 This is the rulebook for the AdapType engine. The web version
 (`engine/src`, TypeScript) is the reference implementation. A port (Swift,
@@ -747,6 +747,176 @@ Profile version 3 adds `reviews`, `hesitations`, `errorCounts`, `typos`,
 `confusions` (all empty), `errorBias` (all 0), `missedWords` (empty),
 `session` (null), `touchTyping` (null), `gripKeys` and `gripTaps` (empty).
 
+## 23. Arcade: falling words and survival
+
+A deterministic simulation. The caller calls `tick(dt)` (seconds) and
+`input(char, t)` (t in ms, for intervals). Each returns events in order.
+Falling words always uses lives; survival uses the player's lives setting.
+
+### 23.1 Speeds
+
+With speedup `FALLING_SPEEDUP` (falling) or `SURVIVAL_SPEEDUP` (survival):
+
+```
+fallSeconds  = max(FALL_SECONDS_MIN,  FALL_SECONDS_START  * speedup^(level-1))
+spawnSeconds = max(SPAWN_SECONDS_MIN, SPAWN_SECONDS_START * speedup^(level-1))
+```
+
+On touch, both are divided by `TOUCH_SPEED_FACTOR`. The spawn timer starts
+full, so the first tick spawns a word.
+
+### 23.2 tick(dt)
+
+1. Nothing if the game is over. `time += dt`.
+2. Boss timer: `timeLeft -= dt`; at 0 or below, boss words are removed (and
+   the target if it was one), the boss ends (`bossEscaped`), damage with
+   health cost `HEALTH_PER_LANDED` (23.5), then level up (23.6).
+3. Every word moves `y += dt / fallSeconds * (SLOW_FACTOR while slowed, else
+   1)`. Words with `y >= 1` land, in list order: removed, target cleared if
+   it was the word, `landed += 1`, combo 0, a boss word heals the boss by 1
+   (up to max), damage with cost `HEALTH_PER_LANDED`.
+4. Spawning: during a boss, spawn a boss word when none is on screen.
+   Otherwise `sinceSpawn += dt`; when it reaches `spawnSeconds` and fewer
+   than `MAX_ON_SCREEN` words are up, reset it and spawn a power-up word if
+   at least `POWERUP_EVERY` normal words spawned since the last power-up,
+   else a normal word.
+
+### 23.3 Spawning a word
+
+The word source gives the text. A power-up word's kind is
+`POWER_UPS[int(4)]` (slow, clear, shield, double) and resets the power-up
+counter; a normal word adds 1 to it. A boss word is capitalized in phase 2
+and falls in `BOSS_FALL_SECONDS` (divided by `BOSS_PHASE2_SPEED` in phase 2
+and by the touch factor). `x = 0.5` for boss words, else
+`0.08 + next() * 0.84`. Ids count up from 1.
+
+### 23.4 input(char, t)
+
+- With no target: a space does nothing. Otherwise target the word whose
+  first character equals `char` with the largest `y` (ties: lowest id). Its
+  log offset is the log length plus 1 if the log isn't empty; the log gets a
+  space (if not empty) and the word. With no match: `keystrokes += 1`, the
+  interval chain breaks, an `error` event, and the error rules (23.5).
+- With a target: compare `char` with the next character. Record the
+  keystroke (index = offset + typed, first-attempt and interval rules as in
+  section 2). Correct: `typed += 1`, error run 0, and the word clears when
+  complete. Wrong: the word's error count + 1, then the error rules. Wrong
+  keys never advance a word.
+
+### 23.5 Errors and damage
+
+An error: `errors += 1`, combo 0, error run + 1, and a targeted boss word
+heals the boss by `BOSS_HEAL_PER_ERROR`. Then: hardcore takes damage;
+health mode takes damage with cost `HEALTH_PER_ERROR`; lives mode takes
+damage only when the error run reaches `ERROR_RUN_FOR_LIFE` (and resets it).
+
+Damage: a shield absorbs it and is used up. Otherwise hardcore sets lives to
+0, health mode lowers health by the cost (rounded to 3 decimals), lives mode
+loses a life. At 0 lives or 0 health the game is over.
+
+### 23.6 Clearing, scoring, levels and bosses
+
+On clearing a word: remove it, clear the target, combo + 1, cleared + 1.
+Points:
+
+```
+points = POINTS_PER_CHAR * length * (1 + min(COMBO_MAX_MULTIPLIER - 1, floor(combo / COMBO_STEP) * COMBO_BONUS))
+       * (1 + WEAK_WORD_BONUS if the lowercased word contains a weak key)
+       * (2 for a boss word) * (2 while double points is on), rounded
+```
+
+Health mode heals `HEALTH_PER_CLEAN_WORD` (up to 1) for a word typed without
+errors. Power-ups: slow sets `slowUntil = time + SLOW_SECONDS`; double sets
+`doubleUntil = time + DOUBLE_SECONDS`; shield turns the shield on; clear
+removes every non-boss word.
+
+A boss word lowers boss HP by 1. At 0 the boss is defeated: score +
+`BOSS_DEFEAT_BONUS` (doubled while double points is on), boss words
+removed, level up. Otherwise, at or below half HP in phase 1 it enters
+phase 2. A normal word counts toward the level; at `WORDS_PER_LEVEL` the
+level goes up.
+
+Level up: level + 1, level count 0. When the new level is a multiple of
+`BOSS_EVERY`, a boss starts with `BOSS_HP` HP and `BOSS_SECONDS`; every
+other boss (the 1st, 3rd...) is the nemesis when there is one.
+
+### 23.7 Metrics
+
+`wpm = correctKeystrokes / 5 / (time / 60)`; accuracy is correct over all
+keystrokes.
+
+Vectors: `arcade.json` (every operation with its events, and the final
+state).
+
+## 24. Arcade words
+
+Pool: unlocked-letter words up to `ARCADE_MAX_WORD_LENGTH` letters (pool cap
+from the difficulty). Normal words come from `planRound` in batches of 20
+(chunks 0, 1, 2...), with modifiers and reviews like practice.
+
+- Power-up weights: `(0.1 + average letter score)^2` for words of at least
+  `POWERUP_MIN_LENGTH` letters, else 0.
+- Boss weights: for words of at least `BOSS_MIN_LENGTH` letters containing
+  the boss key, average letter score `+ 2 * (boss key count / length)`; the
+  boss key is the nemesis or else the highest-scoring unlocked letter.
+- Picks use `weightedIndex` on the source's generator; when nothing fits, a
+  normal word.
+
+Weak keys for the scoring bonus: the top `WEAK_KEYS_FOR_BONUS` unlocked
+letters with score above 0.
+
+Vectors: `arcadeWords.json`.
+
+## 25. Arcade results
+
+A finished game applies its records over its log to stats with weight
+`ARCADE_WEIGHT` (letters, pairs, modifiers) and to error analysis. It
+doesn't touch history, mastery, unlocks, difficulty, reviews or sessions.
+Games played + 1, round counter + 1.
+
+Scores: each mode keeps its top `MAX_SCORES` entries. A new entry goes
+before the first entry with a lower score (equal scores keep the earlier
+one first); the rank is 1-based, or none when it falls off the list.
+
+Vectors: `arcadeResults.json`.
+
+## 26. Races
+
+**Rival.** Pace `goal` (the goal WPM), `custom` (a chosen WPM) or `ahead`:
+`RIVAL_AHEAD * (the player's live WPM once RIVAL_WARMUP_SECONDS have passed
+and it's above 0, else the recent average)`, times `1 - RUBBER_BAND_STRENGTH`
+when the rival is more than `RUBBER_BAND_CHARS` characters ahead or
+`1 + RUBBER_BAND_STRENGTH` when as far behind. Each step:
+`elapsed += dt`, `position += wpm * 5 * dt / 60`.
+
+**Ghost.** From a finished, fully correct round: for each position, the time
+of the last correct keystroke there minus the first keystroke's time, then
+made non-decreasing. WPM uses the target length over the last time. The
+ghost's position at a time is the number of times at or below it. A run
+replaces the saved ghost when there is none, the text differs, or it's
+faster.
+
+Race rounds count toward stats like arcade games (25).
+
+Vectors: `race.json`.
+
+## 27. Nemesis
+
+After each round or game: if there's a nemesis whose key has at least
+`NEMESIS_MIN_SAMPLES` samples and weakness at most
+`NEMESIS_DEFEAT_WEAKNESS`, it's defeated and joins the hall with the time.
+Then, with no nemesis, the unlocked letter with the highest weakness among
+those with at least `NEMESIS_MIN_SAMPLES` samples and weakness at least
+`NEMESIS_MIN_WEAKNESS` (ties by unlock order) becomes the nemesis. Its name
+is `names[key][hashString(profileSeed + key) mod count] + " the " +
+uppercase key`, from `content/nemesis.json`. A taunt is `taunts[int(n)]`
+with `{name}` and `{key}` filled in.
+
+Profile version 4 adds `arcade`: empty scores, no ghost, no nemesis, empty
+hall, 0 games.
+
+Vectors: `nemesis.json`.
+
 ## Constants
 
 | Name | Value |
@@ -821,6 +991,24 @@ Profile version 3 adds `reviews`, `hesitations`, `errorCounts`, `typos`,
 | `PHONOTACTIC_WORDS`, `PHONOTACTIC_TOP` | 5000, 40 |
 | `MADE_UP_MAX_SYLLABLES`, `MADE_UP_LONG_MAX` | 3, 8 |
 | `DEFAULT_MADE_UP_CAP` | 0.8 |
+| `ARCADE_WEIGHT` | 0.5 |
+| `WORDS_PER_LEVEL`, `BOSS_EVERY` | 10, 5 |
+| `FALL_SECONDS_START`, `FALL_SECONDS_MIN` | 9, 2.5 |
+| `SPAWN_SECONDS_START`, `SPAWN_SECONDS_MIN` | 2.4, 0.7 |
+| `FALLING_SPEEDUP`, `SURVIVAL_SPEEDUP` | 0.92, 0.88 |
+| `MAX_ON_SCREEN`, `TOUCH_SPEED_FACTOR` | 6, 0.75 |
+| `START_LIVES`, `ERROR_RUN_FOR_LIFE` | 3, 3 |
+| `HEALTH_PER_ERROR`, `HEALTH_PER_LANDED`, `HEALTH_PER_CLEAN_WORD` | 0.05, 0.2, 0.02 |
+| `BOSS_HP`, `BOSS_SECONDS`, `BOSS_FALL_SECONDS` | 10, 60, 12 |
+| `BOSS_PHASE2_SPEED`, `BOSS_HEAL_PER_ERROR`, `BOSS_DEFEAT_BONUS` | 1.5, 0.5, 500 |
+| `BOSS_MIN_LENGTH`, `POWERUP_MIN_LENGTH`, `POWERUP_EVERY` | 5, 4, 8 |
+| `SLOW_SECONDS`, `SLOW_FACTOR`, `DOUBLE_SECONDS` | 5, 0.5, 8 |
+| `POINTS_PER_CHAR`, `COMBO_STEP`, `COMBO_BONUS`, `COMBO_MAX_MULTIPLIER` | 10, 5, 0.5, 4 |
+| `WEAK_WORD_BONUS`, `WEAK_KEYS_FOR_BONUS` | 0.5, 3 |
+| `MAX_SCORES`, `ARCADE_MAX_WORD_LENGTH` | 10, 10 |
+| `RIVAL_AHEAD`, `RUBBER_BAND_CHARS`, `RUBBER_BAND_STRENGTH` | 1.05, 15, 0.3 |
+| `RIVAL_WARMUP_SECONDS`, `RACE_WORDS` | 3, 30 |
+| `NEMESIS_MIN_SAMPLES`, `NEMESIS_MIN_WEAKNESS`, `NEMESIS_DEFEAT_WEAKNESS` | 20, 1, 0.3 |
 
 ## Test vectors
 
@@ -843,6 +1031,11 @@ Profile version 3 adds `reviews`, `hesitations`, `errorCounts`, `typos`,
 | `rhythm.json` | rhythm consistency and stalls |
 | `phonotactics.json` | sound patterns and pronounceable words |
 | `warmup.json` | warm-up targets and planning with review words |
+| `arcade.json` | falling words and survival, operation by operation |
+| `arcadeWords.json` | power-up and boss word weights and a word source |
+| `arcadeResults.json` | arcade stats at reduced weight and high scores |
+| `race.json` | rival pacing and ghost runs |
+| `nemesis.json` | nemesis names, choice and defeat |
 
 Vectors that use the word pack use the first `packSize` words of
 `content/words-en.json` version 1 and `content/blocklist.json`.

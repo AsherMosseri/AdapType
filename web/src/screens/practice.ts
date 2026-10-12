@@ -12,6 +12,7 @@ import {
   type RoundType,
   type RoundWord,
   type TypingEvent,
+  updateNemesis,
 } from "../../../engine/src";
 import { TypingRound } from "../../../engine/src/typing";
 import type { App, Screen, ScreenView } from "../app";
@@ -19,7 +20,7 @@ import { letterStrip } from "../components/letters";
 import { topBar } from "../components/topBar";
 import { touchKeyboard } from "../components/touchKeyboard";
 import { TypingView } from "../components/typingView";
-import { blocklist, characters, pack } from "../content";
+import { blocklist, characters, nemesisContent, pack } from "../content";
 import { formatPercent, h } from "../dom";
 import { list, roundBanner } from "../explainText";
 import { attachPhysicalInput } from "../physicalInput";
@@ -310,9 +311,10 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
     window.clearInterval(ticker);
     const metrics = round.metrics();
     const outcome = completeRound(state, round, Date.now(), { calibrationTest, chars: characters, pack, warmup });
+    const nemesisChange = calibrationTest || silent ? null : updateNemesis(state, Date.now(), nemesisContent);
     app.persist();
     if (calibrationTest) app.go({ name: "goal", measuredWpm: metrics.wpm, from: "test" });
-    else app.go({ name: "results", outcome, metrics, calibrationTest, explanation: plan.explanation, warmup, records: round.records });
+    else app.go({ name: "results", outcome, metrics, calibrationTest, explanation: plan.explanation, warmup, records: round.records, nemesisChange });
   }
 
   const onResize = () => view.scroll();

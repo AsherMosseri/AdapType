@@ -1,0 +1,124 @@
+{
+ "rival": {
+  "pace": "ahead",
+  "baseWpm": 40,
+  "goalWpm": 50,
+  "steps": [
+   {
+    "playerChars": 0,
+    "playerWpm": 0,
+    "position": 3.5,
+    "elapsed": 1
+   },
+   {
+    "playerChars": 10,
+    "playerWpm": 0,
+    "position": 7,
+    "elapsed": 2
+   },
+   {
+    "playerChars": 20,
+    "playerWpm": 30,
+    "position": 10.5,
+    "elapsed": 3
+   },
+   {
+    "playerChars": 35,
+    "playerWpm": 45,
+    "position": 15.61875,
+    "elapsed": 4
+   },
+   {
+    "playerChars": 70,
+    "playerWpm": 60,
+    "position": 22.44375,
+    "elapsed": 5
+   },
+   {
+    "playerChars": 80,
+    "playerWpm": 30,
+    "position": 25.856250000000003,
+    "elapsed": 6
+   },
+   {
+    "playerChars": 85,
+    "playerWpm": 30,
+    "position": 29.268750000000004,
+    "elapsed": 7
+   }
+  ]
+ },
+ "ghost": {
+  "target": "on it",
+  "events": [
+   {
+    "kind": "char",
+    "char": "o",
+    "t": 500
+   },
+   {
+    "kind": "char",
+    "char": "m",
+    "t": 700
+   },
+   {
+    "kind": "backspace",
+    "t": 900
+   },
+   {
+    "kind": "char",
+    "char": "n",
+    "t": 1000
+   },
+   {
+    "kind": "char",
+    "char": " ",
+    "t": 1150
+   },
+   {
+    "kind": "char",
+    "char": "i",
+    "t": 1350
+   },
+   {
+    "kind": "char",
+    "char": "t",
+    "t": 1500
+   }
+  ],
+  "run": {
+   "target": "on it",
+   "times": [
+    0,
+    500,
+    650,
+    850,
+    1000
+   ],
+   "wpm": 60,
+   "at": 42
+  },
+  "positions": [
+   {
+    "ms": 0,
+    "chars": 1
+   },
+   {
+    "ms": 250,
+    "chars": 1
+   },
+   {
+    "ms": 499,
+    "chars": 1
+   },
+   {
+    "ms": 500,
+    "chars": 2
+   },
+   {
+    "ms": 1000,
+    "chars": 5
+   }
+  ]
+ }
+}

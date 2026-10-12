@@ -4,7 +4,7 @@ A typing game that learns your weak spots and keeps targeting them. It starts
 as a fun web project. Much later it becomes a micro-app inside a larger app,
 ported to Swift and Kotlin.
 
-Status: phases 1 to 3 built (web). Phases 4 to 7 planned.
+Status: phases 1 to 4 built (web). Phases 5 to 7 planned.
 
 ## Principles
 
@@ -661,6 +661,28 @@ your weak keys, and typing it triggers the power-up. Starting set:
   to make up for the shorter distance.
 - **Landscape (option):** a split keyboard on both sides with the play area
   in the middle.
+
+### Built differently from the plan
+
+- **Boss phase 2** does both: words fall faster and come capitalized. Each
+  error heals the boss by half a hit.
+- **The nemesis** is the boss on the first boss round and every other one
+  after that. A key becomes the nemesis once it has 20 samples and sits well
+  short of your goal. It's defeated when the key gets close to your goal,
+  checked after every practice round, game and race, rather than waiting for
+  full mastery.
+- **3 lives:** a run of three errors costs a life, as does a word that lands.
+- **Weak-key bonus:** +50% for a word with any of your three weakest keys.
+- **Races** score WPM x accuracy x 10 for the top 10. A ghost is replaced
+  only by a finished run with every character right. Leaving a race early
+  still counts your keystrokes, but not a score.
+- **Landscape** switches to the split keyboard automatically when the phone
+  is sideways at the start of a game. The play area sits above the keyboard,
+  not between the halves, because a phone held sideways is too short for
+  both.
+- **Arcade settings** (lives, rival pace) live on the arcade screen, next to
+  the modes they change, rather than in Settings.
+- Browser testing was automated in Chromium only.
 
 ### Done when
 

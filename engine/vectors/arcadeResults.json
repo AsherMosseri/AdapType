@@ -1,0 +1,172 @@
+{
+ "before": {
+  "l": {
+   "n": 30,
+   "timedN": 30,
+   "msAvg": 250,
+   "errAvg": 0.02
+  },
+  "a": {
+   "n": 30,
+   "timedN": 30,
+   "msAvg": 250,
+   "errAvg": 0.02
+  }
+ },
+ "inputs": [
+  [
+   "l",
+   0
+  ],
+  [
+   "a",
+   180
+  ],
+  [
+   "x",
+   360
+  ],
+  [
+   "m",
+   600
+  ],
+  [
+   "p",
+   790
+  ]
+ ],
+ "log": "lamp",
+ "records": [
+  {
+   "index": 0,
+   "expected": "l",
+   "actual": "l",
+   "t": 0,
+   "correct": true,
+   "first": true,
+   "interval": null
+  },
+  {
+   "index": 1,
+   "expected": "a",
+   "actual": "a",
+   "t": 180,
+   "correct": true,
+   "first": true,
+   "interval": 180
+  },
+  {
+   "index": 2,
+   "expected": "m",
+   "actual": "x",
+   "t": 360,
+   "correct": false,
+   "first": true,
+   "interval": 180
+  },
+  {
+   "index": 2,
+   "expected": "m",
+   "actual": "m",
+   "t": 600,
+   "correct": true,
+   "first": false,
+   "interval": null
+  },
+  {
+   "index": 3,
+   "expected": "p",
+   "actual": "p",
+   "t": 790,
+   "correct": true,
+   "first": true,
+   "interval": null
+  }
+ ],
+ "result": {
+  "entry": {
+   "score": 40,
+   "level": 1,
+   "words": 1,
+   "wpm": 480,
+   "accuracy": 0.8,
+   "at": 1700000000000
+  },
+  "rank": 1
+ },
+ "keys": {
+  "l": {
+   "n": 31,
+   "timedN": 30,
+   "msAvg": 250,
+   "errAvg": 0.019
+  },
+  "a": {
+   "n": 31,
+   "timedN": 31,
+   "msAvg": 246.5,
+   "errAvg": 0.019
+  },
+  "m": {
+   "n": 1,
+   "timedN": 1,
+   "msAvg": 180,
+   "errAvg": 1
+  },
+  "p": {
+   "n": 1,
+   "timedN": 0,
+   "msAvg": 0,
+   "errAvg": 0
+  }
+ },
+ "survivalRanks": [
+  1,
+  2,
+  1,
+  4,
+  5
+ ],
+ "survival": [
+  {
+   "score": 900,
+   "level": 1,
+   "words": 1,
+   "wpm": 1,
+   "accuracy": 1,
+   "at": 900
+  },
+  {
+   "score": 500,
+   "level": 1,
+   "words": 1,
+   "wpm": 1,
+   "accuracy": 1,
+   "at": 500
+  },
+  {
+   "score": 200,
+   "level": 1,
+   "words": 1,
+   "wpm": 1,
+   "accuracy": 1,
+   "at": 200
+  },
+  {
+   "score": 200,
+   "level": 1,
+   "words": 1,
+   "wpm": 1,
+   "accuracy": 1,
+   "at": 200
+  },
+  {
+   "score": 50,
+   "level": 1,
+   "words": 1,
+   "wpm": 1,
+   "accuracy": 1,
+   "at": 50
+  }
+ ]
+}

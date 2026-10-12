@@ -1,0 +1,192 @@
+{
+ "packSize": 2000,
+ "keys": {
+  "k": {
+   "n": 30,
+   "timedN": 30,
+   "msAvg": 600,
+   "errAvg": 0.15
+  },
+  "w": {
+   "n": 30,
+   "timedN": 30,
+   "msAvg": 450,
+   "errAvg": 0.05
+  }
+ },
+ "powerUpTop": [
+  {
+   "w": 2.1025000000000005,
+   "word": "kick"
+  },
+  {
+   "w": 1.1556250000000003,
+   "word": "knew"
+  },
+  {
+   "w": 1.1556250000000003,
+   "word": "know"
+  },
+  {
+   "w": 1.1556250000000003,
+   "word": "wake"
+  },
+  {
+   "w": 1.155625,
+   "word": "walk"
+  },
+  {
+   "w": 1.155625,
+   "word": "week"
+  },
+  {
+   "w": 1.155625,
+   "word": "work"
+  },
+  {
+   "w": 0.8464,
+   "word": "known"
+  },
+  {
+   "w": 0.8464,
+   "word": "knows"
+  },
+  {
+   "w": 0.8463999999999998,
+   "word": "weeks"
+  },
+  {
+   "w": 0.8463999999999998,
+   "word": "works"
+  },
+  {
+   "w": 0.7656250000000002,
+   "word": "keep"
+  },
+  {
+   "w": 0.7656250000000002,
+   "word": "kept"
+  },
+  {
+   "w": 0.7656250000000002,
+   "word": "kids"
+  },
+  {
+   "w": 0.7656250000000002,
+   "word": "kill"
+  }
+ ],
+ "bossTop": [
+  {
+   "w": 1.2200000000000002,
+   "word": "known"
+  },
+  {
+   "w": 1.2200000000000002,
+   "word": "knows"
+  },
+  {
+   "w": 1.22,
+   "word": "weeks"
+  },
+  {
+   "w": 1.22,
+   "word": "works"
+  },
+  {
+   "w": 1.06,
+   "word": "asked"
+  },
+  {
+   "w": 1.06,
+   "word": "banks"
+  },
+  {
+   "w": 1.06,
+   "word": "black"
+  },
+  {
+   "w": 1.06,
+   "word": "block"
+  },
+  {
+   "w": 1.06,
+   "word": "books"
+  },
+  {
+   "w": 1.06,
+   "word": "break"
+  },
+  {
+   "w": 1.06,
+   "word": "broke"
+  },
+  {
+   "w": 1.06,
+   "word": "check"
+  },
+  {
+   "w": 1.06,
+   "word": "click"
+  },
+  {
+   "w": 1.06,
+   "word": "drink"
+  },
+  {
+   "w": 1.06,
+   "word": "frank"
+  }
+ ],
+ "sequence": [
+  {
+   "kind": "normal",
+   "word": {
+    "text": "prince",
+    "madeUp": false
+   }
+  },
+  {
+   "kind": "powerup",
+   "word": {
+    "text": "working",
+    "madeUp": false
+   }
+  },
+  {
+   "kind": "normal",
+   "word": {
+    "text": "local",
+    "madeUp": false
+   }
+  },
+  {
+   "kind": "boss",
+   "word": {
+    "text": "speaking",
+    "madeUp": false
+   }
+  },
+  {
+   "kind": "boss",
+   "word": {
+    "text": "killed",
+    "madeUp": false
+   }
+  },
+  {
+   "kind": "normal",
+   "word": {
+    "text": "weeks",
+    "madeUp": false
+   }
+  },
+  {
+   "kind": "powerup",
+   "word": {
+    "text": "showed",
+    "madeUp": false
+   }
+  }
+ ]
+}

@@ -7,9 +7,25 @@ import { describe, expect, it } from "vitest";
 import blocklist from "../../content/blocklist.json";
 import charsJson from "../../content/characters.json";
 import loanwords from "../../content/loanwords.json";
+import nemesisContent from "../../content/nemesis.json";
 import shortcutPack from "../../content/shortcuts-text-editing.json";
 import fullPack from "../../content/words-en.json";
 import {
+  ArcadeGame,
+  arcadeWordSource,
+  bossWeights,
+  completeArcadeGame,
+  createRival,
+  ghostFromRound,
+  ghostPosition,
+  nemesisName,
+  powerUpWeights,
+  recordScore,
+  stepRival,
+  updateNemesis,
+  wordPool,
+  type ArcadeEvent,
+  type WordSource,
   applyErrorAnalysis,
   beginSession,
   classifyErrors,
@@ -473,6 +489,126 @@ describe("test vectors", () => {
     return { state: { unlocked: state.unlocked, mastered: state.mastered, keys: state.keys, pairs: state.pairs, reviews: state.reviews, seed: 9, roundCounter: 0 }, now, targets, plan };
   });
 
+  check("arcade", () => {
+    const words = ["lamp", "river", "stone", "cloud", "apple", "tiger", "maple", "noble", "quiet", "sugar"];
+    const makeSource = (): WordSource => {
+      let i = 0;
+      let p = 0;
+      return {
+        next(kind) {
+          if (kind === "boss") return { text: ["quickest", "equator", "quietly"][p++ % 3], madeUp: false };
+          if (kind === "powerup") return { text: "quiz", madeUp: false };
+          return { text: words[i++ % words.length], madeUp: false };
+        },
+      };
+    };
+    const games = [
+      { name: "falling", config: { mode: "falling" as const, lives: "lives" as const, touch: false, weakKeys: ["q", "u"], nemesisKey: "q" }, seed: 11, bot: { cps: 9, errorRate: 0.06, seed: 3 }, seconds: 150 },
+      { name: "survival health", config: { mode: "survival" as const, lives: "health" as const, touch: true, weakKeys: ["e"], nemesisKey: null }, seed: 12, bot: { cps: 5, errorRate: 0.1, seed: 4 }, seconds: 120 },
+    ];
+    return {
+      sourceWords: words,
+      bossWords: ["quickest", "equator", "quietly"],
+      powerUpWord: "quiz",
+      games: games.map((g) => {
+        const game = new ArcadeGame(g.config, makeSource(), new Rng(g.seed));
+        const ops = recordBot(game, g.bot, g.seconds);
+        return {
+          name: g.name,
+          config: g.config,
+          rngSeed: g.seed,
+          ops,
+          final: {
+            time: game.time, level: game.level, score: game.score, combo: game.combo, maxCombo: game.maxCombo, lives: game.lives,
+            health: game.health, cleared: game.cleared, landed: game.landed, errors: game.errors, keystrokes: game.keystrokes,
+            correctKeystrokes: game.correctKeystrokes, over: game.over, log: game.log, words: game.words, boss: game.boss,
+          },
+        };
+      }),
+    };
+  });
+
+  check("arcadeWords", () => {
+    const state = createProfile("physical", 21);
+    state.goal = { wpm: 40, accuracy: 0.95 };
+    state.calibration = "done";
+    state.unlocked = "etaoinshrdlcumwfgypbvkjxqz".split("");
+    state.mastered = [...state.unlocked];
+    for (const l of state.unlocked) state.keys[l] = { n: 30, timedN: 30, msAvg: 260, errAvg: 0.02 };
+    state.keys.k = { n: 30, timedN: 30, msAvg: 600, errAvg: 0.15 };
+    state.keys.w = { n: 30, timedN: 30, msAvg: 450, errAvg: 0.05 };
+    const scores = computeScores(state, state.goal);
+    const pool = wordPool(pack, state.unlocked, { maxLength: 10, poolCap: 2000 });
+    const top = (weights: number[]) => weights.map((w, i) => ({ w, word: pool[i].text })).filter((x) => x.w > 0).sort((a, b) => b.w - a.w || (a.word < b.word ? -1 : 1)).slice(0, 15);
+    const source = arcadeWordSource(state, { pack, blocklist, rng: new Rng(8) });
+    return {
+      packSize: PACK_SIZE,
+      keys: { k: state.keys.k, w: state.keys.w },
+      powerUpTop: top(powerUpWeights(pool, scores)),
+      bossTop: top(bossWeights(pool, scores, "k")),
+      sequence: ["normal", "powerup", "normal", "boss", "boss", "normal", "powerup"].map((kind) => ({ kind, word: source.next(kind as "normal") })),
+    };
+  });
+
+  check("arcadeResults", () => {
+    const state = createProfile("physical", 3);
+    state.keys.l = { n: 30, timedN: 30, msAvg: 250, errAvg: 0.02 };
+    state.keys.a = { n: 30, timedN: 30, msAvg: 250, errAvg: 0.02 };
+    const before = structuredClone(state.keys);
+    const game = new ArcadeGame({ mode: "falling", lives: "lives", touch: false, weakKeys: [], nemesisKey: null }, { next: () => ({ text: "lamp", madeUp: false }) }, new Rng(1));
+    game.tick(0.1);
+    const inputs: [string, number][] = [["l", 0], ["a", 180], ["x", 360], ["m", 600], ["p", 790]];
+    for (const [c, t] of inputs) game.input(c, t);
+    const result = completeArcadeGame(state, game, 1_700_000_000_000);
+    const entry = (score: number) => ({ score, level: 1, words: 1, wpm: 1, accuracy: 1, at: score });
+    const ranks = [500, 200, 900, 200, 50].map((sc) => recordScore(state, "survival", entry(sc)));
+    return { before, inputs, log: game.log, records: game.records, result, keys: { l: state.keys.l, a: state.keys.a, m: state.keys.m, p: state.keys.p }, survivalRanks: ranks, survival: state.arcade.scores.survival };
+  });
+
+  check("race", () => {
+    const rival = createRival({ kind: "ahead" }, 40, 50);
+    const steps: unknown[] = [];
+    const player = [[0, 0], [10, 0], [20, 30], [35, 45], [70, 60], [80, 30], [85, 30]];
+    for (const [chars, wpm] of player) {
+      stepRival(rival, 1, chars, wpm);
+      steps.push({ playerChars: chars, playerWpm: wpm, position: rival.position, elapsed: rival.elapsed });
+    }
+    const round = new TypingRound("on it", "backspace");
+    const events: TypingEvent[] = [
+      { kind: "char", char: "o", t: 500 },
+      { kind: "char", char: "m", t: 700 },
+      { kind: "backspace", t: 900 },
+      { kind: "char", char: "n", t: 1000 },
+      { kind: "char", char: " ", t: 1150 },
+      { kind: "char", char: "i", t: 1350 },
+      { kind: "char", char: "t", t: 1500 },
+    ];
+    for (const e of events) round.input(e);
+    const ghost = ghostFromRound(round, 42);
+    return {
+      rival: { pace: "ahead", baseWpm: 40, goalWpm: 50, steps },
+      ghost: { target: "on it", events, run: ghost, positions: [0, 250, 499, 500, 1000].map((ms) => ({ ms, chars: ghostPosition(ghost!, ms) })) },
+    };
+  });
+
+  check("nemesis", () => {
+    const state = createProfile("physical", 99);
+    state.unlocked = "etaoinshr".split("");
+    state.goal = { wpm: 40, accuracy: 0.95 };
+    for (const l of state.unlocked) state.keys[l] = { n: 25, timedN: 25, msAvg: 260, errAvg: 0.03 };
+    state.keys.h = { n: 25, timedN: 25, msAvg: 640, errAvg: 0.12 };
+    state.keys.r = { n: 25, timedN: 25, msAvg: 560, errAvg: 0.1 };
+    const steps: unknown[] = [];
+    steps.push({ change: updateNemesis(state, 1000, nemesisContent), nemesis: state.arcade.nemesis });
+    state.keys.h = { n: 40, timedN: 40, msAvg: 250, errAvg: 0.02 };
+    steps.push({ keysH: state.keys.h, change: updateNemesis(state, 2000, nemesisContent), nemesis: state.arcade.nemesis, hall: structuredClone(state.arcade.hall) });
+    return {
+      seed: 99,
+      names: LETTERS.split("").map((k) => ({ key: k, name: nemesisName(state, k, nemesisContent) })),
+      steps,
+    };
+  });
+
   check("profile", () => {
     // A full session: test, goal, then practice rounds with a simulated typist.
     // Ports replay the same events and must reach the same state each round.
@@ -576,6 +712,30 @@ function playPhase3Session(seed: number) {
     });
   }
   return { phase3Session: true, seed, packSize: PACK_SIZE, steps };
+}
+
+/** Plays the test bot while logging every operation and the events it produced. */
+function recordBot(game: ArcadeGame, bot: { cps: number; errorRate: number; seed: number }, seconds: number) {
+  const rng = new Rng(bot.seed);
+  const ops: ({ op: "tick"; dt: number; events: ArcadeEvent[] } | { op: "input"; char: string; t: number; events: ArcadeEvent[] })[] = [];
+  let budget = 0;
+  const step = 0.1;
+  for (let i = 0; i < Math.round(seconds / step) && !game.over; i++) {
+    const events = game.tick(step);
+    if (events.length) ops.push({ op: "tick", dt: step, events });
+    else ops.push({ op: "tick", dt: step, events: [] });
+    budget += bot.cps * step;
+    while (budget >= 1 && !game.over) {
+      budget -= 1;
+      let word = game.words.find((w) => w.id === game.target);
+      if (!word) word = [...game.words].sort((a, b) => b.y - a.y || a.id - b.id)[0];
+      if (!word) break;
+      const char = rng.next() < bot.errorRate ? "#" : word.text[word.typed];
+      const t = Math.round(game.time * 1000);
+      ops.push({ op: "input", char, t, events: game.input(char, t) });
+    }
+  }
+  return ops;
 }
 
 function snapshot(state: ProfileState) {

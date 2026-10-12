@@ -12,6 +12,8 @@ export interface TouchKeyboardOptions {
   isLocked: (letter: string) => boolean;
   /** Assist hit zones: a letter's average tap offset (in key sizes), or null. Without it, keys stay fixed. */
   assist?: (letter: string) => { dx: number; dy: number } | null;
+  /** Landscape: each row split in two halves, one for each thumb. */
+  split?: boolean;
 }
 
 const LONG_PRESS_MS = 380;
@@ -31,14 +33,16 @@ export function touchKeyboard(options: TouchKeyboardOptions): HTMLElement {
   const altMenu = h("div", { class: "alt-menu", role: "group", "aria-label": "Alternate characters" });
   altMenu.hidden = true;
   const rowsEl = h("div", { class: "tkey-rows" });
-  const keyboard = h("div", { class: "touch-keyboard", role: "group", "aria-label": "On-screen keyboard" }, rowsEl, popup, altMenu);
+  const keyboard = h("div", { class: options.split ? "touch-keyboard split" : "touch-keyboard", role: "group", "aria-label": "On-screen keyboard" }, rowsEl, popup, altMenu);
   let popupTimer = 0;
 
   const label = (value: string) => (shift && value.length === 1 ? value.toUpperCase() : value);
 
   const render = () => {
     const rows = options.layout[layer].map((row, i) => {
-      const keys = row.map((value) => keyButton(value));
+      const keys: HTMLElement[] = row.map((value) => keyButton(value));
+      // Split rows break at the middle key; the space bar row stays whole.
+      if (options.split && !row.includes("space")) keys.splice(Math.ceil(keys.length / 2), 0, h("span", { class: "split-gap" }));
       return h("div", { class: `tkey-row trow-${i}` }, keys);
     });
     rowsEl.replaceChildren(...rows);

@@ -47,6 +47,7 @@ import { addGripSignal, recordSessionRound, suggestGrip, type FatigueChange } fr
 import { addSample, appendHistory, applyRecords, emptyStat, isLetter } from "./stats";
 import { wpmToMs, type TypingRound } from "./typing";
 import type {
+  ArcadeState,
   Blocklist,
   CharacterData,
   Goal,
@@ -69,7 +70,7 @@ export const DEFAULT_GOAL: Goal = { wpm: 40, accuracy: 0.95 };
 
 export function createProfile(profile: InputProfile, seed: number, order: UnlockOrder = "frequency"): ProfileState {
   return {
-    version: 3,
+    version: 4,
     profile,
     goal: null,
     calibration: "none",
@@ -88,7 +89,12 @@ export function createProfile(profile: InputProfile, seed: number, order: Unlock
     modsUnlocked: [],
     modsMastered: [],
     ...phase3Defaults(),
+    arcade: emptyArcade(),
   };
+}
+
+export function emptyArcade(): ArcadeState {
+  return { scores: {}, ghost: null, nemesis: null, hall: [], games: 0 };
 }
 
 function phase3Defaults() {
@@ -110,7 +116,8 @@ function phase3Defaults() {
 /**
  * Upgrades a saved profile to the current version. 1 → 2 adds difficulty and
  * modifier unlocks; 2 → 3 adds reviews, hesitations, error analysis,
- * sessions, the touch-typing answer and per-grip stats.
+ * sessions, the touch-typing answer and per-grip stats; 3 → 4 adds the arcade
+ * (scores, ghost run, nemesis, hall of defeated).
  */
 export function migrateProfile(saved: Record<string, unknown>): ProfileState {
   let p = { ...saved } as Record<string, unknown>;
@@ -122,6 +129,9 @@ export function migrateProfile(saved: Record<string, unknown>): ProfileState {
   }
   if (p.version === 2) {
     p = { ...p, ...phase3Defaults(), version: 3 };
+  }
+  if (p.version === 3) {
+    p = { ...p, arcade: emptyArcade(), version: 4 };
   }
   return p as unknown as ProfileState;
 }

@@ -18,6 +18,7 @@ import {
 import type { App, Screen, ScreenView } from "../app";
 import { rhythmGraph } from "../components/charts";
 import { heatmap } from "../components/heatmap";
+import { nemesisFace } from "../components/nemesisFace";
 import { topBar } from "../components/topBar";
 import { formatPercent, h } from "../dom";
 import { list, MODIFIER_NAMES } from "../explainText";
@@ -95,6 +96,35 @@ export function resultsScreen(app: App, screen: Screen): ScreenView {
   }
   if (outcome.newlyMasteredMods.length > 0) {
     events.push(callout(`Mastered: ${list(outcome.newlyMasteredMods.map((id) => MODIFIER_NAMES[id].toLowerCase()))}`, "They now show up at the low end of their range."));
+  }
+  const nemesisNews = screen.nemesisChange;
+  if (nemesisNews?.defeated) {
+    const d = nemesisNews.defeated;
+    events.push(
+      h(
+        "div",
+        { class: "callout unlock nemesis-callout", role: "status" },
+        nemesisFace(d, 48, true),
+        h("div", null, h("p", { class: "callout-title" }, `${d.name} is defeated`), h("p", null, `Your ${d.key} reached your goal. See your hall of defeated in Progress.`)),
+      ),
+    );
+  }
+  if (nemesisNews?.chosen) {
+    const c = nemesisNews.chosen;
+    events.push(
+      h(
+        "div",
+        { class: "callout nemesis-callout", role: "status" },
+        nemesisFace(c, 48),
+        h(
+          "div",
+          null,
+          h("p", { class: "callout-title" }, `A nemesis appears: ${c.name}`),
+          h("p", null, `${c.key} is your weakest key. It shows up as a boss in the arcade until you get it to your goal.`),
+          h("div", { class: "actions wrap" }, h("button", { type: "button", class: "button", onclick: () => app.go({ name: "arcade" }) }, "Go to the arcade")),
+        ),
+      ),
+    );
   }
   if (outcome.difficultyChange > 0) {
     events.push(h("p", { class: "fine" }, "You've been at your goal, so rounds just got a little harder: longer and less common words, and a bit more focus on weak spots."));

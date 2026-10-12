@@ -1,7 +1,10 @@
 import { App } from "./app";
 import { aboutScreen } from "./screens/about";
+import { arcadeScreen } from "./screens/arcade";
+import { arcadeGameScreen } from "./screens/arcadeGame";
 import { practiceScreen } from "./screens/practice";
 import { progressScreen } from "./screens/progress";
+import { raceScreen } from "./screens/race";
 import { resultsScreen } from "./screens/results";
 import { sessionScreen } from "./screens/session";
 import { settingsScreen } from "./screens/settings";
@@ -21,4 +24,7 @@ app.register("about", aboutScreen);
 app.register("shortcuts", shortcutsScreen);
 app.register("progress", progressScreen);
 app.register("session", sessionScreen);
+app.register("arcade", arcadeScreen);
+app.register("arcade-game", arcadeGameScreen);
+app.register("race", raceScreen);
 app.home();

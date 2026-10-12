@@ -17,6 +17,7 @@ import {
 } from "../../../engine/src";
 import type { App, Screen, ScreenView } from "../app";
 import { speedHistory } from "../components/charts";
+import { nemesisFace } from "../components/nemesisFace";
 import { topBar } from "../components/topBar";
 import { formatPercent, h } from "../dom";
 import { QWERTY_ROWS } from "../keyboardLayout";
@@ -46,6 +47,7 @@ export function progressScreen(app: App, screen: Screen): ScreenView {
     handsPanel(app, state),
     state.profile === "touch" ? driftPanel(state) : null,
     keysPanel(state),
+    hallPanel(state),
   );
   const back = () => (returnTo ? app.go(returnTo) : app.home());
   const el = h("div", { class: "screen" }, topBar(app, { back, noSettings: true }), main);
@@ -238,5 +240,37 @@ function keysPanel(state: ProfileState): HTMLElement | null {
       ),
     ),
     h("p", { class: "fine" }, `Goal: ${Math.round(goalMs)} ms per key and ${formatPercent(goal.accuracy)} accuracy. Values short of the goal are marked.`),
+  );
+}
+
+/** Nemeses you've beaten, newest first, plus the current one. */
+function hallPanel(state: ProfileState): HTMLElement | null {
+  const { hall, nemesis } = state.arcade;
+  if (!hall.length && !nemesis) return null;
+  return h(
+    "section",
+    { class: "panel hall" },
+    h("h2", null, "Hall of defeated"),
+    h(
+      "p",
+      { class: "panel-lead" },
+      nemesis ? `Still at large: ${nemesis.name}. ` : "",
+      hall.length ? `${hall.length} ${hall.length === 1 ? "nemesis" : "nemeses"} defeated by getting their key to your goal.` : "None defeated yet. Get your nemesis's key to your goal to beat it.",
+    ),
+    hall.length
+      ? h(
+          "ul",
+          { class: "hall-list" },
+          [...hall].reverse().map((d) =>
+            h(
+              "li",
+              null,
+              nemesisFace(d, 56, true),
+              h("span", { class: "hall-name" }, d.name),
+              h("span", { class: "fine" }, `Defeated ${new Date(d.defeatedAt).toLocaleDateString()}`),
+            ),
+          ),
+        )
+      : null,
   );
 }
