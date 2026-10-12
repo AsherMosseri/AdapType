@@ -1028,7 +1028,7 @@ and the word pack's id and version:
 5. Capitalize each sentence's first letter, end it with "." (replacing a
    trailing comma), and join everything with spaces.
 
-Word marks: per word typed, `g` when every first attempt was right, `y`
+Word marks: per word typed (counting the space after it), `g` when every first attempt was right, `y`
 when a first attempt was wrong but the word ended right, `r` when it ended
 wrong. A daily attempt applies its records to stats (full weight), error
 analysis and key days, not to unlocks, difficulty, rounds or sessions. Only

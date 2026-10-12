@@ -12,6 +12,9 @@ import {
   type RoundType,
   type RoundWord,
   type TypingEvent,
+  makeReplay,
+  saveReplay,
+  updateCreatures,
   updateNemesis,
 } from "../../../engine/src";
 import { TypingRound } from "../../../engine/src/typing";
@@ -24,6 +27,7 @@ import { blocklist, characters, nemesisContent, pack } from "../content";
 import { formatPercent, h } from "../dom";
 import { list, roundBanner } from "../explainText";
 import { attachPhysicalInput } from "../physicalInput";
+import { localDate } from "./daily";
 import { currentTouchLayout, physicalHint, platformFor, touchHint } from "../platform";
 
 const CHUNK = 30;
@@ -70,6 +74,8 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
   const wordTotal = roundType.kind === "words" ? roundType.count : 0;
 
   let startedAt: number | null = null;
+  /** Every keystroke, for the replay. */
+  const inputEvents: TypingEvent[] = [];
   let finished = false;
   let ticker = 0;
 
@@ -96,6 +102,10 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
     roundType.kind === "endless" ? "Finish" : "End round",
     touch ? null : h("kbd", null, "Esc"),
   );
+  const dailyButton =
+    !calibrationTest && !silent && !state.daily[localDate()]
+      ? h("button", { type: "button", class: "text-button", onclick: () => app.go({ name: "daily" }) }, "Daily challenge")
+      : null;
   const shortcutsOn = !touch && !calibrationTest && !silent && isOn("shortcuts", state, settings.modifiers);
   const drillButton = shortcutsOn
     ? h("button", { type: "button", class: "text-button", onclick: () => app.go({ name: "shortcuts" }) }, "Shortcut drill")
@@ -199,7 +209,7 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
       : null,
     srText,
     physical?.el,
-    h("div", { class: "practice-foot" }, stats, h("div", { class: "foot-actions" }, drillButton, endButton)),
+    h("div", { class: "practice-foot" }, stats, h("div", { class: "foot-actions" }, dailyButton, drillButton, endButton)),
   );
   const el = h(
     "div",
@@ -280,6 +290,7 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
       ticker = window.setInterval(tick, 250);
     }
     round.input(event);
+    inputEvents.push({ kind: event.kind, char: event.char, t: event.t });
     view.update(round);
     refreshHint();
     if (settings.livePulse) refreshPulse();
@@ -312,9 +323,12 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
     const metrics = round.metrics();
     const outcome = completeRound(state, round, Date.now(), { calibrationTest, chars: characters, pack, warmup });
     const nemesisChange = calibrationTest || silent ? null : updateNemesis(state, Date.now(), nemesisContent);
+    const creatureChanges = updateCreatures(state, Date.now(), characters);
+    const keepReplay = !calibrationTest && !silent && inputEvents.length >= 2;
+    const replayRank = keepReplay ? saveReplay(state, makeReplay(round.target, settings.errorMode, inputEvents, Date.now(), "practice")) : null;
     app.persist();
     if (calibrationTest) app.go({ name: "goal", measuredWpm: metrics.wpm, from: "test" });
-    else app.go({ name: "results", outcome, metrics, calibrationTest, explanation: plan.explanation, warmup, records: round.records, nemesisChange });
+    else app.go({ name: "results", outcome, metrics, calibrationTest, explanation: plan.explanation, warmup, records: round.records, nemesisChange, creatureChanges, replayRank, replay: keepReplay });
   }
 
   const onResize = () => view.scroll();

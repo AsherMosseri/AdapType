@@ -75,7 +75,7 @@ export function dailyText(date: string, pack: WordPack, blocklist: Blocklist): s
     .join(" ");
 }
 
-/** One letter per word typed: g clean, y wrong first but fixed, r still wrong at the end. */
+/** One letter per word typed (its trailing space included): g clean, y wrong first but fixed, r still wrong at the end. */
 export function wordMarks(round: TypingRound): string {
   const firstWrong = new Set<number>();
   for (const r of round.records) if (r.first && !r.correct) firstWrong.add(r.index);
@@ -86,7 +86,8 @@ export function wordMarks(round: TypingRound): string {
     if (i < round.target.length && round.target[i] !== " ") continue;
     if (start < end) {
       let mark = "g";
-      for (let j = start; j < i && j < end; j++) {
+      // The space after a word belongs to it, so a slip there marks the word.
+      for (let j = start; j <= i && j < end && j < round.target.length; j++) {
         if (!round.isCorrectAt(j)) mark = "r";
         else if (firstWrong.has(j) && mark === "g") mark = "y";
       }

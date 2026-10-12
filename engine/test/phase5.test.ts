@@ -127,6 +127,16 @@ describe("daily challenge", () => {
     const state = createProfile("physical", 6);
     const { round } = typed("Go on.");
     expect(wordMarks(round)).toBe("gg");
+    const slip = new TypingRound("go on", "backspace");
+    for (const e of [
+      { kind: "char", char: "g", t: 0 },
+      { kind: "char", char: "o", t: 1 },
+      { kind: "char", char: "x", t: 2 },
+      { kind: "backspace", t: 3 },
+      { kind: "char", char: " ", t: 4 },
+      { kind: "char", char: "o", t: 5 },
+    ] as TypingEvent[]) slip.input(e);
+    expect(wordMarks(slip)).toBe("yg");
     expect(completeDaily(state, "2026-10-11", round, 1).scored).toBe(true);
     expect(completeDaily(state, "2026-10-11", round, 2).scored).toBe(false);
     expect(completeDaily(state, "2026-10-12", round, 3).streak).toBe(2);

@@ -1,5 +1,7 @@
-import type { KeystrokeRecord, NemesisChange, ProfileState, RoundExplanation, RoundOutcome } from "../../engine/src";
+import type { CreatureChange, KeystrokeRecord, NemesisChange, ProfileState, RoundExplanation, RoundOutcome } from "../../engine/src";
 import type { RoundMetrics } from "../../engine/src/typing";
+import { updateCreatures } from "../../engine/src";
+import { characters } from "./content";
 import { defaultData, detectProfile, load, newProfile, save, type AppData } from "./store";
 
 export type Screen =
@@ -7,13 +9,18 @@ export type Screen =
   | { name: "calibration" }
   | { name: "goal"; measuredWpm?: number; from: "test" | "skip" }
   | { name: "practice"; skipWarmup?: boolean }
-  | { name: "results"; outcome: RoundOutcome; metrics: RoundMetrics; calibrationTest: boolean; explanation?: RoundExplanation | null; warmup?: boolean; records?: KeystrokeRecord[]; nemesisChange?: NemesisChange | null }
+  | { name: "results"; outcome: RoundOutcome; metrics: RoundMetrics; calibrationTest: boolean; explanation?: RoundExplanation | null; warmup?: boolean; records?: KeystrokeRecord[]; nemesisChange?: NemesisChange | null; creatureChanges?: CreatureChange[]; replayRank?: number | null; replay?: boolean }
   | { name: "shortcuts" }
   | { name: "progress"; returnTo?: Screen }
   | { name: "session" }
   | { name: "arcade" }
   | { name: "arcade-game"; mode: "falling" | "survival" }
   | { name: "race"; kind: "ghost" | "rival"; newText?: boolean }
+  | { name: "collection"; returnTo?: Screen }
+  | { name: "replays"; returnTo?: Screen }
+  | { name: "replay"; list: "recent" | "best"; index: number; returnTo?: Screen }
+  | { name: "daily" }
+  | { name: "card"; returnTo?: Screen }
   | { name: "settings"; returnTo?: Screen }
   | { name: "about"; returnTo?: Screen };
 
@@ -40,6 +47,8 @@ export class App {
   constructor(root: HTMLElement) {
     this.root = root;
     this.data = load() ?? defaultData(detectProfile());
+    // Creatures follow stats; catch them up quietly (saved data from before phase 5 has none yet).
+    for (const p of Object.values(this.data.profiles)) if (p) updateCreatures(p, Date.now(), characters);
   }
 
   register(name: Screen["name"], renderer: ScreenRenderer): void {
