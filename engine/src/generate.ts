@@ -7,12 +7,11 @@ import {
   MADE_UP_MAX_LENGTH,
   MADE_UP_MIN_LENGTH,
   MAX_MADE_UP_SHARE,
-  MAX_POOL,
   MAX_WORD_LENGTH,
   MIN_WORD_LENGTH,
-  RANK_SCALE,
   VOWELS,
 } from "./constants";
+import { difficultyParams, type DifficultyParams } from "./difficulty";
 import type { Rng } from "./rng";
 import type { Scores } from "./scoring";
 import type { Blocklist, RoundWord, WordPack } from "./types";
@@ -23,15 +22,19 @@ export interface PoolWord {
 }
 
 /**
- * Real words that use only the given letters, most common first, capped at
- * MAX_POOL.
+ * Real words that use only the given letters, most common first, between
+ * MIN_WORD_LENGTH and maxLength letters, capped at poolCap words.
  */
-export function wordPool(pack: WordPack, letters: readonly string[]): PoolWord[] {
+export function wordPool(
+  pack: WordPack,
+  letters: readonly string[],
+  params: Pick<DifficultyParams, "maxLength" | "poolCap"> = difficultyParams(0.3),
+): PoolWord[] {
   const allowed = new Set(letters);
   const pool: PoolWord[] = [];
-  for (let rank = 0; rank < pack.words.length && pool.length < MAX_POOL; rank++) {
+  for (let rank = 0; rank < pack.words.length && pool.length < params.poolCap; rank++) {
     const word = pack.words[rank];
-    if (word.length < MIN_WORD_LENGTH || word.length > MAX_WORD_LENGTH) continue;
+    if (word.length < MIN_WORD_LENGTH || word.length > params.maxLength) continue;
     let ok = true;
     for (const ch of word) {
       if (!allowed.has(ch)) {
@@ -45,18 +48,22 @@ export function wordPool(pack: WordPack, letters: readonly string[]): PoolWord[]
 }
 
 /**
- * A word's weight: (base + average letter score + average pair score),
- * scaled down for rarer words.
+ * A word's weight: (base + intensity x (average letter score + average pair
+ * score)), scaled down for rarer words by 1 / (1 + rank / rankScale).
  */
-export function wordWeight(word: PoolWord, scores: Scores): number {
+export function wordWeight(
+  word: PoolWord,
+  scores: Scores,
+  params: Pick<DifficultyParams, "rankScale" | "intensity"> = difficultyParams(0.3),
+): number {
   const text = word.text;
   let letterSum = 0;
   for (const ch of text) letterSum += scores.keys[ch] ?? 0;
   let pairSum = 0;
   for (let i = 1; i < text.length; i++) pairSum += scores.pairs[text[i - 1] + text[i]] ?? 0;
   const pairAvg = text.length > 1 ? pairSum / (text.length - 1) : 0;
-  const raw = BASE_WORD_WEIGHT + letterSum / text.length + pairAvg;
-  return raw / (1 + word.rank / RANK_SCALE);
+  const raw = BASE_WORD_WEIGHT + params.intensity * (letterSum / text.length + pairAvg);
+  return raw / (1 + word.rank / params.rankScale);
 }
 
 /** Share of a round that's made-up words, given how many real words fit. */
@@ -74,6 +81,8 @@ export interface GenerateOptions {
   rng: Rng;
   /** Last word of the previous chunk, so the first new word doesn't repeat it. */
   previous?: string;
+  /** Difficulty settings (defaults to difficulty 0.3). */
+  params?: DifficultyParams;
 }
 
 /**
@@ -84,9 +93,10 @@ export interface GenerateOptions {
  */
 export function generateWords(options: GenerateOptions): RoundWord[] {
   const { pack, blocklist, letters, scores, count, rng } = options;
-  const pool = wordPool(pack, letters);
+  const params = options.params ?? difficultyParams(0.3);
+  const pool = wordPool(pack, letters, params);
   const share = madeUpShare(pool.length);
-  const weights = pool.map((w) => wordWeight(w, scores));
+  const weights = pool.map((w) => wordWeight(w, scores, params));
   const used = new Set<number>();
   const words: RoundWord[] = [];
   let previous = options.previous ?? "";

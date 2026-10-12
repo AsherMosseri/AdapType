@@ -1,0 +1,395 @@
+{
+ "about": "Characters typed with Option (Mac), AltGr (Windows US-International, Linux) or Alt codes (Windows US). Hints may vary by keyboard layout. 'place' says how the modifier inserts the character into text; wrap characters pair with » ’ ” respectively.",
+ "punctuation": [
+  ".",
+  ",",
+  "!",
+  "?",
+  ";",
+  ":",
+  "'",
+  "\"",
+  "-"
+ ],
+ "symbols": [
+  "@",
+  "#",
+  "$",
+  "%",
+  "&",
+  "*",
+  "(",
+  ")",
+  "[",
+  "]",
+  "{",
+  "}",
+  "<",
+  ">",
+  "/",
+  "\\",
+  "|",
+  "_",
+  "+",
+  "=",
+  "~",
+  "^"
+ ],
+ "accents": {
+  "à": {
+   "mac": "⌥` then a",
+   "windowsIntl": "` then a",
+   "altCode": "0224"
+  },
+  "â": {
+   "mac": "⌥i then a",
+   "windowsIntl": "^ then a",
+   "altCode": "0226"
+  },
+  "ä": {
+   "mac": "⌥u then a",
+   "windowsIntl": "\" then a",
+   "altCode": "0228"
+  },
+  "å": {
+   "mac": "⌥a",
+   "windowsIntl": "AltGr+w",
+   "altCode": "0229"
+  },
+  "ç": {
+   "mac": "⌥c",
+   "windowsIntl": "AltGr+,",
+   "altCode": "0231"
+  },
+  "è": {
+   "mac": "⌥` then e",
+   "windowsIntl": "` then e",
+   "altCode": "0232"
+  },
+  "é": {
+   "mac": "⌥e then e",
+   "windowsIntl": "' then e",
+   "altCode": "0233"
+  },
+  "ê": {
+   "mac": "⌥i then e",
+   "windowsIntl": "^ then e",
+   "altCode": "0234"
+  },
+  "î": {
+   "mac": "⌥i then i",
+   "windowsIntl": "^ then i",
+   "altCode": "0238"
+  },
+  "ï": {
+   "mac": "⌥u then i",
+   "windowsIntl": "\" then i",
+   "altCode": "0239"
+  },
+  "ñ": {
+   "mac": "⌥n then n",
+   "windowsIntl": "~ then n",
+   "altCode": "0241"
+  },
+  "ö": {
+   "mac": "⌥u then o",
+   "windowsIntl": "\" then o",
+   "altCode": "0246"
+  },
+  "û": {
+   "mac": "⌥i then u",
+   "windowsIntl": "^ then u",
+   "altCode": "0251"
+  },
+  "ü": {
+   "mac": "⌥u then u",
+   "windowsIntl": "\" then u",
+   "altCode": "0252"
+  }
+ },
+ "extra": {
+  "—": {
+   "place": "between",
+   "curated": 1,
+   "name": "em dash",
+   "mac": "⌥⇧-",
+   "altCode": "0151"
+  },
+  "–": {
+   "place": "range",
+   "curated": 1,
+   "name": "en dash",
+   "mac": "⌥-",
+   "altCode": "0150"
+  },
+  "…": {
+   "place": "suffix",
+   "curated": 1,
+   "name": "ellipsis",
+   "mac": "⌥;",
+   "altCode": "0133"
+  },
+  "•": {
+   "place": "alone",
+   "curated": 1,
+   "name": "bullet",
+   "mac": "⌥8",
+   "altCode": "0149"
+  },
+  "©": {
+   "place": "prefix",
+   "curated": 1,
+   "name": "copyright",
+   "mac": "⌥g",
+   "windowsIntl": "AltGr+c",
+   "altCode": "0169"
+  },
+  "™": {
+   "place": "suffix",
+   "curated": 1,
+   "name": "trademark",
+   "mac": "⌥2",
+   "altCode": "0153"
+  },
+  "®": {
+   "place": "suffix",
+   "curated": 1,
+   "name": "registered",
+   "mac": "⌥r",
+   "windowsIntl": "AltGr+r",
+   "altCode": "0174"
+  },
+  "°": {
+   "place": "number-after",
+   "curated": 1,
+   "name": "degree",
+   "mac": "⌥⇧8",
+   "windowsIntl": "AltGr+⇧;",
+   "altCode": "0176"
+  },
+  "±": {
+   "place": "number-before",
+   "curated": 1,
+   "name": "plus-minus",
+   "mac": "⌥⇧=",
+   "altCode": "0177"
+  },
+  "≠": {
+   "place": "compare",
+   "curated": 1,
+   "name": "not equal",
+   "mac": "⌥="
+  },
+  "≤": {
+   "place": "compare",
+   "curated": 1,
+   "name": "less or equal",
+   "mac": "⌥,"
+  },
+  "≥": {
+   "place": "compare",
+   "curated": 1,
+   "name": "greater or equal",
+   "mac": "⌥."
+  },
+  "×": {
+   "place": "compare",
+   "curated": 1,
+   "name": "multiply",
+   "windowsIntl": "AltGr+=",
+   "altCode": "0215"
+  },
+  "÷": {
+   "place": "compare",
+   "curated": 1,
+   "name": "divide",
+   "mac": "⌥/",
+   "windowsIntl": "AltGr+⇧=",
+   "altCode": "0247"
+  },
+  "€": {
+   "place": "number-before",
+   "curated": 1,
+   "name": "euro",
+   "mac": "⌥⇧2",
+   "windowsIntl": "AltGr+5",
+   "altCode": "0128"
+  },
+  "£": {
+   "place": "number-before",
+   "curated": 1,
+   "name": "pound",
+   "mac": "⌥3",
+   "windowsIntl": "AltGr+⇧4",
+   "altCode": "0163"
+  },
+  "¢": {
+   "place": "number-after",
+   "curated": 1,
+   "name": "cent",
+   "mac": "⌥4",
+   "windowsIntl": "AltGr+⇧c",
+   "altCode": "0162"
+  },
+  "¥": {
+   "place": "number-before",
+   "curated": 1,
+   "name": "yen",
+   "mac": "⌥y",
+   "windowsIntl": "AltGr+-",
+   "altCode": "0165"
+  },
+  "§": {
+   "place": "number-before",
+   "curated": 1,
+   "name": "section",
+   "mac": "⌥6",
+   "windowsIntl": "AltGr+⇧s",
+   "altCode": "0167"
+  },
+  "¶": {
+   "place": "alone",
+   "curated": 1,
+   "name": "pilcrow",
+   "mac": "⌥7",
+   "windowsIntl": "AltGr+;",
+   "altCode": "0182"
+  },
+  "¿": {
+   "place": "question",
+   "curated": 1,
+   "name": "inverted question",
+   "mac": "⌥⇧/",
+   "windowsIntl": "AltGr+/",
+   "altCode": "0191"
+  },
+  "¡": {
+   "place": "exclaim",
+   "curated": 1,
+   "name": "inverted exclamation",
+   "mac": "⌥1",
+   "windowsIntl": "AltGr+1",
+   "altCode": "0161"
+  },
+  "∞": {
+   "place": "alone",
+   "curated": 0,
+   "name": "infinity",
+   "mac": "⌥5"
+  },
+  "µ": {
+   "place": "number-after",
+   "curated": 0,
+   "name": "micro",
+   "mac": "⌥m",
+   "windowsIntl": "AltGr+m",
+   "altCode": "0181"
+  },
+  "¬": {
+   "place": "prefix",
+   "curated": 0,
+   "name": "not",
+   "mac": "⌥l",
+   "windowsIntl": "AltGr+\\",
+   "altCode": "0172"
+  },
+  "≈": {
+   "place": "number-before",
+   "curated": 0,
+   "name": "approximately",
+   "mac": "⌥x"
+  },
+  "√": {
+   "place": "number-before",
+   "curated": 0,
+   "name": "square root",
+   "mac": "⌥v"
+  },
+  "π": {
+   "place": "alone",
+   "curated": 0,
+   "name": "pi",
+   "mac": "⌥p"
+  },
+  "∆": {
+   "place": "prefix",
+   "curated": 0,
+   "name": "delta",
+   "mac": "⌥j"
+  },
+  "Ω": {
+   "place": "number-after",
+   "curated": 0,
+   "name": "ohm",
+   "mac": "⌥z"
+  },
+  "∑": {
+   "place": "prefix",
+   "curated": 0,
+   "name": "sum",
+   "mac": "⌥w"
+  },
+  "†": {
+   "place": "suffix",
+   "curated": 0,
+   "name": "dagger",
+   "mac": "⌥t",
+   "altCode": "0134"
+  },
+  "‡": {
+   "place": "suffix",
+   "curated": 0,
+   "name": "double dagger",
+   "mac": "⌥⇧7",
+   "altCode": "0135"
+  },
+  "«": {
+   "place": "wrap",
+   "curated": 0,
+   "name": "left guillemet",
+   "mac": "⌥\\",
+   "windowsIntl": "AltGr+[",
+   "altCode": "0171",
+   "close": "»",
+   "closeMac": "⌥⇧\\",
+   "closeWindowsIntl": "AltGr+]",
+   "closeAltCode": "0187"
+  },
+  "‰": {
+   "place": "number-after",
+   "curated": 0,
+   "name": "per mille",
+   "mac": "⌥⇧r",
+   "altCode": "0137"
+  },
+  "º": {
+   "place": "number-after",
+   "curated": 0,
+   "name": "ordinal",
+   "mac": "⌥0",
+   "altCode": "0186"
+  },
+  "‘": {
+   "place": "wrap",
+   "curated": 0,
+   "name": "left single quote",
+   "mac": "⌥]",
+   "windowsIntl": "AltGr+9",
+   "altCode": "0145",
+   "close": "’",
+   "closeMac": "⌥⇧]",
+   "closeWindowsIntl": "AltGr+0",
+   "closeAltCode": "0146"
+  },
+  "“": {
+   "place": "wrap",
+   "curated": 0,
+   "name": "left double quote",
+   "mac": "⌥[",
+   "altCode": "0147",
+   "close": "”",
+   "closeMac": "⌥⇧[",
+   "closeAltCode": "0148"
+  }
+ }
+}

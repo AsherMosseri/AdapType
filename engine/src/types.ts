@@ -30,6 +30,10 @@ export interface TypingEvent {
   t: number;
   /** Touch only: where the tap landed on the key. */
   tap?: TapPoint;
+  /** Physical only: which Shift key was held, if any. */
+  shift?: "left" | "right";
+  /** Touch only: true if the character needed a switch to the number or symbol layer. */
+  layer?: boolean;
 }
 
 export interface KeystrokeRecord {
@@ -48,6 +52,8 @@ export interface KeystrokeRecord {
    */
   interval: number | null;
   tap?: TapPoint;
+  shift?: "left" | "right";
+  layer?: boolean;
 }
 
 /** Running statistics for one key or one letter pair. */
@@ -89,8 +95,51 @@ export type CalibrationStatus =
   /** Skipped the test: the first rounds use all letters and calibrate silently. */
   | "silent";
 
+export type ModifierId = "caps" | "punct" | "numbers" | "symbols" | "accents" | "extra";
+/** Everything that unlocks after the letters: the modifiers plus the shortcut drill. */
+export type UnlockableId = ModifierId | "shortcuts";
+/** Frequency level: a range of the share of words that get the modifier. */
+export type ModifierLevel = "low" | "medium" | "high" | "auto";
+/** unlock: on once unlocked. on: on now (unlocked early). off: never. */
+export type ModifierMode = "unlock" | "on" | "off";
+
+export interface ModifierSettings {
+  modes: Record<UnlockableId, ModifierMode>;
+  levels: Record<ModifierId, ModifierLevel>;
+  /** first: capitalize first letters. any: capitalize a random letter. */
+  caps: "first" | "any";
+  /** sentence: sentences with capitals and periods. random: any punctuation on any word. */
+  punct: "sentence" | "random";
+}
+
+/** Which special characters the player's device can type. */
+export interface Platform {
+  /** Extra characters available (already filtered for the OS or touch layout and the curated/full setting). */
+  extra: readonly string[];
+  /** Whether accented letters can be typed. */
+  accents: boolean;
+}
+
+export interface ExtraChar {
+  place: string;
+  curated: number;
+  name: string;
+  close?: string;
+  mac?: string;
+  windowsIntl?: string;
+  altCode?: string;
+}
+
+export interface CharacterData {
+  punctuation: readonly string[];
+  symbols: readonly string[];
+  accents: Record<string, { mac?: string; windowsIntl?: string; altCode?: string }>;
+  extra: Record<string, ExtraChar>;
+  loanwords: readonly string[];
+}
+
 export interface ProfileState {
-  version: 1;
+  version: 2;
   profile: InputProfile;
   goal: Goal | null;
   calibration: CalibrationStatus;
@@ -108,6 +157,12 @@ export interface ProfileState {
   seed: number;
   /** Touch only: recent tap positions per key. */
   taps: Record<string, TapPoint[]>;
+  /** 0..1. Rises when you're at your goal, falls when you're struggling. */
+  difficulty: number;
+  /** Modifiers and the shortcut drill unlocked so far, in order. */
+  modsUnlocked: UnlockableId[];
+  /** Modifiers that have reached mastery. */
+  modsMastered: ModifierId[];
 }
 
 export interface RoundWord {

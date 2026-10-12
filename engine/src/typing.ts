@@ -76,6 +76,8 @@ export class TypingRound {
     }
     const record: KeystrokeRecord = { index, expected, actual, t: event.t, correct, first, interval };
     if (event.tap) record.tap = event.tap;
+    if (event.shift) record.shift = event.shift;
+    if (event.layer) record.layer = true;
     this.records.push(record);
     this.attempted.add(index);
     if (first && !correct) this.firstWrong.add(index);

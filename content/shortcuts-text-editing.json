@@ -1,0 +1,399 @@
+{
+ "id": "text-editing",
+ "name": "Text editing",
+ "about": "Shortcuts that work in almost any text field. 'mac' applies to macOS; 'other' to Windows and Linux. Modifier names: meta (Cmd), ctrl, alt (Option on Mac), shift.",
+ "shortcuts": [
+  {
+   "id": "copy",
+   "action": "Copy",
+   "group": "Editing",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "c"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "c"
+   }
+  },
+  {
+   "id": "cut",
+   "action": "Cut",
+   "group": "Editing",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "x"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "x"
+   }
+  },
+  {
+   "id": "paste",
+   "action": "Paste",
+   "group": "Editing",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "v"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "v"
+   }
+  },
+  {
+   "id": "undo",
+   "action": "Undo",
+   "group": "Editing",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "z"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "z"
+   }
+  },
+  {
+   "id": "redo",
+   "action": "Redo",
+   "group": "Editing",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "z"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "y"
+   }
+  },
+  {
+   "id": "select-all",
+   "action": "Select all",
+   "group": "Editing",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "a"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "a"
+   }
+  },
+  {
+   "id": "delete-word",
+   "action": "Delete the previous word",
+   "group": "Editing",
+   "mac": {
+    "mods": [
+     "alt"
+    ],
+    "key": "Backspace"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "Backspace"
+   }
+  },
+  {
+   "id": "bold",
+   "action": "Bold",
+   "group": "Formatting",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "b"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "b"
+   }
+  },
+  {
+   "id": "italic",
+   "action": "Italic",
+   "group": "Formatting",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "i"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "i"
+   }
+  },
+  {
+   "id": "underline",
+   "action": "Underline",
+   "group": "Formatting",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "u"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "u"
+   }
+  },
+  {
+   "id": "find",
+   "action": "Find",
+   "group": "Find and save",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "f"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "f"
+   }
+  },
+  {
+   "id": "find-next",
+   "action": "Find next",
+   "group": "Find and save",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "g"
+   },
+   "other": {
+    "mods": [],
+    "key": "F3"
+   }
+  },
+  {
+   "id": "save",
+   "action": "Save",
+   "group": "Find and save",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "s"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "s"
+   }
+  },
+  {
+   "id": "word-left",
+   "action": "Move one word left",
+   "group": "Navigation",
+   "mac": {
+    "mods": [
+     "alt"
+    ],
+    "key": "ArrowLeft"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "ArrowLeft"
+   }
+  },
+  {
+   "id": "word-right",
+   "action": "Move one word right",
+   "group": "Navigation",
+   "mac": {
+    "mods": [
+     "alt"
+    ],
+    "key": "ArrowRight"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "ArrowRight"
+   }
+  },
+  {
+   "id": "line-start",
+   "action": "Go to start of line",
+   "group": "Navigation",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "ArrowLeft"
+   },
+   "other": {
+    "mods": [],
+    "key": "Home"
+   }
+  },
+  {
+   "id": "line-end",
+   "action": "Go to end of line",
+   "group": "Navigation",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "ArrowRight"
+   },
+   "other": {
+    "mods": [],
+    "key": "End"
+   }
+  },
+  {
+   "id": "doc-start",
+   "action": "Go to start of document",
+   "group": "Navigation",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "ArrowUp"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "Home"
+   }
+  },
+  {
+   "id": "doc-end",
+   "action": "Go to end of document",
+   "group": "Navigation",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "ArrowDown"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "End"
+   }
+  },
+  {
+   "id": "select-word-left",
+   "action": "Select one word left",
+   "group": "Selection",
+   "mac": {
+    "mods": [
+     "alt",
+     "shift"
+    ],
+    "key": "ArrowLeft"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "ArrowLeft"
+   }
+  },
+  {
+   "id": "select-word-right",
+   "action": "Select one word right",
+   "group": "Selection",
+   "mac": {
+    "mods": [
+     "alt",
+     "shift"
+    ],
+    "key": "ArrowRight"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "ArrowRight"
+   }
+  },
+  {
+   "id": "select-line-start",
+   "action": "Select to start of line",
+   "group": "Selection",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "ArrowLeft"
+   },
+   "other": {
+    "mods": [
+     "shift"
+    ],
+    "key": "Home"
+   }
+  },
+  {
+   "id": "select-line-end",
+   "action": "Select to end of line",
+   "group": "Selection",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "ArrowRight"
+   },
+   "other": {
+    "mods": [
+     "shift"
+    ],
+    "key": "End"
+   }
+  }
+ ]
+}

@@ -1,4 +1,4 @@
-import type { ProfileState, RoundOutcome } from "../../engine/src";
+import type { ProfileState, RoundExplanation, RoundOutcome } from "../../engine/src";
 import type { RoundMetrics } from "../../engine/src/typing";
 import { defaultData, detectProfile, load, newProfile, save, type AppData } from "./store";
 
@@ -7,7 +7,8 @@ export type Screen =
   | { name: "calibration" }
   | { name: "goal"; measuredWpm?: number; from: "test" | "skip" }
   | { name: "practice" }
-  | { name: "results"; outcome: RoundOutcome; metrics: RoundMetrics; calibrationTest: boolean }
+  | { name: "results"; outcome: RoundOutcome; metrics: RoundMetrics; calibrationTest: boolean; explanation?: RoundExplanation | null }
+  | { name: "shortcuts" }
   | { name: "settings"; returnTo?: Screen }
   | { name: "about"; returnTo?: Screen };
 

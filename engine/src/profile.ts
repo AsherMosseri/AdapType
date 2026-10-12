@@ -1,5 +1,7 @@
 import {
+  DIFFICULTY_START,
   MASTERY_MIN_SAMPLES,
+  MODIFIER_STAGES,
   MASTERY_ROUNDS,
   MAX_ROUNDS_KEPT,
   MAX_TAPS_PER_KEY,
@@ -10,19 +12,35 @@ import {
   TEST_OUT_MIN_TIMED,
   UNLOCK_ORDERS,
 } from "./constants";
-import { calibrationWords, generateWords } from "./generate";
+import { difficultyParams, updateDifficulty } from "./difficulty";
+import { explainRound, type RoundExplanation } from "./explain";
+import { calibrationWords, generateWords, wordPool } from "./generate";
+import {
+  activeModifiers,
+  applyModifiers,
+  capRates,
+  modifierGoal,
+  modifierMastered,
+  modifierRate,
+  modKey,
+} from "./modifiers";
 import { deriveSeed, Rng } from "./rng";
-import { computeScores } from "./scoring";
+import { computeScores, weakness } from "./scoring";
 import { appendHistory, applyRecords, isLetter } from "./stats";
 import { wpmToMs, type TypingRound } from "./typing";
 import type {
   Blocklist,
+  CharacterData,
   Goal,
   InputProfile,
   KeyRoundEntry,
+  ModifierId,
+  ModifierSettings,
+  Platform,
   ProfileState,
   RoundSummary,
   RoundWord,
+  UnlockableId,
   UnlockOrder,
   WordPack,
 } from "./types";
@@ -32,7 +50,7 @@ export const DEFAULT_GOAL: Goal = { wpm: 40, accuracy: 0.95 };
 
 export function createProfile(profile: InputProfile, seed: number, order: UnlockOrder = "frequency"): ProfileState {
   return {
-    version: 1,
+    version: 2,
     profile,
     goal: null,
     calibration: "none",
@@ -47,7 +65,22 @@ export function createProfile(profile: InputProfile, seed: number, order: Unlock
     roundCounter: 0,
     seed: seed >>> 0,
     taps: {},
+    difficulty: DIFFICULTY_START,
+    modsUnlocked: [],
+    modsMastered: [],
   };
+}
+
+/** Upgrades a saved profile to the current version (1 → 2 adds difficulty and modifier unlocks). */
+export function migrateProfile(saved: Record<string, unknown>): ProfileState {
+  const p = { ...saved } as Record<string, unknown>;
+  if (p.version === 1) {
+    p.difficulty = DIFFICULTY_START;
+    p.modsUnlocked = [];
+    p.modsMastered = [];
+    p.version = 2;
+  }
+  return p as unknown as ProfileState;
 }
 
 /** Whether a letter meets the mastery bar over its recent rounds. */
@@ -100,11 +133,25 @@ export function nextLetter(state: ProfileState): string | null {
 export interface UnlockResult {
   newlyMastered: string[];
   newlyUnlocked: string | null;
+  newlyMasteredMods: ModifierId[];
+  newlyUnlockedMods: UnlockableId[];
+}
+
+/** The next stage of modifiers to unlock, or null when all are unlocked. */
+export function nextModifierStage(state: ProfileState): readonly UnlockableId[] | null {
+  for (const stage of MODIFIER_STAGES) {
+    if (stage.some((id) => !state.modsUnlocked.includes(id))) return stage;
+  }
+  return null;
 }
 
 /**
  * Marks letters that meet mastery as mastered, then unlocks the next letter
  * if every unlocked letter is mastered. At most one letter unlocks per call.
+ * Once all 26 letters are unlocked and mastered, the same happens for
+ * modifiers: unlocked modifiers whose running stats meet modifier mastery are
+ * marked mastered, and when every unlocked modifier is mastered the next
+ * stage unlocks.
  */
 export function updateUnlocks(state: ProfileState): UnlockResult {
   const goal = state.goal ?? DEFAULT_GOAL;
@@ -116,11 +163,33 @@ export function updateUnlocks(state: ProfileState): UnlockResult {
     }
   }
   let newlyUnlocked: string | null = null;
-  if (state.calibration !== "silent" && state.unlocked.every((l) => state.mastered.includes(l))) {
+  const newlyMasteredMods: ModifierId[] = [];
+  const newlyUnlockedMods: UnlockableId[] = [];
+  const lettersDone = state.unlocked.every((l) => state.mastered.includes(l));
+  if (state.calibration !== "silent" && lettersDone) {
     newlyUnlocked = nextLetter(state);
     if (newlyUnlocked) state.unlocked.push(newlyUnlocked);
   }
-  return { newlyMastered, newlyUnlocked };
+  if (state.calibration !== "silent" && lettersDone && !newlyUnlocked && nextLetter(state) === null) {
+    for (const id of state.modsUnlocked) {
+      if (id === "shortcuts" || state.modsMastered.includes(id)) continue;
+      if (modifierMastered(state.keys[modKey(id)], goal)) {
+        state.modsMastered.push(id);
+        newlyMasteredMods.push(id);
+      }
+    }
+    const allMastered = state.modsUnlocked.every((id) => id === "shortcuts" || state.modsMastered.includes(id));
+    const stage = nextModifierStage(state);
+    if (allMastered && stage) {
+      for (const id of stage) {
+        if (!state.modsUnlocked.includes(id)) {
+          state.modsUnlocked.push(id);
+          newlyUnlockedMods.push(id);
+        }
+      }
+    }
+  }
+  return { newlyMastered, newlyUnlocked, newlyMasteredMods, newlyUnlockedMods };
 }
 
 /** Whether calibration data shows a letter is already at goal. */
@@ -175,6 +244,12 @@ export function skipCalibration(state: ProfileState): void {
   state.silentRoundsLeft = SILENT_CALIBRATION_ROUNDS;
 }
 
+export interface ModifierOptions {
+  settings: ModifierSettings;
+  chars: CharacterData;
+  platform: Platform;
+}
+
 export interface PlanOptions {
   pack: WordPack;
   blocklist: Blocklist;
@@ -184,19 +259,31 @@ export interface PlanOptions {
   previous?: string;
   /** Force a calibration test round. */
   calibrationTest?: boolean;
+  /** Modifier settings; without them, rounds are plain lowercase words. */
+  modifiers?: ModifierOptions;
+}
+
+export interface RoundPlan {
+  words: RoundWord[];
+  /** Null for calibration rounds. */
+  explanation: RoundExplanation | null;
 }
 
 /**
- * Words for the next round. The seed is derived from the profile seed, the
- * round counter and the chunk, so planning is reproducible.
+ * The next round's words and what it focuses on. The seed is derived from
+ * the profile seed, the round counter and the chunk, so planning is
+ * reproducible. Steps: pick base words (difficulty sets length, rarity and
+ * intensity), then apply active modifiers with the same generator.
  */
-export function planWords(state: ProfileState, options: PlanOptions): RoundWord[] {
+export function planRound(state: ProfileState, options: PlanOptions): RoundPlan {
   const rng = new Rng(deriveSeed(state.seed, state.roundCounter, options.chunk ?? 0));
   if (options.calibrationTest || isCalibrating(state)) {
-    return calibrationWords(options.pack, options.count, rng);
+    return { words: calibrationWords(options.pack, options.count, rng), explanation: null };
   }
-  const scores = computeScores(state, state.goal ?? DEFAULT_GOAL);
-  return generateWords({
+  const goal = state.goal ?? DEFAULT_GOAL;
+  const scores = computeScores(state, goal);
+  const params = difficultyParams(state.difficulty);
+  let words = generateWords({
     pack: options.pack,
     blocklist: options.blocklist,
     letters: state.unlocked,
@@ -204,7 +291,32 @@ export function planWords(state: ProfileState, options: PlanOptions): RoundWord[
     count: options.count,
     rng,
     previous: options.previous,
+    params,
   });
+  const mods = options.modifiers;
+  const rates = mods
+    ? capRates(activeModifiers(state, mods.settings, mods.platform).map((id) => ({ id, rate: modifierRate(id, state, mods.settings, goal) })))
+    : [];
+  if (mods && rates.length > 0) {
+    const pool = wordPool(options.pack, state.unlocked, params);
+    const charGoal = modifierGoal(goal);
+    words = applyModifiers(words, {
+      rng,
+      chars: mods.chars,
+      settings: mods.settings,
+      platform: mods.platform,
+      rates,
+      charScore: (ch) => weakness(state.keys[ch], charGoal),
+      extraWord: () => (pool.length > 0 ? pool[rng.int(pool.length)].text : state.unlocked.slice(0, 3).join("")),
+      previous: options.previous,
+    });
+  }
+  return { words, explanation: explainRound(state, scores, words, rates) };
+}
+
+/** Just the words of planRound. */
+export function planWords(state: ProfileState, options: PlanOptions): RoundWord[] {
+  return planRound(state, options).words;
 }
 
 export interface RoundOutcome extends UnlockResult {
@@ -212,6 +324,8 @@ export interface RoundOutcome extends UnlockResult {
   perKey: Record<string, KeyRoundEntry>;
   /** Letters tested out by this round, when it completed calibration. */
   testedOut: string[];
+  /** How much difficulty changed after this round. */
+  difficultyChange: number;
 }
 
 /**
@@ -223,14 +337,14 @@ export function completeRound(
   state: ProfileState,
   round: TypingRound,
   at: number,
-  options: { calibrationTest?: boolean } = {},
+  options: { calibrationTest?: boolean; chars?: CharacterData } = {},
 ): RoundOutcome {
   const metrics = round.metrics();
   const calibration = !!options.calibrationTest || isCalibrating(state);
-  const { perKey } = applyRecords(round.target, round.records, state.keys, state.pairs);
-  const letterKeys: Record<string, KeyRoundEntry> = {};
-  for (const key of Object.keys(perKey)) if (isLetter(key)) letterKeys[key] = perKey[key];
-  appendHistory(state.keyHistory, letterKeys);
+  const { perKey } = applyRecords(round.target, round.records, state.keys, state.pairs, options.chars);
+  const historyKeys: Record<string, KeyRoundEntry> = {};
+  for (const key of Object.keys(perKey)) if (isLetter(key) || key.startsWith("mod:")) historyKeys[key] = perKey[key];
+  appendHistory(state.keyHistory, historyKeys);
 
   for (const r of round.records) {
     if (!r.tap) continue;
@@ -255,7 +369,8 @@ export function completeRound(
   state.roundCounter += 1;
 
   let testedOut: string[] = [];
-  let result: UnlockResult = { newlyMastered: [], newlyUnlocked: null };
+  let result: UnlockResult = { newlyMastered: [], newlyUnlocked: null, newlyMasteredMods: [], newlyUnlockedMods: [] };
+  let difficultyChange = 0;
   if (options.calibrationTest) {
     // The test only measures; test-out runs once the goal is chosen.
   } else if (isCalibrating(state)) {
@@ -266,8 +381,14 @@ export function completeRound(
     }
   } else {
     result = updateUnlocks(state);
+    if (metrics.keystrokes > 0) difficultyChange = updateDifficulty(state, state.goal ?? DEFAULT_GOAL);
   }
-  return { ...result, summary, perKey, testedOut };
+  return { ...result, summary, perKey, testedOut, difficultyChange };
+}
+
+/** Seed for a shortcut drill; finishing the drill advances the round counter. */
+export function shortcutDrillSeed(state: ProfileState): number {
+  return deriveSeed(state.seed, "shortcuts", state.roundCounter);
 }
 
 /** Average WPM and accuracy over recent non-calibration rounds, or null with none. */
@@ -296,4 +417,9 @@ export function finishCalibrationTest(state: ProfileState, goal: Goal): string[]
   state.calibration = "done";
   state.silentRoundsLeft = 0;
   return applyTestOut(state);
+}
+
+/** Call when a shortcut drill finishes, so the next drill gets a new seed. */
+export function completeShortcutDrill(state: ProfileState): void {
+  state.roundCounter += 1;
 }

@@ -3,6 +3,7 @@ import { aboutScreen } from "./screens/about";
 import { practiceScreen } from "./screens/practice";
 import { resultsScreen } from "./screens/results";
 import { settingsScreen } from "./screens/settings";
+import { shortcutsScreen } from "./screens/shortcuts";
 import { goalScreen, welcomeScreen } from "./screens/setup";
 import "./styles.css";
 
@@ -15,4 +16,5 @@ app.register("practice", practiceScreen);
 app.register("results", resultsScreen);
 app.register("settings", settingsScreen);
 app.register("about", aboutScreen);
+app.register("shortcuts", shortcutsScreen);
 app.home();

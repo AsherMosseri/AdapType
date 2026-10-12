@@ -1,4 +1,4 @@
-# AdapType engine spec (phase 1)
+# AdapType engine spec (phases 1 and 2)
 
 This is the rulebook for the AdapType engine. The web version
 (`engine/src`, TypeScript) is the reference implementation. A port (Swift,
@@ -168,8 +168,8 @@ Vectors: `scoring.json`.
 ### 5.1 Word pool
 
 Walk the word pack in rank order (index 0 is the most common word). Keep words
-with length between `MIN_WORD_LENGTH` and `MAX_WORD_LENGTH` whose letters are
-all unlocked. Stop at `MAX_POOL` words.
+with length between `MIN_WORD_LENGTH` and the difficulty's `maxLength` (9.1)
+whose letters are all unlocked. Stop at the difficulty's `poolCap` words.
 
 ### 5.2 Word weight
 
@@ -177,8 +177,10 @@ all unlocked. Stop at `MAX_POOL` words.
 letterAvg = (sum of letter scores over the word's letters) / length
 pairAvg   = length > 1 ? (sum of pair scores over adjacent pairs) / (length - 1) : 0
             (missing scores count as 0)
-weight    = (BASE_WORD_WEIGHT + letterAvg + pairAvg) / (1 + rank / RANK_SCALE)
+weight    = (BASE_WORD_WEIGHT + intensity * (letterAvg + pairAvg)) / (1 + rank / rankScale)
 ```
+
+`intensity` and `rankScale` come from the difficulty level (9.1).
 
 ### 5.3 Made-up share
 
@@ -235,7 +237,12 @@ Each round's generator is `Rng(deriveSeed(profileSeed, roundCounter, chunk))`.
 `chunk` is 0 for the first batch of words; timed and endless rounds ask for
 more batches with chunk 1, 2, and so on.
 
-### 5.8 Calibration words
+### 5.8 Modifiers
+
+After the words are picked, active modifiers are applied with the same
+generator (section 10). Calibration rounds never use modifiers.
+
+### 5.9 Calibration words
 
 Take the first `CALIBRATION_WORD_POOL` words from the pack with a length
 between `MIN_WORD_LENGTH` and `MAX_WORD_LENGTH`. For each slot, pick
@@ -283,7 +290,7 @@ Vectors: `profile.json`.
 
 ### 7.1 Test
 
-The test is a timed round of calibration words (5.8). Calibration rounds
+The test is a timed round of calibration words (5.9). Calibration rounds
 update stats like any round but don't run the unlock check.
 
 ### 7.2 Test-out
@@ -312,7 +319,8 @@ and test-out is applied.
 
 ## 8. Completing a round
 
-1. Apply the records to stats (section 3). Append letter entries to history.
+1. Apply the records to stats (section 3, plus 10.2 with character data).
+   Append letter entries and `mod:` entries to history.
 2. Touch: append each record's tap to its expected key's tap list, keeping the
    last `MAX_TAPS_PER_KEY`.
 3. If the round had keystrokes, append a summary `{at, wpm, accuracy,
@@ -320,10 +328,193 @@ and test-out is applied.
    `MAX_ROUNDS_KEPT`.
 4. `roundCounter += 1`.
 5. If it was a calibration test: nothing else. If silent calibration is
-   running: count down (7.3). Otherwise: run the unlock check (6.2).
+   running: count down (7.3). Otherwise: run the unlock check (6.2 and 10.6),
+   then, if the round had keystrokes, update the difficulty (9.2).
 
 The results screen compares against the average WPM and accuracy of the last
 `RECENT_ROUNDS` non-calibration rounds before this one.
+
+## 9. Difficulty curve
+
+Each profile has a `difficulty` from 0 to 1, starting at `DIFFICULTY_START`.
+
+### 9.1 What it changes
+
+```
+maxLength = 5 + round(d * 5)
+rankScale = 1000 + d * 5000
+poolCap   = 1000 + round(d * 3000)
+intensity = 0.5 + 1.5 * d
+```
+
+It also nudges modifier rates (10.4).
+
+### 9.2 Updating it
+
+After a practice round, take the last `DIFFICULTY_ROUNDS` non-calibration
+rounds (no change with fewer). Average their WPM and accuracy.
+
+- If `avgWpm / goal.wpm >= DIFFICULTY_UP_RATIO` and `avgAccuracy >= goal.accuracy`:
+  change is `+DIFFICULTY_STEP`.
+- Else if `avgWpm / goal.wpm < DIFFICULTY_DOWN_RATIO` or
+  `avgAccuracy < goal.accuracy - DIFFICULTY_ACCURACY_SLACK`: change is
+  `-DIFFICULTY_STEP`.
+- New difficulty = `clamp(round((d + change) * 1000) / 1000, 0, 1)`.
+
+Vectors: `difficulty.json`.
+
+## 10. Modifiers
+
+Modifiers: `caps`, `punct`, `numbers`, `symbols`, `accents`, `extra`, always
+processed in that order (`MODIFIER_IDS`). The shortcut drill (`shortcuts`)
+unlocks with them but isn't a modifier.
+
+Character data comes from `content/characters.json` (punctuation, symbols,
+accented letters, extra characters) and `content/loanwords.json`.
+
+### 10.1 Character categories
+
+For a character `c`, in this order: `a`-`z` letter; space; `A`-`Z` caps;
+`0`-`9` numbers; in the punctuation list: punct; in the symbols list: symbols;
+its lowercase form is an accented letter: accents; an extra character or the
+closing character of one: extra; otherwise other.
+
+### 10.2 Extra statistics
+
+When applying a round with character data, for each first-attempt record:
+
+- If its category is a modifier, add the same sample to the stat `mod:<id>`
+  and count it in the round's per-key entry `mod:<id>`.
+- If the record has a `shift` side and `expected` is `A`-`Z`: add a sample
+  (no interval) to `shift:side` with error = the Shift was on the same side as
+  the letter. Left-hand letters are `LEFT_HAND_LETTERS`; they should use the
+  right Shift.
+- If the record has `layer` (touch): add the sample to `touch:layer`.
+
+### 10.3 Which modifiers are on
+
+Each of the seven has a mode: `unlock` (on once unlocked), `on` (on now), or
+`off`. Accents also need the platform to support them, and extra characters
+need at least one extra character available on the platform.
+
+### 10.4 Rates
+
+The modifier goal is the player's goal with `wpm / MODIFIER_TIME_SLACK`.
+
+```
+[min, max] = LEVEL_RANGES[level]
+weak       = clamp(weakness(stats["mod:<id>"], modifierGoal) / 2, 0, 1)
+position   = clamp(MODIFIER_WEAKNESS_WEIGHT * weak + (1 - MODIFIER_WEAKNESS_WEIGHT) * difficulty, 0, 1)
+rate       = min + (max - min) * position
+```
+
+Then, if the active rates add up to more than `MAX_DECORATED_SHARE`, every
+rate is multiplied by `MAX_DECORATED_SHARE / sum`, so at least half the words
+stay plain.
+
+### 10.5 Applying modifiers
+
+Inputs: the words, the generator, active modifiers with rates, a character
+score function (`weakness(stats[c], modifierGoal)`), and `extraWord()`, which
+returns `pool[int(poolSize)].text` from the round's word pool (or the first
+three unlocked letters joined if the pool is empty).
+
+`pickWeighted(list)` = `list[weightedIndex(list.map(c => 0.5 + score(c)))]`.
+`number(a, b)`: length `a + int(b - a + 1)`; each digit is `pickWeighted` from
+`0`-`9`, except the first digit of a multi-digit number, picked from `1`-`9`.
+
+`sentenceStart` starts true when there is no previous word or the previous word
+ends with `.`, `!` or `?`.
+
+For each word, in this order (a step runs only when that modifier is active;
+"roll" means `next() < rate`):
+
+1. **accents:** roll. On success, the word becomes a loanword chosen by
+   `weightedIndex` with weights `0.5 + max score of its accented letters`. Not
+   made up.
+2. **numbers:** roll. On success, `form = int(3)`: 0 → `number(1, 4)`; 1 →
+   word + `number(1, 2)`; 2 → if symbols are active, `n = number(1, 3)` and one
+   of `$n`, `n%`, `#n` by `int(3)`, else `number(1, 4)`. Not made up.
+3. **symbols:** roll. On success, `sym = pickWeighted(symbols without ) ] } >)`.
+   Brackets `( [ { <` wrap the word with their closer; `@ # $ ~ ^` go before
+   it; `% *` go after it; anything else joins: word + sym + `extraWord()`.
+4. **extra:** roll. On success, `ch = pickWeighted(platform extra characters)`,
+   placed by its `place`: between → word + ch + `extraWord()`; range →
+   `a = 1 + int(20)`, then `a` + ch + `(a + 1 + int(10))`; prefix → ch + word;
+   alone → ch; number-after → `number(1, 3)` + ch; number-before → ch +
+   `number(1, 3)`; compare → `(1 + int(20))` + ch + `(1 + int(20))`; question →
+   ch + word + `?`; exclaim → ch + word + `!`; wrap → ch + word + close; anything
+   else → word + ch. Not made up.
+5. **caps:** roll. On success: `first` capitalizes the first cased character;
+   `any` capitalizes the character at `positions[int(len)]`, where positions
+   are the indices of `a`-`z` characters.
+6. **punct:**
+   - `sentence` mode: if `sentenceStart`, capitalize the first cased character.
+     Set `sentenceStart = false`. Draw `r = next()`. If `r < rate * 0.5`: draw
+     `e = next()` and append `.` (e < 0.8), `!` (e < 0.9) or `?`, and set
+     `sentenceStart = true`. Else if `r < rate * 0.8`: append `,`. Else if
+     `r < rate`: wrap in `"` (when `int(2) == 0`) or `'`.
+   - `random` mode: roll. On success, `p = pickWeighted(punctuation)`: quotes
+     wrap the word; `-` joins word + `-` + `extraWord()`; anything else is
+     appended.
+
+Vectors: `modifiers.json`.
+
+### 10.6 Modifier unlocks
+
+Stages (`MODIFIER_STAGES`): caps; punct; numbers; symbols; then accents, extra
+and shortcuts together.
+
+In the unlock check, once every letter is unlocked and mastered and no letter
+unlocked in this check:
+
+1. For each unlocked modifier (not shortcuts) that isn't mastered: it's
+   mastered when `stats["mod:<id>"]` has `n >= MODIFIER_MASTERY_SAMPLES`,
+   `timedN >= MODIFIER_MASTERY_TIMED`, `1 - errAvg >= goal.accuracy` and
+   `msAvg <= 12000 / modifierGoal.wpm`.
+2. If every unlocked modifier (not shortcuts) is mastered, unlock every item of
+   the next stage that isn't unlocked yet.
+
+## 11. Explaining a round
+
+- **Keys:** unlocked letters, except the focus letter, with score at least
+  `FOCUS_KEY_MIN_SCORE` that appear in the round's lowercased text. Highest
+  score first, ties by position in the unlocked list. Top 2.
+- **Pairs:** scored pairs with score at least `FOCUS_PAIR_MIN_SCORE` that
+  appear inside a lowercased word of the round. Highest first, ties
+  alphabetical. Top 1.
+- **New letter:** the focus letter (4).
+- **Modifiers:** the active modifiers and their rates; **difficulty:** the
+  current level.
+
+**Key detail** reasons, in this order: `new` (it's the focus letter),
+`unknown` (`n < CONFIDENT_SAMPLES`), `slow` (`msAvg > goalMs * 1.05` with timed
+samples), `errors` (`errAvg > 1 - goal.accuracy`); `fine` when none apply.
+
+Vectors: `explain.json`.
+
+## 12. Shortcut drill
+
+Shortcut packs live in `content/shortcuts-*.json`. Each shortcut has a Mac
+combo and an "other" (Windows and Linux) combo. Two combos match when the keys
+are equal ignoring case and the modifier sets are equal.
+
+- **Stats:** `sc:<id>`. Each answered prompt adds a sample: error = the first
+  attempt was wrong; interval = time from showing the prompt to the correct
+  answer, if at most `SHORTCUT_MAX_MS`.
+- **Goal:** `wpm = 12000 / SHORTCUT_TARGET_MS`, accuracy 0.9.
+- **Planning:** generator `Rng(deriveSeed(profileSeed, "shortcuts",
+  roundCounter))`. For each slot, weights are `0.2 + weakness(sc:<id>, goal)`,
+  with the previous pick's weight set to 0; pick with `weightedIndex` (or
+  `int(n)` if -1). Finishing a drill adds 1 to `roundCounter`.
+
+Vectors: `shortcuts.json`.
+
+## 13. Saved data versions
+
+Profile version 2 adds `difficulty` (`DIFFICULTY_START`), `modsUnlocked` and
+`modsMastered` (both empty). A version 1 profile is upgraded by adding those
+fields.
 
 ## Constants
 
@@ -341,12 +532,10 @@ The results screen compares against the average WPM and accuracy of the last
 | `CONFIDENT_SAMPLES` | 5 |
 | `FOCUS_BONUS` | 1 |
 | `MIN_WORD_LENGTH` | 2 |
-| `MAX_WORD_LENGTH` | 8 |
-| `MAX_POOL` | 2000 |
+| `MAX_WORD_LENGTH` (calibration only) | 8 |
 | `FULL_POOL` | 60 |
 | `MAX_MADE_UP_SHARE` | 0.8 |
 | `BASE_WORD_WEIGHT` | 0.2 |
-| `RANK_SCALE` | 3000 |
 | `MADE_UP_MIN_LENGTH` | 3 |
 | `MADE_UP_MAX_LENGTH` | 6 |
 | `MADE_UP_ATTEMPTS` | 20 |
@@ -358,6 +547,23 @@ The results screen compares against the average WPM and accuracy of the last
 | `MAX_ROUNDS_KEPT` | 100 |
 | `MAX_TAPS_PER_KEY` | 50 |
 | `RECENT_ROUNDS` | 10 |
+| `LEVEL_RANGES` | low 0.03–0.10, medium 0.06–0.25, high 0.12–0.50, auto 0.03–0.50 |
+| `MODIFIER_WEAKNESS_WEIGHT` | 0.7 |
+| `MAX_DECORATED_SHARE` | 0.5 |
+| `MODIFIER_TIME_SLACK` | 1.5 |
+| `MODIFIER_MASTERY_SAMPLES` | 15 |
+| `MODIFIER_MASTERY_TIMED` | 5 |
+| `LEFT_HAND_LETTERS` | `qwertasdfgzxcvb` |
+| `DIFFICULTY_START` | 0.3 |
+| `DIFFICULTY_STEP` | 0.05 |
+| `DIFFICULTY_ROUNDS` | 3 |
+| `DIFFICULTY_UP_RATIO` | 0.95 |
+| `DIFFICULTY_DOWN_RATIO` | 0.8 |
+| `DIFFICULTY_ACCURACY_SLACK` | 0.03 |
+| `FOCUS_KEY_MIN_SCORE` | 0.3 |
+| `FOCUS_PAIR_MIN_SCORE` | 0.5 |
+| `SHORTCUT_TARGET_MS` | 1500 |
+| `SHORTCUT_MAX_MS` | 10000 |
 
 ## Test vectors
 
@@ -368,7 +574,11 @@ The results screen compares against the average WPM and accuracy of the last
 | `stats.json` | applying a round to key and pair stats |
 | `scoring.json` | weakness scores |
 | `generate.json` | word pools, weights, made-up words (first 2,000 pack words) |
-| `profile.json` | full sessions: calibration, test-out, practice rounds, unlocks |
+| `profile.json` | full sessions: calibration, test-out, practice rounds, unlocks, and a modifier session |
+| `modifiers.json` | applying modifiers, and modifier rates |
+| `difficulty.json` | difficulty parameters and updates |
+| `explain.json` | round explanations and key details |
+| `shortcuts.json` | shortcut drill planning |
 
 Vectors that use the word pack use the first `packSize` words of
 `content/words-en.json` version 1 and `content/blocklist.json`.

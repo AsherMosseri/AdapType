@@ -1,9 +1,22 @@
-import { DEFAULT_GOAL, setUnlockOrder, type ErrorMode, type InputProfile, type RoundType, type UnlockOrder } from "../../../engine/src";
+import {
+  DEFAULT_GOAL,
+  MODIFIER_STAGES,
+  setUnlockOrder,
+  type ErrorMode,
+  type InputProfile,
+  type ModifierLevel,
+  type ModifierMode,
+  type RoundType,
+  type UnlockableId,
+  type UnlockOrder,
+} from "../../../engine/src";
 import type { App, Screen, ScreenView } from "../app";
 import { goalControls } from "../components/goalControls";
 import { topBar } from "../components/topBar";
 import { h } from "../dom";
-import { clearSaved, defaultData, fromCode, newProfile, parseData, toCode, type AppData } from "../store";
+import { MODIFIER_NAMES } from "../explainText";
+import { currentOs, detectOs, detectTouchLayout, OS_NAMES, platformFor, type Os } from "../platform";
+import { clearSaved, defaultData, fromCode, newProfile, parseData, toCode, type AppData, type OsChoice, type TouchLayoutChoice } from "../store";
 
 const ROUND_CHOICES: { id: string; label: string; round: RoundType }[] = [
   { id: "w25", label: "25 words", round: { kind: "words", count: 25 } },
@@ -70,6 +83,39 @@ export function settingsScreen(app: App, screen: Screen): ScreenView {
       }),
       h("p", { class: "fine" }, "Switching keeps every letter you've mastered."),
     ),
+    modifiersSection(app),
+    keyboardSection(app, returnTo),
+    app.data.settings.activeProfile === "physical"
+      ? section(
+          "Shortcut drill",
+          radioGroup(
+            "sc-style",
+            "How prompts are shown",
+            [
+              { id: "shown", label: "Show the combo", hint: "You see ⌘ Z and press it." },
+              { id: "named", label: "Name the action", hint: "You see “Undo” and press the right combo." },
+            ],
+            settings.shortcutStyle,
+            (id) => {
+              settings.shortcutStyle = id as "shown" | "named";
+              app.persist();
+            },
+          ),
+          radioGroup(
+            "sc-answer",
+            "How you answer",
+            [
+              { id: "press", label: "Press the keys", hint: "Best practice. Some browsers block a few shortcuts; you can build those instead." },
+              { id: "build", label: "Build the combo", hint: "Tap ⌘ ⇧ ⌥ ⌃ and the key on screen instead of pressing them." },
+            ],
+            settings.shortcutAnswer,
+            (id) => {
+              settings.shortcutAnswer = id as "press" | "build";
+              app.persist();
+            },
+          ),
+        )
+      : null,
     section(
       "Input",
       radioGroup(
@@ -99,6 +145,151 @@ export function settingsScreen(app: App, screen: Screen): ScreenView {
 
   const el = h("div", { class: "screen" }, topBar(app, { back: leave, backLabel: "Done", noSettings: true }), main);
   return { el };
+}
+
+const MODE_CHOICES: { id: ModifierMode; label: string }[] = [
+  { id: "unlock", label: "When unlocked" },
+  { id: "on", label: "On now" },
+  { id: "off", label: "Off" },
+];
+const LEVEL_CHOICES: { id: ModifierLevel; label: string }[] = [
+  { id: "low", label: "Low" },
+  { id: "medium", label: "Medium" },
+  { id: "high", label: "High" },
+  { id: "auto", label: "Auto" },
+];
+const LEVEL_HINT = "Low: up to 1 in 10 words. Medium: up to 1 in 4. High: up to half. Auto: AdapType picks. Within the level, weak modifiers show up more.";
+
+/** One row per modifier: when it's on, and how often it shows up. */
+function modifiersSection(app: App): HTMLElement {
+  const settings = app.data.settings;
+  const mods = settings.modifiers;
+  const state = app.profile;
+  const platform = platformFor(app);
+  const ids = MODIFIER_STAGES.flat() as UnlockableId[];
+  const stageOf = (id: UnlockableId) => MODIFIER_STAGES.findIndex((stage) => (stage as readonly string[]).includes(id));
+
+  const rows = ids.map((id) => {
+    const unlocked = state.modsUnlocked.includes(id);
+    const mastered = id !== "shortcuts" && state.modsMastered.includes(id as never);
+    const stage = stageOf(id);
+    const status = mastered
+      ? "Mastered"
+      : unlocked
+        ? "Unlocked"
+        : stage === 0
+          ? "Unlocks after all 26 letters"
+          : `Unlocks after ${MODIFIER_NAMES[MODIFIER_STAGES[stage - 1][0]].toLowerCase()}`;
+    const unavailable =
+      (id === "accents" && !platform.accents) || (id === "extra" && platform.extra.length === 0)
+        ? "Your keyboard setting can't type these. Choose another system below, or turn on Alt codes."
+        : id === "shortcuts" && settings.activeProfile === "touch"
+          ? "Physical keyboards only."
+          : null;
+    return h(
+      "div",
+      { class: "mod-row" },
+      h("div", { class: "mod-head" }, h("strong", null, MODIFIER_NAMES[id]), h("span", { class: "mod-status" }, status)),
+      unavailable ? h("p", { class: "fine" }, unavailable) : null,
+      radioGroup(`mode-${id}`, `${MODIFIER_NAMES[id]}: when it's on`, MODE_CHOICES, mods.modes[id], (v) => {
+        mods.modes[id] = v as ModifierMode;
+        app.persist();
+      }, true),
+      id === "shortcuts"
+        ? null
+        : radioGroup(`level-${id}`, `${MODIFIER_NAMES[id]}: how often`, LEVEL_CHOICES, mods.levels[id], (v) => {
+            mods.levels[id] = v as ModifierLevel;
+            app.persist();
+          }, true),
+    );
+  });
+
+  return section(
+    "Modifiers",
+    h("p", { class: "panel-lead" }, "Capitals, punctuation and the rest unlock in stages once all 26 letters are mastered. Turn any of them on now to practice early."),
+    h("p", { class: "fine" }, LEVEL_HINT),
+    h("div", { class: "mod-rows" }, rows),
+    h("h3", null, "Capitals"),
+    radioGroup("caps-style", "Capital style", [
+      { id: "first", label: "First letter", hint: "Apple" },
+      { id: "any", label: "Any letter", hint: "apPle" },
+    ], mods.caps, (v) => {
+      mods.caps = v as "first" | "any";
+      app.persist();
+    }),
+    h("h3", null, "Punctuation"),
+    radioGroup("punct-style", "Punctuation style", [
+      { id: "sentence", label: "Like sentences", hint: "Periods end sentences, the next word gets a capital, commas and quotes fall where real text has them." },
+      { id: "random", label: "Fully random", hint: "Any punctuation on any word." },
+    ], mods.punct, (v) => {
+      mods.punct = v as "sentence" | "random";
+      app.persist();
+    }),
+    h("h3", null, "Extra characters"),
+    radioGroup("extra-set", "Extra character set", [
+      { id: "curated", label: "Useful set", hint: "About 20: — – … • © ™ ® ° ± ≠ ≤ ≥ € £ and similar." },
+      { id: "full", label: "Everything", hint: "Every character your keyboard can make with Option or AltGr." },
+    ], settings.extraSet, (v) => {
+      settings.extraSet = v as "curated" | "full";
+      app.persist();
+    }),
+  );
+}
+
+/** Which system you type on, so accents and extra characters match your keyboard. */
+function keyboardSection(app: App, returnTo: Screen | undefined): HTMLElement {
+  const settings = app.data.settings;
+  if (settings.activeProfile === "touch") {
+    const detected = detectTouchLayout() === "ios" ? "iPhone" : "Android";
+    return section(
+      "Touch keyboard",
+      radioGroup("touch-layout", "Symbol layout", [
+        { id: "auto", label: `Match this device (${detected})`, hint: "Number and symbol pages laid out like your phone's own keyboard." },
+        { id: "ios", label: "iPhone", hint: "123 and #+= pages." },
+        { id: "android", label: "Android", hint: "?123 and =\< pages, like Gboard." },
+      ], settings.touchLayout, (v) => {
+        settings.touchLayout = v as TouchLayoutChoice;
+        app.persist();
+      }),
+    );
+  }
+  const detected = OS_NAMES[detectOs()];
+  const os: Os = currentOs(settings);
+  const altCodes = h("input", { type: "checkbox", id: "alt-codes", checked: settings.altCodes });
+  altCodes.addEventListener("change", () => {
+    settings.altCodes = altCodes.checked;
+    app.persist();
+    app.go({ name: "settings", returnTo });
+  });
+  return section(
+    "Your keyboard",
+    h("p", { class: "panel-lead" }, "Accented letters and extra characters are typed differently on each system. AdapType shows how when one comes up."),
+    radioGroup(
+      "os",
+      "System",
+      [
+        { id: "auto", label: `Detect (${detected})` },
+        ...(Object.keys(OS_NAMES) as Os[]).map((id) => ({ id, label: OS_NAMES[id] })),
+      ],
+      settings.os,
+      (v) => {
+        settings.os = v as OsChoice;
+        app.persist();
+        app.go({ name: "settings", returnTo });
+      },
+      true,
+    ),
+    os === "windows"
+      ? h(
+          "label",
+          { class: "check", for: "alt-codes" },
+          altCodes,
+          h("span", null, h("strong", null, "Use Alt codes"), h("span", null, "The US layout can't type accents or extra characters directly. With this on, AdapType includes them and shows the Alt code (hold Alt, type the number on the number pad).")),
+        )
+      : null,
+    os === "windows" ? h("p", { class: "fine" }, "Tip: the US-International layout (a free Windows setting) types accents and many symbols with AltGr.") : null,
+    os === "linux" ? h("p", { class: "fine" }, "Linux layouts vary, so hints say AltGr or Compose. Turn on a Compose key in your system settings to type all of these.") : null,
+  );
 }
 
 function section(title: string, ...children: (Node | null)[]): HTMLElement {
