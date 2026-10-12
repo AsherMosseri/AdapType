@@ -10,6 +10,8 @@ export interface TouchKeyboardOptions {
   onChar: (char: string, tap: TapPoint, layer: boolean, t: number) => void;
   onBackspace: () => void;
   isLocked: (letter: string) => boolean;
+  /** Assist hit zones: a letter's average tap offset (in key sizes), or null. Without it, keys stay fixed. */
+  assist?: (letter: string) => { dx: number; dy: number } | null;
 }
 
 const LONG_PRESS_MS = 380;
@@ -96,6 +98,36 @@ export function touchKeyboard(options: TouchKeyboardOptions): HTMLElement {
     }
   };
 
+  function isLetterKey(key: HTMLElement): boolean {
+    const k = key.dataset.key ?? "";
+    return k.length === 1 && k >= "a" && k <= "z";
+  }
+
+  /**
+   * Assist mode: picks the letter key whose shifted center (its center moved
+   * by your average tap offset) is nearest the tap, among keys within one and
+   * a half key widths of where you tapped.
+   */
+  function assistTarget(event: PointerEvent, tapped: HTMLElement): HTMLElement {
+    const t = tapped.getBoundingClientRect();
+    let best = tapped;
+    let bestDist = Infinity;
+    for (const key of rowsEl.querySelectorAll<HTMLElement>(".tkey")) {
+      if (!isLetterKey(key)) continue;
+      const r = key.getBoundingClientRect();
+      const cx = r.left + r.width / 2;
+      const cy = r.top + r.height / 2;
+      if (Math.abs(cx - (t.left + t.width / 2)) > t.width * 1.5 || Math.abs(cy - (t.top + t.height / 2)) > t.height * 1.5) continue;
+      const off = options.assist!(key.dataset.key!) ?? { dx: 0, dy: 0 };
+      const dist = ((event.clientX - (cx + off.dx * r.width)) / r.width) ** 2 + ((event.clientY - (cy + off.dy * r.height)) / r.height) ** 2;
+      if (dist < bestDist) {
+        bestDist = dist;
+        best = key;
+      }
+    }
+    return best;
+  }
+
   function flushPending(): void {
     window.clearTimeout(longTimer);
     if (pending) {
@@ -139,7 +171,8 @@ export function touchKeyboard(options: TouchKeyboardOptions): HTMLElement {
     if (!altMenu.hidden) closeAlts();
     // A second finger landed before the first lifted: type the first key now so order is kept.
     flushPending();
-    const key = (event.target as HTMLElement).closest<HTMLElement>(".tkey");
+    let key = (event.target as HTMLElement).closest<HTMLElement>(".tkey");
+    if (key && options.assist && layer === "letters" && isLetterKey(key)) key = assistTarget(event, key);
     if (!key) return;
     event.preventDefault();
     haptic();

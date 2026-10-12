@@ -1,4 +1,4 @@
-import { CONFIDENT_SAMPLES, FOCUS_KEY_MIN_SCORE, FOCUS_PAIR_MIN_SCORE } from "./constants";
+import { CONFIDENT_SAMPLES, FOCUS_KEY_MIN_SCORE, FOCUS_PAIR_MIN_SCORE, HESITANT_RATE } from "./constants";
 import { focusLetter, type Scores } from "./scoring";
 import { wpmToMs } from "./typing";
 import type { Goal, KeyRoundEntry, ModifierId, ProfileState, RoundWord, StatEntry } from "./types";
@@ -14,6 +14,12 @@ export interface RoundExplanation {
   modifiers: { id: ModifierId; rate: number }[];
   /** Difficulty level used, 0..1. */
   difficulty: number;
+  /** Phase 3: a warm-up round and its trouble spots. */
+  warmup?: { keys: string[]; pairs: string[] };
+  /** Phase 3: words back for review in this round. */
+  reviewWords?: string[];
+  /** Phase 3: the round was eased because of fatigue. */
+  fatigued?: boolean;
 }
 
 /**
@@ -28,6 +34,7 @@ export function explainRound(
   scores: Scores,
   words: readonly RoundWord[],
   modifiers: { id: ModifierId; rate: number }[],
+  extra: { warmup?: { keys: string[]; pairs: string[] }; reviewWords?: string[]; fatigued?: boolean } = {},
 ): RoundExplanation {
   const newLetter = focusLetter(state);
   const lower = words.map((w) => w.text.toLowerCase());
@@ -43,10 +50,14 @@ export function explainRound(
     .sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1))
     .slice(0, 1)
     .map(([pair]) => pair);
-  return { keys, pairs, newLetter, modifiers, difficulty: state.difficulty };
+  const explanation: RoundExplanation = { keys, pairs, newLetter, modifiers, difficulty: state.difficulty };
+  if (extra.warmup) explanation.warmup = extra.warmup;
+  if (extra.reviewWords && extra.reviewWords.length > 0) explanation.reviewWords = extra.reviewWords;
+  if (extra.fatigued) explanation.fatigued = true;
+  return explanation;
 }
 
-export type ReasonKind = "slow" | "errors" | "unknown" | "new" | "fine";
+export type ReasonKind = "slow" | "errors" | "hesitant" | "review" | "unknown" | "new" | "fine";
 
 export interface KeyDetail {
   samples: number;
@@ -58,14 +69,26 @@ export interface KeyDetail {
   reasons: ReasonKind[];
 }
 
-/** Why a key is (or isn't) being targeted, for the tap-for-detail panel. */
-export function keyDetail(entry: StatEntry | undefined, goal: Goal, isNewLetter: boolean): KeyDetail {
+/**
+ * Why a key is (or isn't) being targeted, for the tap-for-detail panel.
+ * Phase 3 adds "hesitant" (hesitation rate above HESITANT_RATE with at least
+ * CONFIDENT_SAMPLES judgments) and "review" (due for spaced repetition).
+ */
+export function keyDetail(
+  entry: StatEntry | undefined,
+  goal: Goal,
+  isNewLetter: boolean,
+  extra: { hesitation?: StatEntry; dueForReview?: boolean } = {},
+): KeyDetail {
   const goalMs = wpmToMs(goal.wpm);
   const reasons: ReasonKind[] = [];
   if (isNewLetter) reasons.push("new");
   if (!entry || entry.n < CONFIDENT_SAMPLES) reasons.push("unknown");
   if (entry && entry.timedN > 0 && entry.msAvg > goalMs * 1.05) reasons.push("slow");
   if (entry && entry.n > 0 && entry.errAvg > 1 - goal.accuracy) reasons.push("errors");
+  const h = extra.hesitation;
+  if (h && h.n >= CONFIDENT_SAMPLES && h.errAvg > HESITANT_RATE) reasons.push("hesitant");
+  if (extra.dueForReview) reasons.push("review");
   if (reasons.length === 0) reasons.push("fine");
   return {
     samples: entry?.n ?? 0,

@@ -1362,3 +1362,328 @@ button.heat-key.selected {
 .key-choice:hover {
   border-color: var(--accent);
 }
+
+/* Phase 3 */
+.notice.warmup {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  color: var(--ink);
+}
+.typing-wrap.pulse {
+  --steady: 0;
+  border-radius: var(--radius);
+  transition: box-shadow 0.4s ease;
+}
+.practice-screen.running .typing-wrap.pulse {
+  box-shadow: 0 0 0 calc(4px + var(--steady) * 10px) color-mix(in oklab, var(--accent) calc(var(--steady) * 22%), transparent);
+}
+.metronome {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: var(--step--1);
+  color: var(--muted);
+}
+.beat {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: beat var(--beat, 1500ms) ease-out infinite;
+}
+@keyframes beat {
+  0% {
+    transform: scale(1.35);
+    opacity: 1;
+  }
+  60%,
+  100% {
+    transform: scale(0.7);
+    opacity: 0.35;
+  }
+}
+.callout.rest {
+  background: var(--bad-soft);
+}
+.callout.rest .callout-title {
+  color: var(--bad);
+}
+.callout .actions {
+  margin-top: 0.6rem;
+}
+.callout.ask {
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+.fact-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+.inline-stat {
+  font-size: var(--step-1);
+  color: var(--ink);
+}
+.sticky-actions .button:not(.primary) {
+  flex: 0 0 auto;
+}
+
+/* Charts */
+.chart-wrap {
+  width: 100%;
+  overflow: hidden;
+}
+.chart {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.chart .axis {
+  stroke: var(--line);
+  stroke-width: 1;
+}
+.chart .grid {
+  stroke: var(--line);
+  stroke-width: 1;
+  stroke-dasharray: 2 4;
+}
+.chart .tick {
+  fill: var(--muted);
+  font-size: 11px;
+  font-family: var(--font-ui);
+}
+.chart .value {
+  fill: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+  font-family: var(--font-ui);
+}
+.chart .goal-line {
+  stroke: var(--ink);
+  stroke-width: 1;
+  stroke-dasharray: 5 4;
+  opacity: 0.55;
+}
+.chart .bar {
+  fill: var(--accent);
+}
+.chart .bar.stall {
+  fill: var(--bad);
+}
+.chart .bar:hover,
+.chart .dot:hover {
+  opacity: 0.75;
+}
+.chart .line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+.chart .area {
+  fill: var(--accent);
+  opacity: 0.08;
+}
+.chart .dot {
+  fill: var(--accent);
+  stroke: var(--surface);
+  stroke-width: 2;
+}
+
+/* Progress */
+.schedule {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 0.4rem 1rem;
+}
+.schedule li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 0.6rem;
+  align-items: baseline;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.sched-target {
+  font-family: var(--font-mono);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.sched-kind {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+.sched-when {
+  font-size: var(--step--1);
+  color: var(--muted);
+  white-space: nowrap;
+}
+.word-chips {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.word-chips li {
+  font-family: var(--font-mono);
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  display: inline-flex;
+  gap: 0.4rem;
+  align-items: baseline;
+}
+.num {
+  font-family: var(--font-ui);
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  font-size: var(--step--1);
+}
+.count-list,
+.group-list {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.count-list li {
+  display: flex;
+  justify-content: space-between;
+  max-width: 320px;
+}
+.group-list li {
+  display: grid;
+  grid-template-columns: minmax(0, 11rem) 1fr 6rem;
+  gap: 0.75rem;
+  align-items: center;
+}
+.group-list li .num {
+  text-align: right;
+}
+.group-list li.weakest .group-name {
+  font-weight: 600;
+}
+.drift-map {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.drift-key {
+  position: relative;
+  flex: 0 1 calc((100% - 45px) / 10);
+  aspect-ratio: 1;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+}
+.drift-key::before,
+.drift-key::after {
+  content: "";
+  position: absolute;
+  background: var(--line);
+}
+.drift-key::before {
+  left: 50%;
+  top: 20%;
+  bottom: 20%;
+  width: 1px;
+}
+.drift-key::after {
+  top: 50%;
+  left: 20%;
+  right: 20%;
+  height: 1px;
+}
+.drift-letter {
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.drift-dot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+.drift-dot.far {
+  background: var(--bad);
+}
+.table-wrap {
+  overflow-x: auto;
+}
+.keys-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-variant-numeric: tabular-nums;
+  font-size: var(--step--1);
+}
+.keys-table th,
+.keys-table td {
+  text-align: left;
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+.keys-table thead th {
+  color: var(--muted);
+  font-weight: 600;
+}
+.keys-table tbody th {
+  font-family: var(--font-mono);
+  font-size: var(--step-0);
+}
+.keys-table td.below {
+  color: var(--bad);
+}
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+.summary-value {
+  font-size: var(--step-2);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+button.choice {
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  width: 100%;
+}
+button.choice:hover {
+  border-color: var(--accent);
+}
+.grip .choices {
+  display: grid;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .beat {
+    animation: none;
+  }
+  .typing-wrap.pulse {
+    transition: none;
+  }
+}

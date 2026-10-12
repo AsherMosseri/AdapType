@@ -1,5 +1,19 @@
 import {
+  CONFUSION_BONUS,
+  CONFUSION_MIN,
   DIFFICULTY_START,
+  DOUBLE_BIAS_MIN,
+  FATIGUE_EASE,
+  FOCUS_KEY_MIN_SCORE,
+  FOCUS_PAIR_MIN_SCORE,
+  HESITATION_FACTOR,
+  HESITATION_MIN_MS,
+  HESITATION_MIN_SAMPLES,
+  REVIEW_WORDS,
+  TIRED_WEIGHT,
+  WARMUP_BONUS,
+  WARMUP_KEYS,
+  WARMUP_PAIRS,
   MASTERY_MIN_SAMPLES,
   MODIFIER_STAGES,
   MASTERY_ROUNDS,
@@ -13,6 +27,7 @@ import {
   UNLOCK_ORDERS,
 } from "./constants";
 import { difficultyParams, updateDifficulty } from "./difficulty";
+import { applyErrorAnalysis, type ErrorRoundSummary } from "./errors";
 import { explainRound, type RoundExplanation } from "./explain";
 import { calibrationWords, generateWords, wordPool } from "./generate";
 import {
@@ -24,15 +39,19 @@ import {
   modifierRate,
   modKey,
 } from "./modifiers";
+import { dueItems, updateReviews, wordOutcomes, type ReviewChanges } from "./reviews";
+import { rhythm, type Rhythm } from "./rhythm";
 import { deriveSeed, Rng } from "./rng";
-import { computeScores, weakness } from "./scoring";
-import { appendHistory, applyRecords, isLetter } from "./stats";
+import { clamp, computeScores, weakness, type Scores } from "./scoring";
+import { addGripSignal, recordSessionRound, suggestGrip, type FatigueChange } from "./session";
+import { addSample, appendHistory, applyRecords, emptyStat, isLetter } from "./stats";
 import { wpmToMs, type TypingRound } from "./typing";
 import type {
   Blocklist,
   CharacterData,
   Goal,
   InputProfile,
+  Grip,
   KeyRoundEntry,
   ModifierId,
   ModifierSettings,
@@ -50,7 +69,7 @@ export const DEFAULT_GOAL: Goal = { wpm: 40, accuracy: 0.95 };
 
 export function createProfile(profile: InputProfile, seed: number, order: UnlockOrder = "frequency"): ProfileState {
   return {
-    version: 2,
+    version: 3,
     profile,
     goal: null,
     calibration: "none",
@@ -68,17 +87,41 @@ export function createProfile(profile: InputProfile, seed: number, order: Unlock
     difficulty: DIFFICULTY_START,
     modsUnlocked: [],
     modsMastered: [],
+    ...phase3Defaults(),
   };
 }
 
-/** Upgrades a saved profile to the current version (1 → 2 adds difficulty and modifier unlocks). */
+function phase3Defaults() {
+  return {
+    reviews: {},
+    hesitations: {},
+    errorCounts: {},
+    typos: {},
+    confusions: {},
+    errorBias: { swap: 0, double: 0, neighbor: 0 },
+    missedWords: {},
+    session: null,
+    touchTyping: null,
+    gripKeys: {},
+    gripTaps: {},
+  };
+}
+
+/**
+ * Upgrades a saved profile to the current version. 1 → 2 adds difficulty and
+ * modifier unlocks; 2 → 3 adds reviews, hesitations, error analysis,
+ * sessions, the touch-typing answer and per-grip stats.
+ */
 export function migrateProfile(saved: Record<string, unknown>): ProfileState {
-  const p = { ...saved } as Record<string, unknown>;
+  let p = { ...saved } as Record<string, unknown>;
   if (p.version === 1) {
     p.difficulty = DIFFICULTY_START;
     p.modsUnlocked = [];
     p.modsMastered = [];
     p.version = 2;
+  }
+  if (p.version === 2) {
+    p = { ...p, ...phase3Defaults(), version: 3 };
   }
   return p as unknown as ProfileState;
 }
@@ -261,6 +304,12 @@ export interface PlanOptions {
   calibrationTest?: boolean;
   /** Modifier settings; without them, rounds are plain lowercase words. */
   modifiers?: ModifierOptions;
+  /** Phase 3: current time, for spaced-repetition reviews. Without it, reviews are ignored. */
+  now?: number;
+  /** Phase 3: a warm-up round on recent trouble spots. */
+  warmup?: boolean;
+  /** Phase 3: the most of a round that may be made-up words. */
+  madeUpCap?: number;
 }
 
 export interface RoundPlan {
@@ -281,8 +330,11 @@ export function planRound(state: ProfileState, options: PlanOptions): RoundPlan 
     return { words: calibrationWords(options.pack, options.count, rng), explanation: null };
   }
   const goal = state.goal ?? DEFAULT_GOAL;
-  const scores = computeScores(state, goal);
-  const params = difficultyParams(state.difficulty);
+  let scores = computeScores(state, goal, options.now);
+  const targets = options.warmup ? warmupTargets(state, goal, options.now) : null;
+  if (targets) scores = boostTargets(scores, targets);
+  const fatigued = !!state.session?.fatigued;
+  const params = difficultyParams(clamp(state.difficulty - (fatigued ? FATIGUE_EASE : 0), 0, 1));
   let words = generateWords({
     pack: options.pack,
     blocklist: options.blocklist,
@@ -292,7 +344,21 @@ export function planRound(state: ProfileState, options: PlanOptions): RoundPlan 
     rng,
     previous: options.previous,
     params,
+    madeUpCap: options.madeUpCap,
+    wordBonus: errorDrillBonus(state),
+    pronounceable: true,
   });
+  // Due review words go into the first batch at random places.
+  const reviewWords: string[] = [];
+  if ((options.chunk ?? 0) === 0 && options.now !== undefined) {
+    const unlocked = new Set(state.unlocked);
+    for (const item of dueItems(state, options.now, "word")) {
+      if (reviewWords.length >= REVIEW_WORDS || reviewWords.length >= words.length) break;
+      if (![...item.target].every((c) => unlocked.has(c))) continue;
+      words[rng.int(words.length)] = { text: item.target, madeUp: false };
+      reviewWords.push(item.target);
+    }
+  }
   const mods = options.modifiers;
   const rates = mods
     ? capRates(activeModifiers(state, mods.settings, mods.platform).map((id) => ({ id, rate: modifierRate(id, state, mods.settings, goal) })))
@@ -311,7 +377,80 @@ export function planRound(state: ProfileState, options: PlanOptions): RoundPlan 
       previous: options.previous,
     });
   }
-  return { words, explanation: explainRound(state, scores, words, rates) };
+  return {
+    words,
+    explanation: explainRound(state, scores, words, rates, {
+      warmup: targets ?? undefined,
+      reviewWords: reviewWords.filter((w) => words.some((x) => x.text.toLowerCase().includes(w))),
+      fatigued,
+    }),
+  };
+}
+
+export interface WarmupTargets {
+  keys: string[];
+  pairs: string[];
+}
+
+/**
+ * Trouble spots for a warm-up: the WARMUP_KEYS highest-scoring letters with
+ * score at least FOCUS_KEY_MIN_SCORE and the WARMUP_PAIRS highest pairs with
+ * score at least FOCUS_PAIR_MIN_SCORE (ties: unlock order, then
+ * alphabetical). Null when there are none.
+ */
+export function warmupTargets(state: ProfileState, goal: Goal, now?: number): WarmupTargets | null {
+  const scores = computeScores(state, goal, now);
+  const keys = state.unlocked
+    .map((l, i) => ({ l, i, s: scores.keys[l] }))
+    .filter((k) => k.s >= FOCUS_KEY_MIN_SCORE)
+    .sort((a, b) => b.s - a.s || a.i - b.i)
+    .slice(0, WARMUP_KEYS)
+    .map((k) => k.l);
+  const pairs = Object.entries(scores.pairs)
+    .filter(([, s]) => s >= FOCUS_PAIR_MIN_SCORE)
+    .sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1))
+    .slice(0, WARMUP_PAIRS)
+    .map(([p]) => p);
+  return keys.length + pairs.length > 0 ? { keys, pairs } : null;
+}
+
+function boostTargets(scores: Scores, targets: WarmupTargets): Scores {
+  const keys = { ...scores.keys };
+  const pairs = { ...scores.pairs };
+  for (const k of targets.keys) keys[k] += WARMUP_BONUS;
+  for (const p of targets.pairs) pairs[p] += WARMUP_BONUS;
+  return { keys, pairs };
+}
+
+/**
+ * Error-type drills, as a multiplier on real words' weights: words with a
+ * doubled letter get x(1 + double bias) when the double bias is at least
+ * DOUBLE_BIAS_MIN; words containing both letters of one of the two most
+ * frequent neighbor confusions (count at least CONFUSION_MIN) get
+ * x(1 + CONFUSION_BONUS). Swaps are drilled through letter pairs instead.
+ */
+export function errorDrillBonus(state: ProfileState): ((text: string) => number) | undefined {
+  const double = state.errorBias?.double ?? 0;
+  const confusions = Object.entries(state.confusions ?? {})
+    .filter(([, n]) => n >= CONFUSION_MIN)
+    .sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1))
+    .slice(0, 2)
+    .map(([pair]) => pair);
+  if (double < DOUBLE_BIAS_MIN && confusions.length === 0) return undefined;
+  return (text) => {
+    let bonus = 1;
+    if (double >= DOUBLE_BIAS_MIN && /(.)\1/.test(text)) bonus *= 1 + double;
+    if (confusions.some((pair) => text.includes(pair[0]) && text.includes(pair[1]))) bonus *= 1 + CONFUSION_BONUS;
+    return bonus;
+  };
+}
+
+/** Whether to offer a warm-up: a new session with past practice and trouble spots to work on. */
+export function shouldWarmUp(state: ProfileState, now: number): boolean {
+  const s = state.session;
+  if (!s || s.rounds > 0 || s.warmupDone || isCalibrating(state) || state.calibration === "none") return false;
+  if (state.rounds.filter((r) => !r.calibration).length < 3) return false;
+  return warmupTargets(state, state.goal ?? DEFAULT_GOAL, now) !== null;
 }
 
 /** Just the words of planRound. */
@@ -326,6 +465,15 @@ export interface RoundOutcome extends UnlockResult {
   testedOut: string[];
   /** How much difficulty changed after this round. */
   difficultyChange: number;
+  /** Phase 3. */
+  errors: ErrorRoundSummary;
+  rhythm: Rhythm;
+  /** Keys with a hesitation this round, most hesitations first. */
+  hesitated: { key: string; count: number }[];
+  fatigue: FatigueChange;
+  reviews: ReviewChanges;
+  /** Touch: a grip suggestion when the taps don't match the grip picked. */
+  gripSuggestion: Grip | null;
 }
 
 /**
@@ -337,21 +485,31 @@ export function completeRound(
   state: ProfileState,
   round: TypingRound,
   at: number,
-  options: { calibrationTest?: boolean; chars?: CharacterData } = {},
+  options: { calibrationTest?: boolean; chars?: CharacterData; pack?: WordPack; warmup?: boolean } = {},
 ): RoundOutcome {
   const metrics = round.metrics();
   const calibration = !!options.calibrationTest || isCalibrating(state);
-  const { perKey } = applyRecords(round.target, round.records, state.keys, state.pairs, options.chars);
+  const session = state.session;
+  const tired = !calibration && !!session?.fatigued;
+  const hesitated = judgeHesitations(state, round);
+  const { perKey } = applyRecords(round.target, round.records, state.keys, state.pairs, options.chars, tired ? TIRED_WEIGHT : 1);
+  const errors = applyErrorAnalysis(state, round.target, round.records, options.pack ?? null);
+  const flow = rhythm(round.records);
   const historyKeys: Record<string, KeyRoundEntry> = {};
   for (const key of Object.keys(perKey)) if (isLetter(key) || key.startsWith("mod:")) historyKeys[key] = perKey[key];
   appendHistory(state.keyHistory, historyKeys);
 
+  const grip = state.profile === "touch" ? session?.grip ?? null : null;
   for (const r of round.records) {
     if (!r.tap) continue;
-    const list = (state.taps[r.expected] ??= []);
-    list.push(r.tap);
-    if (list.length > MAX_TAPS_PER_KEY) list.splice(0, list.length - MAX_TAPS_PER_KEY);
+    const lists = [(state.taps[r.expected] ??= [])];
+    if (grip) lists.push(((state.gripTaps[grip] ??= {})[r.expected] ??= []));
+    for (const list of lists) {
+      list.push(r.tap);
+      if (list.length > MAX_TAPS_PER_KEY) list.splice(0, list.length - MAX_TAPS_PER_KEY);
+    }
   }
+  if (grip) applyRecords(round.target, round.records, (state.gripKeys[grip] ??= {}), {}, undefined, tired ? TIRED_WEIGHT : 1);
 
   const summary: RoundSummary = {
     at,
@@ -361,12 +519,31 @@ export function completeRound(
     chars: metrics.correctChars,
     corrections: metrics.corrections,
     calibration,
+    consistency: flow.consistency,
+    firstErrors: metrics.firstErrors,
+    ...(options.warmup ? { warmup: true } : {}),
   };
   if (metrics.keystrokes > 0) {
     state.rounds.push(summary);
     if (state.rounds.length > MAX_ROUNDS_KEPT) state.rounds.splice(0, state.rounds.length - MAX_ROUNDS_KEPT);
   }
   state.roundCounter += 1;
+
+  let fatigue: FatigueChange = null;
+  let gripSuggestion: Grip | null = null;
+  if (session && !calibration && metrics.keystrokes > 0) {
+    fatigue = recordSessionRound(session, at, metrics.wpm, metrics.accuracy);
+    if (options.warmup) session.warmupDone = true;
+    if (grip) {
+      addGripSignal(session, round.target, round.records);
+      gripSuggestion = suggestGrip(session);
+    }
+  }
+  const goal = state.goal ?? DEFAULT_GOAL;
+  const reviews: ReviewChanges =
+    calibration || metrics.keystrokes === 0
+      ? { added: [], passed: [], missed: [], learned: [] }
+      : updateReviews(state, perKey, wordOutcomes(round.target, errors.errors.map((e) => e.index), round.position), at, goal);
 
   let testedOut: string[] = [];
   let result: UnlockResult = { newlyMastered: [], newlyUnlocked: null, newlyMasteredMods: [], newlyUnlockedMods: [] };
@@ -381,9 +558,31 @@ export function completeRound(
     }
   } else {
     result = updateUnlocks(state);
-    if (metrics.keystrokes > 0) difficultyChange = updateDifficulty(state, state.goal ?? DEFAULT_GOAL);
+    if (metrics.keystrokes > 0 && !options.warmup) difficultyChange = updateDifficulty(state, goal, { noRaise: tired || fatigue === "started" });
   }
-  return { ...result, summary, perKey, testedOut, difficultyChange };
+  return { ...result, summary, perKey, testedOut, difficultyChange, errors, rhythm: flow, hesitated, fatigue, reviews, gripSuggestion };
+}
+
+/**
+ * Judges each first-attempt keystroke with an interval: it's a hesitation
+ * when the interval is above max(HESITATION_MIN_MS, HESITATION_FACTOR x the
+ * key's average before this round). Keys need HESITATION_MIN_SAMPLES timed
+ * samples first. Each judgment is a sample in state.hesitations (error =
+ * hesitation, no interval). Run before the round's stats are applied.
+ */
+export function judgeHesitations(state: ProfileState, round: TypingRound): { key: string; count: number }[] {
+  const counts: Record<string, number> = {};
+  for (const r of round.records) {
+    if (!r.first || r.interval === null) continue;
+    const base = state.keys[r.expected];
+    if (!base || base.timedN < HESITATION_MIN_SAMPLES) continue;
+    const hesitation = r.interval > Math.max(HESITATION_MIN_MS, HESITATION_FACTOR * base.msAvg);
+    addSample((state.hesitations[r.expected] ??= emptyStat()), hesitation, null);
+    if (hesitation) counts[r.expected] = (counts[r.expected] ?? 0) + 1;
+  }
+  return Object.entries(counts)
+    .sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1))
+    .map(([key, count]) => ({ key, count }));
 }
 
 /** Seed for a shortcut drill; finishing the drill advances the round counter. */
@@ -393,7 +592,7 @@ export function shortcutDrillSeed(state: ProfileState): number {
 
 /** Average WPM and accuracy over recent non-calibration rounds, or null with none. */
 export function recentAverage(state: ProfileState, skipLast = 0): { wpm: number; accuracy: number } | null {
-  const rounds = state.rounds.filter((r) => !r.calibration);
+  const rounds = state.rounds.filter((r) => !r.calibration && !r.warmup);
   const slice = rounds.slice(0, rounds.length - skipLast).slice(-RECENT_ROUNDS);
   if (slice.length === 0) return null;
   let wpm = 0;

@@ -85,6 +85,7 @@
     "keystrokes": 5,
     "correctKeystrokes": 5,
     "corrections": 0,
+    "firstErrors": 0,
     "elapsedMs": 480,
     "wpm": 125,
     "accuracy": 1
@@ -167,6 +168,7 @@
     "keystrokes": 4,
     "correctKeystrokes": 3,
     "corrections": 1,
+    "firstErrors": 1,
     "elapsedMs": 530,
     "wpm": 67.92452830188678,
     "accuracy": 0.75
@@ -231,6 +233,7 @@
     "keystrokes": 3,
     "correctKeystrokes": 2,
     "corrections": 1,
+    "firstErrors": 1,
     "elapsedMs": 350,
     "wpm": 68.57142857142857,
     "accuracy": 0.6666666666666666
@@ -299,6 +302,7 @@
     "keystrokes": 3,
     "correctKeystrokes": 2,
     "corrections": 0,
+    "firstErrors": 1,
     "elapsedMs": 450,
     "wpm": 53.333333333333336,
     "accuracy": 0.6666666666666666
@@ -349,6 +353,7 @@
     "keystrokes": 2,
     "correctKeystrokes": 2,
     "corrections": 0,
+    "firstErrors": 0,
     "elapsedMs": 2500,
     "wpm": 9.600000000000001,
     "accuracy": 1

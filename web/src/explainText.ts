@@ -31,8 +31,10 @@ export function oneIn(rate: number): string {
 export function roundBanner(explanation: RoundExplanation): string {
   const parts: string[] = [];
   if (explanation.newLetter) parts.push(`New letter: ${explanation.newLetter}.`);
-  const focus = [...explanation.keys, ...explanation.pairs];
+  const focus = [...explanation.keys, ...explanation.pairs.map((p) => `the pair ${p}`)];
   if (focus.length > 0) parts.push(`Focusing on ${list(focus)}.`);
+  if (explanation.reviewWords?.length) parts.push(`Back for review: ${list(explanation.reviewWords)}.`);
+  if (explanation.fatigued) parts.push("A little easier while you recover.");
   if (explanation.modifiers.length > 0) {
     const mods = explanation.modifiers.map((m) => `${MODIFIER_NAMES[m.id].toLowerCase()} (${oneIn(m.rate)} words)`);
     parts.push(`With ${list(mods)}.`);
@@ -52,6 +54,8 @@ const REASONS: Record<KeyDetail["reasons"][number], string> = {
   slow: "It's slower than your goal.",
   errors: "It has more errors than your accuracy target allows.",
   fine: "It's at your goal, so it only shows up as often as normal.",
+  hesitant: "You often pause before it, even when you get it right. It needs confidence more than accuracy.",
+  review: "It's due for review: you missed it before, so it comes back to check it stuck.",
 };
 
 export function reasonText(reasons: KeyDetail["reasons"]): string {

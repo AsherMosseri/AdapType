@@ -10,6 +10,19 @@ import loanwords from "../../content/loanwords.json";
 import shortcutPack from "../../content/shortcuts-text-editing.json";
 import fullPack from "../../content/words-en.json";
 import {
+  applyErrorAnalysis,
+  beginSession,
+  classifyErrors,
+  DAY_MS,
+  judgeHesitations,
+  phonotactics,
+  pronounceableWord,
+  recordSessionRound,
+  rhythm,
+  suggestGrip,
+  updateReviews,
+  warmupTargets,
+  wordOutcomes,
   applyModifiers,
   applyRecords,
   DEFAULT_MODIFIER_SETTINGS,
@@ -40,6 +53,7 @@ import {
   weakness,
   type ErrorMode,
   type Goal,
+  type KeyRoundEntry,
   type ProfileState,
   type StatEntry,
   type TypingEvent,
@@ -312,6 +326,153 @@ describe("test vectors", () => {
     return { profileSeed: 77, roundCounter: 0, seed, keys: { "sc:undo": state.keys["sc:undo"], "sc:copy": state.keys["sc:copy"] }, drill: drill.map((s) => s.id) };
   });
 
+  check("errors", () => {
+    const cases: { target: string; mode: ErrorMode; typed: string }[] = [
+      { target: "the cat", mode: "skip", typed: "teh cat" },
+      { target: "letter", mode: "skip", typed: "leter" },
+      { target: "letter", mode: "skip", typed: "lettter" },
+      { target: "then", mode: "skip", typed: "ten" },
+      { target: "tea", mode: "skip", typed: "rea" },
+      { target: "Tea", mode: "skip", typed: "tea" },
+      { target: "quick", mode: "block", typed: "qwuick" },
+      { target: "jump", mode: "skip", typed: "jmup" },
+    ];
+    return cases.map((c) => {
+      const round = new TypingRound(c.target, c.mode);
+      const events = [...c.typed].map((char, i) => ({ kind: "char" as const, char, t: i * 100 }));
+      for (const e of events) round.input(e);
+      const state = createProfile("physical", 1);
+      const summary = applyErrorAnalysis(state, c.target, round.records, pack);
+      return {
+        ...c,
+        events,
+        errors: classifyErrors(c.target, round.records),
+        summary,
+        state: { errorCounts: state.errorCounts, typos: state.typos, confusions: state.confusions, errorBias: state.errorBias, missedWords: state.missedWords, pairs: state.pairs },
+      };
+    });
+  });
+
+  check("hesitation", () => {
+    const state = createProfile("physical", 1);
+    state.keys.t = { n: 20, timedN: 20, msAvg: 150, errAvg: 0 };
+    state.keys.e = { n: 20, timedN: 20, msAvg: 180, errAvg: 0 };
+    state.keys.a = { n: 3, timedN: 3, msAvg: 180, errAvg: 0 };
+    const target = "tea tee ate";
+    const gaps = [0, 150, 500, 160, 200, 900, 170, 150, 140, 380, 150];
+    let t = 0;
+    const events = gaps.map((g, i) => ({ kind: "char" as const, char: target[i], t: (t += g) }));
+    const round = new TypingRound(target, "backspace");
+    for (const e of events) round.input(e);
+    const keysBefore = structuredClone(state.keys);
+    const hesitated = judgeHesitations(state, round);
+    return { keysBefore, target, events, hesitated, hesitations: state.hesitations };
+  });
+
+  check("session", () => {
+    const state = createProfile("touch", 1);
+    const start = 1_700_000_000_000;
+    const steps: unknown[] = [];
+    steps.push({ begin: start, newSession: beginSession(state, start), session: structuredClone(state.session) });
+    steps.push({ begin: start + 20 * 60000, newSession: beginSession(state, start + 20 * 60000) });
+    const rounds = [
+      [50, 0.97], [52, 0.96], [49, 0.96], [41, 0.93], [40, 0.94], [48, 0.96], [51, 0.97],
+    ];
+    rounds.forEach(([wpm, acc], i) => {
+      const change = recordSessionRound(state.session!, start + i * 60000, wpm, acc);
+      steps.push({ round: { wpm, accuracy: acc }, change, fatigued: state.session!.fatigued, baseline: state.session!.baseline });
+    });
+    steps.push({ begin: start + 3 * 60 * 60000, newSession: beginSession(state, start + 3 * 60 * 60000), session: structuredClone(state.session) });
+    const grip = state.session!;
+    grip.grip = "two";
+    grip.gripSignal = { sameMs: 25 * 210, sameN: 25, crossMs: 22 * 260, crossN: 22 };
+    steps.push({ gripSignal: grip.gripSignal, picked: "two", suggestion: suggestGrip(grip) });
+    return steps;
+  });
+
+  check("reviews", () => {
+    const goal: Goal = { wpm: 40, accuracy: 0.95 };
+    const state = createProfile("physical", 1);
+    state.goal = goal;
+    const t0 = 1_700_000_000_000;
+    beginSession(state, t0);
+    state.keys.o = { n: 30, timedN: 30, msAvg: 650, errAvg: 0.15 };
+    state.pairs.th = { n: 20, timedN: 20, msAvg: 640, errAvg: 0.1 };
+    const bad = { n: 5, correct: 3, msTotal: 3500, msN: 5 };
+    const good = { n: 5, correct: 5, msTotal: 1000, msN: 5 };
+    const steps: { at: number; sessionRounds: number; perKey: Record<string, KeyRoundEntry>; words: { clean: string[]; botched: string[] } }[] = [
+      { at: t0, sessionRounds: 1, perKey: { o: bad, "pair:th": { n: 3, correct: 2, msTotal: 1900, msN: 3 } }, words: { clean: ["the"], botched: ["onto", "into"] } },
+      { at: t0 + 60000, sessionRounds: 2, perKey: { o: good }, words: { clean: ["onto"], botched: [] } },
+      { at: t0 + 120000, sessionRounds: 3, perKey: { o: good, "pair:th": { n: 3, correct: 3, msTotal: 600, msN: 3 } }, words: { clean: ["onto", "into"], botched: [] } },
+      { at: t0 + DAY_MS + 1, sessionRounds: 1, perKey: { o: good }, words: { clean: ["onto"], botched: ["into"] } },
+      { at: t0 + 5 * DAY_MS, sessionRounds: 1, perKey: { o: bad }, words: { clean: ["onto"], botched: [] } },
+    ];
+    return {
+      goal,
+      keys: { o: state.keys.o },
+      pairs: { th: state.pairs.th },
+      steps: steps.map((step) => {
+        state.session!.rounds = step.sessionRounds;
+        const changes = updateReviews(state, step.perKey, step.words, step.at, goal);
+        return { ...step, changes, reviews: structuredClone(state.reviews) };
+      }),
+      wordOutcomes: [
+        { target: "the cat sat", errors: [5], typedLength: 11, result: wordOutcomes("the cat sat", [5], 11) },
+        { target: "Over, the (top)!", errors: [0, 7], typedLength: 16, result: wordOutcomes("Over, the (top)!", [0, 7], 16) },
+      ],
+    };
+  });
+
+  check("rhythm", () => {
+    const sequences = [
+      [0, 200, 400, 600, 800, 1000, 1200],
+      [0, 100, 400, 450, 900, 950, 1900, 2000],
+      [0, 150, 300],
+    ];
+    return sequences.map((times) => {
+      const target = "a".repeat(times.length);
+      const round = new TypingRound(target, "backspace");
+      times.forEach((t) => round.input({ kind: "char", char: "a", t }));
+      return { times, rhythm: rhythm(round.records) };
+    });
+  });
+
+  check("phonotactics", () => {
+    const p = phonotactics(pack);
+    const letterSets = ["etaoinshr", "asdfjklhgeriotu", "etaoinshrdlcumwfgypbvkjxqz"];
+    return {
+      packSize: PACK_SIZE,
+      patterns: p,
+      words: letterSets.map((letters, i) => {
+        const rng = new Rng(500 + i);
+        return {
+          letters,
+          seed: 500 + i,
+          words: Array.from({ length: 12 }, () => pronounceableWord(pack, letters.split(""), { keys: { e: 1, o: 0.5 }, pairs: {} }, blocklist, rng)),
+        };
+      }),
+    };
+  });
+
+  check("warmup", () => {
+    const goal: Goal = { wpm: 40, accuracy: 0.95 };
+    const state = createProfile("physical", 9);
+    state.goal = goal;
+    state.calibration = "done";
+    state.unlocked = "etaoinshr".split("");
+    state.mastered = "etaoinsh".split("");
+    for (const l of state.unlocked) state.keys[l] = { n: 40, timedN: 40, msAvg: 240, errAvg: 0.02 };
+    state.keys.n = { n: 40, timedN: 40, msAvg: 520, errAvg: 0.08 };
+    state.keys.s = { n: 40, timedN: 40, msAvg: 380, errAvg: 0.04 };
+    state.pairs.nt = { n: 20, timedN: 20, msAvg: 600, errAvg: 0.1 };
+    const now = 1_700_000_000_000;
+    beginSession(state, now);
+    state.reviews["word:onto"] = { kind: "word", target: "onto", step: 0, due: now - 1, sessionRound: null, lapses: 1 };
+    const targets = warmupTargets(state, goal, now);
+    const plan = planRound(state, { pack, blocklist, count: 20, warmup: true, now });
+    return { state: { unlocked: state.unlocked, mastered: state.mastered, keys: state.keys, pairs: state.pairs, reviews: state.reviews, seed: 9, roundCounter: 0 }, now, targets, plan };
+  });
+
   check("profile", () => {
     // A full session: test, goal, then practice rounds with a simulated typist.
     // Ports replay the same events and must reach the same state each round.
@@ -319,6 +480,7 @@ describe("test vectors", () => {
       playSession("frequency", 2024, false),
       playSession("homeRow", 7, true),
       playModifierSession(31),
+      playPhase3Session(77),
     ];
   });
 });
@@ -375,6 +537,45 @@ function playModifierSession(seed: number) {
     });
   }
   return { modifierSession: true, seed, packSize: PACK_SIZE, platformExtra: macExtra, settings, steps };
+}
+
+/** Phase 3: sessions, reviews, hesitations and error analysis across rounds, with one long break. */
+function playPhase3Session(seed: number) {
+  const state = createProfile("physical", seed);
+  state.goal = { wpm: 35, accuracy: 0.95 };
+  state.calibration = "done";
+  state.unlocked = "etaoinshrdl".split("");
+  state.mastered = "etaoinshrd".split("");
+  const t0 = 1_700_000_000_000;
+  const steps: unknown[] = [];
+  for (let i = 0; i < 8; i++) {
+    const at = t0 + (i < 5 ? i * 120000 : DAY_MS + i * 120000);
+    const newSession = beginSession(state, at);
+    const plan = planRound(state, { pack, blocklist, count: 15, now: at });
+    const target = plan.words.map((w) => w.text).join(" ");
+    const events = simulateTyping(target, { msPerKey: i === 3 ? 320 : 190, errorRate: 0.06, seed: 900 + i }, 1000);
+    const round = new TypingRound(target, "backspace");
+    for (const e of events) round.input(e);
+    const outcome = completeRound(state, round, at + 30000, { pack });
+    steps.push({
+      at,
+      newSession,
+      words: plan.words,
+      explanation: plan.explanation,
+      events,
+      outcome: { ...outcome, rhythm: { consistency: outcome.rhythm.consistency, stalls: outcome.rhythm.stalls } },
+      state: {
+        ...snapshot(state),
+        difficulty: state.difficulty,
+        reviews: structuredClone(state.reviews),
+        hesitations: structuredClone(state.hesitations),
+        errorBias: { ...state.errorBias },
+        missedWords: { ...state.missedWords },
+        session: structuredClone(state.session),
+      },
+    });
+  }
+  return { phase3Session: true, seed, packSize: PACK_SIZE, steps };
 }
 
 function snapshot(state: ProfileState) {

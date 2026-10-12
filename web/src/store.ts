@@ -2,6 +2,7 @@
 // later phases can migrate it.
 import {
   createProfile,
+  DEFAULT_MADE_UP_CAP,
   DEFAULT_MODIFIER_SETTINGS,
   migrateProfile,
   type ErrorMode,
@@ -11,7 +12,7 @@ import {
   type RoundType,
 } from "../../engine/src";
 
-export const DATA_VERSION = 2;
+export const DATA_VERSION = 3;
 
 export type OsChoice = "auto" | "mac" | "windows" | "windows-intl" | "linux";
 export type TouchLayoutChoice = "auto" | "ios" | "android";
@@ -31,6 +32,14 @@ export interface Settings {
   touchLayout: TouchLayoutChoice;
   shortcutStyle: "shown" | "named";
   shortcutAnswer: "press" | "build";
+  /** Phase 3. */
+  warmup: boolean;
+  metronome: boolean;
+  livePulse: boolean;
+  /** The most of a round that may be made-up words. */
+  madeUpCap: number;
+  /** Touch: train keeps keys fixed; assist shifts each key's tap area toward where you tap. */
+  hitZones: "train" | "assist";
 }
 
 export function defaultSettings(activeProfile: InputProfile): Settings {
@@ -45,6 +54,11 @@ export function defaultSettings(activeProfile: InputProfile): Settings {
     touchLayout: "auto",
     shortcutStyle: "shown",
     shortcutAnswer: "press",
+    warmup: true,
+    metronome: false,
+    livePulse: true,
+    madeUpCap: DEFAULT_MADE_UP_CAP,
+    hitZones: "train",
   };
 }
 
@@ -124,7 +138,7 @@ export function parseData(text: string): AppData {
   return migrate(data as unknown as AppData);
 }
 
-/** Upgrades older saved data: version 1 → 2 adds modifier, system and shortcut settings. */
+/** Upgrades older saved data: version 1 → 2 adds modifier, system and shortcut settings; 2 → 3 adds practice settings. Profiles migrate in the engine. */
 function migrate(data: AppData): AppData {
   const defaults = defaultSettings(data.settings.activeProfile ?? "physical");
   data.settings = { ...defaults, ...data.settings, modifiers: { ...defaults.modifiers, ...data.settings.modifiers } };

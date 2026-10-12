@@ -12,6 +12,7 @@ import {
   VOWELS,
 } from "./constants";
 import { difficultyParams, type DifficultyParams } from "./difficulty";
+import { pronounceableWord } from "./phonotactics";
 import type { Rng } from "./rng";
 import type { Scores } from "./scoring";
 import type { Blocklist, RoundWord, WordPack } from "./types";
@@ -66,10 +67,10 @@ export function wordWeight(
   return raw / (1 + word.rank / params.rankScale);
 }
 
-/** Share of a round that's made-up words, given how many real words fit. */
-export function madeUpShare(poolSize: number): number {
+/** Share of a round that's made-up words, given how many real words fit and the player's cap. */
+export function madeUpShare(poolSize: number, cap = MAX_MADE_UP_SHARE): number {
   if (poolSize >= FULL_POOL) return 0;
-  return Math.min(MAX_MADE_UP_SHARE, 1 - poolSize / FULL_POOL);
+  return Math.min(cap, MAX_MADE_UP_SHARE, 1 - poolSize / FULL_POOL);
 }
 
 export interface GenerateOptions {
@@ -83,6 +84,12 @@ export interface GenerateOptions {
   previous?: string;
   /** Difficulty settings (defaults to difficulty 0.3). */
   params?: DifficultyParams;
+  /** Phase 3: the most of a round that may be made-up words (0..0.8). Ignored when no real word fits. */
+  madeUpCap?: number;
+  /** Phase 3: multiplies a real word's weight (error-type drills). */
+  wordBonus?: (text: string) => number;
+  /** Phase 3: use the pronounceable made-up word builder (with the simple one as fallback). */
+  pronounceable?: boolean;
 }
 
 /**
@@ -95,8 +102,9 @@ export function generateWords(options: GenerateOptions): RoundWord[] {
   const { pack, blocklist, letters, scores, count, rng } = options;
   const params = options.params ?? difficultyParams(0.3);
   const pool = wordPool(pack, letters, params);
-  const share = madeUpShare(pool.length);
-  const weights = pool.map((w) => wordWeight(w, scores, params));
+  const share = madeUpShare(pool.length, options.madeUpCap);
+  const bonus = options.wordBonus;
+  const weights = pool.map((w) => wordWeight(w, scores, params) * (bonus ? bonus(w.text) : 1));
   const used = new Set<number>();
   const words: RoundWord[] = [];
   let previous = options.previous ?? "";
@@ -105,7 +113,8 @@ export function generateWords(options: GenerateOptions): RoundWord[] {
     const useMadeUp = pool.length === 0 || (share > 0 && rng.next() < share);
     let word: RoundWord;
     if (useMadeUp) {
-      word = makeUpWord(letters, scores, blocklist, pack, rng);
+      const pronounceable = options.pronounceable ? pronounceableWord(pack, letters, scores, blocklist, rng) : null;
+      word = pronounceable !== null ? { text: pronounceable, madeUp: !pack.words.includes(pronounceable) } : makeUpWord(letters, scores, blocklist, pack, rng);
     } else {
       if (used.size >= pool.length) used.clear();
       const available = weights.map((w, idx) => (used.has(idx) || pool[idx].text === previous ? 0 : w));

@@ -1,0 +1,123 @@
+[
+ {
+  "times": [
+   0,
+   200,
+   400,
+   600,
+   800,
+   1000,
+   1200
+  ],
+  "rhythm": {
+   "intervals": [
+    {
+     "record": 1,
+     "ms": 200
+    },
+    {
+     "record": 2,
+     "ms": 200
+    },
+    {
+     "record": 3,
+     "ms": 200
+    },
+    {
+     "record": 4,
+     "ms": 200
+    },
+    {
+     "record": 5,
+     "ms": 200
+    },
+    {
+     "record": 6,
+     "ms": 200
+    }
+   ],
+   "mean": 200,
+   "median": 200,
+   "sd": 0,
+   "consistency": 1,
+   "stalls": []
+  }
+ },
+ {
+  "times": [
+   0,
+   100,
+   400,
+   450,
+   900,
+   950,
+   1900,
+   2000
+  ],
+  "rhythm": {
+   "intervals": [
+    {
+     "record": 1,
+     "ms": 100
+    },
+    {
+     "record": 2,
+     "ms": 300
+    },
+    {
+     "record": 3,
+     "ms": 50
+    },
+    {
+     "record": 4,
+     "ms": 450
+    },
+    {
+     "record": 5,
+     "ms": 50
+    },
+    {
+     "record": 6,
+     "ms": 950
+    },
+    {
+     "record": 7,
+     "ms": 100
+    }
+   ],
+   "mean": 285.7142857142857,
+   "median": 100,
+   "sd": 304.3896536094645,
+   "consistency": 0,
+   "stalls": [
+    2,
+    4,
+    6
+   ]
+  }
+ },
+ {
+  "times": [
+   0,
+   150,
+   300
+  ],
+  "rhythm": {
+   "intervals": [
+    {
+     "record": 1,
+     "ms": 150
+    },
+    {
+     "record": 2,
+     "ms": 150
+    }
+   ],
+   "mean": 150,
+   "median": 150,
+   "sd": 0,
+   "consistency": null,
+   "stalls": []
+  }
+ }
+]

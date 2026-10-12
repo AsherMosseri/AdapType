@@ -11,20 +11,29 @@ export function emptyStat(): StatEntry {
   return { n: 0, timedN: 0, msAvg: 0, errAvg: 0 };
 }
 
-/** Moving-average step: a plain average for early samples, recent-weighted after. */
-function step(avg: number, count: number, sample: number): number {
-  const weight = Math.max(MIN_AVG_WEIGHT, 1 / count);
+/**
+ * Moving-average step: a plain average for early samples, recent-weighted
+ * after. `factor` (below 1 for tired rounds) scales the weight, except for
+ * a first sample, which always sets the average.
+ */
+function step(avg: number, count: number, sample: number, factor: number): number {
+  const weight = count === 1 ? 1 : Math.max(MIN_AVG_WEIGHT, 1 / count) * factor;
   return avg + weight * (sample - avg);
 }
 
 /** Adds one sample to a stat entry, in place. */
-export function addSample(entry: StatEntry, error: boolean, interval: number | null): void {
+export function addSample(entry: StatEntry, error: boolean, interval: number | null, factor = 1): void {
   entry.n += 1;
-  entry.errAvg = step(entry.errAvg, entry.n, error ? 1 : 0);
+  entry.errAvg = step(entry.errAvg, entry.n, error ? 1 : 0, factor);
   if (interval !== null) {
     entry.timedN += 1;
-    entry.msAvg = step(entry.msAvg, entry.timedN, interval);
+    entry.msAvg = step(entry.msAvg, entry.timedN, interval, factor);
   }
+}
+
+/** Per-round entry key for a letter pair. */
+export function pairRoundKey(pair: string): string {
+  return `pair:${pair}`;
 }
 
 export interface StatsUpdate {
@@ -46,6 +55,8 @@ export function applyRecords(
   keys: Record<string, StatEntry>,
   pairs: Record<string, StatEntry>,
   chars?: CharacterData,
+  /** Weight factor for every sample (TIRED_WEIGHT for rounds played while fatigued). */
+  factor = 1,
 ): StatsUpdate {
   const perKey: Record<string, KeyRoundEntry> = {};
   const count = (key: string, r: KeystrokeRecord) => {
@@ -61,27 +72,28 @@ export function applyRecords(
     if (!r.first) continue;
     const key = r.expected;
     const entry = (keys[key] ??= emptyStat());
-    addSample(entry, !r.correct, r.interval);
+    addSample(entry, !r.correct, r.interval, factor);
     count(key, r);
 
     if (chars) {
       const category = categoryOf(key, chars);
       if (category !== "letter" && category !== "space" && category !== "other") {
-        addSample((keys[modKey(category)] ??= emptyStat()), !r.correct, r.interval);
+        addSample((keys[modKey(category)] ??= emptyStat()), !r.correct, r.interval, factor);
         count(modKey(category), r);
       }
       if (r.shift && key >= "A" && key <= "Z") {
         const wrongSide = LEFT_HAND_LETTERS.includes(key.toLowerCase()) ? r.shift === "left" : r.shift === "right";
-        addSample((keys[SHIFT_SIDE_KEY] ??= emptyStat()), wrongSide, null);
+        addSample((keys[SHIFT_SIDE_KEY] ??= emptyStat()), wrongSide, null, factor);
       }
-      if (r.layer) addSample((keys[TOUCH_LAYER_KEY] ??= emptyStat()), !r.correct, r.interval);
+      if (r.layer) addSample((keys[TOUCH_LAYER_KEY] ??= emptyStat()), !r.correct, r.interval, factor);
     }
 
     if (r.index > 0) {
       const prev = target[r.index - 1];
       if (isLetter(prev) && isLetter(key)) {
         const pair = (pairs[prev + key] ??= emptyStat());
-        addSample(pair, !r.correct, r.interval);
+        addSample(pair, !r.correct, r.interval, factor);
+        count(pairRoundKey(prev + key), r);
       }
     }
   }

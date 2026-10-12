@@ -1,0 +1,632 @@
+[
+ {
+  "target": "the cat",
+  "mode": "skip",
+  "typed": "teh cat",
+  "events": [
+   {
+    "kind": "char",
+    "char": "t",
+    "t": 0
+   },
+   {
+    "kind": "char",
+    "char": "e",
+    "t": 100
+   },
+   {
+    "kind": "char",
+    "char": "h",
+    "t": 200
+   },
+   {
+    "kind": "char",
+    "char": " ",
+    "t": 300
+   },
+   {
+    "kind": "char",
+    "char": "c",
+    "t": 400
+   },
+   {
+    "kind": "char",
+    "char": "a",
+    "t": 500
+   },
+   {
+    "kind": "char",
+    "char": "t",
+    "t": 600
+   }
+  ],
+  "errors": [
+   {
+    "index": 1,
+    "expected": "h",
+    "actual": "e",
+    "type": "swap"
+   }
+  ],
+  "summary": {
+   "errors": [
+    {
+     "index": 1,
+     "expected": "h",
+     "actual": "e",
+     "type": "swap"
+    }
+   ],
+   "counts": {
+    "swap": 1
+   },
+   "missedWords": [
+    "the"
+   ]
+  },
+  "state": {
+   "errorCounts": {
+    "h": {
+     "swap": 1
+    }
+   },
+   "typos": {
+    "h": {
+     "e": 1
+    }
+   },
+   "confusions": {},
+   "errorBias": {
+    "swap": 0.2,
+    "double": 0,
+    "neighbor": 0
+   },
+   "missedWords": {
+    "the": 1
+   },
+   "pairs": {
+    "he": {
+     "n": 1,
+     "timedN": 0,
+     "msAvg": 0,
+     "errAvg": 1
+    }
+   }
+  }
+ },
+ {
+  "target": "letter",
+  "mode": "skip",
+  "typed": "leter",
+  "events": [
+   {
+    "kind": "char",
+    "char": "l",
+    "t": 0
+   },
+   {
+    "kind": "char",
+    "char": "e",
+    "t": 100
+   },
+   {
+    "kind": "char",
+    "char": "t",
+    "t": 200
+   },
+   {
+    "kind": "char",
+    "char": "e",
+    "t": 300
+   },
+   {
+    "kind": "char",
+    "char": "r",
+    "t": 400
+   }
+  ],
+  "errors": [
+   {
+    "index": 3,
+    "expected": "t",
+    "actual": "e",
+    "type": "missed-double"
+   }
+  ],
+  "summary": {
+   "errors": [
+    {
+     "index": 3,
+     "expected": "t",
+     "actual": "e",
+     "type": "missed-double"
+    }
+   ],
+   "counts": {
+    "missed-double": 1
+   },
+   "missedWords": [
+    "letter"
+   ]
+  },
+  "state": {
+   "errorCounts": {
+    "t": {
+     "missed-double": 1
+    }
+   },
+   "typos": {
+    "t": {
+     "e": 1
+    }
+   },
+   "confusions": {},
+   "errorBias": {
+    "swap": 0,
+    "double": 0.2,
+    "neighbor": 0
+   },
+   "missedWords": {
+    "letter": 1
+   },
+   "pairs": {}
+  }
+ },
+ {
+  "target": "letter",
+  "mode": "skip",
+  "typed": "lettter",
+  "events": [
+   {
+    "kind": "char",
+    "char": "l",
+    "t": 0
+   },
+   {
+    "kind": "char",
+    "char": "e",
+    "t": 100
+   },
+   {
+    "kind": "char",
+    "char": "t",
+    "t": 200
+   },
+   {
+    "kind": "char",
+    "char": "t",
+    "t": 300
+   },
+   {
+    "kind": "char",
+    "char": "t",
+    "t": 400
+   },
+   {
+    "kind": "char",
+    "char": "e",
+    "t": 500
+   },
+   {
+    "kind": "char",
+    "char": "r",
+    "t": 600
+   }
+  ],
+  "errors": [
+   {
+    "index": 4,
+    "expected": "e",
+    "actual": "t",
+    "type": "double"
+   }
+  ],
+  "summary": {
+   "errors": [
+    {
+     "index": 4,
+     "expected": "e",
+     "actual": "t",
+     "type": "double"
+    }
+   ],
+   "counts": {
+    "double": 1
+   },
+   "missedWords": [
+    "letter"
+   ]
+  },
+  "state": {
+   "errorCounts": {
+    "e": {
+     "double": 1
+    }
+   },
+   "typos": {
+    "e": {
+     "t": 1
+    }
+   },
+   "confusions": {},
+   "errorBias": {
+    "swap": 0,
+    "double": 0.2,
+    "neighbor": 0
+   },
+   "missedWords": {
+    "letter": 1
+   },
+   "pairs": {}
+  }
+ },
+ {
+  "target": "then",
+  "mode": "skip",
+  "typed": "ten",
+  "events": [
+   {
+    "kind": "char",
+    "char": "t",
+    "t": 0
+   },
+   {
+    "kind": "char",
+    "char": "e",
+    "t": 100
+   },
+   {
+    "kind": "char",
+    "char": "n",
+    "t": 200
+   }
+  ],
+  "errors": [
+   {
+    "index": 1,
+    "expected": "h",
+    "actual": "e",
+    "type": "skipped"
+   }
+  ],
+  "summary": {
+   "errors": [
+    {
+     "index": 1,
+     "expected": "h",
+     "actual": "e",
+     "type": "skipped"
+    }
+   ],
+   "counts": {
+    "skipped": 1
+   },
+   "missedWords": [
+    "then"
+   ]
+  },
+  "state": {
+   "errorCounts": {
+    "h": {
+     "skipped": 1
+    }
+   },
+   "typos": {
+    "h": {
+     "e": 1
+    }
+   },
+   "confusions": {},
+   "errorBias": {
+    "swap": 0,
+    "double": 0,
+    "neighbor": 0
+   },
+   "missedWords": {
+    "then": 1
+   },
+   "pairs": {}
+  }
+ },
+ {
+  "target": "tea",
+  "mode": "skip",
+  "typed": "rea",
+  "events": [
+   {
+    "kind": "char",
+    "char": "r",
+    "t": 0
+   },
+   {
+    "kind": "char",
+    "char": "e",
+    "t": 100
+   },
+   {
+    "kind": "char",
+    "char": "a",
+    "t": 200
+   }
+  ],
+  "errors": [
+   {
+    "index": 0,
+    "expected": "t",
+    "actual": "r",
+    "type": "neighbor"
+   }
+  ],
+  "summary": {
+   "errors": [
+    {
+     "index": 0,
+     "expected": "t",
+     "actual": "r",
+     "type": "neighbor"
+    }
+   ],
+   "counts": {
+    "neighbor": 1
+   },
+   "missedWords": [
+    "tea"
+   ]
+  },
+  "state": {
+   "errorCounts": {
+    "t": {
+     "neighbor": 1
+    }
+   },
+   "typos": {
+    "t": {
+     "r": 1
+    }
+   },
+   "confusions": {
+    "rt": 1
+   },
+   "errorBias": {
+    "swap": 0,
+    "double": 0,
+    "neighbor": 0.2
+   },
+   "missedWords": {
+    "tea": 1
+   },
+   "pairs": {}
+  }
+ },
+ {
+  "target": "Tea",
+  "mode": "skip",
+  "typed": "tea",
+  "events": [
+   {
+    "kind": "char",
+    "char": "t",
+    "t": 0
+   },
+   {
+    "kind": "char",
+    "char": "e",
+    "t": 100
+   },
+   {
+    "kind": "char",
+    "char": "a",
+    "t": 200
+   }
+  ],
+  "errors": [
+   {
+    "index": 0,
+    "expected": "T",
+    "actual": "t",
+    "type": "case"
+   }
+  ],
+  "summary": {
+   "errors": [
+    {
+     "index": 0,
+     "expected": "T",
+     "actual": "t",
+     "type": "case"
+    }
+   ],
+   "counts": {
+    "case": 1
+   },
+   "missedWords": [
+    "tea"
+   ]
+  },
+  "state": {
+   "errorCounts": {
+    "T": {
+     "case": 1
+    }
+   },
+   "typos": {
+    "T": {
+     "t": 1
+    }
+   },
+   "confusions": {},
+   "errorBias": {
+    "swap": 0,
+    "double": 0,
+    "neighbor": 0
+   },
+   "missedWords": {
+    "tea": 1
+   },
+   "pairs": {}
+  }
+ },
+ {
+  "target": "quick",
+  "mode": "block",
+  "typed": "qwuick",
+  "events": [
+   {
+    "kind": "char",
+    "char": "q",
+    "t": 0
+   },
+   {
+    "kind": "char",
+    "char": "w",
+    "t": 100
+   },
+   {
+    "kind": "char",
+    "char": "u",
+    "t": 200
+   },
+   {
+    "kind": "char",
+    "char": "i",
+    "t": 300
+   },
+   {
+    "kind": "char",
+    "char": "c",
+    "t": 400
+   },
+   {
+    "kind": "char",
+    "char": "k",
+    "t": 500
+   }
+  ],
+  "errors": [
+   {
+    "index": 1,
+    "expected": "u",
+    "actual": "w",
+    "type": "other"
+   }
+  ],
+  "summary": {
+   "errors": [
+    {
+     "index": 1,
+     "expected": "u",
+     "actual": "w",
+     "type": "other"
+    }
+   ],
+   "counts": {
+    "other": 1
+   },
+   "missedWords": [
+    "quick"
+   ]
+  },
+  "state": {
+   "errorCounts": {
+    "u": {
+     "other": 1
+    }
+   },
+   "typos": {
+    "u": {
+     "w": 1
+    }
+   },
+   "confusions": {},
+   "errorBias": {
+    "swap": 0,
+    "double": 0,
+    "neighbor": 0
+   },
+   "missedWords": {
+    "quick": 1
+   },
+   "pairs": {}
+  }
+ },
+ {
+  "target": "jump",
+  "mode": "skip",
+  "typed": "jmup",
+  "events": [
+   {
+    "kind": "char",
+    "char": "j",
+    "t": 0
+   },
+   {
+    "kind": "char",
+    "char": "m",
+    "t": 100
+   },
+   {
+    "kind": "char",
+    "char": "u",
+    "t": 200
+   },
+   {
+    "kind": "char",
+    "char": "p",
+    "t": 300
+   }
+  ],
+  "errors": [
+   {
+    "index": 1,
+    "expected": "u",
+    "actual": "m",
+    "type": "swap"
+   }
+  ],
+  "summary": {
+   "errors": [
+    {
+     "index": 1,
+     "expected": "u",
+     "actual": "m",
+     "type": "swap"
+    }
+   ],
+   "counts": {
+    "swap": 1
+   },
+   "missedWords": [
+    "jump"
+   ]
+  },
+  "state": {
+   "errorCounts": {
+    "u": {
+     "swap": 1
+    }
+   },
+   "typos": {
+    "u": {
+     "m": 1
+    }
+   },
+   "confusions": {},
+   "errorBias": {
+    "swap": 0.2,
+    "double": 0,
+    "neighbor": 0
+   },
+   "missedWords": {
+    "jump": 1
+   },
+   "pairs": {
+    "um": {
+     "n": 1,
+     "timedN": 0,
+     "msAvg": 0,
+     "errAvg": 1
+    }
+   }
+  }
+ }
+]

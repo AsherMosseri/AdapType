@@ -85,6 +85,12 @@ export interface RoundSummary {
   chars: number;
   corrections: number;
   calibration: boolean;
+  /** Phase 3: rhythm consistency 0..1, or null with too few timed keystrokes. */
+  consistency?: number | null;
+  /** Phase 3: first-attempt errors (corrections / firstErrors is the self-correction rate). */
+  firstErrors?: number;
+  /** Phase 3: a warm-up round. */
+  warmup?: boolean;
 }
 
 export type CalibrationStatus =
@@ -138,8 +144,43 @@ export interface CharacterData {
   loanwords: readonly string[];
 }
 
+export type Grip = "one" | "two";
+export type ErrorType = "swap" | "missed-double" | "double" | "skipped" | "neighbor" | "case" | "other";
+export type BiasType = "swap" | "double" | "neighbor";
+
+/** A key, letter pair or word on the spaced-repetition schedule. */
+export interface ReviewItem {
+  kind: "key" | "pair" | "word";
+  target: string;
+  /** Index into REVIEW_INTERVALS_DAYS. */
+  step: number;
+  /** When it's next due across days (ms since epoch). */
+  due: number;
+  /** Session round after which it's due again within the session, or null. */
+  sessionRound: number | null;
+  lapses: number;
+}
+
+export interface SessionState {
+  id: number;
+  startedAt: number;
+  lastAt: number;
+  /** Rounds completed in this session. */
+  rounds: number;
+  /** WPM and accuracy of each round this session (most recent last, capped). */
+  history: { wpm: number; accuracy: number }[];
+  /** Average of the first rounds, the yardstick for fatigue. */
+  baseline: { wpm: number; accuracy: number } | null;
+  fatigued: boolean;
+  /** Touch only: the grip picked for this session. */
+  grip: Grip | null;
+  warmupDone: boolean;
+  /** Touch: interval sums for keys typed with the same thumb vs alternating thumbs. */
+  gripSignal: { sameMs: number; sameN: number; crossMs: number; crossN: number };
+}
+
 export interface ProfileState {
-  version: 2;
+  version: 3;
   profile: InputProfile;
   goal: Goal | null;
   calibration: CalibrationStatus;
@@ -163,6 +204,26 @@ export interface ProfileState {
   modsUnlocked: UnlockableId[];
   /** Modifiers that have reached mastery. */
   modsMastered: ModifierId[];
+  /** Phase 3. Spaced-repetition schedule, keyed "key:o", "pair:th", "word:because". */
+  reviews: Record<string, ReviewItem>;
+  /** Hesitation rate per key (errAvg = share of presses that were hesitations). */
+  hesitations: Record<string, StatEntry>;
+  /** Error type counts per expected key. */
+  errorCounts: Record<string, Partial<Record<ErrorType, number>>>;
+  /** What was typed instead, per expected key. */
+  typos: Record<string, Record<string, number>>;
+  /** Neighbor-key confusions, keyed by the two letters in alphabetical order ("rt"). */
+  confusions: Record<string, number>;
+  /** Recent share of errors that are swaps, double-letter slips and neighbor hits. */
+  errorBias: Record<BiasType, number>;
+  /** Real words with a first-attempt error, and how often. */
+  missedWords: Record<string, number>;
+  session: SessionState | null;
+  /** Physical only: answer to "Do you touch-type?", null until asked. */
+  touchTyping: boolean | null;
+  /** Touch only: key stats and taps per grip. */
+  gripKeys: Partial<Record<Grip, Record<string, StatEntry>>>;
+  gripTaps: Partial<Record<Grip, Record<string, TapPoint[]>>>;
 }
 
 export interface RoundWord {

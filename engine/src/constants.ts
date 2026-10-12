@@ -102,3 +102,75 @@ export const FOCUS_PAIR_MIN_SCORE = 0.5;
 export const SHORTCUT_TARGET_MS = 1500;
 export const SHORTCUT_MAX_MS = 10000;
 export const SHORTCUT_DRILL_LENGTH = 12;
+
+/** Phase 3: sessions and fatigue. */
+export const SESSION_GAP_MS = 30 * 60 * 1000;
+export const SESSION_HISTORY = 30;
+/** Fatigue compares against the average of the first this-many rounds of a session... */
+export const FATIGUE_BASELINE_ROUNDS = 2;
+/** ...using the average of the last this-many rounds, once the session has at least FATIGUE_MIN_ROUNDS. */
+export const FATIGUE_RECENT_ROUNDS = 2;
+export const FATIGUE_MIN_ROUNDS = 4;
+export const FATIGUE_WPM_DROP = 0.88;
+export const FATIGUE_ACCURACY_DROP = 0.04;
+export const RECOVER_WPM = 0.95;
+export const RECOVER_ACCURACY_DROP = 0.02;
+/** While fatigued: rounds are this much easier, and stats from them count this much. */
+export const FATIGUE_EASE = 0.15;
+export const TIRED_WEIGHT = 0.5;
+
+/** Phase 3: hesitation. A press is a hesitation when its interval exceeds max(HESITATION_MIN_MS, HESITATION_FACTOR x the key's average). */
+export const HESITATION_MIN_MS = 350;
+export const HESITATION_FACTOR = 2.2;
+/** The key needs this many timed samples before hesitations are judged. */
+export const HESITATION_MIN_SAMPLES = 5;
+/** Score bonus = min(HESITATION_SCORE_CAP, rate x HESITATION_SCORE_SCALE), once there are CONFIDENT_SAMPLES judgments. */
+export const HESITATION_SCORE_SCALE = 4;
+export const HESITATION_SCORE_CAP = 1;
+/** A key is "hesitant" in detail views above this rate. */
+export const HESITANT_RATE = 0.15;
+
+/** Phase 3: error bias (moving average weight) and how much it boosts drills. */
+export const BIAS_WEIGHT = 0.2;
+export const DOUBLE_BIAS_MIN = 0.15;
+export const CONFUSION_MIN = 3;
+export const CONFUSION_BONUS = 0.5;
+export const MAX_MISSED_WORDS = 200;
+
+/** Phase 3: spaced repetition. */
+export const REVIEW_INTERVALS_DAYS = [1, 3, 7, 14, 30] as const;
+export const DAY_MS = 24 * 60 * 60 * 1000;
+/** A missed item comes back this many rounds later in the same session. */
+export const REVIEW_SESSION_GAP = 2;
+/** Keys and pairs with weakness at or above this (and REVIEW_MIN_SAMPLES this round) join the schedule. */
+export const REVIEW_WEAKNESS = 1;
+export const REVIEW_MIN_SAMPLES = 3;
+export const REVIEW_PAIR_MIN_SAMPLES = 2;
+/** Due keys and pairs get this score bonus; up to REVIEW_WORDS due words go into each batch. */
+export const REVIEW_BONUS = 1;
+export const REVIEW_WORDS = 3;
+
+/** Phase 3: warm-up. */
+export const WARMUP_SECONDS = 20;
+export const WARMUP_KEYS = 3;
+export const WARMUP_PAIRS = 2;
+export const WARMUP_BONUS = 2;
+
+/** Phase 3: rhythm. Stalls are intervals over STALL_FACTOR x the round's median. */
+export const RHYTHM_MIN_INTERVALS = 5;
+export const STALL_FACTOR = 2;
+
+/** Phase 3: touch grip and drift. */
+export const GRIP_MIN_SAMPLES = 20;
+export const GRIP_TWO_RATIO = 0.9;
+export const GRIP_ONE_RATIO = 1.1;
+export const DRIFT_MIN_TAPS = 10;
+export const DRIFT_THRESHOLD = 0.22;
+export const DRIFT_BONUS = 0.5;
+
+/** Phase 3: made-up words. Phonotactics come from the first PHONOTACTIC_WORDS words of the pack. */
+export const PHONOTACTIC_WORDS = 5000;
+export const PHONOTACTIC_TOP = 40;
+export const MADE_UP_MAX_SYLLABLES = 3;
+export const MADE_UP_LONG_MAX = 8;
+export const DEFAULT_MADE_UP_CAP = 0.8;

@@ -1,0 +1,389 @@
+{
+ "goal": {
+  "wpm": 40,
+  "accuracy": 0.95
+ },
+ "keys": {
+  "o": {
+   "n": 30,
+   "timedN": 30,
+   "msAvg": 650,
+   "errAvg": 0.15
+  }
+ },
+ "pairs": {
+  "th": {
+   "n": 20,
+   "timedN": 20,
+   "msAvg": 640,
+   "errAvg": 0.1
+  }
+ },
+ "steps": [
+  {
+   "at": 1700000000000,
+   "sessionRounds": 1,
+   "perKey": {
+    "o": {
+     "n": 5,
+     "correct": 3,
+     "msTotal": 3500,
+     "msN": 5
+    },
+    "pair:th": {
+     "n": 3,
+     "correct": 2,
+     "msTotal": 1900,
+     "msN": 3
+    }
+   },
+   "words": {
+    "clean": [
+     "the"
+    ],
+    "botched": [
+     "onto",
+     "into"
+    ]
+   },
+   "changes": {
+    "added": [
+     "key:o",
+     "pair:th",
+     "word:into",
+     "word:onto"
+    ],
+    "passed": [],
+    "missed": [],
+    "learned": []
+   },
+   "reviews": {
+    "key:o": {
+     "kind": "key",
+     "target": "o",
+     "step": 0,
+     "due": 1700086400000,
+     "sessionRound": 3,
+     "lapses": 0
+    },
+    "pair:th": {
+     "kind": "pair",
+     "target": "th",
+     "step": 0,
+     "due": 1700086400000,
+     "sessionRound": 3,
+     "lapses": 0
+    },
+    "word:into": {
+     "kind": "word",
+     "target": "into",
+     "step": 0,
+     "due": 1700086400000,
+     "sessionRound": 3,
+     "lapses": 0
+    },
+    "word:onto": {
+     "kind": "word",
+     "target": "onto",
+     "step": 0,
+     "due": 1700086400000,
+     "sessionRound": 3,
+     "lapses": 0
+    }
+   }
+  },
+  {
+   "at": 1700000060000,
+   "sessionRounds": 2,
+   "perKey": {
+    "o": {
+     "n": 5,
+     "correct": 5,
+     "msTotal": 1000,
+     "msN": 5
+    }
+   },
+   "words": {
+    "clean": [
+     "onto"
+    ],
+    "botched": []
+   },
+   "changes": {
+    "added": [],
+    "passed": [
+     "key:o",
+     "word:onto"
+    ],
+    "missed": [],
+    "learned": []
+   },
+   "reviews": {
+    "key:o": {
+     "kind": "key",
+     "target": "o",
+     "step": 0,
+     "due": 1700086400000,
+     "sessionRound": 3,
+     "lapses": 0
+    },
+    "pair:th": {
+     "kind": "pair",
+     "target": "th",
+     "step": 0,
+     "due": 1700086400000,
+     "sessionRound": 3,
+     "lapses": 0
+    },
+    "word:into": {
+     "kind": "word",
+     "target": "into",
+     "step": 0,
+     "due": 1700086400000,
+     "sessionRound": 3,
+     "lapses": 0
+    },
+    "word:onto": {
+     "kind": "word",
+     "target": "onto",
+     "step": 0,
+     "due": 1700086400000,
+     "sessionRound": 3,
+     "lapses": 0
+    }
+   }
+  },
+  {
+   "at": 1700000120000,
+   "sessionRounds": 3,
+   "perKey": {
+    "o": {
+     "n": 5,
+     "correct": 5,
+     "msTotal": 1000,
+     "msN": 5
+    },
+    "pair:th": {
+     "n": 3,
+     "correct": 3,
+     "msTotal": 600,
+     "msN": 3
+    }
+   },
+   "words": {
+    "clean": [
+     "onto",
+     "into"
+    ],
+    "botched": []
+   },
+   "changes": {
+    "added": [],
+    "passed": [
+     "key:o",
+     "pair:th",
+     "word:into",
+     "word:onto"
+    ],
+    "missed": [],
+    "learned": []
+   },
+   "reviews": {
+    "key:o": {
+     "kind": "key",
+     "target": "o",
+     "step": 0,
+     "due": 1700086400000,
+     "sessionRound": null,
+     "lapses": 0
+    },
+    "pair:th": {
+     "kind": "pair",
+     "target": "th",
+     "step": 0,
+     "due": 1700086400000,
+     "sessionRound": null,
+     "lapses": 0
+    },
+    "word:into": {
+     "kind": "word",
+     "target": "into",
+     "step": 0,
+     "due": 1700086400000,
+     "sessionRound": null,
+     "lapses": 0
+    },
+    "word:onto": {
+     "kind": "word",
+     "target": "onto",
+     "step": 0,
+     "due": 1700086400000,
+     "sessionRound": null,
+     "lapses": 0
+    }
+   }
+  },
+  {
+   "at": 1700086400001,
+   "sessionRounds": 1,
+   "perKey": {
+    "o": {
+     "n": 5,
+     "correct": 5,
+     "msTotal": 1000,
+     "msN": 5
+    }
+   },
+   "words": {
+    "clean": [
+     "onto"
+    ],
+    "botched": [
+     "into"
+    ]
+   },
+   "changes": {
+    "added": [],
+    "passed": [
+     "key:o",
+     "word:onto"
+    ],
+    "missed": [
+     "word:into"
+    ],
+    "learned": []
+   },
+   "reviews": {
+    "key:o": {
+     "kind": "key",
+     "target": "o",
+     "step": 1,
+     "due": 1700345600001,
+     "sessionRound": null,
+     "lapses": 0
+    },
+    "pair:th": {
+     "kind": "pair",
+     "target": "th",
+     "step": 0,
+     "due": 1700086400000,
+     "sessionRound": null,
+     "lapses": 0
+    },
+    "word:into": {
+     "kind": "word",
+     "target": "into",
+     "step": 0,
+     "due": 1700172800001,
+     "sessionRound": 3,
+     "lapses": 1
+    },
+    "word:onto": {
+     "kind": "word",
+     "target": "onto",
+     "step": 1,
+     "due": 1700345600001,
+     "sessionRound": null,
+     "lapses": 0
+    }
+   }
+  },
+  {
+   "at": 1700432000000,
+   "sessionRounds": 1,
+   "perKey": {
+    "o": {
+     "n": 5,
+     "correct": 3,
+     "msTotal": 3500,
+     "msN": 5
+    }
+   },
+   "words": {
+    "clean": [
+     "onto"
+    ],
+    "botched": []
+   },
+   "changes": {
+    "added": [],
+    "passed": [
+     "word:onto"
+    ],
+    "missed": [
+     "key:o"
+    ],
+    "learned": []
+   },
+   "reviews": {
+    "key:o": {
+     "kind": "key",
+     "target": "o",
+     "step": 0,
+     "due": 1700518400000,
+     "sessionRound": 3,
+     "lapses": 1
+    },
+    "pair:th": {
+     "kind": "pair",
+     "target": "th",
+     "step": 0,
+     "due": 1700086400000,
+     "sessionRound": null,
+     "lapses": 0
+    },
+    "word:into": {
+     "kind": "word",
+     "target": "into",
+     "step": 0,
+     "due": 1700172800001,
+     "sessionRound": 3,
+     "lapses": 1
+    },
+    "word:onto": {
+     "kind": "word",
+     "target": "onto",
+     "step": 2,
+     "due": 1701036800000,
+     "sessionRound": null,
+     "lapses": 0
+    }
+   }
+  }
+ ],
+ "wordOutcomes": [
+  {
+   "target": "the cat sat",
+   "errors": [
+    5
+   ],
+   "typedLength": 11,
+   "result": {
+    "clean": [
+     "the",
+     "sat"
+    ],
+    "botched": [
+     "cat"
+    ]
+   }
+  },
+  {
+   "target": "Over, the (top)!",
+   "errors": [
+    0,
+    7
+   ],
+   "typedLength": 16,
+   "result": {
+    "clean": [
+     "top"
+    ],
+    "botched": [
+     "over",
+     "the"
+    ]
+   }
+  }
+ ]
+}
