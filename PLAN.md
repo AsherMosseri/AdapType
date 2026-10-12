@@ -4,7 +4,7 @@ A typing game that learns your weak spots and keeps targeting them. It starts
 as a fun web project. Much later it becomes a micro-app inside a larger app,
 ported to Swift and Kotlin.
 
-Status: phases 1 and 2 built (web). Phases 3 to 7 planned.
+Status: phases 1 to 3 built (web). Phases 4 to 7 planned.
 
 ## Principles
 
@@ -568,6 +568,20 @@ corrections recorded since phase 1.
 A home for longer-term stats: the mistakes list, per-key history, finger or
 thumb breakdown, the drift map, and spaced-repetition schedule ("`p` is due
 again tomorrow").
+
+### Built differently from the plan
+
+- **Per-grip stats** drive the thumb and zone breakdown and the drift map;
+  the adaptive scores still use one set of key stats for touch, so switching
+  grips doesn't reset what the game knows about you.
+- **Warm-up** targets your current weakest keys and pairs (which reflect the
+  last session) plus anything due for review.
+- **Metronome** beats once per word at goal pace; a beat per key was too fast
+  to follow.
+- **Difficulty** can only go down while you're tired.
+- **Error classification** folds follow-on errors into the slip that caused
+  them, so one skipped letter counts once.
+- Browser testing was automated in Chromium only.
 
 ### Done when
 

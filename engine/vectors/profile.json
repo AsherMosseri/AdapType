@@ -62212,7 +62212,7 @@
       }
      },
      "testedOut": [],
-     "difficultyChange": 0.04999999999999999,
+     "difficultyChange": 0,
      "errors": {
       "errors": [
        {
@@ -62375,7 +62375,7 @@
       }
      },
      "pairCount": 67,
-     "difficulty": 0.35,
+     "difficulty": 0.3,
      "reviews": {
       "key:e": {
        "kind": "key",
@@ -62738,11 +62738,11 @@
       "madeUp": false
      },
      {
-      "text": "least",
+      "text": "health",
       "madeUp": false
      },
      {
-      "text": "do",
+      "text": "has",
       "madeUp": false
      },
      {
@@ -62750,19 +62750,19 @@
       "madeUp": false
      },
      {
-      "text": "another",
+      "text": "since",
       "madeUp": false
      },
      {
-      "text": "his",
+      "text": "so",
       "madeUp": false
      },
      {
-      "text": "sad",
+      "text": "raised",
       "madeUp": false
      },
      {
-      "text": "rate",
+      "text": "tried",
       "madeUp": false
      },
      {
@@ -62770,15 +62770,15 @@
       "madeUp": false
      },
      {
-      "text": "nine",
+      "text": "cell",
       "madeUp": false
      },
      {
-      "text": "closed",
+      "text": "direct",
       "madeUp": false
      },
      {
-      "text": "start",
+      "text": "care",
       "madeUp": false
      },
      {
@@ -62796,7 +62796,7 @@
      ],
      "newLetter": "c",
      "modifiers": [],
-     "difficulty": 0.35,
+     "difficulty": 0.3,
      "reviewWords": [
       "lines",
       "lost",
@@ -62904,7 +62904,7 @@
      },
      {
       "kind": "char",
-      "char": "l",
+      "char": "h",
       "t": 4990
      },
      {
@@ -62919,7 +62919,7 @@
      },
      {
       "kind": "char",
-      "char": "s",
+      "char": "l",
       "t": 5560
      },
      {
@@ -62929,27 +62929,27 @@
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "h",
       "t": 5940
      },
      {
       "kind": "char",
-      "char": "d",
+      "char": " ",
       "t": 6130
      },
      {
       "kind": "char",
-      "char": "o",
+      "char": "h",
       "t": 6320
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "a",
       "t": 6510
      },
      {
       "kind": "char",
-      "char": "i",
+      "char": "s",
       "t": 6700
      },
      {
@@ -62963,52 +62963,52 @@
      },
      {
       "kind": "char",
-      "char": "t",
+      "char": " ",
       "t": 7270
      },
      {
       "kind": "char",
-      "char": "s",
+      "char": "i",
       "t": 7460
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "t",
       "t": 7650
      },
      {
       "kind": "char",
-      "char": "a",
+      "char": "s",
       "t": 7840
      },
      {
       "kind": "char",
-      "char": "n",
+      "char": " ",
       "t": 8030
      },
      {
       "kind": "char",
-      "char": "o",
+      "char": "s",
       "t": 8220
      },
      {
       "kind": "char",
-      "char": "t",
+      "char": "i",
       "t": 8410
      },
      {
       "kind": "char",
-      "char": "h",
+      "char": "n",
       "t": 8600
      },
      {
       "kind": "char",
-      "char": "e",
+      "char": "c",
       "t": 8790
      },
      {
       "kind": "char",
-      "char": "r",
+      "char": "e",
       "t": 8980
      },
      {
@@ -63018,52 +63018,52 @@
      },
      {
       "kind": "char",
-      "char": "h",
+      "char": "s",
       "t": 9360
      },
      {
       "kind": "char",
-      "char": "i",
+      "char": "o",
       "t": 9550
      },
      {
       "kind": "char",
-      "char": "s",
+      "char": " ",
       "t": 9740
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "r",
       "t": 9930
      },
      {
       "kind": "char",
-      "char": "s",
+      "char": "a",
       "t": 10120
      },
      {
       "kind": "char",
-      "char": "a",
+      "char": "i",
       "t": 10310
      },
      {
       "kind": "char",
-      "char": "d",
+      "char": "s",
       "t": 10500
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "e",
       "t": 10690
      },
      {
       "kind": "char",
-      "char": "r",
+      "char": "d",
       "t": 10880
      },
      {
       "kind": "char",
-      "char": "a",
+      "char": " ",
       "t": 11070
      },
      {
@@ -63073,67 +63073,67 @@
      },
      {
       "kind": "char",
-      "char": "e",
+      "char": "r",
       "t": 11450
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "i",
       "t": 11640
      },
      {
       "kind": "char",
-      "char": "l",
+      "char": "e",
       "t": 11830
      },
      {
       "kind": "char",
-      "char": "o",
+      "char": "d",
       "t": 12020
      },
      {
       "kind": "char",
-      "char": "s",
+      "char": " ",
       "t": 12210
      },
      {
       "kind": "char",
-      "char": "t",
+      "char": "l",
       "t": 12400
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "o",
       "t": 12590
      },
      {
       "kind": "char",
-      "char": "n",
+      "char": "s",
       "t": 12780
      },
      {
       "kind": "char",
-      "char": "i",
+      "char": "t",
       "t": 12970
      },
      {
       "kind": "char",
-      "char": "n",
+      "char": " ",
       "t": 13160
      },
      {
       "kind": "char",
-      "char": "e",
+      "char": "c",
       "t": 13350
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "e",
       "t": 13540
      },
      {
       "kind": "char",
-      "char": "c",
+      "char": "l",
       "t": 13730
      },
      {
@@ -63143,12 +63143,12 @@
      },
      {
       "kind": "char",
-      "char": "o",
+      "char": " ",
       "t": 14110
      },
      {
       "kind": "char",
-      "char": "s",
+      "char": "d",
       "t": 14300
      },
      {
@@ -63162,22 +63162,22 @@
      },
      {
       "kind": "char",
-      "char": "e",
+      "char": "i",
       "t": 14870
      },
      {
       "kind": "char",
-      "char": "d",
+      "char": "r",
       "t": 15060
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "e",
       "t": 15250
      },
      {
       "kind": "char",
-      "char": "s",
+      "char": "c",
       "t": 15440
      },
      {
@@ -63187,43 +63187,53 @@
      },
      {
       "kind": "char",
-      "char": "a",
+      "char": " ",
       "t": 15820
      },
      {
       "kind": "char",
-      "char": "r",
+      "char": "c",
       "t": 16010
      },
      {
       "kind": "char",
-      "char": "t",
+      "char": "a",
       "t": 16200
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "r",
       "t": 16390
      },
      {
       "kind": "char",
-      "char": "s",
+      "char": "e",
       "t": 16580
      },
      {
       "kind": "char",
-      "char": "e",
+      "char": " ",
       "t": 16770
      },
      {
       "kind": "char",
-      "char": "t",
+      "char": "s",
       "t": 16960
      },
      {
       "kind": "char",
-      "char": "s",
+      "char": "e",
       "t": 17150
+     },
+     {
+      "kind": "char",
+      "char": "t",
+      "t": 17340
+     },
+     {
+      "kind": "char",
+      "char": "s",
+      "t": 17530
      }
     ],
     "outcome": {
@@ -63233,10 +63243,10 @@
      "newlyUnlockedMods": [],
      "summary": {
       "at": 1700087030000,
-      "wpm": 57.89473684210526,
-      "accuracy": 0.9506172839506173,
-      "durationMs": 15960,
-      "chars": 77,
+      "wpm": 58.0171358629131,
+      "accuracy": 0.9518072289156626,
+      "durationMs": 16340,
+      "chars": 79,
       "corrections": 4,
       "calibration": false,
       "consistency": 1,
@@ -63244,16 +63254,16 @@
      },
      "perKey": {
       "l": {
-       "n": 4,
-       "correct": 4,
-       "msTotal": 570,
-       "msN": 3
-      },
-      "i": {
-       "n": 4,
-       "correct": 4,
+       "n": 5,
+       "correct": 5,
        "msTotal": 760,
        "msN": 4
+      },
+      "i": {
+       "n": 6,
+       "correct": 5,
+       "msTotal": 950,
+       "msN": 5
       },
       "pair:li": {
        "n": 1,
@@ -63262,10 +63272,10 @@
        "msN": 1
       },
       "n": {
-       "n": 5,
-       "correct": 4,
-       "msTotal": 950,
-       "msN": 5
+       "n": 3,
+       "correct": 2,
+       "msTotal": 570,
+       "msN": 3
       },
       "pair:in": {
        "n": 2,
@@ -63274,20 +63284,20 @@
        "msN": 2
       },
       "e": {
-       "n": 11,
-       "correct": 10,
-       "msTotal": 1710,
-       "msN": 9
+       "n": 13,
+       "correct": 13,
+       "msTotal": 2090,
+       "msN": 11
       },
       "pair:ne": {
-       "n": 3,
-       "correct": 3,
-       "msTotal": 380,
-       "msN": 2
+       "n": 2,
+       "correct": 2,
+       "msTotal": 190,
+       "msN": 1
       },
       "s": {
-       "n": 10,
-       "correct": 10,
+       "n": 9,
+       "correct": 9,
        "msTotal": 1710,
        "msN": 9
       },
@@ -63299,7 +63309,7 @@
       },
       " ": {
        "n": 14,
-       "correct": 14,
+       "correct": 13,
        "msTotal": 2660,
        "msN": 14
       },
@@ -63312,14 +63322,14 @@
       "d": {
        "n": 5,
        "correct": 5,
-       "msTotal": 760,
-       "msN": 4
+       "msTotal": 950,
+       "msN": 5
       },
       "pair:ed": {
-       "n": 3,
-       "correct": 3,
-       "msTotal": 380,
-       "msN": 2
+       "n": 4,
+       "correct": 4,
+       "msTotal": 760,
+       "msN": 4
       },
       "pair:de": {
        "n": 1,
@@ -63328,10 +63338,10 @@
        "msN": 1
       },
       "h": {
-       "n": 3,
-       "correct": 2,
-       "msTotal": 570,
-       "msN": 3
+       "n": 4,
+       "correct": 3,
+       "msTotal": 760,
+       "msN": 4
       },
       "pair:he": {
        "n": 2,
@@ -63339,17 +63349,11 @@
        "msTotal": 190,
        "msN": 1
       },
-      "pair:le": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
-      },
       "a": {
-       "n": 5,
-       "correct": 5,
-       "msTotal": 950,
-       "msN": 5
+       "n": 4,
+       "correct": 4,
+       "msTotal": 760,
+       "msN": 4
       },
       "pair:ea": {
        "n": 1,
@@ -63357,61 +63361,19 @@
        "msTotal": 190,
        "msN": 1
       },
-      "pair:as": {
+      "pair:al": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
        "msN": 1
       },
       "t": {
-       "n": 8,
-       "correct": 7,
-       "msTotal": 1520,
-       "msN": 8
+       "n": 6,
+       "correct": 6,
+       "msTotal": 1140,
+       "msN": 6
       },
-      "pair:st": {
-       "n": 3,
-       "correct": 3,
-       "msTotal": 570,
-       "msN": 3
-      },
-      "o": {
-       "n": 4,
-       "correct": 4,
-       "msTotal": 760,
-       "msN": 4
-      },
-      "pair:do": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
-      },
-      "pair:it": {
-       "n": 1,
-       "correct": 0,
-       "msTotal": 190,
-       "msN": 1
-      },
-      "pair:ts": {
-       "n": 2,
-       "correct": 2,
-       "msTotal": 190,
-       "msN": 1
-      },
-      "pair:an": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
-      },
-      "pair:no": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
-      },
-      "pair:ot": {
+      "pair:lt": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
@@ -63423,19 +63385,79 @@
        "msTotal": 190,
        "msN": 1
       },
-      "r": {
-       "n": 3,
-       "correct": 3,
-       "msTotal": 570,
-       "msN": 3
-      },
-      "pair:er": {
+      "pair:ha": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
        "msN": 1
       },
-      "pair:hi": {
+      "pair:as": {
+       "n": 1,
+       "correct": 1,
+       "msTotal": 190,
+       "msN": 1
+      },
+      "pair:it": {
+       "n": 1,
+       "correct": 1,
+       "msTotal": 190,
+       "msN": 1
+      },
+      "pair:ts": {
+       "n": 2,
+       "correct": 2,
+       "msTotal": 380,
+       "msN": 2
+      },
+      "pair:si": {
+       "n": 1,
+       "correct": 1,
+       "msTotal": 190,
+       "msN": 1
+      },
+      "c": {
+       "n": 4,
+       "correct": 4,
+       "msTotal": 760,
+       "msN": 4
+      },
+      "pair:nc": {
+       "n": 1,
+       "correct": 1,
+       "msTotal": 190,
+       "msN": 1
+      },
+      "pair:ce": {
+       "n": 2,
+       "correct": 2,
+       "msTotal": 380,
+       "msN": 2
+      },
+      "o": {
+       "n": 2,
+       "correct": 2,
+       "msTotal": 380,
+       "msN": 2
+      },
+      "pair:so": {
+       "n": 1,
+       "correct": 1,
+       "msTotal": 190,
+       "msN": 1
+      },
+      "r": {
+       "n": 4,
+       "correct": 4,
+       "msTotal": 570,
+       "msN": 3
+      },
+      "pair:ra": {
+       "n": 1,
+       "correct": 1,
+       "msTotal": 190,
+       "msN": 1
+      },
+      "pair:ai": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
@@ -63447,85 +63469,97 @@
        "msTotal": 190,
        "msN": 1
       },
-      "pair:sa": {
+      "pair:se": {
+       "n": 2,
+       "correct": 2,
+       "msTotal": 380,
+       "msN": 2
+      },
+      "pair:tr": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
        "msN": 1
       },
-      "pair:ad": {
+      "pair:ri": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
        "msN": 1
       },
-      "pair:ra": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
-      },
-      "pair:at": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
-      },
-      "pair:te": {
+      "pair:ie": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
        "msN": 1
       },
       "pair:lo": {
-       "n": 2,
-       "correct": 2,
-       "msTotal": 380,
-       "msN": 2
+       "n": 1,
+       "correct": 1,
+       "msTotal": 190,
+       "msN": 1
       },
       "pair:os": {
+       "n": 1,
+       "correct": 1,
+       "msTotal": 190,
+       "msN": 1
+      },
+      "pair:st": {
+       "n": 1,
+       "correct": 1,
+       "msTotal": 190,
+       "msN": 1
+      },
+      "pair:el": {
+       "n": 1,
+       "correct": 1,
+       "msTotal": 190,
+       "msN": 1
+      },
+      "pair:ll": {
+       "n": 1,
+       "correct": 1,
+       "msTotal": 190,
+       "msN": 1
+      },
+      "pair:di": {
+       "n": 1,
+       "correct": 0,
+       "msTotal": 190,
+       "msN": 1
+      },
+      "pair:ir": {
+       "n": 1,
+       "correct": 1,
+       "msTotal": 0,
+       "msN": 0
+      },
+      "pair:re": {
        "n": 2,
        "correct": 2,
        "msTotal": 380,
        "msN": 2
       },
-      "pair:ni": {
+      "pair:ec": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
        "msN": 1
       },
-      "c": {
+      "pair:ct": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
        "msN": 1
       },
-      "pair:cl": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
-      },
-      "pair:se": {
-       "n": 2,
-       "correct": 1,
-       "msTotal": 380,
-       "msN": 2
-      },
-      "pair:ta": {
+      "pair:ca": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
        "msN": 1
       },
       "pair:ar": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
-      },
-      "pair:rt": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
@@ -63539,7 +63573,7 @@
       }
      },
      "testedOut": [],
-     "difficultyChange": 0.050000000000000044,
+     "difficultyChange": 0.04999999999999999,
      "errors": {
       "errors": [
        {
@@ -63556,13 +63590,13 @@
        },
        {
         "index": 26,
-        "expected": "t",
+        "expected": " ",
         "actual": "x",
         "type": "other"
        },
        {
         "index": 64,
-        "expected": "e",
+        "expected": "i",
         "actual": "x",
         "type": "other"
        }
@@ -63571,9 +63605,9 @@
        "other": 4
       },
       "missedWords": [
-       "closed",
+       "direct",
+       "has",
        "he",
-       "its",
        "needed"
       ]
      },
@@ -63586,25 +63620,22 @@
      "reviews": {
       "added": [
        "key:n",
-       "pair:se",
-       "word:closed",
-       "word:he",
-       "word:its"
+       "word:direct",
+       "word:he"
       ],
       "passed": [
        "key:d",
-       "key:i",
+       "key:e",
        "key:l",
        "key:r",
        "key:s",
-       "word:do",
+       "key:t",
        "word:lines",
        "word:lost"
       ],
       "missed": [
-       "key:e",
        "key:h",
-       "key:t",
+       "key:i",
        "word:needed"
       ],
       "learned": []
@@ -63644,94 +63675,94 @@
      "roundCounter": 6,
      "keys": {
       "o": {
-       "n": 24,
-       "timedN": 20,
-       "msAvg": 196.947168158125,
+       "n": 22,
+       "timedN": 18,
+       "msAvg": 198.5767508125,
        "errAvg": 0
       },
       "i": {
-       "n": 23,
-       "timedN": 22,
-       "msAvg": 219.94668244667125,
-       "errAvg": 0.07672917273750002
+       "n": 25,
+       "timedN": 23,
+       "msAvg": 216.95201420200414,
+       "errAvg": 0.16215062991737503
       },
       "l": {
-       "n": 22,
-       "timedN": 20,
-       "msAvg": 214.39853649999998,
-       "errAvg": 0.029812006628550006
+       "n": 23,
+       "timedN": 21,
+       "msAvg": 211.95868284999997,
+       "errAvg": 0.026830805965695006
       },
       " ": {
        "n": 84,
        "timedN": 76,
        "msAvg": 200.8168087363054,
-       "errAvg": 0.010305433527241895
+       "errAvg": 0.049047482427241905
       },
       "n": {
-       "n": 23,
-       "timedN": 22,
-       "msAvg": 211.50218016621267,
-       "errAvg": 0.11618620160062501
+       "n": 21,
+       "timedN": 20,
+       "msAvg": 216.54590143976876,
+       "errAvg": 0.1434397550625
       },
       "e": {
-       "n": 63,
-       "timedN": 59,
-       "msAvg": 213.2566455365266,
-       "errAvg": 0.10062763390056942
+       "n": 65,
+       "timedN": 61,
+       "msAvg": 208.83788288458655,
+       "errAvg": 0.008608383459461216
       },
       "s": {
-       "n": 43,
+       "n": 42,
        "timedN": 40,
        "msAvg": 219.60524109432663,
-       "errAvg": 0.014058190355580284
+       "errAvg": 0.015620211506200316
       },
       "r": {
-       "n": 27,
+       "n": 28,
        "timedN": 26,
        "msAvg": 221.00990257465946,
-       "errAvg": 0.024349515906562064
+       "errAvg": 0.021914564315905858
       },
       "d": {
        "n": 37,
-       "timedN": 33,
-       "msAvg": 216.51346670133387,
+       "timedN": 34,
+       "msAvg": 213.86212003120048,
        "errAvg": 0.04791578188580632
       },
       "t": {
-       "n": 40,
-       "timedN": 40,
-       "msAvg": 217.32580574516845,
-       "errAvg": 0.058129713076298155
+       "n": 38,
+       "timedN": 38,
+       "msAvg": 223.7355626483561,
+       "errAvg": 0.0061550778719730226
       },
       "h": {
-       "n": 27,
-       "timedN": 26,
-       "msAvg": 216.54590143976876,
-       "errAvg": 0.10170365603835399
+       "n": 28,
+       "timedN": 27,
+       "msAvg": 213.89131129579187,
+       "errAvg": 0.09153329043451859
       },
       "a": {
-       "n": 36,
-       "timedN": 36,
-       "msAvg": 208.4354317200066,
-       "errAvg": 0.011646297974609325
+       "n": 35,
+       "timedN": 35,
+       "msAvg": 210.48381302222955,
+       "errAvg": 0.012940331082899251
       },
       "c": {
-       "n": 3,
-       "timedN": 3,
+       "n": 6,
+       "timedN": 6,
        "msAvg": 190,
        "errAvg": 0
       }
      },
-     "pairCount": 70,
-     "difficulty": 0.4,
+     "pairCount": 75,
+     "difficulty": 0.35,
      "reviews": {
       "key:e": {
        "kind": "key",
        "target": "e",
-       "step": 0,
-       "due": 1700173430000,
-       "sessionRound": 3,
-       "lapses": 3
+       "step": 1,
+       "due": 1700346230000,
+       "sessionRound": 6,
+       "lapses": 2
       },
       "key:l": {
        "kind": "key",
@@ -63744,10 +63775,10 @@
       "key:t": {
        "kind": "key",
        "target": "t",
-       "step": 0,
-       "due": 1700173430000,
-       "sessionRound": 3,
-       "lapses": 1
+       "step": 1,
+       "due": 1700346230000,
+       "sessionRound": null,
+       "lapses": 0
       },
       "word:lines": {
        "kind": "word",
@@ -63816,8 +63847,8 @@
       "word:do": {
        "kind": "word",
        "target": "do",
-       "step": 1,
-       "due": 1700346230000,
+       "step": 0,
+       "due": 1700086550000,
        "sessionRound": null,
        "lapses": 0
       },
@@ -63912,10 +63943,10 @@
       "key:i": {
        "kind": "key",
        "target": "i",
-       "step": 1,
-       "due": 1700346230000,
-       "sessionRound": 7,
-       "lapses": 0
+       "step": 0,
+       "due": 1700173430000,
+       "sessionRound": 3,
+       "lapses": 1
       },
       "word:said": {
        "kind": "word",
@@ -63933,17 +63964,9 @@
        "sessionRound": 3,
        "lapses": 0
       },
-      "pair:se": {
-       "kind": "pair",
-       "target": "se",
-       "step": 0,
-       "due": 1700173430000,
-       "sessionRound": 3,
-       "lapses": 0
-      },
-      "word:closed": {
+      "word:direct": {
        "kind": "word",
-       "target": "closed",
+       "target": "direct",
        "step": 0,
        "due": 1700173430000,
        "sessionRound": 3,
@@ -63952,14 +63975,6 @@
       "word:he": {
        "kind": "word",
        "target": "he",
-       "step": 0,
-       "due": 1700173430000,
-       "sessionRound": 3,
-       "lapses": 0
-      },
-      "word:its": {
-       "kind": "word",
-       "target": "its",
        "step": 0,
        "due": 1700173430000,
        "sessionRound": 3,
@@ -63974,7 +63989,7 @@
        "errAvg": 0
       },
       "t": {
-       "n": 34,
+       "n": 32,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
@@ -63986,31 +64001,31 @@
        "errAvg": 0
       },
       "a": {
-       "n": 31,
+       "n": 30,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
       },
       "n": {
-       "n": 17,
+       "n": 15,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
       },
       "l": {
-       "n": 14,
+       "n": 15,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
       },
       "e": {
-       "n": 47,
+       "n": 49,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
       },
       "h": {
-       "n": 18,
+       "n": 19,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
@@ -64022,19 +64037,19 @@
        "errAvg": 0
       },
       "d": {
-       "n": 24,
+       "n": 25,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
       },
       "i": {
-       "n": 15,
+       "n": 16,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
       },
       "o": {
-       "n": 9,
+       "n": 7,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
@@ -64066,8 +64081,8 @@
       "inc": 1,
       "said": 1,
       "he": 1,
-      "its": 1,
-      "closed": 1
+      "has": 1,
+      "direct": 1
      },
      "session": {
       "id": 2,
@@ -64076,8 +64091,8 @@
       "rounds": 1,
       "history": [
        {
-        "wpm": 57.89473684210526,
-        "accuracy": 0.9506172839506173
+        "wpm": 58.0171358629131,
+        "accuracy": 0.9518072289156626
        }
       ],
       "baseline": null,
@@ -64098,7 +64113,7 @@
     "newSession": false,
     "words": [
      {
-      "text": "care",
+      "text": "done",
       "madeUp": false
      },
      {
@@ -64110,11 +64125,11 @@
       "madeUp": false
      },
      {
-      "text": "hands",
+      "text": "do",
       "madeUp": false
      },
      {
-      "text": "easier",
+      "text": "cards",
       "madeUp": false
      },
      {
@@ -64122,7 +64137,15 @@
       "madeUp": false
      },
      {
-      "text": "access",
+      "text": "sea",
+      "madeUp": false
+     },
+     {
+      "text": "hi",
+      "madeUp": false
+     },
+     {
+      "text": "share",
       "madeUp": false
      },
      {
@@ -64130,27 +64153,19 @@
       "madeUp": false
      },
      {
-      "text": "hold",
+      "text": "rest",
       "madeUp": false
      },
      {
-      "text": "sale",
+      "text": "added",
       "madeUp": false
      },
      {
-      "text": "site",
+      "text": "ice",
       "madeUp": false
      },
      {
-      "text": "certain",
-      "madeUp": false
-     },
-     {
-      "text": "contact",
-      "madeUp": false
-     },
-     {
-      "text": "three",
+      "text": "did",
       "madeUp": false
      },
      {
@@ -64160,34 +64175,34 @@
     ],
     "explanation": {
      "keys": [
-      "n",
-      "h"
+      "i",
+      "n"
      ],
      "pairs": [
-      "ti"
+      "dd"
      ],
      "newLetter": "c",
      "modifiers": [],
-     "difficulty": 0.4,
+     "difficulty": 0.35,
      "reviewWords": [
       "then",
-      "hands"
+      "do"
      ]
     },
     "events": [
      {
       "kind": "char",
-      "char": "c",
+      "char": "d",
       "t": 1190
      },
      {
       "kind": "char",
-      "char": "a",
+      "char": "o",
       "t": 1380
      },
      {
       "kind": "char",
-      "char": "r",
+      "char": "n",
       "t": 1570
      },
      {
@@ -64261,27 +64276,27 @@
      },
      {
       "kind": "char",
-      "char": "h",
+      "char": "d",
       "t": 4420
      },
      {
       "kind": "char",
-      "char": "a",
+      "char": "o",
       "t": 4610
      },
      {
       "kind": "char",
-      "char": "n",
+      "char": " ",
       "t": 4800
      },
      {
       "kind": "char",
-      "char": "d",
+      "char": "c",
       "t": 4990
      },
      {
       "kind": "char",
-      "char": "s",
+      "char": "a",
       "t": 5180
      },
      {
@@ -64295,22 +64310,22 @@
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "r",
       "t": 5750
      },
      {
       "kind": "char",
-      "char": "e",
+      "char": "d",
       "t": 5940
      },
      {
       "kind": "char",
-      "char": "a",
+      "char": "s",
       "t": 6130
      },
      {
       "kind": "char",
-      "char": "s",
+      "char": " ",
       "t": 6320
      },
      {
@@ -64320,27 +64335,27 @@
      },
      {
       "kind": "char",
-      "char": "e",
+      "char": "t",
       "t": 6700
      },
      {
       "kind": "char",
-      "char": "r",
+      "char": " ",
       "t": 6890
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "s",
       "t": 7080
      },
      {
       "kind": "char",
-      "char": "i",
+      "char": "e",
       "t": 7270
      },
      {
       "kind": "char",
-      "char": "t",
+      "char": "a",
       "t": 7460
      },
      {
@@ -64350,7 +64365,7 @@
      },
      {
       "kind": "char",
-      "char": "a",
+      "char": "h",
       "t": 7840
      },
      {
@@ -64364,7 +64379,7 @@
      },
      {
       "kind": "char",
-      "char": "c",
+      "char": "i",
       "t": 8410
      },
      {
@@ -64378,142 +64393,142 @@
      },
      {
       "kind": "char",
-      "char": "c",
+      "char": " ",
       "t": 8980
      },
      {
       "kind": "char",
-      "char": "e",
+      "char": "s",
       "t": 9170
      },
      {
       "kind": "char",
-      "char": "s",
+      "char": "h",
       "t": 9360
      },
      {
       "kind": "char",
-      "char": "s",
+      "char": "a",
       "t": 9550
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "r",
       "t": 9740
      },
      {
       "kind": "char",
-      "char": "s",
+      "char": "e",
       "t": 9930
      },
      {
       "kind": "char",
-      "char": "e",
+      "char": " ",
       "t": 10120
      },
      {
       "kind": "char",
-      "char": "c",
+      "char": "s",
       "t": 10310
      },
      {
       "kind": "char",
-      "char": "t",
+      "char": "e",
       "t": 10500
      },
      {
       "kind": "char",
-      "char": "i",
+      "char": "c",
       "t": 10690
      },
      {
       "kind": "char",
-      "char": "o",
+      "char": "t",
       "t": 10880
      },
      {
       "kind": "char",
-      "char": "n",
+      "char": "i",
       "t": 11070
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "o",
       "t": 11260
      },
      {
       "kind": "char",
-      "char": "h",
+      "char": "n",
       "t": 11450
      },
      {
       "kind": "char",
-      "char": "o",
+      "char": " ",
       "t": 11640
      },
      {
       "kind": "char",
-      "char": "l",
+      "char": "r",
       "t": 11830
      },
      {
       "kind": "char",
-      "char": "d",
+      "char": "e",
       "t": 12020
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "s",
       "t": 12210
      },
      {
       "kind": "char",
-      "char": "s",
+      "char": "t",
       "t": 12400
      },
      {
       "kind": "char",
-      "char": "a",
+      "char": " ",
       "t": 12590
      },
      {
       "kind": "char",
-      "char": "l",
+      "char": "a",
       "t": 12780
      },
      {
       "kind": "char",
-      "char": "e",
+      "char": "d",
       "t": 12970
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "d",
       "t": 13160
      },
      {
       "kind": "char",
-      "char": "s",
+      "char": "e",
       "t": 13350
      },
      {
       "kind": "char",
-      "char": "i",
+      "char": "d",
       "t": 13540
      },
      {
       "kind": "char",
-      "char": "t",
+      "char": " ",
       "t": 13730
      },
      {
       "kind": "char",
-      "char": "e",
+      "char": "i",
       "t": 13920
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "c",
       "t": 14110
      },
      {
@@ -64527,142 +64542,53 @@
      },
      {
       "kind": "char",
-      "char": "c",
+      "char": "e",
       "t": 14680
      },
      {
       "kind": "char",
-      "char": "e",
+      "char": " ",
       "t": 14870
      },
      {
       "kind": "char",
-      "char": "r",
+      "char": "d",
       "t": 15060
      },
      {
       "kind": "char",
-      "char": "t",
+      "char": "i",
       "t": 15250
      },
      {
       "kind": "char",
-      "char": "a",
+      "char": "d",
       "t": 15440
      },
      {
       "kind": "char",
-      "char": "i",
+      "char": " ",
       "t": 15630
      },
      {
       "kind": "char",
-      "char": "n",
+      "char": "t",
       "t": 15820
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "h",
       "t": 16010
      },
      {
       "kind": "char",
-      "char": "c",
+      "char": "e",
       "t": 16200
      },
      {
       "kind": "char",
-      "char": "o",
+      "char": "n",
       "t": 16390
-     },
-     {
-      "kind": "char",
-      "char": "n",
-      "t": 16580
-     },
-     {
-      "kind": "char",
-      "char": "t",
-      "t": 16770
-     },
-     {
-      "kind": "char",
-      "char": "a",
-      "t": 16960
-     },
-     {
-      "kind": "char",
-      "char": "c",
-      "t": 17150
-     },
-     {
-      "kind": "char",
-      "char": "t",
-      "t": 17340
-     },
-     {
-      "kind": "char",
-      "char": " ",
-      "t": 17530
-     },
-     {
-      "kind": "char",
-      "char": "t",
-      "t": 17720
-     },
-     {
-      "kind": "char",
-      "char": "h",
-      "t": 17910
-     },
-     {
-      "kind": "char",
-      "char": "r",
-      "t": 18100
-     },
-     {
-      "kind": "char",
-      "char": "e",
-      "t": 18290
-     },
-     {
-      "kind": "char",
-      "char": "e",
-      "t": 18480
-     },
-     {
-      "kind": "char",
-      "char": " ",
-      "t": 18670
-     },
-     {
-      "kind": "char",
-      "char": "t",
-      "t": 18860
-     },
-     {
-      "kind": "char",
-      "char": "h",
-      "t": 19050
-     },
-     {
-      "kind": "char",
-      "char": "e",
-      "t": 19240
-     },
-     {
-      "kind": "char",
-      "char": "x",
-      "t": 19430
-     },
-     {
-      "kind": "backspace",
-      "t": 19620
-     },
-     {
-      "kind": "char",
-      "char": "n",
-      "t": 19810
      }
     ],
     "outcome": {
@@ -64672,53 +64598,53 @@
      "newlyUnlockedMods": [],
      "summary": {
       "at": 1700087150000,
-      "wpm": 56.578947368421055,
-      "accuracy": 0.9347826086956522,
-      "durationMs": 18240,
-      "chars": 86,
+      "wpm": 56.05263157894736,
+      "accuracy": 0.9342105263157895,
+      "durationMs": 15200,
+      "chars": 71,
       "corrections": 5,
       "calibration": false,
       "consistency": 1,
-      "firstErrors": 6
+      "firstErrors": 5
      },
      "perKey": {
-      "c": {
-       "n": 7,
-       "correct": 4,
-       "msTotal": 950,
-       "msN": 5
+      "d": {
+       "n": 9,
+       "correct": 9,
+       "msTotal": 1330,
+       "msN": 7
       },
-      "a": {
-       "n": 8,
-       "correct": 8,
-       "msTotal": 1520,
-       "msN": 8
-      },
-      "pair:ca": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
-      },
-      "r": {
+      "o": {
        "n": 5,
        "correct": 5,
        "msTotal": 950,
        "msN": 5
       },
-      "pair:ar": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
+      "pair:do": {
+       "n": 2,
+       "correct": 2,
+       "msTotal": 380,
+       "msN": 2
+      },
+      "n": {
+       "n": 4,
+       "correct": 4,
+       "msTotal": 760,
+       "msN": 4
+      },
+      "pair:on": {
+       "n": 3,
+       "correct": 3,
+       "msTotal": 570,
+       "msN": 3
       },
       "e": {
-       "n": 12,
-       "correct": 11,
+       "n": 9,
+       "correct": 7,
        "msTotal": 1710,
        "msN": 9
       },
-      "pair:re": {
+      "pair:ne": {
        "n": 2,
        "correct": 1,
        "msTotal": 380,
@@ -64727,32 +64653,20 @@
       " ": {
        "n": 14,
        "correct": 13,
-       "msTotal": 2470,
-       "msN": 13
+       "msTotal": 2090,
+       "msN": 11
       },
-      "o": {
+      "r": {
+       "n": 4,
+       "correct": 3,
+       "msTotal": 760,
+       "msN": 4
+      },
+      "a": {
        "n": 5,
        "correct": 5,
        "msTotal": 950,
        "msN": 5
-      },
-      "n": {
-       "n": 6,
-       "correct": 5,
-       "msTotal": 1140,
-       "msN": 6
-      },
-      "pair:on": {
-       "n": 3,
-       "correct": 3,
-       "msTotal": 570,
-       "msN": 3
-      },
-      "pair:ne": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
       },
       "pair:ra": {
        "n": 1,
@@ -64760,29 +64674,23 @@
        "msTotal": 190,
        "msN": 1
       },
-      "d": {
-       "n": 3,
-       "correct": 3,
-       "msTotal": 570,
-       "msN": 3
-      },
       "pair:ad": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
+       "n": 2,
+       "correct": 2,
+       "msTotal": 380,
+       "msN": 2
       },
       "i": {
        "n": 6,
-       "correct": 6,
+       "correct": 5,
        "msTotal": 1140,
        "msN": 6
       },
       "pair:di": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
+       "n": 2,
+       "correct": 2,
+       "msTotal": 380,
+       "msN": 2
       },
       "pair:io": {
        "n": 2,
@@ -64790,35 +64698,35 @@
        "msTotal": 380,
        "msN": 2
       },
-      "h": {
-       "n": 4,
-       "correct": 4,
-       "msTotal": 760,
-       "msN": 4
+      "c": {
+       "n": 3,
+       "correct": 3,
+       "msTotal": 570,
+       "msN": 3
       },
-      "pair:ha": {
+      "pair:ca": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
        "msN": 1
       },
-      "pair:an": {
-       "n": 1,
+      "pair:ar": {
+       "n": 2,
        "correct": 1,
-       "msTotal": 190,
-       "msN": 1
+       "msTotal": 380,
+       "msN": 2
       },
-      "pair:nd": {
+      "pair:rd": {
        "n": 1,
        "correct": 1,
-       "msTotal": 190,
-       "msN": 1
+       "msTotal": 0,
+       "msN": 0
       },
       "s": {
-       "n": 7,
-       "correct": 7,
-       "msTotal": 1330,
-       "msN": 7
+       "n": 5,
+       "correct": 5,
+       "msTotal": 760,
+       "msN": 4
       },
       "pair:ds": {
        "n": 1,
@@ -64826,83 +64734,59 @@
        "msTotal": 190,
        "msN": 1
       },
-      "pair:ea": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
-      },
-      "pair:as": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
-      },
-      "pair:si": {
-       "n": 2,
-       "correct": 2,
-       "msTotal": 380,
-       "msN": 2
-      },
-      "pair:ie": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
-      },
-      "pair:er": {
-       "n": 2,
-       "correct": 2,
-       "msTotal": 380,
-       "msN": 2
-      },
       "t": {
-       "n": 8,
-       "correct": 8,
-       "msTotal": 1520,
-       "msN": 8
+       "n": 4,
+       "correct": 4,
+       "msTotal": 760,
+       "msN": 4
       },
       "pair:it": {
-       "n": 2,
-       "correct": 2,
-       "msTotal": 380,
-       "msN": 2
-      },
-      "pair:ac": {
-       "n": 2,
-       "correct": 1,
-       "msTotal": 380,
-       "msN": 2
-      },
-      "pair:cc": {
-       "n": 1,
-       "correct": 0,
-       "msTotal": 0,
-       "msN": 0
-      },
-      "pair:ce": {
-       "n": 2,
-       "correct": 2,
-       "msTotal": 0,
-       "msN": 0
-      },
-      "pair:es": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
-      },
-      "pair:ss": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
        "msN": 1
       },
       "pair:se": {
+       "n": 2,
+       "correct": 2,
+       "msTotal": 380,
+       "msN": 2
+      },
+      "pair:ea": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
        "msN": 1
+      },
+      "h": {
+       "n": 3,
+       "correct": 3,
+       "msTotal": 570,
+       "msN": 3
+      },
+      "pair:hi": {
+       "n": 1,
+       "correct": 0,
+       "msTotal": 190,
+       "msN": 1
+      },
+      "pair:sh": {
+       "n": 1,
+       "correct": 1,
+       "msTotal": 190,
+       "msN": 1
+      },
+      "pair:ha": {
+       "n": 1,
+       "correct": 1,
+       "msTotal": 190,
+       "msN": 1
+      },
+      "pair:re": {
+       "n": 2,
+       "correct": 2,
+       "msTotal": 380,
+       "msN": 2
       },
       "pair:ec": {
        "n": 1,
@@ -64911,10 +64795,10 @@
        "msN": 1
       },
       "pair:ct": {
-       "n": 2,
-       "correct": 2,
-       "msTotal": 380,
-       "msN": 2
+       "n": 1,
+       "correct": 1,
+       "msTotal": 190,
+       "msN": 1
       },
       "pair:ti": {
        "n": 1,
@@ -64922,103 +64806,55 @@
        "msTotal": 190,
        "msN": 1
       },
-      "pair:ho": {
+      "pair:es": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
        "msN": 1
       },
-      "l": {
-       "n": 2,
-       "correct": 2,
-       "msTotal": 380,
-       "msN": 2
-      },
-      "pair:ol": {
+      "pair:st": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
        "msN": 1
       },
-      "pair:ld": {
+      "pair:dd": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
        "msN": 1
       },
-      "pair:sa": {
+      "pair:de": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
        "msN": 1
       },
-      "pair:al": {
+      "pair:ed": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
        "msN": 1
       },
-      "pair:le": {
+      "pair:ic": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
        "msN": 1
       },
-      "pair:te": {
+      "pair:ce": {
        "n": 1,
-       "correct": 1,
+       "correct": 0,
        "msTotal": 190,
        "msN": 1
       },
-      "pair:rt": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
-      },
-      "pair:ta": {
-       "n": 2,
-       "correct": 2,
-       "msTotal": 380,
-       "msN": 2
-      },
-      "pair:ai": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
-      },
-      "pair:in": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
-      },
-      "pair:co": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
-      },
-      "pair:nt": {
+      "pair:id": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
        "msN": 1
       },
       "pair:th": {
-       "n": 2,
-       "correct": 2,
-       "msTotal": 380,
-       "msN": 2
-      },
-      "pair:hr": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
-      },
-      "pair:ee": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
@@ -65032,13 +64868,13 @@
       },
       "pair:en": {
        "n": 1,
-       "correct": 0,
+       "correct": 1,
        "msTotal": 190,
        "msN": 1
       }
      },
      "testedOut": [],
-     "difficultyChange": 0.04999999999999999,
+     "difficultyChange": 0.050000000000000044,
      "errors": {
       "errors": [
        {
@@ -65049,45 +64885,37 @@
        },
        {
         "index": 20,
-        "expected": " ",
+        "expected": "r",
         "actual": "x",
         "type": "other"
        },
        {
         "index": 32,
-        "expected": "c",
+        "expected": "i",
         "actual": "x",
-        "type": "neighbor"
+        "type": "other"
        },
        {
         "index": 33,
-        "expected": "c",
+        "expected": " ",
         "actual": "x",
-        "type": "neighbor"
+        "type": "other"
        },
        {
         "index": 61,
-        "expected": "c",
-        "actual": "x",
-        "type": "neighbor"
-       },
-       {
-        "index": 86,
-        "expected": "n",
+        "expected": "e",
         "actual": "x",
         "type": "other"
        }
       ],
       "counts": {
-       "other": 3,
-       "neighbor": 3
+       "other": 5
       },
       "missedWords": [
-       "access",
-       "care",
-       "certain",
-       "hands",
-       "then"
+       "cards",
+       "done",
+       "hi",
+       "ice"
       ]
      },
      "rhythm": {
@@ -65098,25 +64926,26 @@
      "fatigue": null,
      "reviews": {
       "added": [
-       "key:c",
-       "pair:re",
-       "word:access",
-       "word:care",
-       "word:certain"
+       "pair:ar",
+       "pair:ne",
+       "word:cards",
+       "word:done",
+       "word:hi",
+       "word:ice"
       ],
       "passed": [
        "key:d",
        "key:h",
-       "key:i",
-       "key:r",
+       "key:n",
        "key:s",
        "key:t",
-       "word:hands"
+       "word:do",
+       "word:then"
       ],
       "missed": [
        "key:e",
-       "key:n",
-       "word:then"
+       "key:i",
+       "key:r"
       ],
       "learned": []
      },
@@ -65155,64 +64984,64 @@
      "roundCounter": 7,
      "keys": {
       "o": {
-       "n": 29,
-       "timedN": 25,
-       "msAvg": 194.10223332569123,
+       "n": 27,
+       "timedN": 23,
+       "msAvg": 195.0644855872731,
        "errAvg": 0
       },
       "i": {
-       "n": 29,
-       "timedN": 28,
-       "msAvg": 205.91489486614142,
-       "errAvg": 0.04077702828878974
+       "n": 31,
+       "timedN": 29,
+       "msAvg": 204.3234053795273,
+       "errAvg": 0.1590734929139197
       },
       "l": {
-       "n": 24,
-       "timedN": 22,
-       "msAvg": 209.76281456499999,
-       "errAvg": 0.024147725369125506
+       "n": 23,
+       "timedN": 21,
+       "msAvg": 211.95868284999997,
+       "errAvg": 0.026830805965695006
       },
       " ": {
        "n": 98,
-       "timedN": 89,
-       "msAvg": 192.74948764983856,
-       "errAvg": 0.03722539664961109
+       "timedN": 87,
+       "msAvg": 193.39442919733156,
+       "errAvg": 0.06436459075926362
       },
       "n": {
-       "n": 29,
-       "timedN": 28,
-       "msAvg": 201.42714012971223,
-       "errAvg": 0.16174611116483778
+       "n": 25,
+       "timedN": 24,
+       "msAvg": 207.41676593463225,
+       "errAvg": 0.09411082329650626
       },
       "e": {
-       "n": 75,
-       "timedN": 68,
-       "msAvg": 199.0101009862608,
-       "errAvg": 0.05980127560871758
+       "n": 74,
+       "timedN": 70,
+       "msAvg": 197.29818179887124,
+       "errAvg": 0.136381785129364
       },
       "s": {
-       "n": 50,
-       "timedN": 47,
-       "msAvg": 204.16009503916902,
-       "errAvg": 0.006723988866683948
+       "n": 47,
+       "timedN": 44,
+       "msAvg": 209.42399868198768,
+       "errAvg": 0.009223578692296225
       },
       "r": {
        "n": 32,
-       "timedN": 31,
-       "msAvg": 208.31103737131065,
-       "errAvg": 0.014378145647665834
+       "timedN": 30,
+       "msAvg": 210.34559707923407,
+       "errAvg": 0.09537814564766582
       },
       "d": {
-       "n": 40,
-       "timedN": 36,
-       "msAvg": 209.32831722527237,
-       "errAvg": 0.034930604994752805
+       "n": 46,
+       "timedN": 41,
+       "msAvg": 201.41317803835108,
+       "errAvg": 0.018563555649016423
       },
       "t": {
-       "n": 48,
-       "timedN": 48,
-       "msAvg": 201.76286336012464,
-       "errAvg": 0.025022935406054585
+       "n": 42,
+       "timedN": 42,
+       "msAvg": 212.13390265358646,
+       "errAvg": 0.0040383465918015
       },
       "h": {
        "n": 31,
@@ -65221,20 +65050,20 @@
        "errAvg": 0.06672776872676406
       },
       "a": {
-       "n": 44,
-       "timedN": 44,
-       "msAvg": 197.93584885765674,
-       "errAvg": 0.005013349395958727
+       "n": 40,
+       "timedN": 40,
+       "msAvg": 202.09548675149634,
+       "errAvg": 0.0076411361011411785
       },
       "c": {
-       "n": 10,
-       "timedN": 8,
+       "n": 9,
+       "timedN": 9,
        "msAvg": 190,
-       "errAvg": 0.3
+       "errAvg": 0
       }
      },
-     "pairCount": 81,
-     "difficulty": 0.45,
+     "pairCount": 76,
+     "difficulty": 0.4,
      "reviews": {
       "key:e": {
        "kind": "key",
@@ -65242,7 +65071,7 @@
        "step": 0,
        "due": 1700173550000,
        "sessionRound": 4,
-       "lapses": 4
+       "lapses": 3
       },
       "key:l": {
        "kind": "key",
@@ -65255,10 +65084,10 @@
       "key:t": {
        "kind": "key",
        "target": "t",
-       "step": 0,
-       "due": 1700173430000,
-       "sessionRound": 3,
-       "lapses": 1
+       "step": 1,
+       "due": 1700346230000,
+       "sessionRound": null,
+       "lapses": 0
       },
       "word:lines": {
        "kind": "word",
@@ -65287,10 +65116,10 @@
       "word:then": {
        "kind": "word",
        "target": "then",
-       "step": 0,
-       "due": 1700173550000,
-       "sessionRound": 4,
-       "lapses": 1
+       "step": 1,
+       "due": 1700346350000,
+       "sessionRound": null,
+       "lapses": 0
       },
       "key:d": {
        "kind": "key",
@@ -65311,10 +65140,10 @@
       "key:r": {
        "kind": "key",
        "target": "r",
-       "step": 1,
-       "due": 1700346230000,
-       "sessionRound": null,
-       "lapses": 0
+       "step": 0,
+       "due": 1700173550000,
+       "sessionRound": 4,
+       "lapses": 1
       },
       "word:dear": {
        "kind": "word",
@@ -65328,15 +65157,15 @@
        "kind": "word",
        "target": "do",
        "step": 1,
-       "due": 1700346230000,
+       "due": 1700346350000,
        "sessionRound": null,
        "lapses": 0
       },
       "word:hands": {
        "kind": "word",
        "target": "hands",
-       "step": 1,
-       "due": 1700346350000,
+       "step": 0,
+       "due": 1700086550000,
        "sessionRound": null,
        "lapses": 0
       },
@@ -65423,10 +65252,10 @@
       "key:i": {
        "kind": "key",
        "target": "i",
-       "step": 1,
-       "due": 1700346230000,
-       "sessionRound": 7,
-       "lapses": 0
+       "step": 0,
+       "due": 1700173550000,
+       "sessionRound": 4,
+       "lapses": 2
       },
       "word:said": {
        "kind": "word",
@@ -65440,21 +65269,13 @@
        "kind": "key",
        "target": "n",
        "step": 0,
-       "due": 1700173550000,
-       "sessionRound": 4,
-       "lapses": 1
-      },
-      "pair:se": {
-       "kind": "pair",
-       "target": "se",
-       "step": 0,
        "due": 1700173430000,
        "sessionRound": 3,
        "lapses": 0
       },
-      "word:closed": {
+      "word:direct": {
        "kind": "word",
-       "target": "closed",
+       "target": "direct",
        "step": 0,
        "due": 1700173430000,
        "sessionRound": 3,
@@ -65468,49 +65289,49 @@
        "sessionRound": 3,
        "lapses": 0
       },
-      "word:its": {
-       "kind": "word",
-       "target": "its",
-       "step": 0,
-       "due": 1700173430000,
-       "sessionRound": 3,
-       "lapses": 0
-      },
-      "key:c": {
-       "kind": "key",
-       "target": "c",
-       "step": 0,
-       "due": 1700173550000,
-       "sessionRound": 4,
-       "lapses": 0
-      },
-      "pair:re": {
+      "pair:ar": {
        "kind": "pair",
-       "target": "re",
+       "target": "ar",
        "step": 0,
        "due": 1700173550000,
        "sessionRound": 4,
        "lapses": 0
       },
-      "word:access": {
-       "kind": "word",
-       "target": "access",
+      "pair:ne": {
+       "kind": "pair",
+       "target": "ne",
        "step": 0,
        "due": 1700173550000,
        "sessionRound": 4,
        "lapses": 0
       },
-      "word:care": {
+      "word:cards": {
        "kind": "word",
-       "target": "care",
+       "target": "cards",
        "step": 0,
        "due": 1700173550000,
        "sessionRound": 4,
        "lapses": 0
       },
-      "word:certain": {
+      "word:done": {
        "kind": "word",
-       "target": "certain",
+       "target": "done",
+       "step": 0,
+       "due": 1700173550000,
+       "sessionRound": 4,
+       "lapses": 0
+      },
+      "word:hi": {
+       "kind": "word",
+       "target": "hi",
+       "step": 0,
+       "due": 1700173550000,
+       "sessionRound": 4,
+       "lapses": 0
+      },
+      "word:ice": {
+       "kind": "word",
+       "target": "ice",
        "step": 0,
        "due": 1700173550000,
        "sessionRound": 4,
@@ -65519,43 +65340,43 @@
      },
      "hesitations": {
       "s": {
-       "n": 40,
+       "n": 37,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
       },
       "t": {
-       "n": 42,
+       "n": 36,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
       },
       " ": {
-       "n": 75,
+       "n": 73,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
       },
       "a": {
-       "n": 39,
+       "n": 35,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
       },
       "n": {
-       "n": 23,
+       "n": 19,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
       },
       "l": {
-       "n": 16,
+       "n": 15,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
       },
       "e": {
-       "n": 56,
+       "n": 58,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
@@ -65567,25 +65388,31 @@
        "errAvg": 0
       },
       "r": {
-       "n": 25,
+       "n": 24,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
       },
       "d": {
-       "n": 27,
+       "n": 32,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
       },
       "i": {
-       "n": 21,
+       "n": 22,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
       },
       "o": {
-       "n": 14,
+       "n": 12,
+       "timedN": 0,
+       "msAvg": 0,
+       "errAvg": 0
+      },
+      "c": {
+       "n": 3,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
@@ -65594,14 +65421,14 @@
      "errorBias": {
       "swap": 0,
       "double": 0,
-      "neighbor": 0.18952685714285716
+      "neighbor": 0.08952685714285716
      },
      "missedWords": {
       "lines": 1,
-      "then": 2,
+      "then": 1,
       "needed": 2,
       "lost": 1,
-      "hands": 2,
+      "hands": 1,
       "do": 1,
       "dear": 1,
       "head": 1,
@@ -65617,11 +65444,12 @@
       "inc": 1,
       "said": 1,
       "he": 1,
-      "its": 1,
-      "closed": 1,
-      "care": 1,
-      "access": 1,
-      "certain": 1
+      "has": 1,
+      "direct": 1,
+      "done": 1,
+      "cards": 1,
+      "hi": 1,
+      "ice": 1
      },
      "session": {
       "id": 2,
@@ -65630,17 +65458,17 @@
       "rounds": 2,
       "history": [
        {
-        "wpm": 57.89473684210526,
-        "accuracy": 0.9506172839506173
+        "wpm": 58.0171358629131,
+        "accuracy": 0.9518072289156626
        },
        {
-        "wpm": 56.578947368421055,
-        "accuracy": 0.9347826086956522
+        "wpm": 56.05263157894736,
+        "accuracy": 0.9342105263157895
        }
       ],
       "baseline": {
-       "wpm": 57.23684210526316,
-       "accuracy": 0.9426999463231347
+       "wpm": 57.03488372093023,
+       "accuracy": 0.943008877615726
       },
       "fatigued": false,
       "grip": null,
@@ -65663,7 +65491,7 @@
       "madeUp": false
      },
      {
-      "text": "enter",
+      "text": "leaders",
       "madeUp": false
      },
      {
@@ -65675,7 +65503,7 @@
       "madeUp": false
      },
      {
-      "text": "less",
+      "text": "side",
       "madeUp": false
      },
      {
@@ -65683,23 +65511,31 @@
       "madeUp": false
      },
      {
+      "text": "had",
+      "madeUp": false
+     },
+     {
       "text": "she",
       "madeUp": false
      },
      {
-      "text": "into",
+      "text": "dinner",
       "madeUp": false
      },
      {
-      "text": "cat",
+      "text": "china",
       "madeUp": false
      },
      {
-      "text": "article",
+      "text": "not",
       "madeUp": false
      },
      {
-      "text": "an",
+      "text": "hands",
+      "madeUp": false
+     },
+     {
+      "text": "did",
       "madeUp": false
      },
      {
@@ -65707,32 +65543,24 @@
       "madeUp": false
      },
      {
-      "text": "old",
-      "madeUp": false
-     },
-     {
-      "text": "idea",
-      "madeUp": false
-     },
-     {
-      "text": "cases",
+      "text": "access",
       "madeUp": false
      }
     ],
     "explanation": {
      "keys": [
-      "n",
-      "h"
+      "i",
+      "e"
      ],
      "pairs": [
-      "ti"
+      "ce"
      ],
      "newLetter": "c",
      "modifiers": [],
-     "difficulty": 0.45,
+     "difficulty": 0.4,
      "reviewWords": [
-      "head",
-      "idea"
+      "hands",
+      "head"
      ]
     },
     "events": [
@@ -65768,112 +65596,112 @@
      },
      {
       "kind": "char",
-      "char": "e",
+      "char": "l",
       "t": 2330
      },
      {
       "kind": "char",
-      "char": "n",
+      "char": "e",
       "t": 2520
      },
      {
       "kind": "char",
-      "char": "t",
+      "char": "a",
       "t": 2710
      },
      {
       "kind": "char",
-      "char": "e",
+      "char": "d",
       "t": 2900
      },
      {
       "kind": "char",
-      "char": "r",
+      "char": "e",
       "t": 3090
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "r",
       "t": 3280
      },
      {
       "kind": "char",
-      "char": "l",
+      "char": "s",
       "t": 3470
      },
      {
       "kind": "char",
-      "char": "o",
+      "char": " ",
       "t": 3660
      },
      {
       "kind": "char",
-      "char": "c",
+      "char": "l",
       "t": 3850
      },
      {
       "kind": "char",
-      "char": "a",
+      "char": "o",
       "t": 4040
      },
      {
       "kind": "char",
-      "char": "t",
+      "char": "c",
       "t": 4230
      },
      {
       "kind": "char",
-      "char": "e",
+      "char": "a",
       "t": 4420
      },
      {
       "kind": "char",
-      "char": "d",
+      "char": "t",
       "t": 4610
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "e",
       "t": 4800
      },
      {
       "kind": "char",
-      "char": "n",
+      "char": "d",
       "t": 4990
      },
      {
       "kind": "char",
-      "char": "o",
+      "char": " ",
       "t": 5180
      },
      {
       "kind": "char",
-      "char": "t",
+      "char": "n",
       "t": 5370
      },
      {
       "kind": "char",
-      "char": "e",
+      "char": "o",
       "t": 5560
      },
      {
       "kind": "char",
-      "char": "s",
+      "char": "t",
       "t": 5750
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "e",
       "t": 5940
      },
      {
       "kind": "char",
-      "char": "l",
+      "char": "s",
       "t": 6130
      },
      {
       "kind": "char",
-      "char": "e",
+      "char": " ",
       "t": 6320
      },
      {
@@ -65892,22 +65720,22 @@
      },
      {
       "kind": "char",
-      "char": "s",
+      "char": "i",
       "t": 7080
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "d",
       "t": 7270
      },
      {
       "kind": "char",
-      "char": "o",
+      "char": "e",
       "t": 7460
      },
      {
       "kind": "char",
-      "char": "n",
+      "char": " ",
       "t": 7650
      },
      {
@@ -65921,92 +65749,92 @@
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "o",
       "t": 8220
      },
      {
       "kind": "char",
-      "char": "s",
+      "char": "n",
       "t": 8410
      },
      {
       "kind": "char",
-      "char": "h",
+      "char": " ",
       "t": 8600
      },
      {
       "kind": "char",
-      "char": "e",
+      "char": "h",
       "t": 8790
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "a",
       "t": 8980
      },
      {
       "kind": "char",
-      "char": "i",
+      "char": "d",
       "t": 9170
      },
      {
       "kind": "char",
-      "char": "n",
+      "char": " ",
       "t": 9360
      },
      {
       "kind": "char",
-      "char": "t",
+      "char": "s",
       "t": 9550
      },
      {
       "kind": "char",
-      "char": "o",
+      "char": "h",
       "t": 9740
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "e",
       "t": 9930
      },
      {
       "kind": "char",
-      "char": "c",
+      "char": " ",
       "t": 10120
      },
      {
       "kind": "char",
-      "char": "a",
+      "char": "d",
       "t": 10310
      },
      {
       "kind": "char",
-      "char": "t",
+      "char": "i",
       "t": 10500
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "n",
       "t": 10690
      },
      {
       "kind": "char",
-      "char": "a",
+      "char": "n",
       "t": 10880
      },
      {
       "kind": "char",
-      "char": "r",
+      "char": "e",
       "t": 11070
      },
      {
       "kind": "char",
-      "char": "t",
+      "char": "r",
       "t": 11260
      },
      {
       "kind": "char",
-      "char": "i",
+      "char": " ",
       "t": 11450
      },
      {
@@ -66016,17 +65844,17 @@
      },
      {
       "kind": "char",
-      "char": "l",
+      "char": "h",
       "t": 11830
      },
      {
       "kind": "char",
-      "char": "e",
+      "char": "i",
       "t": 12020
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "n",
       "t": 12210
      },
      {
@@ -66036,52 +65864,52 @@
      },
      {
       "kind": "char",
-      "char": "n",
+      "char": " ",
       "t": 12590
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "n",
       "t": 12780
      },
      {
       "kind": "char",
-      "char": "h",
+      "char": "o",
       "t": 12970
      },
      {
       "kind": "char",
-      "char": "e",
+      "char": "t",
       "t": 13160
      },
      {
       "kind": "char",
-      "char": "a",
+      "char": " ",
       "t": 13350
      },
      {
       "kind": "char",
-      "char": "d",
+      "char": "h",
       "t": 13540
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "a",
       "t": 13730
      },
      {
       "kind": "char",
-      "char": "o",
+      "char": "n",
       "t": 13920
      },
      {
       "kind": "char",
-      "char": "l",
+      "char": "d",
       "t": 14110
      },
      {
       "kind": "char",
-      "char": "d",
+      "char": "s",
       "t": 14300
      },
      {
@@ -66091,17 +65919,17 @@
      },
      {
       "kind": "char",
-      "char": "i",
+      "char": "d",
       "t": 14680
      },
      {
       "kind": "char",
-      "char": "d",
+      "char": "i",
       "t": 14870
      },
      {
       "kind": "char",
-      "char": "e",
+      "char": "d",
       "t": 15060
      },
      {
@@ -66115,12 +65943,12 @@
      },
      {
       "kind": "char",
-      "char": "a",
+      "char": " ",
       "t": 15630
      },
      {
       "kind": "char",
-      "char": " ",
+      "char": "h",
       "t": 15820
      },
      {
@@ -66134,7 +65962,7 @@
      },
      {
       "kind": "char",
-      "char": "c",
+      "char": "e",
       "t": 16390
      },
      {
@@ -66144,31 +65972,58 @@
      },
      {
       "kind": "char",
-      "char": "s",
+      "char": "d",
       "t": 16770
      },
      {
       "kind": "char",
-      "char": "e",
+      "char": " ",
       "t": 16960
      },
      {
       "kind": "char",
-      "char": "s",
+      "char": "a",
       "t": 17150
+     },
+     {
+      "kind": "char",
+      "char": "c",
+      "t": 17340
+     },
+     {
+      "kind": "char",
+      "char": "c",
+      "t": 17530
+     },
+     {
+      "kind": "char",
+      "char": "e",
+      "t": 17720
+     },
+     {
+      "kind": "char",
+      "char": "s",
+      "t": 17910
+     },
+     {
+      "kind": "char",
+      "char": "s",
+      "t": 18100
      }
     ],
     "outcome": {
-     "newlyMastered": [],
-     "newlyUnlocked": null,
+     "newlyMastered": [
+      "c"
+     ],
+     "newlyUnlocked": "u",
      "newlyMasteredMods": [],
      "newlyUnlockedMods": [],
      "summary": {
       "at": 1700087270000,
-      "wpm": 57.89473684210526,
-      "accuracy": 0.9506172839506173,
-      "durationMs": 15960,
-      "chars": 77,
+      "wpm": 58.190419869899465,
+      "accuracy": 0.9534883720930233,
+      "durationMs": 16910,
+      "chars": 82,
       "corrections": 4,
       "calibration": false,
       "consistency": 1,
@@ -66177,21 +66032,21 @@
      "perKey": {
       "c": {
        "n": 5,
-       "correct": 4,
+       "correct": 5,
        "msTotal": 760,
        "msN": 4
       },
       "a": {
        "n": 8,
-       "correct": 7,
+       "correct": 8,
        "msTotal": 1330,
        "msN": 7
       },
       "pair:ca": {
-       "n": 4,
-       "correct": 4,
-       "msTotal": 570,
-       "msN": 3
+       "n": 2,
+       "correct": 2,
+       "msTotal": 380,
+       "msN": 2
       },
       "r": {
        "n": 3,
@@ -66200,16 +66055,16 @@
        "msN": 3
       },
       "pair:ar": {
-       "n": 2,
-       "correct": 2,
-       "msTotal": 380,
-       "msN": 2
+       "n": 1,
+       "correct": 1,
+       "msTotal": 190,
+       "msN": 1
       },
       "d": {
-       "n": 5,
-       "correct": 5,
-       "msTotal": 950,
-       "msN": 5
+       "n": 10,
+       "correct": 10,
+       "msTotal": 1710,
+       "msN": 9
       },
       "pair:rd": {
        "n": 1,
@@ -66218,76 +66073,76 @@
        "msN": 1
       },
       "s": {
-       "n": 7,
-       "correct": 6,
-       "msTotal": 1140,
-       "msN": 6
+       "n": 8,
+       "correct": 8,
+       "msTotal": 1520,
+       "msN": 8
       },
       "pair:ds": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
-      },
-      " ": {
-       "n": 14,
-       "correct": 13,
-       "msTotal": 2280,
-       "msN": 12
-      },
-      "e": {
-       "n": 10,
-       "correct": 10,
-       "msTotal": 1900,
-       "msN": 10
-      },
-      "n": {
-       "n": 5,
-       "correct": 5,
-       "msTotal": 950,
-       "msN": 5
-      },
-      "pair:en": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
-      },
-      "t": {
-       "n": 6,
-       "correct": 6,
-       "msTotal": 1140,
-       "msN": 6
-      },
-      "pair:nt": {
        "n": 2,
        "correct": 2,
        "msTotal": 380,
        "msN": 2
       },
-      "pair:te": {
-       "n": 3,
-       "correct": 3,
-       "msTotal": 570,
-       "msN": 3
+      " ": {
+       "n": 14,
+       "correct": 13,
+       "msTotal": 2660,
+       "msN": 14
       },
-      "pair:er": {
+      "l": {
+       "n": 2,
+       "correct": 2,
+       "msTotal": 380,
+       "msN": 2
+      },
+      "e": {
+       "n": 9,
+       "correct": 8,
+       "msTotal": 1710,
+       "msN": 9
+      },
+      "pair:le": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
        "msN": 1
       },
-      "l": {
-       "n": 4,
-       "correct": 4,
-       "msTotal": 760,
-       "msN": 4
+      "pair:ea": {
+       "n": 2,
+       "correct": 2,
+       "msTotal": 190,
+       "msN": 1
+      },
+      "pair:ad": {
+       "n": 3,
+       "correct": 3,
+       "msTotal": 570,
+       "msN": 3
+      },
+      "pair:de": {
+       "n": 2,
+       "correct": 2,
+       "msTotal": 380,
+       "msN": 2
+      },
+      "pair:er": {
+       "n": 2,
+       "correct": 2,
+       "msTotal": 380,
+       "msN": 2
+      },
+      "pair:rs": {
+       "n": 1,
+       "correct": 1,
+       "msTotal": 190,
+       "msN": 1
       },
       "o": {
-       "n": 5,
-       "correct": 5,
-       "msTotal": 950,
-       "msN": 5
+       "n": 4,
+       "correct": 3,
+       "msTotal": 760,
+       "msN": 4
       },
       "pair:lo": {
        "n": 1,
@@ -66301,7 +66156,19 @@
        "msTotal": 190,
        "msN": 1
       },
+      "t": {
+       "n": 3,
+       "correct": 3,
+       "msTotal": 570,
+       "msN": 3
+      },
       "pair:at": {
+       "n": 1,
+       "correct": 1,
+       "msTotal": 190,
+       "msN": 1
+      },
+      "pair:te": {
        "n": 2,
        "correct": 2,
        "msTotal": 380,
@@ -66313,43 +66180,61 @@
        "msTotal": 190,
        "msN": 1
       },
+      "n": {
+       "n": 7,
+       "correct": 7,
+       "msTotal": 1140,
+       "msN": 6
+      },
       "pair:no": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
-      },
-      "pair:ot": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
-      },
-      "pair:es": {
-       "n": 3,
-       "correct": 3,
-       "msTotal": 570,
-       "msN": 3
-      },
-      "pair:le": {
        "n": 2,
        "correct": 2,
        "msTotal": 380,
        "msN": 2
       },
-      "pair:ss": {
+      "pair:ot": {
+       "n": 2,
+       "correct": 2,
+       "msTotal": 380,
+       "msN": 2
+      },
+      "pair:es": {
+       "n": 2,
+       "correct": 2,
+       "msTotal": 380,
+       "msN": 2
+      },
+      "i": {
+       "n": 4,
+       "correct": 3,
+       "msTotal": 760,
+       "msN": 4
+      },
+      "pair:si": {
        "n": 1,
        "correct": 0,
+       "msTotal": 190,
+       "msN": 1
+      },
+      "pair:id": {
+       "n": 2,
+       "correct": 2,
        "msTotal": 190,
        "msN": 1
       },
       "pair:on": {
        "n": 1,
        "correct": 1,
-       "msTotal": 190,
-       "msN": 1
+       "msTotal": 0,
+       "msN": 0
       },
       "h": {
+       "n": 5,
+       "correct": 5,
+       "msTotal": 760,
+       "msN": 4
+      },
+      "pair:ha": {
        "n": 2,
        "correct": 2,
        "msTotal": 380,
@@ -66363,47 +66248,47 @@
       },
       "pair:he": {
        "n": 2,
+       "correct": 1,
+       "msTotal": 380,
+       "msN": 2
+      },
+      "pair:di": {
+       "n": 2,
        "correct": 2,
        "msTotal": 380,
        "msN": 2
       },
-      "i": {
-       "n": 3,
-       "correct": 3,
-       "msTotal": 570,
-       "msN": 3
-      },
       "pair:in": {
+       "n": 2,
+       "correct": 2,
+       "msTotal": 380,
+       "msN": 2
+      },
+      "pair:nn": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
        "msN": 1
       },
-      "pair:to": {
+      "pair:ne": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
        "msN": 1
       },
-      "pair:rt": {
+      "pair:ch": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
        "msN": 1
       },
-      "pair:ti": {
+      "pair:hi": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
        "msN": 1
       },
-      "pair:ic": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
-      },
-      "pair:cl": {
+      "pair:na": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
@@ -66415,49 +66300,31 @@
        "msTotal": 190,
        "msN": 1
       },
-      "pair:ea": {
-       "n": 2,
-       "correct": 1,
-       "msTotal": 380,
-       "msN": 2
-      },
-      "pair:ad": {
+      "pair:nd": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
        "msN": 1
       },
-      "pair:ol": {
+      "pair:ac": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
        "msN": 1
       },
-      "pair:ld": {
+      "pair:cc": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
        "msN": 1
       },
-      "pair:id": {
+      "pair:ce": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
        "msN": 1
       },
-      "pair:de": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
-      },
-      "pair:as": {
-       "n": 1,
-       "correct": 1,
-       "msTotal": 190,
-       "msN": 1
-      },
-      "pair:se": {
+      "pair:ss": {
        "n": 1,
        "correct": 1,
        "msTotal": 190,
@@ -66470,38 +66337,37 @@
       "errors": [
        {
         "index": 29,
-        "expected": "s",
+        "expected": "i",
         "actual": "x",
-        "type": "neighbor"
+        "type": "other"
        },
        {
         "index": 33,
-        "expected": " ",
+        "expected": "o",
         "actual": "x",
         "type": "other"
        },
        {
         "index": 70,
-        "expected": "a",
+        "expected": " ",
         "actual": "x",
         "type": "other"
        },
        {
         "index": 72,
-        "expected": "c",
+        "expected": "e",
         "actual": "x",
-        "type": "neighbor"
+        "type": "other"
        }
       ],
       "counts": {
-       "neighbor": 2,
-       "other": 2
+       "other": 4
       },
       "missedWords": [
-       "cases",
-       "idea",
-       "less",
-       "on"
+       "did",
+       "head",
+       "on",
+       "side"
       ]
      },
      "rhythm": {
@@ -66512,25 +66378,25 @@
      "fatigue": null,
      "reviews": {
       "added": [
-       "pair:ea",
-       "word:cases",
-       "word:less"
+       "pair:he",
+       "word:on",
+       "word:side"
       ],
       "passed": [
        "key:d",
-       "key:e",
-       "key:i",
-       "key:l",
+       "key:h",
        "key:n",
        "key:r",
+       "key:s",
        "key:t",
-       "word:head",
+       "word:cards",
+       "word:hands",
        "word:she"
       ],
       "missed": [
-       "key:c",
-       "key:s",
-       "word:idea"
+       "key:e",
+       "key:i",
+       "word:head"
       ],
       "learned": []
      },
@@ -66551,7 +66417,8 @@
       "r",
       "d",
       "l",
-      "c"
+      "c",
+      "u"
      ],
      "mastered": [
       "e",
@@ -66564,98 +66431,99 @@
       "h",
       "r",
       "d",
-      "l"
+      "l",
+      "c"
      ],
      "roundCounter": 8,
      "keys": {
       "o": {
-       "n": 34,
-       "timedN": 30,
-       "msAvg": 192.42232775648742,
-       "errAvg": 0
+       "n": 31,
+       "timedN": 27,
+       "msAvg": 193.3228089938099,
+       "errAvg": 0.09
       },
       "i": {
-       "n": 32,
-       "timedN": 31,
-       "msAvg": 201.6019583574171,
-       "errAvg": 0.029726453622527717
+       "n": 35,
+       "timedN": 33,
+       "msAvg": 199.39758626950783,
+       "errAvg": 0.17726811870082274
       },
       "l": {
-       "n": 28,
-       "timedN": 26,
-       "msAvg": 202.9663826360965,
-       "errAvg": 0.015843322614683245
+       "n": 25,
+       "timedN": 23,
+       "msAvg": 207.78653310849998,
+       "errAvg": 0.021732952832212955
       },
       " ": {
        "n": 112,
        "timedN": 101,
        "msAvg": 190.77653652250413,
-       "errAvg": 0.051562697732067536
+       "errAvg": 0.10472455384248175
       },
       "n": {
-       "n": 34,
-       "timedN": 33,
-       "msAvg": 196.74761197519376,
-       "errAvg": 0.09550946118172506
+       "n": 32,
+       "timedN": 30,
+       "msAvg": 199.2559835050669,
+       "errAvg": 0.04501291503916672
       },
       "e": {
-       "n": 85,
-       "timedN": 78,
-       "msAvg": 193.14162795703285,
-       "errAvg": 0.02085141549523782
+       "n": 83,
+       "timedN": 79,
+       "msAvg": 192.82746516132957,
+       "errAvg": 0.14283709788551113
       },
       "s": {
-       "n": 57,
-       "timedN": 53,
-       "msAvg": 197.52525506771104,
-       "errAvg": 0.07611606303056943
+       "n": 55,
+       "timedN": 52,
+       "msAvg": 198.36139451967892,
+       "errAvg": 0.003970448185888204
       },
       "r": {
        "n": 35,
-       "timedN": 34,
-       "msAvg": 203.34874624368547,
-       "errAvg": 0.010481668177148393
+       "timedN": 33,
+       "msAvg": 204.83194027076163,
+       "errAvg": 0.06953066817714838
       },
       "d": {
-       "n": 45,
-       "timedN": 41,
-       "msAvg": 201.41317803835108,
-       "errAvg": 0.020626172943351583
+       "n": 56,
+       "timedN": 50,
+       "msAvg": 194.42169901666202,
+       "errAvg": 0.006472711626408589
       },
       "t": {
-       "n": 54,
-       "timedN": 54,
-       "msAvg": 196.25126786696802,
-       "errAvg": 0.013298213815129054
+       "n": 45,
+       "timedN": 45,
+       "msAvg": 206.13561503446454,
+       "errAvg": 0.0029439546654232937
       },
       "h": {
-       "n": 33,
-       "timedN": 32,
-       "msAvg": 204.10758040705213,
-       "errAvg": 0.05404949266867888
+       "n": 36,
+       "timedN": 34,
+       "msAvg": 201.42714012971223,
+       "errAvg": 0.0394020801554669
       },
       "a": {
-       "n": 52,
-       "timedN": 51,
-       "msAvg": 193.79569190748575,
-       "errAvg": 0.09215808252723354
+       "n": 48,
+       "timedN": 47,
+       "msAvg": 195.78523381723176,
+       "errAvg": 0.0032892585386885206
       },
       "c": {
-       "n": 15,
-       "timedN": 12,
+       "n": 14,
+       "timedN": 13,
        "msAvg": 190,
-       "errAvg": 0.27714700000000003
+       "errAvg": 0
       }
      },
-     "pairCount": 84,
-     "difficulty": 0.45,
+     "pairCount": 80,
+     "difficulty": 0.4,
      "reviews": {
       "key:e": {
        "kind": "key",
        "target": "e",
        "step": 0,
-       "due": 1700173550000,
-       "sessionRound": 4,
+       "due": 1700173670000,
+       "sessionRound": 5,
        "lapses": 4
       },
       "key:l": {
@@ -66669,10 +66537,10 @@
       "key:t": {
        "kind": "key",
        "target": "t",
-       "step": 0,
-       "due": 1700173430000,
+       "step": 1,
+       "due": 1700346230000,
        "sessionRound": null,
-       "lapses": 1
+       "lapses": 0
       },
       "word:lines": {
        "kind": "word",
@@ -66701,10 +66569,10 @@
       "word:then": {
        "kind": "word",
        "target": "then",
-       "step": 0,
-       "due": 1700173550000,
-       "sessionRound": 4,
-       "lapses": 1
+       "step": 1,
+       "due": 1700346350000,
+       "sessionRound": null,
+       "lapses": 0
       },
       "key:d": {
        "kind": "key",
@@ -66719,16 +66587,16 @@
        "target": "h",
        "step": 0,
        "due": 1700173430000,
-       "sessionRound": 3,
+       "sessionRound": null,
        "lapses": 1
       },
       "key:r": {
        "kind": "key",
        "target": "r",
-       "step": 1,
-       "due": 1700346230000,
-       "sessionRound": null,
-       "lapses": 0
+       "step": 0,
+       "due": 1700173550000,
+       "sessionRound": 4,
+       "lapses": 1
       },
       "word:dear": {
        "kind": "word",
@@ -66742,7 +66610,7 @@
        "kind": "word",
        "target": "do",
        "step": 1,
-       "due": 1700346230000,
+       "due": 1700346350000,
        "sessionRound": null,
        "lapses": 0
       },
@@ -66750,25 +66618,25 @@
        "kind": "word",
        "target": "hands",
        "step": 1,
-       "due": 1700346350000,
+       "due": 1700346470000,
        "sessionRound": null,
        "lapses": 0
       },
       "word:head": {
        "kind": "word",
        "target": "head",
-       "step": 1,
-       "due": 1700346470000,
-       "sessionRound": 4,
-       "lapses": 0
+       "step": 0,
+       "due": 1700173670000,
+       "sessionRound": 5,
+       "lapses": 1
       },
       "word:idea": {
        "kind": "word",
        "target": "idea",
        "step": 0,
-       "due": 1700173670000,
-       "sessionRound": 5,
-       "lapses": 1
+       "due": 1700086550000,
+       "sessionRound": 4,
+       "lapses": 0
       },
       "word:she": {
        "kind": "word",
@@ -66789,10 +66657,10 @@
       "key:s": {
        "kind": "key",
        "target": "s",
-       "step": 0,
-       "due": 1700173670000,
-       "sessionRound": 5,
-       "lapses": 1
+       "step": 1,
+       "due": 1700346230000,
+       "sessionRound": null,
+       "lapses": 0
       },
       "word:add": {
        "kind": "word",
@@ -66837,10 +66705,10 @@
       "key:i": {
        "kind": "key",
        "target": "i",
-       "step": 1,
-       "due": 1700346230000,
-       "sessionRound": 7,
-       "lapses": 0
+       "step": 0,
+       "due": 1700173670000,
+       "sessionRound": 5,
+       "lapses": 3
       },
       "word:said": {
        "kind": "word",
@@ -66854,21 +66722,13 @@
        "kind": "key",
        "target": "n",
        "step": 0,
-       "due": 1700173550000,
-       "sessionRound": 4,
-       "lapses": 1
-      },
-      "pair:se": {
-       "kind": "pair",
-       "target": "se",
-       "step": 0,
        "due": 1700173430000,
-       "sessionRound": 3,
+       "sessionRound": null,
        "lapses": 0
       },
-      "word:closed": {
+      "word:direct": {
        "kind": "word",
-       "target": "closed",
+       "target": "direct",
        "step": 0,
        "due": 1700173430000,
        "sessionRound": 3,
@@ -66882,73 +66742,73 @@
        "sessionRound": 3,
        "lapses": 0
       },
-      "word:its": {
-       "kind": "word",
-       "target": "its",
-       "step": 0,
-       "due": 1700173430000,
-       "sessionRound": 3,
-       "lapses": 0
-      },
-      "key:c": {
-       "kind": "key",
-       "target": "c",
-       "step": 0,
-       "due": 1700173670000,
-       "sessionRound": 5,
-       "lapses": 1
-      },
-      "pair:re": {
+      "pair:ar": {
        "kind": "pair",
-       "target": "re",
+       "target": "ar",
        "step": 0,
        "due": 1700173550000,
        "sessionRound": 4,
        "lapses": 0
       },
-      "word:access": {
-       "kind": "word",
-       "target": "access",
-       "step": 0,
-       "due": 1700173550000,
-       "sessionRound": 4,
-       "lapses": 0
-      },
-      "word:care": {
-       "kind": "word",
-       "target": "care",
-       "step": 0,
-       "due": 1700173550000,
-       "sessionRound": 4,
-       "lapses": 0
-      },
-      "word:certain": {
-       "kind": "word",
-       "target": "certain",
-       "step": 0,
-       "due": 1700173550000,
-       "sessionRound": 4,
-       "lapses": 0
-      },
-      "pair:ea": {
+      "pair:ne": {
        "kind": "pair",
-       "target": "ea",
+       "target": "ne",
+       "step": 0,
+       "due": 1700173550000,
+       "sessionRound": 4,
+       "lapses": 0
+      },
+      "word:cards": {
+       "kind": "word",
+       "target": "cards",
+       "step": 0,
+       "due": 1700173550000,
+       "sessionRound": 4,
+       "lapses": 0
+      },
+      "word:done": {
+       "kind": "word",
+       "target": "done",
+       "step": 0,
+       "due": 1700173550000,
+       "sessionRound": 4,
+       "lapses": 0
+      },
+      "word:hi": {
+       "kind": "word",
+       "target": "hi",
+       "step": 0,
+       "due": 1700173550000,
+       "sessionRound": 4,
+       "lapses": 0
+      },
+      "word:ice": {
+       "kind": "word",
+       "target": "ice",
+       "step": 0,
+       "due": 1700173550000,
+       "sessionRound": 4,
+       "lapses": 0
+      },
+      "pair:he": {
+       "kind": "pair",
+       "target": "he",
        "step": 0,
        "due": 1700173670000,
        "sessionRound": 5,
        "lapses": 0
       },
-      "word:cases": {
+      "word:on": {
        "kind": "word",
-       "target": "cases",
+       "target": "on",
        "step": 0,
        "due": 1700173670000,
        "sessionRound": 5,
        "lapses": 0
       },
-      "word:less": {
+      "word:side": {
        "kind": "word",
-       "target": "less",
+       "target": "side",
        "step": 0,
        "due": 1700173670000,
        "sessionRound": 5,
@@ -66957,13 +66817,13 @@
      },
      "hesitations": {
       "s": {
-       "n": 46,
+       "n": 45,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
       },
       "t": {
-       "n": 48,
+       "n": 39,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
@@ -66975,61 +66835,61 @@
        "errAvg": 0
       },
       "a": {
-       "n": 46,
+       "n": 42,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
       },
       "n": {
-       "n": 28,
+       "n": 25,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
       },
       "l": {
-       "n": 20,
+       "n": 17,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
       },
       "e": {
-       "n": 66,
+       "n": 67,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
       },
       "h": {
-       "n": 24,
+       "n": 26,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
       },
       "r": {
-       "n": 28,
+       "n": 27,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
       },
       "d": {
-       "n": 32,
+       "n": 41,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
       },
       "i": {
-       "n": 24,
+       "n": 26,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
       },
       "o": {
-       "n": 19,
+       "n": 16,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
       },
       "c": {
-       "n": 4,
+       "n": 7,
        "timedN": 0,
        "msAvg": 0,
        "errAvg": 0
@@ -67038,19 +66898,19 @@
      "errorBias": {
       "swap": 0,
       "double": 0,
-      "neighbor": 0.2516214857142857
+      "neighbor": 0.07162148571428573
      },
      "missedWords": {
       "lines": 1,
-      "then": 2,
+      "then": 1,
       "needed": 2,
       "lost": 1,
-      "hands": 2,
+      "hands": 1,
       "do": 1,
       "dear": 1,
-      "head": 1,
+      "head": 2,
       "those": 1,
-      "idea": 2,
+      "idea": 1,
       "she": 1,
       "add": 1,
       "hello": 1,
@@ -67061,14 +66921,15 @@
       "inc": 1,
       "said": 1,
       "he": 1,
-      "its": 1,
-      "closed": 1,
-      "care": 1,
-      "access": 1,
-      "certain": 1,
-      "less": 1,
+      "has": 1,
+      "direct": 1,
+      "done": 1,
+      "cards": 1,
+      "hi": 1,
+      "ice": 1,
+      "side": 1,
       "on": 1,
-      "cases": 1
+      "did": 1
      },
      "session": {
       "id": 2,
@@ -67077,21 +66938,21 @@
       "rounds": 3,
       "history": [
        {
-        "wpm": 57.89473684210526,
-        "accuracy": 0.9506172839506173
+        "wpm": 58.0171358629131,
+        "accuracy": 0.9518072289156626
        },
        {
-        "wpm": 56.578947368421055,
-        "accuracy": 0.9347826086956522
+        "wpm": 56.05263157894736,
+        "accuracy": 0.9342105263157895
        },
        {
-        "wpm": 57.89473684210526,
-        "accuracy": 0.9506172839506173
+        "wpm": 58.190419869899465,
+        "accuracy": 0.9534883720930233
        }
       ],
       "baseline": {
-       "wpm": 57.23684210526316,
-       "accuracy": 0.9426999463231347
+       "wpm": 57.03488372093023,
+       "accuracy": 0.943008877615726
       },
       "fatigued": false,
       "grip": null,

@@ -1,7 +1,9 @@
 import { App } from "./app";
 import { aboutScreen } from "./screens/about";
 import { practiceScreen } from "./screens/practice";
+import { progressScreen } from "./screens/progress";
 import { resultsScreen } from "./screens/results";
+import { sessionScreen } from "./screens/session";
 import { settingsScreen } from "./screens/settings";
 import { shortcutsScreen } from "./screens/shortcuts";
 import { goalScreen, welcomeScreen } from "./screens/setup";
@@ -17,4 +19,6 @@ app.register("results", resultsScreen);
 app.register("settings", settingsScreen);
 app.register("about", aboutScreen);
 app.register("shortcuts", shortcutsScreen);
+app.register("progress", progressScreen);
+app.register("session", sessionScreen);
 app.home();

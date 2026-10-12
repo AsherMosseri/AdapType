@@ -57,13 +57,33 @@ export function heatmap(state: ProfileState, goal: Goal, modifiers?: ModifierSet
     detail.hidden = false;
   };
 
-  const describe = (title: string, entry: StatEntry | undefined, g: Goal, isNew: boolean): Node[] => {
-    const d = keyDetail(entry, g, isNew);
+  const describe = (title: string, entry: StatEntry | undefined, g: Goal, isNew: boolean, key?: string): Node[] => {
+    const review = key ? state.reviews?.[`key:${key}`] : undefined;
+    const d = keyDetail(entry, g, isNew, {
+      hesitation: key ? state.hesitations?.[key] : undefined,
+      dueForReview: !!review && review.due <= Date.now(),
+    });
     const facts =
       d.samples === 0
         ? "No presses yet."
         : `${d.samples} presses · ${d.avgMs === null ? "no timing yet" : `${Math.round(d.avgMs)} ms each`} (goal ${Math.round(d.goalMs)} ms) · ${formatPercent(d.accuracy)} accurate`;
-    return [h("p", { class: "detail-title" }, title), h("p", null, facts), h("p", { class: "detail-why" }, reasonText(d.reasons))];
+    const extra: Node[] = [];
+    if (key) {
+      const types = state.errorCounts?.[key];
+      const typeNames: Record<string, string> = { swap: "swapped", neighbor: "neighbor key", double: "extra double", "missed-double": "missed double", skipped: "skipped", case: "wrong capital", other: "other" };
+      const typeParts = types ? Object.entries(types).sort((a, b) => (b[1] ?? 0) - (a[1] ?? 0)).map(([t, n]) => `${typeNames[t] ?? t} ${n}`) : [];
+      if (typeParts.length) extra.push(h("p", null, h("strong", null, "Errors: "), typeParts.join(", ")));
+      const typos = state.typos?.[key];
+      const top = typos ? Object.entries(typos).sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1)).slice(0, 3) : [];
+      if (top.length) extra.push(h("p", null, h("strong", null, "Typed instead: "), top.map(([c, n]) => `${c === " " ? "space" : c} (${n}×)`).join(", ")));
+      const hes = state.hesitations?.[key];
+      if (hes && hes.n >= 5) extra.push(h("p", null, h("strong", null, "Pauses: "), `${formatPercent(hes.errAvg)} of presses lately`));
+      if (review) {
+        const days = Math.ceil((review.due - Date.now()) / 86400000);
+        extra.push(h("p", null, h("strong", null, "Review: "), days <= 0 ? "due now" : days === 1 ? "due tomorrow" : `due in ${days} days`));
+      }
+    }
+    return [h("p", { class: "detail-title" }, title), h("p", null, facts), ...extra, h("p", { class: "detail-why" }, reasonText(d.reasons))];
   };
 
   const focus = focusLetter(state);
@@ -82,7 +102,7 @@ export function heatmap(state: ProfileState, goal: Goal, modifiers?: ModifierSet
           select(button, () =>
             level === "locked"
               ? [h("p", { class: "detail-title" }, `${letter}`), h("p", null, "Locked. It unlocks once your current letters reach your goal.")]
-              : describe(letter, state.keys[letter], goal, letter === focus),
+              : describe(letter, state.keys[letter], goal, letter === focus, letter),
           ),
         );
         return button;

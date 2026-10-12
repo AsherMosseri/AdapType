@@ -34,9 +34,10 @@ export function difficultyParams(d: number): DifficultyParams {
  * non-calibration rounds (no change with fewer):
  *   at or above 95% of goal speed with accuracy on target: up one step
  *   below 80% of goal speed, or accuracy more than 3 points under target: down one step
+ * With noRaise (while fatigued), it can only go down.
  * Returns the change (-step, 0 or +step).
  */
-export function updateDifficulty(state: ProfileState, goal: Goal): number {
+export function updateDifficulty(state: ProfileState, goal: Goal, options: { noRaise?: boolean } = {}): number {
   const rounds = state.rounds.filter((r) => !r.calibration && !r.warmup).slice(-DIFFICULTY_ROUNDS);
   if (rounds.length < DIFFICULTY_ROUNDS) return 0;
   let wpm = 0;
@@ -49,7 +50,7 @@ export function updateDifficulty(state: ProfileState, goal: Goal): number {
   accuracy /= rounds.length;
   const ratio = wpm / goal.wpm;
   let change = 0;
-  if (ratio >= DIFFICULTY_UP_RATIO && accuracy >= goal.accuracy) change = DIFFICULTY_STEP;
+  if (ratio >= DIFFICULTY_UP_RATIO && accuracy >= goal.accuracy) change = options.noRaise ? 0 : DIFFICULTY_STEP;
   else if (ratio < DIFFICULTY_DOWN_RATIO || accuracy < goal.accuracy - DIFFICULTY_ACCURACY_SLACK) change = -DIFFICULTY_STEP;
   const before = state.difficulty;
   state.difficulty = clamp(Math.round((before + change) * 1000) / 1000, 0, 1);

@@ -1,6 +1,11 @@
 import {
+  beginSession,
   completeRound,
+  DEFAULT_GOAL,
+  drift,
   isCalibrating,
+  shouldWarmUp,
+  WARMUP_SECONDS,
   isOn,
   planRound,
   SILENT_CALIBRATION_ROUNDS,
@@ -16,7 +21,7 @@ import { touchKeyboard } from "../components/touchKeyboard";
 import { TypingView } from "../components/typingView";
 import { blocklist, characters, pack } from "../content";
 import { formatPercent, h } from "../dom";
-import { roundBanner } from "../explainText";
+import { list, roundBanner } from "../explainText";
 import { attachPhysicalInput } from "../physicalInput";
 import { currentTouchLayout, physicalHint, platformFor, touchHint } from "../platform";
 
@@ -29,8 +34,20 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
   const state = app.profile;
   const settings = app.data.settings;
   const silent = isCalibrating(state);
-  const roundType: RoundType = calibrationTest ? { kind: "timed", seconds: CALIBRATION_SECONDS } : settings.round;
   const touch = settings.activeProfile === "touch";
+  const now = Date.now();
+  if (!calibrationTest) {
+    beginSession(state, now);
+    app.persist();
+  }
+  if (touch && !calibrationTest && !silent && state.session && !state.session.grip) return gripPicker(app);
+  const warmup =
+    !calibrationTest && !silent && settings.warmup && screen.name === "practice" && !screen.skipWarmup && shouldWarmUp(state, now);
+  const roundType: RoundType = calibrationTest
+    ? { kind: "timed", seconds: CALIBRATION_SECONDS }
+    : warmup
+      ? { kind: "timed", seconds: WARMUP_SECONDS }
+      : settings.round;
   const touchLayout = currentTouchLayout(settings);
   const modifiers = { settings: settings.modifiers, chars: characters, platform: platformFor(app) };
 
@@ -41,6 +58,9 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
     count: roundType.kind === "words" ? roundType.count : CHUNK,
     calibrationTest,
     modifiers,
+    now,
+    warmup,
+    madeUpCap: settings.madeUpCap,
   });
   const firstWords = plan.words;
   let lastWord = firstWords[firstWords.length - 1]?.text ?? "";
@@ -96,6 +116,26 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
       h("strong", null, `Warm-up ${n} of ${SILENT_CALIBRATION_ROUNDS}. `),
       "These rounds use all letters so AdapType can learn what you already know.",
     );
+  } else if (warmup && plan.explanation?.warmup) {
+    const w = plan.explanation.warmup;
+    notice = h(
+      "div",
+      { class: "notice warmup" },
+      h("p", null, h("strong", null, `Warm-up, ${WARMUP_SECONDS} seconds. `), `Your trouble spots lately: ${list([...w.keys, ...w.pairs])}.`),
+      h(
+        "button",
+        {
+          type: "button",
+          class: "text-button",
+          onclick: () => {
+            if (state.session) state.session.warmupDone = true;
+            app.persist();
+            app.go({ name: "practice", skipWarmup: true });
+          },
+        },
+        "Skip warm-up",
+      ),
+    );
   } else if (app.notice) {
     notice = h("p", { class: "notice", role: "status" }, app.notice);
     app.notice = null;
@@ -121,8 +161,29 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
         onChar: (char, tap, layer, t) => handle({ kind: "char", char, t, tap, layer: layer || undefined }),
         onBackspace: () => handle({ kind: "backspace", t: performance.now() }),
         isLocked: (letter) => !calibrationTest && !silent && letter >= "a" && letter <= "z" && !state.unlocked.includes(letter),
+        assist:
+          settings.hitZones === "assist"
+            ? (letter) => {
+                const grip = state.session?.grip;
+                const d = drift((grip && state.gripTaps[grip]?.[letter]) || state.taps[letter]);
+                return d && d.taps >= 5 ? d : null;
+              }
+            : undefined,
       })
     : null;
+
+  // Metronome: one beat per word at goal pace. Live pulse: a glow that steadies with even rhythm.
+  const goalWpm = (state.goal ?? DEFAULT_GOAL).wpm;
+  const metronome =
+    settings.metronome && !calibrationTest
+      ? h(
+          "p",
+          { class: "metronome" },
+          h("span", { class: "beat", "aria-hidden": "true" }),
+          `Metronome: one beat per word at ${goalWpm} WPM`,
+        )
+      : null;
+  metronome?.style.setProperty("--beat", `${Math.round(60000 / goalWpm)}ms`);
 
   const main = h(
     "main",
@@ -130,7 +191,8 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
     h("h1", { class: "sr-only", tabindex: "-1" }, calibrationTest ? "Calibration test" : "Practice"),
     calibrationTest || silent ? null : letterStrip(state, settings.modifiers),
     notice,
-    h("div", { class: "typing-wrap" }, view.el, startHint, capsHint, charHint),
+    h("div", { class: settings.livePulse && !calibrationTest ? "typing-wrap pulse" : "typing-wrap" }, view.el, startHint, capsHint, charHint),
+    metronome,
     firstWords.some((w) => w.madeUp)
       ? h("p", { class: "fine" }, "Words with a dotted underline are made-up practice words, used while only a few letters are unlocked.")
       : null,
@@ -145,6 +207,7 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
     main,
     keyboard,
   );
+  const wrapEl = main.querySelector<HTMLElement>(".typing-wrap");
   // Clicking anywhere on the practice area keeps typing going.
   if (physical) main.addEventListener("pointerup", () => physical.focus());
 
@@ -173,9 +236,34 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
     charHint.hidden = !hint;
   }
 
+  /** Steadiness of the last 12 clean intervals: 1 - (standard deviation / mean). */
+  function refreshPulse(): void {
+    const recent: number[] = [];
+    for (let i = round.records.length - 1; i >= 0 && recent.length < 12; i--) {
+      const ms = round.records[i].interval;
+      if (ms !== null) recent.push(ms);
+    }
+    if (recent.length < 5) return;
+    const mean = recent.reduce((a, b) => a + b, 0) / recent.length;
+    const sd = Math.sqrt(recent.reduce((a, b) => a + (b - mean) ** 2, 0) / recent.length);
+    const steady = Math.max(0, Math.min(1, 1 - sd / mean));
+    wrapEl?.style.setProperty("--steady", steady.toFixed(2));
+  }
+
   function addMore(): void {
     chunk += 1;
-    const more: RoundWord[] = planRound(state, { pack, blocklist, count: CHUNK, chunk, previous: lastWord, calibrationTest, modifiers }).words;
+    const more: RoundWord[] = planRound(state, {
+      pack,
+      blocklist,
+      count: CHUNK,
+      chunk,
+      previous: lastWord,
+      calibrationTest,
+      modifiers,
+      now,
+      warmup,
+      madeUpCap: settings.madeUpCap,
+    }).words;
     lastWord = more[more.length - 1]?.text ?? lastWord;
     round.append(" " + more.map((w) => w.text).join(" "));
     view.addWords(more);
@@ -193,6 +281,7 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
     round.input(event);
     view.update(round);
     refreshHint();
+    if (settings.livePulse) refreshPulse();
     if (roundType.kind !== "words" && view.remaining(round) < 80) addMore();
     if (round.done) finish();
     else if (roundType.kind === "words") progressValue.textContent = progressText();
@@ -220,10 +309,10 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
     finished = true;
     window.clearInterval(ticker);
     const metrics = round.metrics();
-    const outcome = completeRound(state, round, Date.now(), { calibrationTest, chars: characters });
+    const outcome = completeRound(state, round, Date.now(), { calibrationTest, chars: characters, pack, warmup });
     app.persist();
     if (calibrationTest) app.go({ name: "goal", measuredWpm: metrics.wpm, from: "test" });
-    else app.go({ name: "results", outcome, metrics, calibrationTest, explanation: plan.explanation });
+    else app.go({ name: "results", outcome, metrics, calibrationTest, explanation: plan.explanation, warmup, records: round.records });
   }
 
   const onResize = () => view.scroll();
@@ -243,6 +332,35 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
       window.removeEventListener("resize", onResize);
     },
   };
+}
+
+/** Touch: how are you holding your phone? Asked once per session; stats are kept per grip. */
+function gripPicker(app: App): ScreenView {
+  const choose = (grip: "one" | "two") => {
+    const session = app.profile.session;
+    if (session) session.grip = grip;
+    app.persist();
+    app.go({ name: "practice" });
+  };
+  const el = h(
+    "div",
+    { class: "screen" },
+    topBar(app, { returnTo: { name: "practice" } }),
+    h(
+      "main",
+      { class: "grip" },
+      h("h1", { tabindex: "-1" }, "How are you holding your phone?"),
+      h("p", { class: "lead" }, "AdapType keeps separate stats for each grip, so your thumbs and tap drift are measured fairly."),
+      h(
+        "div",
+        { class: "choices" },
+        h("button", { type: "button", class: "choice", onclick: () => choose("two") }, h("span", { class: "choice-text" }, h("strong", null, "Two thumbs"), h("span", null, "Holding the phone in both hands."))),
+        h("button", { type: "button", class: "choice", onclick: () => choose("one") }, h("span", { class: "choice-text" }, h("strong", null, "One thumb"), h("span", null, "Typing with one hand."))),
+      ),
+      h("p", { class: "fine" }, "AdapType asks at the start of each session, and suggests switching if your taps look like the other grip."),
+    ),
+  );
+  return { el };
 }
 
 function clock(ms: number): string {

@@ -150,6 +150,16 @@ describe("sessions and fatigue", () => {
     const plan = planRound(tired, { pack, blocklist, count: 5 });
     expect(plan.explanation?.fatigued).toBe(true);
   });
+
+  it("doesn't raise difficulty while tired", () => {
+    const state = ready();
+    beginSession(state, NOW);
+    state.session!.fatigued = true;
+    state.rounds = Array.from({ length: 3 }, () => ({ at: 0, wpm: 80, accuracy: 1, durationMs: 1, chars: 1, corrections: 0, calibration: false }));
+    const round = new TypingRound("tea", "backspace");
+    for (const e of simulateTyping("tea", { msPerKey: 100, errorRate: 0, seed: 1 })) round.input(e);
+    expect(completeRound(state, round, NOW).difficultyChange).toBe(0);
+  });
 });
 
 describe("spaced repetition", () => {

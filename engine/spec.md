@@ -541,6 +541,8 @@ fields.
   `REVIEW_WORDS`.
 - **Summaries (8):** add `consistency` (18), `firstErrors`, and `warmup`.
   Warm-up rounds don't change difficulty or the recent average.
+- **Difficulty (9.2):** a round played while fatigued, or the round where
+  fatigue starts, can't raise difficulty (the up step becomes 0).
 
 ## 15. Sessions, fatigue and hesitation
 

@@ -558,7 +558,7 @@ export function completeRound(
     }
   } else {
     result = updateUnlocks(state);
-    if (metrics.keystrokes > 0 && !options.warmup) difficultyChange = updateDifficulty(state, goal);
+    if (metrics.keystrokes > 0 && !options.warmup) difficultyChange = updateDifficulty(state, goal, { noRaise: tired || fatigue === "started" });
   }
   return { ...result, summary, perKey, testedOut, difficultyChange, errors, rhythm: flow, hesitated, fatigue, reviews, gripSuggestion };
 }

@@ -71,6 +71,7 @@ export const ICONS = {
   backspace: ["M21 5H8l-6 7 6 7h13a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1z", "M17 9l-6 6", "M11 9l6 6"],
   keyboard: ["M3 6h18v12H3z", "M7 10h.01M11 10h.01M15 10h.01M7 14h10"],
   phone: ["M7 2h10a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z", "M11 18h2"],
+  progress: ["M4 20V10", "M10 20V4", "M16 20v-7", "M22 20H2"],
 } as const;
 
 export function formatPercent(value: number): string {

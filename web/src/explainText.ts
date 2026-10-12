@@ -31,8 +31,10 @@ export function oneIn(rate: number): string {
 export function roundBanner(explanation: RoundExplanation): string {
   const parts: string[] = [];
   if (explanation.newLetter) parts.push(`New letter: ${explanation.newLetter}.`);
-  const focus = [...explanation.keys, ...explanation.pairs];
+  const focus = [...explanation.keys, ...explanation.pairs.map((p) => `the pair ${p}`)];
   if (focus.length > 0) parts.push(`Focusing on ${list(focus)}.`);
+  if (explanation.reviewWords?.length) parts.push(`Back for review: ${list(explanation.reviewWords)}.`);
+  if (explanation.fatigued) parts.push("A little easier while you recover.");
   if (explanation.modifiers.length > 0) {
     const mods = explanation.modifiers.map((m) => `${MODIFIER_NAMES[m.id].toLowerCase()} (${oneIn(m.rate)} words)`);
     parts.push(`With ${list(mods)}.`);

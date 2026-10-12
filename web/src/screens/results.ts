@@ -16,6 +16,7 @@ import {
   type RoundOutcome,
 } from "../../../engine/src";
 import type { App, Screen, ScreenView } from "../app";
+import { rhythmGraph } from "../components/charts";
 import { heatmap } from "../components/heatmap";
 import { topBar } from "../components/topBar";
 import { formatPercent, h } from "../dom";
@@ -23,6 +24,7 @@ import { list, MODIFIER_NAMES } from "../explainText";
 
 export function resultsScreen(app: App, screen: Screen): ScreenView {
   if (screen.name !== "results") throw new Error("results screen needs an outcome");
+  const view = screen;
   const { outcome, metrics } = screen;
   const state = app.profile;
   const goal = state.goal ?? DEFAULT_GOAL;
@@ -99,8 +101,66 @@ export function resultsScreen(app: App, screen: Screen): ScreenView {
   } else if (outcome.difficultyChange < 0) {
     events.push(h("p", { class: "fine" }, "The last few rounds were tough, so the next ones ease off a little."));
   }
-  if (metrics.corrections > 0) {
-    events.push(h("p", { class: "fine" }, `You caught and fixed ${metrics.corrections} ${metrics.corrections === 1 ? "error" : "errors"} yourself.`));
+  if (screen.warmup) {
+    events.unshift(callout("Warm-up done", "Your trouble spots got a head start. Regular rounds pick up from here.", "unlock"));
+  }
+  if (outcome.fatigue === "started") {
+    events.unshift(
+      h(
+        "div",
+        { class: "callout rest", role: "status" },
+        h("p", { class: "callout-title" }, "You're slowing down. Take 5?"),
+        h(
+          "p",
+          null,
+          "Your last rounds are slower or less accurate than when you started this session. A short break usually helps. If you keep going, rounds ease off a little and count less toward your weak spots until you recover.",
+        ),
+        h(
+          "div",
+          { class: "actions wrap" },
+          h("button", { type: "button", class: "button", onclick: () => app.go({ name: "session" }) }, "End session and see the summary"),
+        ),
+      ),
+    );
+  } else if (outcome.fatigue === "recovered") {
+    events.push(h("p", { class: "fine" }, "You're back to your starting pace, so rounds are back to normal."));
+  } else if (state.session?.fatigued) {
+    events.push(h("p", { class: "fine" }, "Still a bit tired: rounds stay a little easier and count less until you're back to your starting pace."));
+  }
+  if (outcome.gripSuggestion && state.session) {
+    const session = state.session;
+    const suggested = outcome.gripSuggestion;
+    events.push(
+      h(
+        "div",
+        { class: "callout", role: "status" },
+        h("p", { class: "callout-title" }, suggested === "one" ? "Typing with one thumb?" : "Typing with two thumbs?"),
+        h("p", null, suggested === "one" ? "Your taps look like one-thumb typing: letters on opposite sides of the keyboard take you longer." : "Your taps look like two-thumb typing: letters on opposite sides of the keyboard come faster."),
+        h(
+          "div",
+          { class: "actions wrap" },
+          h("button", { type: "button", class: "button", onclick: (e: Event) => { session.grip = suggested; session.gripSignal = { sameMs: 0, sameN: 0, crossMs: 0, crossN: 0 }; app.persist(); (e.target as HTMLElement).closest(".callout")?.remove(); } }, `Switch to ${suggested === "one" ? "one thumb" : "two thumbs"}`),
+          h("button", { type: "button", class: "button", onclick: (e: Event) => { session.gripSignal = { sameMs: 0, sameN: 0, crossMs: 0, crossN: 0 }; app.persist(); (e.target as HTMLElement).closest(".callout")?.remove(); } }, "Keep my choice"),
+        ),
+      ),
+    );
+  }
+  if (state.profile === "physical" && state.touchTyping === null && state.rounds.filter((r) => !r.calibration).length >= 3) {
+    const answer = (yes: boolean) => (e: Event) => {
+      state.touchTyping = yes;
+      app.persist();
+      const box = (e.target as HTMLElement).closest(".callout");
+      if (box) box.replaceChildren(h("p", null, yes ? "Thanks. Progress now shows your weakest finger." : "Thanks. Progress now shows your weakest keyboard zone."));
+    };
+    events.push(
+      h(
+        "div",
+        { class: "callout ask" },
+        h("p", { class: "callout-title" }, "Do you touch-type?"),
+        h("p", null, "That means using a set finger for each key, with your fingers resting on the home row. AdapType can't see your hands, so this decides whether it reports your weakest finger or your weakest keyboard zone."),
+        h("div", { class: "actions wrap" }, h("button", { type: "button", class: "button", onclick: answer(true) }, "Yes, I touch-type"), h("button", { type: "button", class: "button", onclick: answer(false) }, "No")),
+      ),
+    );
   }
 
   const el = h(
@@ -114,6 +174,8 @@ export function resultsScreen(app: App, screen: Screen): ScreenView {
       headline,
       events.length ? h("div", { class: "events" }, events) : null,
       screen.explanation ? targeted(screen.explanation, outcome) : null,
+      mistakesPanel(),
+      rhythmPanel(),
       goalBar(now?.wpm ?? metrics.wpm, goal.wpm),
       unlockProgress(),
       h("section", { class: "panel" }, h("h2", null, "Key strength"), heatmap(state, goal, app.data.settings.modifiers)),
@@ -121,7 +183,74 @@ export function resultsScreen(app: App, screen: Screen): ScreenView {
   );
 
   const next = h("button", { type: "button", class: "button primary", onclick: () => app.go({ name: "practice" }) }, "Next round", h("kbd", null, "Enter"));
-  el.querySelector("main")!.append(h("div", { class: "actions sticky-actions" }, next));
+  const endSession = h("button", { type: "button", class: "button", onclick: () => app.go({ name: "session" }) }, "End session");
+  el.querySelector("main")!.append(h("div", { class: "actions sticky-actions" }, next, state.session && state.session.rounds > 0 ? endSession : null));
+
+  /** Error types, self-correction, hesitations and reviews. */
+  function mistakesPanel(): HTMLElement | null {
+    const lines: HTMLElement[] = [];
+    const counts = outcome.errors.counts;
+    const labels: [keyof typeof counts, string, string][] = [
+      ["swap", "swap", "swaps"],
+      ["neighbor", "neighbor-key hit", "neighbor-key hits"],
+      ["double", "extra double letter", "extra double letters"],
+      ["missed-double", "missed double letter", "missed double letters"],
+      ["skipped", "skipped letter", "skipped letters"],
+      ["case", "wrong capital", "wrong capitals"],
+      ["other", "other slip", "other slips"],
+    ];
+    const parts = labels.filter(([k]) => counts[k]).map(([k, one, many]) => `${counts[k]} ${counts[k] === 1 ? one : many}`);
+    if (parts.length > 0) lines.push(h("li", null, h("strong", null, "Errors: "), `${list(parts)}.`));
+    const firstErrors = metrics.firstErrors;
+    if (firstErrors > 0) {
+      lines.push(
+        h(
+          "li",
+          null,
+          h("strong", null, "Self-correction: "),
+          `you caught and fixed ${metrics.corrections} of ${firstErrors} ${firstErrors === 1 ? "error" : "errors"} yourself (${formatPercent(metrics.corrections / firstErrors)}).`,
+        ),
+      );
+    }
+    if (outcome.hesitated.length > 0) {
+      const keys = outcome.hesitated.slice(0, 4).map((x) => (x.key === " " ? "space" : x.key));
+      lines.push(h("li", null, h("strong", null, "Pauses: "), `you hesitated before ${list(keys)}. Those keys get extra practice even when you type them right.`));
+    }
+    const added = outcome.reviews.added.length;
+    const passed = outcome.reviews.passed.length;
+    const learned = outcome.reviews.learned.length;
+    if (added + passed + learned > 0) {
+      const bits = [
+        added ? `${added} new ${added === 1 ? "item" : "items"} to review later` : "",
+        passed ? `${passed} review${passed === 1 ? "" : "s"} passed` : "",
+        learned ? `${learned} learned for good` : "",
+      ].filter(Boolean);
+      lines.push(h("li", null, h("strong", null, "Reviews: "), `${list(bits)}.`));
+    }
+    if (view.explanation?.reviewWords?.length) {
+      lines.push(h("li", null, h("strong", null, "Back for review: "), `${list(view.explanation.reviewWords)}.`));
+    }
+    if (lines.length === 0) return null;
+    return h("section", { class: "panel" }, h("h2", null, "Mistakes and pauses"), h("ul", { class: "fact-list" }, lines));
+  }
+
+  /** Consistency score and the gap before each keystroke. */
+  function rhythmPanel(): HTMLElement | null {
+    const r = outcome.rhythm;
+    if (r.consistency === null) return null;
+    return h(
+      "section",
+      { class: "panel" },
+      h("h2", null, "Rhythm"),
+      h(
+        "p",
+        { class: "panel-lead" },
+        h("strong", { class: "inline-stat" }, formatPercent(r.consistency)),
+        ` consistent. ${r.stalls.length === 0 ? "No stalls: an even pace all the way." : `${r.stalls.length} ${r.stalls.length === 1 ? "stall" : "stalls"}, marked in red. Hover a bar to see the key.`}`,
+      ),
+      rhythmGraph(r, view.records ?? [], wpmToMs(goal.wpm)),
+    );
+  }
 
   /** What the round focused on, and how it went for each. */
   function targeted(explanation: RoundExplanation, result: RoundOutcome): HTMLElement | null {

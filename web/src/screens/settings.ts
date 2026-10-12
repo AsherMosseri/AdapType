@@ -67,6 +67,7 @@ export function settingsScreen(app: App, screen: Screen): ScreenView {
         app.persist();
       }),
     ),
+    practiceSection(app),
     section(
       "Speed goal",
       h("p", { class: "panel-lead" }, "A letter is mastered when you reach this speed and accuracy on it across 3 rounds."),
@@ -233,6 +234,92 @@ function modifiersSection(app: App): HTMLElement {
       settings.extraSet = v as "curated" | "full";
       app.persist();
     }),
+  );
+}
+
+function toggle(id: string, title: string, hint: string, checked: boolean, onChange: (on: boolean) => void): HTMLElement {
+  const input = h("input", { type: "checkbox", id, checked });
+  input.addEventListener("change", () => onChange(input.checked));
+  return h("label", { class: "check", for: id }, input, h("span", null, h("strong", null, title), h("span", null, hint)));
+}
+
+/** Warm-up, rhythm helpers, made-up words, and (per profile) touch-typing or hit zones. */
+function practiceSection(app: App): HTMLElement {
+  const settings = app.data.settings;
+  const state = app.profile;
+  const save = () => app.persist();
+  return section(
+    "Practice",
+    toggle("warmup", "Warm-up", "About 20 seconds on your trouble spots at the start of each session. You can skip it each time.", settings.warmup, (on) => {
+      settings.warmup = on;
+      save();
+    }),
+    toggle("pulse", "Live rhythm pulse", "A soft glow around the text that steadies when your typing is even.", settings.livePulse, (on) => {
+      settings.livePulse = on;
+      save();
+    }),
+    toggle("metronome", "Metronome", "A visual beat at your goal pace, one beat per word. Sound comes in a later update.", settings.metronome, (on) => {
+      settings.metronome = on;
+      save();
+    }),
+    h("h3", null, "Made-up words"),
+    h("p", { class: "fine" }, "Pronounceable practice words used when few real words fit your unlocked letters."),
+    radioGroup(
+      "madeup",
+      "How many made-up words a round may have",
+      [
+        { id: "0", label: "None" },
+        { id: "0.2", label: "A few" },
+        { id: "0.5", label: "Up to half" },
+        { id: "0.8", label: "Up to most" },
+      ],
+      String(settings.madeUpCap),
+      (v) => {
+        settings.madeUpCap = Number(v);
+        save();
+      },
+      true,
+    ),
+    state.profile === "physical"
+      ? h(
+          "div",
+          null,
+          h("h3", null, "Do you touch-type?"),
+          radioGroup(
+            "touch-typing",
+            "Do you touch-type",
+            [
+              { id: "yes", label: "Yes", hint: "Progress shows your weakest finger." },
+              { id: "no", label: "No", hint: "Progress shows your weakest keyboard zone." },
+            ],
+            state.touchTyping === null ? "" : state.touchTyping ? "yes" : "no",
+            (v) => {
+              state.touchTyping = v === "yes";
+              save();
+            },
+          ),
+        )
+      : h(
+          "div",
+          null,
+          h("h3", null, "Hit zones"),
+          radioGroup(
+            "hit-zones",
+            "Hit zones",
+            [
+              { id: "train", label: "Train", hint: "Keys stay fixed, so your aim improves and carries over to your phone's own keyboard." },
+              { id: "assist", label: "Assist", hint: "Each key's tap area shifts toward where you actually tap, for comfort. Your real tap positions are still recorded." },
+            ],
+            settings.hitZones,
+            (v) => {
+              settings.hitZones = v as "train" | "assist";
+              save();
+            },
+          ),
+          state.session?.grip
+            ? h("p", { class: "fine" }, `This session: ${state.session.grip === "two" ? "two thumbs" : "one thumb"}. You're asked again at the start of each session.`)
+            : null,
+        ),
   );
 }
 
