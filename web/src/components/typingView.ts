@@ -56,6 +56,17 @@ export class TypingView {
     this.scroll();
   }
 
+  private ghostAt = -1;
+
+  /** Marks where the ghost (or rival) is in the text with a faded cursor. */
+  setGhost(index: number): void {
+    const i = Math.min(index, this.chars.length);
+    if (i === this.ghostAt) return;
+    this.chars[this.ghostAt]?.classList.remove("ghost-at");
+    this.chars[i]?.classList.add("ghost-at");
+    this.ghostAt = i;
+  }
+
   /** Characters left after the current position. */
   remaining(round: TypingRound): number {
     return this.chars.length - round.position;

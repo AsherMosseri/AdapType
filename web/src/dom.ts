@@ -72,6 +72,7 @@ export const ICONS = {
   keyboard: ["M3 6h18v12H3z", "M7 10h.01M11 10h.01M15 10h.01M7 14h10"],
   phone: ["M7 2h10a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z", "M11 18h2"],
   progress: ["M4 20V10", "M10 20V4", "M16 20v-7", "M22 20H2"],
+  arcade: ["M6 9h12a4 4 0 0 1 4 4v1a3 3 0 0 1-5.4 1.8L15 14H9l-1.6 1.8A3 3 0 0 1 2 14v-1a4 4 0 0 1 4-4z", "M7 11v3M5.5 12.5h3", "M16 12h.01M18 13.5h.01"],
 } as const;
 
 export function formatPercent(value: number): string {

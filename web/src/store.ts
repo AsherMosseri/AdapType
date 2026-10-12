@@ -7,12 +7,14 @@ import {
   migrateProfile,
   type ErrorMode,
   type InputProfile,
+  type LivesMode,
+  type RivalPace,
   type ModifierSettings,
   type ProfileState,
   type RoundType,
 } from "../../engine/src";
 
-export const DATA_VERSION = 3;
+export const DATA_VERSION = 4;
 
 export type OsChoice = "auto" | "mac" | "windows" | "windows-intl" | "linux";
 export type TouchLayoutChoice = "auto" | "ios" | "android";
@@ -40,6 +42,9 @@ export interface Settings {
   madeUpCap: number;
   /** Touch: train keeps keys fixed; assist shifts each key's tap area toward where you tap. */
   hitZones: "train" | "assist";
+  /** Phase 4. */
+  arcadeLives: LivesMode;
+  rivalPace: RivalPace;
 }
 
 export function defaultSettings(activeProfile: InputProfile): Settings {
@@ -59,6 +64,8 @@ export function defaultSettings(activeProfile: InputProfile): Settings {
     livePulse: true,
     madeUpCap: DEFAULT_MADE_UP_CAP,
     hitZones: "train",
+    arcadeLives: "lives",
+    rivalPace: { kind: "ahead" },
   };
 }
 

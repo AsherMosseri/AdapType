@@ -1,4 +1,4 @@
-import type { KeystrokeRecord, ProfileState, RoundExplanation, RoundOutcome } from "../../engine/src";
+import type { KeystrokeRecord, NemesisChange, ProfileState, RoundExplanation, RoundOutcome } from "../../engine/src";
 import type { RoundMetrics } from "../../engine/src/typing";
 import { defaultData, detectProfile, load, newProfile, save, type AppData } from "./store";
 
@@ -7,10 +7,13 @@ export type Screen =
   | { name: "calibration" }
   | { name: "goal"; measuredWpm?: number; from: "test" | "skip" }
   | { name: "practice"; skipWarmup?: boolean }
-  | { name: "results"; outcome: RoundOutcome; metrics: RoundMetrics; calibrationTest: boolean; explanation?: RoundExplanation | null; warmup?: boolean; records?: KeystrokeRecord[] }
+  | { name: "results"; outcome: RoundOutcome; metrics: RoundMetrics; calibrationTest: boolean; explanation?: RoundExplanation | null; warmup?: boolean; records?: KeystrokeRecord[]; nemesisChange?: NemesisChange | null }
   | { name: "shortcuts" }
   | { name: "progress"; returnTo?: Screen }
   | { name: "session" }
+  | { name: "arcade" }
+  | { name: "arcade-game"; mode: "falling" | "survival" }
+  | { name: "race"; kind: "ghost" | "rival"; newText?: boolean }
   | { name: "settings"; returnTo?: Screen }
   | { name: "about"; returnTo?: Screen };
 
