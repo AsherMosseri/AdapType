@@ -179,8 +179,49 @@ export interface SessionState {
   gripSignal: { sameMs: number; sameN: number; crossMs: number; crossN: number };
 }
 
+export type ArcadeMode = "falling" | "survival" | "ghost" | "rival";
+export type LivesMode = "lives" | "health" | "hardcore";
+export type PowerUpKind = "slow" | "clear" | "shield" | "double";
+
+export interface ScoreEntry {
+  score: number;
+  level: number;
+  words: number;
+  wpm: number;
+  accuracy: number;
+  at: number;
+  /** Survival: which lives setting the game used. */
+  lives?: LivesMode;
+}
+
+export interface Nemesis {
+  key: string;
+  name: string;
+  since: number;
+}
+
+export interface DefeatedNemesis extends Nemesis {
+  defeatedAt: number;
+}
+
+/** Your best run on a ghost-race text: when each character was typed, in ms from the first keystroke. */
+export interface GhostRun {
+  target: string;
+  times: number[];
+  wpm: number;
+  at: number;
+}
+
+export interface ArcadeState {
+  scores: Partial<Record<ArcadeMode, ScoreEntry[]>>;
+  ghost: GhostRun | null;
+  nemesis: Nemesis | null;
+  hall: DefeatedNemesis[];
+  games: number;
+}
+
 export interface ProfileState {
-  version: 3;
+  version: 4;
   profile: InputProfile;
   goal: Goal | null;
   calibration: CalibrationStatus;
@@ -224,6 +265,8 @@ export interface ProfileState {
   /** Touch only: key stats and taps per grip. */
   gripKeys: Partial<Record<Grip, Record<string, StatEntry>>>;
   gripTaps: Partial<Record<Grip, Record<string, TapPoint[]>>>;
+  /** Phase 4: high scores, the ghost run, the nemesis and the hall of defeated. */
+  arcade: ArcadeState;
 }
 
 export interface RoundWord {

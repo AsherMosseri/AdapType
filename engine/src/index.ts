@@ -1,4 +1,7 @@
 // AdapType engine: framework-free, no DOM. See engine/spec.md.
+export * from "./arcade";
+export * from "./arcadeProfile";
+export * from "./arcadeWords";
 export * from "./constants";
 export * from "./difficulty";
 export * from "./errors";
@@ -8,6 +11,7 @@ export * from "./hands";
 export * from "./modifiers";
 export * from "./phonotactics";
 export * from "./profile";
+export * from "./race";
 export * from "./reviews";
 export * from "./rhythm";
 export * from "./rng";

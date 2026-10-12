@@ -174,3 +174,59 @@ export const PHONOTACTIC_TOP = 40;
 export const MADE_UP_MAX_SYLLABLES = 3;
 export const MADE_UP_LONG_MAX = 8;
 export const DEFAULT_MADE_UP_CAP = 0.8;
+
+/** Phase 4: arcade. Arcade keystrokes count this much toward stats. */
+export const ARCADE_WEIGHT = 0.5;
+export const WORDS_PER_LEVEL = 10;
+export const BOSS_EVERY = 5;
+/** Seconds for a word to fall the whole way at level 1, and the fastest it gets. */
+export const FALL_SECONDS_START = 9;
+export const FALL_SECONDS_MIN = 2.5;
+/** Seconds between new words at level 1, and the shortest gap. */
+export const SPAWN_SECONDS_START = 2.4;
+export const SPAWN_SECONDS_MIN = 0.7;
+/** Each level multiplies fall and spawn times by this (falling words; survival climbs faster). */
+export const FALLING_SPEEDUP = 0.92;
+export const SURVIVAL_SPEEDUP = 0.88;
+export const MAX_ON_SCREEN = 6;
+/** On touch, words fall this much slower (times are divided by it). */
+export const TOUCH_SPEED_FACTOR = 0.75;
+export const START_LIVES = 3;
+/** Three errors in a row cost a life. */
+export const ERROR_RUN_FOR_LIFE = 3;
+export const HEALTH_PER_ERROR = 0.05;
+export const HEALTH_PER_LANDED = 0.2;
+export const HEALTH_PER_CLEAN_WORD = 0.02;
+export const BOSS_HP = 10;
+export const BOSS_SECONDS = 60;
+export const BOSS_FALL_SECONDS = 12;
+export const BOSS_PHASE2_SPEED = 1.5;
+export const BOSS_HEAL_PER_ERROR = 0.5;
+export const BOSS_DEFEAT_BONUS = 500;
+export const BOSS_MIN_LENGTH = 5;
+export const POWERUP_EVERY = 8;
+export const POWERUP_MIN_LENGTH = 4;
+export const SLOW_SECONDS = 5;
+export const SLOW_FACTOR = 0.5;
+export const DOUBLE_SECONDS = 8;
+export const POINTS_PER_CHAR = 10;
+export const COMBO_STEP = 5;
+export const COMBO_BONUS = 0.5;
+export const COMBO_MAX_MULTIPLIER = 4;
+export const WEAK_WORD_BONUS = 0.5;
+export const WEAK_KEYS_FOR_BONUS = 3;
+export const MAX_SCORES = 10;
+export const ARCADE_MAX_WORD_LENGTH = 10;
+
+/** Phase 4: races. */
+export const RIVAL_AHEAD = 1.05;
+export const RUBBER_BAND_CHARS = 15;
+export const RUBBER_BAND_STRENGTH = 0.3;
+/** Before this many seconds, "just ahead" paces off your recent average instead of your live speed. */
+export const RIVAL_WARMUP_SECONDS = 3;
+export const RACE_WORDS = 30;
+
+/** Phase 4: nemesis. */
+export const NEMESIS_MIN_SAMPLES = 20;
+export const NEMESIS_MIN_WEAKNESS = 1;
+export const NEMESIS_DEFEAT_WEAKNESS = 0.3;

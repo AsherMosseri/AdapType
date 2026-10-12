@@ -1,0 +1,160 @@
+{
+ "seed": 99,
+ "names": [
+  {
+   "key": "a",
+   "name": "Augustin the A"
+  },
+  {
+   "key": "b",
+   "name": "Bartholomew the B"
+  },
+  {
+   "key": "c",
+   "name": "Clementine the C"
+  },
+  {
+   "key": "d",
+   "name": "Dmitri the D"
+  },
+  {
+   "key": "e",
+   "name": "Eustace the E"
+  },
+  {
+   "key": "f",
+   "name": "Florence the F"
+  },
+  {
+   "key": "g",
+   "name": "Gus the G"
+  },
+  {
+   "key": "h",
+   "name": "Hugo the H"
+  },
+  {
+   "key": "i",
+   "name": "Ignatius the I"
+  },
+  {
+   "key": "j",
+   "name": "Josephine the J"
+  },
+  {
+   "key": "k",
+   "name": "Kit the K"
+  },
+  {
+   "key": "l",
+   "name": "Leopold the L"
+  },
+  {
+   "key": "m",
+   "name": "Millicent the M"
+  },
+  {
+   "key": "n",
+   "name": "Napoleon the N"
+  },
+  {
+   "key": "o",
+   "name": "Octavius the O"
+  },
+  {
+   "key": "p",
+   "name": "Pip the P"
+  },
+  {
+   "key": "q",
+   "name": "Quentin the Q"
+  },
+  {
+   "key": "r",
+   "name": "Rosalind the R"
+  },
+  {
+   "key": "s",
+   "name": "Silas the S"
+  },
+  {
+   "key": "t",
+   "name": "Thaddeus the T"
+  },
+  {
+   "key": "u",
+   "name": "Ursula the U"
+  },
+  {
+   "key": "v",
+   "name": "Vlad the V"
+  },
+  {
+   "key": "w",
+   "name": "Wilhelmina the W"
+  },
+  {
+   "key": "x",
+   "name": "Xavier the X"
+  },
+  {
+   "key": "y",
+   "name": "Yolanda the Y"
+  },
+  {
+   "key": "z",
+   "name": "Zoltan the Z"
+  }
+ ],
+ "steps": [
+  {
+   "change": {
+    "defeated": null,
+    "chosen": {
+     "key": "h",
+     "name": "Hugo the H",
+     "since": 1000
+    }
+   },
+   "nemesis": {
+    "key": "h",
+    "name": "Hugo the H",
+    "since": 1000
+   }
+  },
+  {
+   "keysH": {
+    "n": 40,
+    "timedN": 40,
+    "msAvg": 250,
+    "errAvg": 0.02
+   },
+   "change": {
+    "defeated": {
+     "key": "h",
+     "name": "Hugo the H",
+     "since": 1000,
+     "defeatedAt": 2000
+    },
+    "chosen": {
+     "key": "r",
+     "name": "Rosalind the R",
+     "since": 2000
+    }
+   },
+   "nemesis": {
+    "key": "r",
+    "name": "Rosalind the R",
+    "since": 2000
+   },
+   "hall": [
+    {
+     "key": "h",
+     "name": "Hugo the H",
+     "since": 1000,
+     "defeatedAt": 2000
+    }
+   ]
+  }
+ ]
+}

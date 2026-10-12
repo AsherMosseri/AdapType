@@ -1,0 +1,145 @@
+{
+ "about": "Nemesis characters: a name per letter (the nemesis is called '<name> the <LETTER>') and plain-tone taunts. {name} and {key} are filled in.",
+ "names": {
+  "a": [
+   "Agatha",
+   "Ambrose",
+   "Augustin"
+  ],
+  "b": [
+   "Bartholomew",
+   "Beatrix",
+   "Basil"
+  ],
+  "c": [
+   "Cornelius",
+   "Clementine",
+   "Cyril"
+  ],
+  "d": [
+   "Desmond",
+   "Dorothea",
+   "Dmitri"
+  ],
+  "e": [
+   "Eustace",
+   "Esmeralda",
+   "Ezra"
+  ],
+  "f": [
+   "Fennimore",
+   "Florence",
+   "Felix"
+  ],
+  "g": [
+   "Gideon",
+   "Griselda",
+   "Gus"
+  ],
+  "h": [
+   "Horatio",
+   "Hortense",
+   "Hugo"
+  ],
+  "i": [
+   "Ignatius",
+   "Imelda",
+   "Ivo"
+  ],
+  "j": [
+   "Jasper",
+   "Josephine",
+   "Jebediah"
+  ],
+  "k": [
+   "Kasimir",
+   "Kunigunde",
+   "Kit"
+  ],
+  "l": [
+   "Leopold",
+   "Lavinia",
+   "Lazlo"
+  ],
+  "m": [
+   "Mortimer",
+   "Millicent",
+   "Magnus"
+  ],
+  "n": [
+   "Nigel",
+   "Nerissa",
+   "Napoleon"
+  ],
+  "o": [
+   "Octavius",
+   "Ophelia",
+   "Otto"
+  ],
+  "p": [
+   "Percival",
+   "Petunia",
+   "Pip"
+  ],
+  "q": [
+   "Quentin",
+   "Queenie",
+   "Quincy"
+  ],
+  "r": [
+   "Reginald",
+   "Rosalind",
+   "Rufus"
+  ],
+  "s": [
+   "Sebastian",
+   "Seraphina",
+   "Silas"
+  ],
+  "t": [
+   "Thaddeus",
+   "Theodora",
+   "Tobias"
+  ],
+  "u": [
+   "Ulysses",
+   "Ursula",
+   "Umberto"
+  ],
+  "v": [
+   "Valentin",
+   "Vivienne",
+   "Vlad"
+  ],
+  "w": [
+   "Wilhelmina",
+   "Winston",
+   "Wendell"
+  ],
+  "x": [
+   "Xavier",
+   "Xanthe",
+   "Xerxes"
+  ],
+  "y": [
+   "Yorick",
+   "Yolanda",
+   "Yuri"
+  ],
+  "z": [
+   "Zebedee",
+   "Zelda",
+   "Zoltan"
+  ]
+ },
+ "taunts": [
+  "{name} got you again.",
+  "Missed {key}. {name} noticed.",
+  "{name} is still undefeated.",
+  "That's another point for {name}.",
+  "{name} says hello.",
+  "{key} slipped away once more.",
+  "{name} isn't going anywhere yet."
+ ],
+ "defeat": "{name} is defeated. Your {key} is at your goal now."
+}
