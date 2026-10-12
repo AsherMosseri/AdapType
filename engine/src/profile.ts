@@ -44,7 +44,7 @@ import { rhythm, type Rhythm } from "./rhythm";
 import { deriveSeed, Rng } from "./rng";
 import { clamp, computeScores, weakness, type Scores } from "./scoring";
 import { addGripSignal, recordSessionRound, suggestGrip, type FatigueChange } from "./session";
-import { addSample, appendHistory, applyRecords, emptyStat, isLetter } from "./stats";
+import { addSample, appendHistory, applyRecords, emptyStat, isLetter, recordKeyDays } from "./stats";
 import { wpmToMs, type TypingRound } from "./typing";
 import type {
   ArcadeState,
@@ -70,7 +70,7 @@ export const DEFAULT_GOAL: Goal = { wpm: 40, accuracy: 0.95 };
 
 export function createProfile(profile: InputProfile, seed: number, order: UnlockOrder = "frequency"): ProfileState {
   return {
-    version: 4,
+    version: 5,
     profile,
     goal: null,
     calibration: "none",
@@ -90,7 +90,12 @@ export function createProfile(profile: InputProfile, seed: number, order: Unlock
     modsMastered: [],
     ...phase3Defaults(),
     arcade: emptyArcade(),
+    ...phase5Defaults(),
   };
+}
+
+function phase5Defaults() {
+  return { keyDays: {}, creatures: {}, replays: { recent: [], best: [] }, daily: {} };
 }
 
 export function emptyArcade(): ArcadeState {
@@ -117,7 +122,9 @@ function phase3Defaults() {
  * Upgrades a saved profile to the current version. 1 → 2 adds difficulty and
  * modifier unlocks; 2 → 3 adds reviews, hesitations, error analysis,
  * sessions, the touch-typing answer and per-grip stats; 3 → 4 adds the arcade
- * (scores, ghost run, nemesis, hall of defeated).
+ * (scores, ghost run, nemesis, hall of defeated); 4 → 5 adds key days,
+ * creatures, replays and daily results (creatures fill in on the next
+ * updateCreatures call).
  */
 export function migrateProfile(saved: Record<string, unknown>): ProfileState {
   let p = { ...saved } as Record<string, unknown>;
@@ -132,6 +139,9 @@ export function migrateProfile(saved: Record<string, unknown>): ProfileState {
   }
   if (p.version === 3) {
     p = { ...p, arcade: emptyArcade(), version: 4 };
+  }
+  if (p.version === 4) {
+    p = { ...p, ...phase5Defaults(), version: 5 };
   }
   return p as unknown as ProfileState;
 }
@@ -508,6 +518,7 @@ export function completeRound(
   const historyKeys: Record<string, KeyRoundEntry> = {};
   for (const key of Object.keys(perKey)) if (isLetter(key) || key.startsWith("mod:")) historyKeys[key] = perKey[key];
   appendHistory(state.keyHistory, historyKeys);
+  recordKeyDays(state.keyDays, perKey, at);
 
   const grip = state.profile === "touch" ? session?.grip ?? null : null;
   for (const r of round.records) {

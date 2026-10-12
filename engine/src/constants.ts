@@ -230,3 +230,58 @@ export const RACE_WORDS = 30;
 export const NEMESIS_MIN_SAMPLES = 20;
 export const NEMESIS_MIN_WEAKNESS = 1;
 export const NEMESIS_DEFEAT_WEAKNESS = 0.3;
+
+/** Phase 5: key creatures. Stages need this many first-attempt samples. */
+export const CREATURE_BABY_SAMPLES = 15;
+export const CREATURE_GROWN_SAMPLES = 40;
+/** Grown: weakness at most this (the same bar as defeating a nemesis). */
+export const CREATURE_GROWN_WEAKNESS = 0.3;
+export const CREATURE_LEGENDARY_SAMPLES = 150;
+/** Legendary: average time at most this share of the goal time, and error rate at most CREATURE_LEGENDARY_ERRORS. */
+export const CREATURE_LEGENDARY_SPEED = 0.8;
+export const CREATURE_LEGENDARY_ERRORS = 0.02;
+/** Health: full at weakness CREATURE_GROWN_WEAKNESS or less, zero skill at CREATURE_SICK_WEAKNESS. */
+export const CREATURE_SICK_WEAKNESS = 2;
+/** Health: no decay for this many days without practice, then down to CREATURE_MIN_RECENCY over CREATURE_DECAY_DAYS more. */
+export const CREATURE_GRACE_DAYS = 7;
+export const CREATURE_DECAY_DAYS = 30;
+export const CREATURE_MIN_RECENCY = 0.5;
+export const CREATURE_MIN_HEALTH = 0.05;
+
+/** Phase 5: forecasts. */
+export const KEY_DAYS_KEPT = 30;
+/** Only data from the last this-many days counts. */
+export const FORECAST_WINDOW_DAYS = 30;
+/** Fewer days with data than this: no forecast. */
+export const FORECAST_MIN_DAYS = 3;
+/** A single estimate needs this many days with data and a slope error at most FORECAST_ESTIMATE_SPREAD of the slope. */
+export const FORECAST_ESTIMATE_DAYS = 7;
+export const FORECAST_ESTIMATE_SPREAD = 0.35;
+/** Forecasts further out than this are shown as none. */
+export const FORECAST_MAX_DAYS = 365;
+/** A key's day counts toward a forecast with at least this many timed samples. */
+export const FORECAST_KEY_MIN_TIMED = 3;
+
+/** Phase 5: replays. */
+export const REPLAYS_RECENT = 5;
+export const REPLAYS_BEST = 3;
+
+/** Phase 5: daily challenge. */
+export const DAILY_WORDS = 30;
+/** Words are drawn from this many of the most common words in the pack. */
+export const DAILY_POOL = 3000;
+export const DAILY_MIN_LENGTH = 2;
+export const DAILY_MAX_LENGTH = 10;
+export const DAILY_SENTENCE_MIN = 5;
+export const DAILY_SENTENCE_MAX = 9;
+export const DAILY_COMMA_CHANCE = 0.12;
+export const DAILY_KEPT = 400;
+
+/** Phase 5: fingerprint card traits. */
+export const TRAIT_STEADY = 0.55;
+export const TRAIT_BURSTY = 0.4;
+export const TRAIT_PRECISE = 0.97;
+export const TRAIT_DARING = 0.9;
+export const TRAIT_FIXER = 0.8;
+export const TRAIT_PRESSES_ON = 0.3;
+export const FINGERPRINT_MIN_SAMPLES = 20;

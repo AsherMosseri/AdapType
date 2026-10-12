@@ -1,0 +1,121 @@
+{
+ "pack": {
+  "id": "en",
+  "version": 1
+ },
+ "texts": [
+  {
+   "date": "2026-01-01",
+   "text": "Center magazine leave fired items armed harry got sleeping. Hopefully week flying google measure test six. Moments concerned department encourage until cold identity. Leader make cake character, harry seem difficult."
+  },
+  {
+   "date": "2026-10-12",
+   "text": "Duke out, statements symptoms larger calls line. Become easily drink schools us fight dogs. Hair egg physical please important winter moral, shut loan. Channel officially mobile expressed press valuable, accident."
+  },
+  {
+   "date": "2027-02-28",
+   "text": "Chocolate happy women tied turned ladies command. Singing, upper hotel note first. Expert forever horses host designed continuing dating marine concerned. Constant boys tries published helping happening. Route show taking."
+  },
+  {
+   "date": "2028-02-29",
+   "text": "Chair along formed trade power type statistics employees designed. Yourself teach feature showed email exclusive, golf ad. Situation reaching many computer gain broken. Creative offering demand exactly chemical depending providing."
+  },
+  {
+   "date": "2030-12-31",
+   "text": "Feels per easier rock wearing played careful. Caught, during pants mountains puts, criticism harry, technology nothing. Brilliant faces ways, debt sounds ships voters. Courses drinking, planning snow honestly ground literally."
+  }
+ ],
+ "typing": [
+  {
+   "kind": "char",
+   "char": "A",
+   "t": 0
+  },
+  {
+   "kind": "char",
+   "char": "b",
+   "t": 150
+  },
+  {
+   "kind": "char",
+   "char": " ",
+   "t": 300
+  },
+  {
+   "kind": "char",
+   "char": "x",
+   "t": 500
+  },
+  {
+   "kind": "backspace",
+   "t": 600
+  },
+  {
+   "kind": "char",
+   "char": "c",
+   "t": 700
+  },
+  {
+   "kind": "char",
+   "char": "d",
+   "t": 850
+  },
+  {
+   "kind": "char",
+   "char": ",",
+   "t": 1000
+  },
+  {
+   "kind": "char",
+   "char": " ",
+   "t": 1150
+  },
+  {
+   "kind": "char",
+   "char": "e",
+   "t": 1400
+  },
+  {
+   "kind": "char",
+   "char": "x",
+   "t": 1550
+  },
+  {
+   "kind": "char",
+   "char": ".",
+   "t": 1700
+  }
+ ],
+ "first": {
+  "scored": true,
+  "result": {
+   "wpm": 63.529411764705884,
+   "accuracy": 0.8181818181818182,
+   "at": 1000,
+   "marks": "gyr"
+  },
+  "streak": 1
+ },
+ "again": {
+  "scored": false
+ },
+ "streaks": [
+  {
+   "today": "2026-10-11",
+   "streak": 2
+  },
+  {
+   "today": "2026-10-12",
+   "streak": 2
+  },
+  {
+   "today": "2026-10-13",
+   "streak": 0
+  },
+  {
+   "today": "2026-10-09",
+   "streak": 1
+  }
+ ],
+ "share": "AdapType daily 2026-10-10\n64 WPM · 82% · 4-day streak\n🟩🟩🟩🟨🟥🟩🟩🟩🟩🟩\n🟩🟩🟨🟩"
+}

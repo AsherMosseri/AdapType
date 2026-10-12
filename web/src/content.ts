@@ -7,7 +7,7 @@ import touchJson from "../../content/touch-layouts.json";
 import packJson from "../../content/words-en.json";
 import type { Blocklist, CharacterData, NemesisContent, ShortcutPack, WordPack } from "../../engine/src";
 
-export const pack: WordPack = { words: packJson.words };
+export const pack: WordPack = { words: packJson.words, id: packJson.id, version: packJson.version };
 export const blocklist: Blocklist = blocklistJson;
 export const packCredits: string[] = packJson.credits;
 export const characters: CharacterData = { ...charactersJson, loanwords: loanwordsJson.words };

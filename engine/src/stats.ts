@@ -1,6 +1,6 @@
-import { KEY_HISTORY_ROUNDS, LEFT_HAND_LETTERS, MIN_AVG_WEIGHT } from "./constants";
+import { DAY_MS, KEY_DAYS_KEPT, KEY_HISTORY_ROUNDS, LEFT_HAND_LETTERS, MIN_AVG_WEIGHT } from "./constants";
 import { categoryOf, modKey } from "./modifiers";
-import type { CharacterData, KeyRoundEntry, KeystrokeRecord, StatEntry } from "./types";
+import type { CharacterData, DayEntry, KeyRoundEntry, KeystrokeRecord, StatEntry } from "./types";
 
 /** Stat key for using the wrong Shift (same hand as the letter). */
 export const SHIFT_SIDE_KEY = "shift:side";
@@ -115,3 +115,32 @@ export function appendHistory(
 export function isLetter(ch: string | undefined): boolean {
   return ch !== undefined && ch.length === 1 && ch >= "a" && ch <= "z";
 }
+
+/** The day number (UTC days since the epoch) of a timestamp. */
+export function dayOf(ms: number): number {
+  return Math.floor(ms / DAY_MS);
+}
+
+/**
+ * Adds a round's per-key results to keyDays: single characters other than
+ * space, merged into today's entry or appended, keeping KEY_DAYS_KEPT days.
+ */
+export function recordKeyDays(keyDays: Record<string, DayEntry[]>, perKey: Record<string, KeyRoundEntry>, at: number): void {
+  const day = dayOf(at);
+  for (const key of Object.keys(perKey).sort()) {
+    if (key.length !== 1 || key === " ") continue;
+    const e = perKey[key];
+    const list = (keyDays[key] ??= []);
+    const last = list[list.length - 1];
+    if (last && last[0] === day) {
+      last[1] += e.n;
+      last[2] += e.correct;
+      last[3] += e.msTotal;
+      last[4] += e.msN;
+    } else {
+      list.push([day, e.n, e.correct, e.msTotal, e.msN] as DayEntry);
+      if (list.length > KEY_DAYS_KEPT) list.splice(0, list.length - KEY_DAYS_KEPT);
+    }
+  }
+}
+

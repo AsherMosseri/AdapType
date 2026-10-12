@@ -1,0 +1,658 @@
+{
+ "trend": [
+  {
+   "points": [
+    {
+     "x": -1,
+     "y": 30
+    },
+    {
+     "x": 0,
+     "y": 31
+    }
+   ],
+   "target": 40,
+   "direction": 1,
+   "forecast": {
+    "kind": "none",
+    "reason": "data"
+   }
+  },
+  {
+   "points": [
+    {
+     "x": -7,
+     "y": 30.2
+    },
+    {
+     "x": -6,
+     "y": 30.7
+    },
+    {
+     "x": -5,
+     "y": 32.1
+    },
+    {
+     "x": -4,
+     "y": 33.2
+    },
+    {
+     "x": -3,
+     "y": 33.7
+    },
+    {
+     "x": -2,
+     "y": 35.1
+    },
+    {
+     "x": -1,
+     "y": 36.2
+    },
+    {
+     "x": 0,
+     "y": 36.7
+    }
+   ],
+   "target": 40,
+   "direction": 1,
+   "forecast": {
+    "kind": "estimate",
+    "days": 3.1
+   }
+  },
+  {
+   "points": [
+    {
+     "x": -3,
+     "y": 32
+    },
+    {
+     "x": -2,
+     "y": 28
+    },
+    {
+     "x": -1,
+     "y": 33
+    },
+    {
+     "x": 0,
+     "y": 35
+    }
+   ],
+   "target": 40,
+   "direction": 1,
+   "forecast": {
+    "kind": "range",
+    "low": 2.2,
+    "high": 46.4
+   }
+  },
+  {
+   "points": [
+    {
+     "x": -4,
+     "y": 30.1
+    },
+    {
+     "x": -3,
+     "y": 29.4
+    },
+    {
+     "x": -2,
+     "y": 29.1
+    },
+    {
+     "x": -1,
+     "y": 28.4
+    },
+    {
+     "x": 0,
+     "y": 28.1
+    }
+   ],
+   "target": 40,
+   "direction": 1,
+   "forecast": {
+    "kind": "none",
+    "reason": "flat"
+   }
+  },
+  {
+   "points": [
+    {
+     "x": -4,
+     "y": 45
+    },
+    {
+     "x": -3,
+     "y": 45.5
+    },
+    {
+     "x": -2,
+     "y": 46
+    },
+    {
+     "x": -1,
+     "y": 46.5
+    },
+    {
+     "x": 0,
+     "y": 47
+    }
+   ],
+   "target": 40,
+   "direction": 1,
+   "forecast": {
+    "kind": "reached"
+   }
+  },
+  {
+   "points": [
+    {
+     "x": -9,
+     "y": 410
+    },
+    {
+     "x": -8,
+     "y": 383
+    },
+    {
+     "x": -7,
+     "y": 394
+    },
+    {
+     "x": -6,
+     "y": 395
+    },
+    {
+     "x": -5,
+     "y": 368
+    },
+    {
+     "x": -4,
+     "y": 379
+    },
+    {
+     "x": -3,
+     "y": 380
+    },
+    {
+     "x": -2,
+     "y": 353
+    },
+    {
+     "x": -1,
+     "y": 364
+    },
+    {
+     "x": 0,
+     "y": 365
+    }
+   ],
+   "target": 300,
+   "direction": -1,
+   "forecast": {
+    "kind": "estimate",
+    "days": 12.3
+   }
+  },
+  {
+   "points": [
+    {
+     "x": -3,
+     "y": 30.5
+    },
+    {
+     "x": -2,
+     "y": 29.51
+    },
+    {
+     "x": -1,
+     "y": 30.52
+    },
+    {
+     "x": 0,
+     "y": 29.53
+    }
+   ],
+   "target": 40,
+   "direction": 1,
+   "forecast": {
+    "kind": "none",
+    "reason": "flat"
+   }
+  },
+  {
+   "points": [
+    {
+     "x": -2,
+     "y": 34
+    },
+    {
+     "x": -1,
+     "y": 29
+    },
+    {
+     "x": 0,
+     "y": 36
+    }
+   ],
+   "target": 40,
+   "direction": 1,
+   "forecast": {
+    "kind": "none",
+    "reason": "uncertain"
+   }
+  }
+ ],
+ "profile": {
+  "now": 1728003600000,
+  "rounds": [
+   {
+    "at": 1727312400000,
+    "wpm": 27.5,
+    "accuracy": 0.95,
+    "durationMs": 30000,
+    "chars": 120,
+    "corrections": 0,
+    "calibration": false
+   },
+   {
+    "at": 1727312401000,
+    "wpm": 28.5,
+    "accuracy": 0.95,
+    "durationMs": 30000,
+    "chars": 120,
+    "corrections": 0,
+    "calibration": false
+   },
+   {
+    "at": 1727398800000,
+    "wpm": 28.7,
+    "accuracy": 0.95,
+    "durationMs": 30000,
+    "chars": 120,
+    "corrections": 0,
+    "calibration": false
+   },
+   {
+    "at": 1727398801000,
+    "wpm": 29.7,
+    "accuracy": 0.95,
+    "durationMs": 30000,
+    "chars": 120,
+    "corrections": 0,
+    "calibration": false
+   },
+   {
+    "at": 1727485200000,
+    "wpm": 29.9,
+    "accuracy": 0.95,
+    "durationMs": 30000,
+    "chars": 120,
+    "corrections": 0,
+    "calibration": false
+   },
+   {
+    "at": 1727485201000,
+    "wpm": 30.9,
+    "accuracy": 0.95,
+    "durationMs": 30000,
+    "chars": 120,
+    "corrections": 0,
+    "calibration": false
+   },
+   {
+    "at": 1727571600000,
+    "wpm": 31.1,
+    "accuracy": 0.95,
+    "durationMs": 30000,
+    "chars": 120,
+    "corrections": 0,
+    "calibration": false
+   },
+   {
+    "at": 1727571601000,
+    "wpm": 32.1,
+    "accuracy": 0.95,
+    "durationMs": 30000,
+    "chars": 120,
+    "corrections": 0,
+    "calibration": false
+   },
+   {
+    "at": 1727658000000,
+    "wpm": 32.3,
+    "accuracy": 0.95,
+    "durationMs": 30000,
+    "chars": 120,
+    "corrections": 0,
+    "calibration": false
+   },
+   {
+    "at": 1727658001000,
+    "wpm": 33.3,
+    "accuracy": 0.95,
+    "durationMs": 30000,
+    "chars": 120,
+    "corrections": 0,
+    "calibration": false
+   },
+   {
+    "at": 1727744400000,
+    "wpm": 33.5,
+    "accuracy": 0.95,
+    "durationMs": 30000,
+    "chars": 120,
+    "corrections": 0,
+    "calibration": false
+   },
+   {
+    "at": 1727744401000,
+    "wpm": 34.5,
+    "accuracy": 0.95,
+    "durationMs": 30000,
+    "chars": 120,
+    "corrections": 0,
+    "calibration": false
+   },
+   {
+    "at": 1727830800000,
+    "wpm": 34.7,
+    "accuracy": 0.95,
+    "durationMs": 30000,
+    "chars": 120,
+    "corrections": 0,
+    "calibration": false
+   },
+   {
+    "at": 1727830801000,
+    "wpm": 35.7,
+    "accuracy": 0.95,
+    "durationMs": 30000,
+    "chars": 120,
+    "corrections": 0,
+    "calibration": false
+   },
+   {
+    "at": 1727917200000,
+    "wpm": 35.9,
+    "accuracy": 0.95,
+    "durationMs": 30000,
+    "chars": 120,
+    "corrections": 0,
+    "calibration": false
+   },
+   {
+    "at": 1727917201000,
+    "wpm": 36.9,
+    "accuracy": 0.95,
+    "durationMs": 30000,
+    "chars": 120,
+    "corrections": 0,
+    "calibration": false
+   },
+   {
+    "at": 1728003600000,
+    "wpm": 37.1,
+    "accuracy": 0.95,
+    "durationMs": 30000,
+    "chars": 120,
+    "corrections": 0,
+    "calibration": false
+   },
+   {
+    "at": 1728003601000,
+    "wpm": 38.1,
+    "accuracy": 0.95,
+    "durationMs": 30000,
+    "chars": 120,
+    "corrections": 0,
+    "calibration": false
+   }
+  ],
+  "keyDays": {
+   "e": [
+    [
+     19992,
+     10,
+     10,
+     2000,
+     8
+    ],
+    [
+     19993,
+     10,
+     10,
+     2000,
+     8
+    ],
+    [
+     19994,
+     10,
+     10,
+     2000,
+     8
+    ],
+    [
+     19995,
+     10,
+     10,
+     2000,
+     8
+    ],
+    [
+     19996,
+     10,
+     10,
+     2000,
+     8
+    ],
+    [
+     19997,
+     10,
+     10,
+     2000,
+     8
+    ],
+    [
+     19998,
+     10,
+     10,
+     2000,
+     8
+    ],
+    [
+     19999,
+     10,
+     10,
+     2000,
+     8
+    ],
+    [
+     20000,
+     10,
+     10,
+     2000,
+     8
+    ]
+   ],
+   "i": [
+    [
+     19992,
+     10,
+     10,
+     3360,
+     8
+    ],
+    [
+     19993,
+     10,
+     10,
+     3264,
+     8
+    ],
+    [
+     19994,
+     10,
+     10,
+     3168,
+     8
+    ],
+    [
+     19995,
+     10,
+     10,
+     3072,
+     8
+    ],
+    [
+     19996,
+     10,
+     10,
+     2976,
+     8
+    ],
+    [
+     19997,
+     10,
+     10,
+     2880,
+     8
+    ],
+    [
+     19998,
+     10,
+     10,
+     2784,
+     8
+    ],
+    [
+     19999,
+     10,
+     10,
+     2688,
+     8
+    ],
+    [
+     20000,
+     12,
+     12,
+     3192,
+     10
+    ]
+   ],
+   "n": [
+    [
+     19992,
+     10,
+     8,
+     3000,
+     8
+    ],
+    [
+     19993,
+     10,
+     8,
+     3000,
+     8
+    ],
+    [
+     19994,
+     10,
+     8,
+     3000,
+     8
+    ],
+    [
+     19995,
+     10,
+     8,
+     3000,
+     8
+    ],
+    [
+     19996,
+     10,
+     8,
+     3000,
+     8
+    ],
+    [
+     19997,
+     10,
+     8,
+     3000,
+     8
+    ],
+    [
+     19998,
+     10,
+     8,
+     3000,
+     8
+    ],
+    [
+     19999,
+     10,
+     8,
+     3000,
+     8
+    ],
+    [
+     20000,
+     10,
+     8,
+     3000,
+     8
+    ]
+   ]
+  },
+  "keys": {
+   "i": {
+    "n": 92,
+    "timedN": 74,
+    "msAvg": 330,
+    "errAvg": 0.01
+   },
+   "n": {
+    "n": 90,
+    "timedN": 72,
+    "msAvg": 375,
+    "errAvg": 0.2
+   },
+   "e": {
+    "n": 90,
+    "timedN": 72,
+    "msAvg": 250,
+    "errAvg": 0.01
+   }
+  },
+  "goal": {
+   "kind": "estimate",
+   "days": 2
+  },
+  "keyI": {
+   "kind": "estimate",
+   "days": 1.8
+  },
+  "keyN": {
+   "kind": "none",
+   "reason": "accuracy"
+  },
+  "keyE": {
+   "kind": "reached"
+  },
+  "unlock": {
+   "letter": "s",
+   "forecast": {
+    "kind": "none",
+    "reason": "accuracy"
+   },
+   "blocking": [
+    "i",
+    "n"
+   ]
+  }
+ }
+}
