@@ -52,6 +52,8 @@ const REASONS: Record<KeyDetail["reasons"][number], string> = {
   slow: "It's slower than your goal.",
   errors: "It has more errors than your accuracy target allows.",
   fine: "It's at your goal, so it only shows up as often as normal.",
+  hesitant: "You often pause before it, even when you get it right. It needs confidence more than accuracy.",
+  review: "It's due for review: you missed it before, so it comes back to check it stuck.",
 };
 
 export function reasonText(reasons: KeyDetail["reasons"]): string {

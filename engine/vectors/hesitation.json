@@ -1,0 +1,104 @@
+{
+ "keysBefore": {
+  "t": {
+   "n": 20,
+   "timedN": 20,
+   "msAvg": 150,
+   "errAvg": 0
+  },
+  "e": {
+   "n": 20,
+   "timedN": 20,
+   "msAvg": 180,
+   "errAvg": 0
+  },
+  "a": {
+   "n": 3,
+   "timedN": 3,
+   "msAvg": 180,
+   "errAvg": 0
+  }
+ },
+ "target": "tea tee ate",
+ "events": [
+  {
+   "kind": "char",
+   "char": "t",
+   "t": 0
+  },
+  {
+   "kind": "char",
+   "char": "e",
+   "t": 150
+  },
+  {
+   "kind": "char",
+   "char": "a",
+   "t": 650
+  },
+  {
+   "kind": "char",
+   "char": " ",
+   "t": 810
+  },
+  {
+   "kind": "char",
+   "char": "t",
+   "t": 1010
+  },
+  {
+   "kind": "char",
+   "char": "e",
+   "t": 1910
+  },
+  {
+   "kind": "char",
+   "char": "e",
+   "t": 2080
+  },
+  {
+   "kind": "char",
+   "char": " ",
+   "t": 2230
+  },
+  {
+   "kind": "char",
+   "char": "a",
+   "t": 2370
+  },
+  {
+   "kind": "char",
+   "char": "t",
+   "t": 2750
+  },
+  {
+   "kind": "char",
+   "char": "e",
+   "t": 2900
+  }
+ ],
+ "hesitated": [
+  {
+   "key": "e",
+   "count": 1
+  },
+  {
+   "key": "t",
+   "count": 1
+  }
+ ],
+ "hesitations": {
+  "e": {
+   "n": 4,
+   "timedN": 0,
+   "msAvg": 0,
+   "errAvg": 0.25
+  },
+  "t": {
+   "n": 2,
+   "timedN": 0,
+   "msAvg": 0,
+   "errAvg": 0.5
+  }
+ }
+}

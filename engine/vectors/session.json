@@ -1,0 +1,139 @@
+[
+ {
+  "begin": 1700000000000,
+  "newSession": true,
+  "session": {
+   "id": 1,
+   "startedAt": 1700000000000,
+   "lastAt": 1700000000000,
+   "rounds": 0,
+   "history": [],
+   "baseline": null,
+   "fatigued": false,
+   "grip": null,
+   "warmupDone": false,
+   "gripSignal": {
+    "sameMs": 0,
+    "sameN": 0,
+    "crossMs": 0,
+    "crossN": 0
+   }
+  }
+ },
+ {
+  "begin": 1700001200000,
+  "newSession": false
+ },
+ {
+  "round": {
+   "wpm": 50,
+   "accuracy": 0.97
+  },
+  "change": null,
+  "fatigued": false,
+  "baseline": null
+ },
+ {
+  "round": {
+   "wpm": 52,
+   "accuracy": 0.96
+  },
+  "change": null,
+  "fatigued": false,
+  "baseline": {
+   "wpm": 51,
+   "accuracy": 0.965
+  }
+ },
+ {
+  "round": {
+   "wpm": 49,
+   "accuracy": 0.96
+  },
+  "change": null,
+  "fatigued": false,
+  "baseline": {
+   "wpm": 51,
+   "accuracy": 0.965
+  }
+ },
+ {
+  "round": {
+   "wpm": 41,
+   "accuracy": 0.93
+  },
+  "change": null,
+  "fatigued": false,
+  "baseline": {
+   "wpm": 51,
+   "accuracy": 0.965
+  }
+ },
+ {
+  "round": {
+   "wpm": 40,
+   "accuracy": 0.94
+  },
+  "change": "started",
+  "fatigued": true,
+  "baseline": {
+   "wpm": 51,
+   "accuracy": 0.965
+  }
+ },
+ {
+  "round": {
+   "wpm": 48,
+   "accuracy": 0.96
+  },
+  "change": null,
+  "fatigued": true,
+  "baseline": {
+   "wpm": 51,
+   "accuracy": 0.965
+  }
+ },
+ {
+  "round": {
+   "wpm": 51,
+   "accuracy": 0.97
+  },
+  "change": "recovered",
+  "fatigued": false,
+  "baseline": {
+   "wpm": 51,
+   "accuracy": 0.965
+  }
+ },
+ {
+  "begin": 1700010800000,
+  "newSession": true,
+  "session": {
+   "id": 2,
+   "startedAt": 1700010800000,
+   "lastAt": 1700010800000,
+   "rounds": 0,
+   "history": [],
+   "baseline": null,
+   "fatigued": false,
+   "grip": null,
+   "warmupDone": false,
+   "gripSignal": {
+    "sameMs": 0,
+    "sameN": 0,
+    "crossMs": 0,
+    "crossN": 0
+   }
+  }
+ },
+ {
+  "gripSignal": {
+   "sameMs": 5250,
+   "sameN": 25,
+   "crossMs": 5720,
+   "crossN": 22
+  },
+  "picked": "two",
+  "suggestion": "one"
+ }
+]

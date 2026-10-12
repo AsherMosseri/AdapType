@@ -1,0 +1,221 @@
+{
+ "state": {
+  "unlocked": [
+   "e",
+   "t",
+   "a",
+   "o",
+   "i",
+   "n",
+   "s",
+   "h",
+   "r"
+  ],
+  "mastered": [
+   "e",
+   "t",
+   "a",
+   "o",
+   "i",
+   "n",
+   "s",
+   "h"
+  ],
+  "keys": {
+   "e": {
+    "n": 40,
+    "timedN": 40,
+    "msAvg": 240,
+    "errAvg": 0.02
+   },
+   "t": {
+    "n": 40,
+    "timedN": 40,
+    "msAvg": 240,
+    "errAvg": 0.02
+   },
+   "a": {
+    "n": 40,
+    "timedN": 40,
+    "msAvg": 240,
+    "errAvg": 0.02
+   },
+   "o": {
+    "n": 40,
+    "timedN": 40,
+    "msAvg": 240,
+    "errAvg": 0.02
+   },
+   "i": {
+    "n": 40,
+    "timedN": 40,
+    "msAvg": 240,
+    "errAvg": 0.02
+   },
+   "n": {
+    "n": 40,
+    "timedN": 40,
+    "msAvg": 520,
+    "errAvg": 0.08
+   },
+   "s": {
+    "n": 40,
+    "timedN": 40,
+    "msAvg": 380,
+    "errAvg": 0.04
+   },
+   "h": {
+    "n": 40,
+    "timedN": 40,
+    "msAvg": 240,
+    "errAvg": 0.02
+   },
+   "r": {
+    "n": 40,
+    "timedN": 40,
+    "msAvg": 240,
+    "errAvg": 0.02
+   }
+  },
+  "pairs": {
+   "nt": {
+    "n": 20,
+    "timedN": 20,
+    "msAvg": 600,
+    "errAvg": 0.1
+   }
+  },
+  "reviews": {
+   "word:onto": {
+    "kind": "word",
+    "target": "onto",
+    "step": 0,
+    "due": 1699999999999,
+    "sessionRound": null,
+    "lapses": 1
+   }
+  },
+  "seed": 9,
+  "roundCounter": 0
+ },
+ "now": 1700000000000,
+ "targets": {
+  "keys": [
+   "n",
+   "r",
+   "s"
+  ],
+  "pairs": [
+   "nt"
+  ]
+ },
+ "plan": {
+  "words": [
+   {
+    "text": "reason",
+    "madeUp": false
+   },
+   {
+    "text": "honest",
+    "madeUp": false
+   },
+   {
+    "text": "rather",
+    "madeUp": false
+   },
+   {
+    "text": "into",
+    "madeUp": false
+   },
+   {
+    "text": "iron",
+    "madeUp": false
+   },
+   {
+    "text": "start",
+    "madeUp": false
+   },
+   {
+    "text": "soon",
+    "madeUp": false
+   },
+   {
+    "text": "sit",
+    "madeUp": false
+   },
+   {
+    "text": "on",
+    "madeUp": false
+   },
+   {
+    "text": "share",
+    "madeUp": false
+   },
+   {
+    "text": "area",
+    "madeUp": false
+   },
+   {
+    "text": "onto",
+    "madeUp": false
+   },
+   {
+    "text": "he",
+    "madeUp": false
+   },
+   {
+    "text": "rain",
+    "madeUp": false
+   },
+   {
+    "text": "an",
+    "madeUp": false
+   },
+   {
+    "text": "art",
+    "madeUp": false
+   },
+   {
+    "text": "sets",
+    "madeUp": false
+   },
+   {
+    "text": "honor",
+    "madeUp": false
+   },
+   {
+    "text": "is",
+    "madeUp": false
+   },
+   {
+    "text": "rest",
+    "madeUp": false
+   }
+  ],
+  "explanation": {
+   "keys": [
+    "n",
+    "s"
+   ],
+   "pairs": [
+    "nt"
+   ],
+   "newLetter": "r",
+   "modifiers": [],
+   "difficulty": 0.3,
+   "warmup": {
+    "keys": [
+     "n",
+     "r",
+     "s"
+    ],
+    "pairs": [
+     "nt"
+    ]
+   },
+   "reviewWords": [
+    "onto"
+   ]
+  }
+ }
+}

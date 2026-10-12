@@ -9,6 +9,8 @@ export interface RoundMetrics {
   correctKeystrokes: number;
   /** Positions that were wrong on the first try and are now correct. */
   corrections: number;
+  /** Positions whose first attempt was wrong. */
+  firstErrors: number;
   /** From the first keystroke to the last, in ms. */
   elapsedMs: number;
   wpm: number;
@@ -101,6 +103,7 @@ export class TypingRound {
       keystrokes,
       correctKeystrokes,
       corrections,
+      firstErrors: this.firstWrong.size,
       elapsedMs,
       wpm: computeWpm(correctChars, elapsedMs),
       accuracy: keystrokes > 0 ? correctKeystrokes / keystrokes : 1,

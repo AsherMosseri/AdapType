@@ -37,7 +37,7 @@ export function difficultyParams(d: number): DifficultyParams {
  * Returns the change (-step, 0 or +step).
  */
 export function updateDifficulty(state: ProfileState, goal: Goal): number {
-  const rounds = state.rounds.filter((r) => !r.calibration).slice(-DIFFICULTY_ROUNDS);
+  const rounds = state.rounds.filter((r) => !r.calibration && !r.warmup).slice(-DIFFICULTY_ROUNDS);
   if (rounds.length < DIFFICULTY_ROUNDS) return 0;
   let wpm = 0;
   let accuracy = 0;

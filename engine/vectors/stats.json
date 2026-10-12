@@ -170,11 +170,29 @@
     "msTotal": 360,
     "msN": 2
    },
+   "pair:te": {
+    "n": 2,
+    "correct": 1,
+    "msTotal": 360,
+    "msN": 2
+   },
    "n": {
     "n": 2,
     "correct": 1,
     "msTotal": 180,
     "msN": 1
+   },
+   "pair:en": {
+    "n": 2,
+    "correct": 1,
+    "msTotal": 180,
+    "msN": 1
+   },
+   "pair:nt": {
+    "n": 1,
+    "correct": 0,
+    "msTotal": 0,
+    "msN": 0
    },
    " ": {
     "n": 1,

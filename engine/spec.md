@@ -1,4 +1,4 @@
-# AdapType engine spec (phases 1 and 2)
+# AdapType engine spec (phases 1 to 3)
 
 This is the rulebook for the AdapType engine. The web version
 (`engine/src`, TypeScript) is the reference implementation. A port (Swift,
@@ -516,6 +516,235 @@ Profile version 2 adds `difficulty` (`DIFFICULTY_START`), `modsUnlocked` and
 `modsMastered` (both empty). A version 1 profile is upgraded by adding those
 fields.
 
+## 14. Phase 3 changes to earlier sections
+
+- **Moving averages (3):** `addSample` takes a weight factor (default 1). The
+  step weight is 1 for the first sample, otherwise
+  `max(MIN_AVG_WEIGHT, 1/n) * factor`. Rounds played while the session is
+  fatigued use `TIRED_WEIGHT`.
+- **Per-round entries (3):** each pair sample is also counted in the round's
+  per-key entries under `pair:<xy>` (used by reviews, not history).
+- **Metrics (2):** `firstErrors` = positions whose first attempt was wrong.
+- **Scores (4):** letters add `hesitationBonus` (15.2), `REVIEW_BONUS` when due
+  (16), and on touch `DRIFT_BONUS` when the key's taps drift (19.2). Pairs add
+  `REVIEW_BONUS` when due. Reviews count only when the caller passes `now`.
+- **Word weights (5.2):** real words' weights are multiplied by the error
+  drill bonus (17.3).
+- **Made-up words (5.3-5.5):** the made-up share is
+  `min(madeUpCap, MAX_MADE_UP_SHARE, 1 - poolSize / FULL_POOL)` (the cap is
+  ignored when no real word fits). Practice rounds use the pronounceable
+  builder (20), falling back to 5.5 when it returns nothing.
+- **Planning (5.7):** with fatigue, the difficulty used is
+  `clamp(difficulty - FATIGUE_EASE, 0, 1)`. After the words are picked (and
+  before modifiers), in the first batch only, each due review word (16.3)
+  whose letters are all unlocked replaces `words[int(count)]`, up to
+  `REVIEW_WORDS`.
+- **Summaries (8):** add `consistency` (18), `firstErrors`, and `warmup`.
+  Warm-up rounds don't change difficulty or the recent average.
+
+## 15. Sessions, fatigue and hesitation
+
+### 15.1 Sessions
+
+`beginSession(now)` starts a new session when there's none or
+`now - lastAt > SESSION_GAP_MS`: id + 1, rounds 0, empty history, no
+baseline, not fatigued, warm-up not done, grip carried over on touch.
+
+After each non-calibration round with keystrokes: `rounds += 1`,
+`lastAt = at`, the round's WPM and accuracy are appended (last
+`SESSION_HISTORY` kept). Once `rounds >= FATIGUE_BASELINE_ROUNDS`, the baseline
+is the average of the first `FATIGUE_BASELINE_ROUNDS` rounds (set once).
+
+### 15.2 Fatigue
+
+With a baseline and `rounds >= FATIGUE_MIN_ROUNDS`, let `recent` be the
+average of the last `FATIGUE_RECENT_ROUNDS` rounds.
+
+- Not fatigued, and `recent.wpm < baseline.wpm * FATIGUE_WPM_DROP` or
+  `recent.accuracy < baseline.accuracy - FATIGUE_ACCURACY_DROP`: fatigue
+  starts.
+- Fatigued, and `recent.wpm >= baseline.wpm * RECOVER_WPM` and
+  `recent.accuracy >= baseline.accuracy - RECOVER_ACCURACY_DROP`: recovered.
+
+Vectors: `session.json`.
+
+### 15.3 Hesitation
+
+Before a round's stats are applied, for each first-attempt record with an
+interval whose key has at least `HESITATION_MIN_SAMPLES` timed samples: it's
+a hesitation when `interval > max(HESITATION_MIN_MS, HESITATION_FACTOR *
+msAvg)`. Each judgment adds a sample (error = hesitation, no interval) to
+`hesitations[key]`.
+
+`hesitationBonus = min(HESITATION_SCORE_CAP, errAvg * HESITATION_SCORE_SCALE)`
+once `n >= CONFIDENT_SAMPLES`, else 0. Key detail adds the reason `hesitant`
+when the rate is above `HESITANT_RATE` (with `CONFIDENT_SAMPLES` judgments),
+and `review` when the key is due.
+
+Vectors: `hesitation.json`.
+
+## 16. Spaced repetition
+
+Items are keyed `key:<letter>`, `pair:<xy>`, `word:<word>` with `step`,
+`due`, `sessionRound` and `lapses`. Intervals: `REVIEW_INTERVALS_DAYS`.
+
+### 16.1 Due
+
+An item is due when `due <= now`, or `sessionRound` is set and the session's
+round count is at least `sessionRound`.
+
+### 16.2 Updating after a round
+
+Runs after stats, error analysis and the session update, for non-calibration
+rounds with keystrokes. "Session rounds" means the count including this
+round.
+
+- **Lapse:** step 0, `due = at + 1 day`, `sessionRound = sessionRounds +
+  REVIEW_SESSION_GAP`, lapses + 1.
+- **Success:** if `sessionRound` is set and reached, clear it. If `due <= at`:
+  step + 1; past the last interval the item is learned and removed; otherwise
+  `due = at + interval[step]` days.
+- **New item:** step 0, due tomorrow, `sessionRound = sessionRounds +
+  REVIEW_SESSION_GAP`, lapses 0.
+
+Keys (letters with at least `REVIEW_MIN_SAMPLES` presses this round), in
+alphabetical order, then pairs (`pair:` entries with at least
+`REVIEW_PAIR_MIN_SAMPLES`): the round is a success when
+`correct / n >= goal.accuracy` and (`msN == 0` or
+`msTotal / msN <= 1.1 * goalMs`). Scheduled items succeed or lapse.
+Unscheduled ones join when the round wasn't a success, their overall stats
+have at least `CONFIDENT_SAMPLES` samples, and their weakness is at least
+`REVIEW_WEAKNESS`.
+
+Words: split the target at spaces; each word (lowercased, letters only, 2+
+letters) that was fully typed is clean or botched (any first-attempt error
+inside it). Botched words, alphabetically: lapse or join. Then clean words
+(unique, alphabetically) that are scheduled and not botched: succeed.
+
+### 16.3 Planning
+
+Due items, sorted by `due` then target. Keys and pairs get `REVIEW_BONUS`;
+words are placed into the round (14).
+
+Vectors: `reviews.json`.
+
+## 17. Error types
+
+### 17.1 Classification
+
+For each first-attempt error record `r` at index `i` (expected `e`, actual
+`a`, `prev = target[i-1]`, `next = target[i+1]`):
+
+1. Skip it if the last listed error is a swap at `i - 1` and `a == prev`.
+2. Skip it if a shift is active, `i == shift.index + 1` and
+   `a == target[i + shift.dir]` (then `shift.index = i`). Otherwise clear the
+   shift.
+3. Type: `missed-double` if `e == prev` and `a == next`; else if `a == next`
+   and `next != e`: `swap` when the next record is at `i + 1` and typed `e`,
+   otherwise `skipped`; else `double` if `a == prev`; else `case` if they're
+   the same letter ignoring case; else `neighbor` if adjacent on QWERTY; else
+   `other`.
+4. After `missed-double` or `skipped` set shift `{dir: +1, index: i}`; after
+   `double` set `{dir: -1, index: i}`.
+
+QWERTY adjacency: rows `qwertyuiop`, `asdfghjkl`, `zxcvbnm` with offsets 0,
+0.25, 0.75. Two different letters are neighbors when their rows differ by at
+most 1 and `|col_a + offset_a - (col_b + offset_b)| <= 1`.
+
+### 17.2 Applying
+
+For each classified error: count it in `errorCounts[e][type]`; count `a` in
+`typos[e]`; for neighbors, count the two lowercase letters sorted in
+`confusions`; for swaps where `e` and `next` are letters, add an error sample
+(no interval) to `pairs[e + next]`. The word containing the error (lowercased,
+letters only, 2+ letters, and in the pack when one is given) is counted once
+per round in `missedWords` (keep the top `MAX_MISSED_WORDS` by count, ties
+alphabetical).
+
+If the round has errors, update the bias with weight `BIAS_WEIGHT` toward each
+type's share of the round's errors: swap; double (double + missed-double);
+neighbor.
+
+### 17.3 Drills
+
+The error drill bonus multiplies a real word's weight by `1 + bias.double`
+when `bias.double >= DOUBLE_BIAS_MIN` and the word has a doubled letter, and
+by `1 + CONFUSION_BONUS` when it contains both letters of one of the two most
+frequent confusions with count at least `CONFUSION_MIN`.
+
+Vectors: `errors.json`.
+
+## 18. Rhythm
+
+From the records with an interval: mean, population standard deviation,
+median. `consistency = clamp(1 - sd / mean, 0, 1)` with at least
+`RHYTHM_MIN_INTERVALS` intervals, else null. Stalls are records whose
+interval is above `STALL_FACTOR * median`.
+
+Vectors: `rhythm.json`.
+
+## 19. Hands, grip and drift
+
+### 19.1 Groups
+
+Finger, zone, thumb and screen-zone groups are listed in `hands.ts`. A
+group's score is the sample-weighted average weakness of its keys; groups
+without samples are left out; weakest first.
+
+### 19.2 Touch
+
+- **Taps** are kept per key and per grip (last `MAX_TAPS_PER_KEY`). With a
+  grip set, the round's records are also applied to that grip's key stats.
+- **Drift:** the average tap offset; a key drifts with at least
+  `DRIFT_MIN_TAPS` taps and an average distance above `DRIFT_THRESHOLD`.
+- **Grip signal:** for each first-attempt record with an interval at index
+  > 0 where it and the previous target character are letters, add the
+  interval to "same" when both are on the same half of the keyboard
+  (`qwertasdfgzxcv` is the left half), else "cross". With at least
+  `GRIP_MIN_SAMPLES` of each, `ratio = avgCross / avgSame`. With grip "two"
+  and ratio above `GRIP_ONE_RATIO`, suggest "one"; with grip "one" and ratio
+  below `GRIP_TWO_RATIO`, suggest "two".
+
+## 20. Pronounceable made-up words
+
+### 20.1 Patterns
+
+From the first `PHONOTACTIC_WORDS` pack words with 3+ letters, split into
+alternating vowel (`a e i o u y`) and consonant groups. Count groups of at most
+2 letters: the first group if it's consonants (onset), every vowel group
+(nucleus), the last group if it's consonants (coda), and other consonant
+groups (medial). Keep the top `PHONOTACTIC_TOP` of each, by count then
+alphabetically.
+
+### 20.2 Building a word
+
+Keep only the parts made of unlocked letters. With no nucleus or no medial,
+return nothing. Part weights are `sqrt(count) * (1 + average letter score)`.
+Up to `MADE_UP_ATTEMPTS` times: `syllables = 1 + int(MADE_UP_MAX_SYLLABLES)`;
+an onset if any exist and `next() < 0.8`; a nucleus; then `syllables - 1`
+times a medial and a nucleus; a coda if any exist and `next() < 0.6`. Accept
+it if it's between `MADE_UP_MIN_LENGTH` and `MADE_UP_LONG_MAX` letters and
+not blocked.
+
+Vectors: `phonotactics.json`.
+
+## 21. Warm-up
+
+Targets: the `WARMUP_KEYS` highest-scoring unlocked letters with score at
+least `FOCUS_KEY_MIN_SCORE` (ties by unlock order) and the `WARMUP_PAIRS`
+highest pairs with score at least `FOCUS_PAIR_MIN_SCORE` (ties
+alphabetical). A warm-up round adds `WARMUP_BONUS` to those scores. It's
+offered at the start of a session (no rounds yet, not done) after at least 3
+non-calibration rounds, when there are targets.
+
+Vectors: `warmup.json`.
+
+## 22. Saved data version 3
+
+Profile version 3 adds `reviews`, `hesitations`, `errorCounts`, `typos`,
+`confusions` (all empty), `errorBias` (all 0), `missedWords` (empty),
+`session` (null), `touchTyping` (null), `gripKeys` and `gripTaps` (empty).
+
 ## Constants
 
 | Name | Value |
@@ -564,6 +793,32 @@ fields.
 | `FOCUS_PAIR_MIN_SCORE` | 0.5 |
 | `SHORTCUT_TARGET_MS` | 1500 |
 | `SHORTCUT_MAX_MS` | 10000 |
+| `SESSION_GAP_MS` | 30 minutes |
+| `SESSION_HISTORY` | 30 |
+| `FATIGUE_BASELINE_ROUNDS`, `FATIGUE_RECENT_ROUNDS` | 2, 2 |
+| `FATIGUE_MIN_ROUNDS` | 4 |
+| `FATIGUE_WPM_DROP`, `FATIGUE_ACCURACY_DROP` | 0.88, 0.04 |
+| `RECOVER_WPM`, `RECOVER_ACCURACY_DROP` | 0.95, 0.02 |
+| `FATIGUE_EASE`, `TIRED_WEIGHT` | 0.15, 0.5 |
+| `HESITATION_MIN_MS`, `HESITATION_FACTOR` | 350, 2.2 |
+| `HESITATION_MIN_SAMPLES` | 5 |
+| `HESITATION_SCORE_SCALE`, `HESITATION_SCORE_CAP` | 4, 1 |
+| `HESITANT_RATE` | 0.15 |
+| `BIAS_WEIGHT` | 0.2 |
+| `DOUBLE_BIAS_MIN`, `CONFUSION_MIN`, `CONFUSION_BONUS` | 0.15, 3, 0.5 |
+| `MAX_MISSED_WORDS` | 200 |
+| `REVIEW_INTERVALS_DAYS` | 1, 3, 7, 14, 30 |
+| `REVIEW_SESSION_GAP` | 2 |
+| `REVIEW_WEAKNESS` | 1 |
+| `REVIEW_MIN_SAMPLES`, `REVIEW_PAIR_MIN_SAMPLES` | 3, 2 |
+| `REVIEW_BONUS`, `REVIEW_WORDS` | 1, 3 |
+| `WARMUP_SECONDS`, `WARMUP_KEYS`, `WARMUP_PAIRS`, `WARMUP_BONUS` | 20, 3, 2, 2 |
+| `RHYTHM_MIN_INTERVALS`, `STALL_FACTOR` | 5, 2 |
+| `GRIP_MIN_SAMPLES`, `GRIP_TWO_RATIO`, `GRIP_ONE_RATIO` | 20, 0.9, 1.1 |
+| `DRIFT_MIN_TAPS`, `DRIFT_THRESHOLD`, `DRIFT_BONUS` | 10, 0.22, 0.5 |
+| `PHONOTACTIC_WORDS`, `PHONOTACTIC_TOP` | 5000, 40 |
+| `MADE_UP_MAX_SYLLABLES`, `MADE_UP_LONG_MAX` | 3, 8 |
+| `DEFAULT_MADE_UP_CAP` | 0.8 |
 
 ## Test vectors
 
@@ -579,6 +834,13 @@ fields.
 | `difficulty.json` | difficulty parameters and updates |
 | `explain.json` | round explanations and key details |
 | `shortcuts.json` | shortcut drill planning |
+| `errors.json` | error classification and analysis |
+| `hesitation.json` | hesitation judgments |
+| `session.json` | sessions, fatigue and grip suggestions |
+| `reviews.json` | spaced repetition |
+| `rhythm.json` | rhythm consistency and stalls |
+| `phonotactics.json` | sound patterns and pronounceable words |
+| `warmup.json` | warm-up targets and planning with review words |
 
 Vectors that use the word pack use the first `packSize` words of
 `content/words-en.json` version 1 and `content/blocklist.json`.
