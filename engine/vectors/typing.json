@@ -1,0 +1,358 @@
+[
+ {
+  "name": "clean",
+  "target": "on it",
+  "mode": "backspace",
+  "events": [
+   {
+    "kind": "char",
+    "char": "o",
+    "t": 100
+   },
+   {
+    "kind": "char",
+    "char": "n",
+    "t": 220
+   },
+   {
+    "kind": "char",
+    "char": " ",
+    "t": 340
+   },
+   {
+    "kind": "char",
+    "char": "i",
+    "t": 460
+   },
+   {
+    "kind": "char",
+    "char": "t",
+    "t": 580
+   }
+  ],
+  "expected": {
+   "typed": "on it",
+   "done": true,
+   "records": [
+    {
+     "index": 0,
+     "expected": "o",
+     "actual": "o",
+     "t": 100,
+     "correct": true,
+     "first": true,
+     "interval": null
+    },
+    {
+     "index": 1,
+     "expected": "n",
+     "actual": "n",
+     "t": 220,
+     "correct": true,
+     "first": true,
+     "interval": 120
+    },
+    {
+     "index": 2,
+     "expected": " ",
+     "actual": " ",
+     "t": 340,
+     "correct": true,
+     "first": true,
+     "interval": 120
+    },
+    {
+     "index": 3,
+     "expected": "i",
+     "actual": "i",
+     "t": 460,
+     "correct": true,
+     "first": true,
+     "interval": 120
+    },
+    {
+     "index": 4,
+     "expected": "t",
+     "actual": "t",
+     "t": 580,
+     "correct": true,
+     "first": true,
+     "interval": 120
+    }
+   ],
+   "metrics": {
+    "correctChars": 5,
+    "keystrokes": 5,
+    "correctKeystrokes": 5,
+    "corrections": 0,
+    "elapsedMs": 480,
+    "wpm": 125,
+    "accuracy": 1
+   }
+  }
+ },
+ {
+  "name": "backspace fix",
+  "target": "cat",
+  "mode": "backspace",
+  "events": [
+   {
+    "kind": "char",
+    "char": "c",
+    "t": 0
+   },
+   {
+    "kind": "char",
+    "char": "x",
+    "t": 150
+   },
+   {
+    "kind": "backspace",
+    "t": 300
+   },
+   {
+    "kind": "char",
+    "char": "a",
+    "t": 420
+   },
+   {
+    "kind": "char",
+    "char": "t",
+    "t": 530
+   }
+  ],
+  "expected": {
+   "typed": "cat",
+   "done": true,
+   "records": [
+    {
+     "index": 0,
+     "expected": "c",
+     "actual": "c",
+     "t": 0,
+     "correct": true,
+     "first": true,
+     "interval": null
+    },
+    {
+     "index": 1,
+     "expected": "a",
+     "actual": "x",
+     "t": 150,
+     "correct": false,
+     "first": true,
+     "interval": 150
+    },
+    {
+     "index": 1,
+     "expected": "a",
+     "actual": "a",
+     "t": 420,
+     "correct": true,
+     "first": false,
+     "interval": null
+    },
+    {
+     "index": 2,
+     "expected": "t",
+     "actual": "t",
+     "t": 530,
+     "correct": true,
+     "first": true,
+     "interval": null
+    }
+   ],
+   "metrics": {
+    "correctChars": 3,
+    "keystrokes": 4,
+    "correctKeystrokes": 3,
+    "corrections": 1,
+    "elapsedMs": 530,
+    "wpm": 67.92452830188678,
+    "accuracy": 0.75
+   }
+  }
+ },
+ {
+  "name": "block",
+  "target": "to",
+  "mode": "block",
+  "events": [
+   {
+    "kind": "char",
+    "char": "t",
+    "t": 0
+   },
+   {
+    "kind": "char",
+    "char": "p",
+    "t": 200
+   },
+   {
+    "kind": "char",
+    "char": "o",
+    "t": 350
+   }
+  ],
+  "expected": {
+   "typed": "to",
+   "done": true,
+   "records": [
+    {
+     "index": 0,
+     "expected": "t",
+     "actual": "t",
+     "t": 0,
+     "correct": true,
+     "first": true,
+     "interval": null
+    },
+    {
+     "index": 1,
+     "expected": "o",
+     "actual": "p",
+     "t": 200,
+     "correct": false,
+     "first": true,
+     "interval": 200
+    },
+    {
+     "index": 1,
+     "expected": "o",
+     "actual": "o",
+     "t": 350,
+     "correct": true,
+     "first": false,
+     "interval": null
+    }
+   ],
+   "metrics": {
+    "correctChars": 2,
+    "keystrokes": 3,
+    "correctKeystrokes": 2,
+    "corrections": 1,
+    "elapsedMs": 350,
+    "wpm": 68.57142857142857,
+    "accuracy": 0.6666666666666666
+   }
+  }
+ },
+ {
+  "name": "skip",
+  "target": "tea",
+  "mode": "skip",
+  "events": [
+   {
+    "kind": "char",
+    "char": "t",
+    "t": 0
+   },
+   {
+    "kind": "char",
+    "char": "r",
+    "t": 200
+   },
+   {
+    "kind": "backspace",
+    "t": 300
+   },
+   {
+    "kind": "char",
+    "char": "a",
+    "t": 450
+   }
+  ],
+  "expected": {
+   "typed": "tra",
+   "done": true,
+   "records": [
+    {
+     "index": 0,
+     "expected": "t",
+     "actual": "t",
+     "t": 0,
+     "correct": true,
+     "first": true,
+     "interval": null
+    },
+    {
+     "index": 1,
+     "expected": "e",
+     "actual": "r",
+     "t": 200,
+     "correct": false,
+     "first": true,
+     "interval": 200
+    },
+    {
+     "index": 2,
+     "expected": "a",
+     "actual": "a",
+     "t": 450,
+     "correct": true,
+     "first": true,
+     "interval": null
+    }
+   ],
+   "metrics": {
+    "correctChars": 2,
+    "keystrokes": 3,
+    "correctKeystrokes": 2,
+    "corrections": 0,
+    "elapsedMs": 450,
+    "wpm": 53.333333333333336,
+    "accuracy": 0.6666666666666666
+   }
+  }
+ },
+ {
+  "name": "long pause",
+  "target": "no",
+  "mode": "backspace",
+  "events": [
+   {
+    "kind": "char",
+    "char": "n",
+    "t": 0
+   },
+   {
+    "kind": "char",
+    "char": "o",
+    "t": 2500
+   }
+  ],
+  "expected": {
+   "typed": "no",
+   "done": true,
+   "records": [
+    {
+     "index": 0,
+     "expected": "n",
+     "actual": "n",
+     "t": 0,
+     "correct": true,
+     "first": true,
+     "interval": null
+    },
+    {
+     "index": 1,
+     "expected": "o",
+     "actual": "o",
+     "t": 2500,
+     "correct": true,
+     "first": true,
+     "interval": null
+    }
+   ],
+   "metrics": {
+    "correctChars": 2,
+    "keystrokes": 2,
+    "correctKeystrokes": 2,
+    "corrections": 0,
+    "elapsedMs": 2500,
+    "wpm": 9.600000000000001,
+    "accuracy": 1
+   }
+  }
+ }
+]

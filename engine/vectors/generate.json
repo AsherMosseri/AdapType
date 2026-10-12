@@ -1,0 +1,388 @@
+{
+ "packSize": 2000,
+ "cases": [
+  {
+   "seed": 1,
+   "letters": "etaoin",
+   "count": 20,
+   "keys": {
+    "e": {
+     "n": 30,
+     "timedN": 30,
+     "msAvg": 500,
+     "errAvg": 0.1
+    },
+    "a": {
+     "n": 30,
+     "timedN": 30,
+     "msAvg": 200,
+     "errAvg": 0
+    }
+   },
+   "scores": {
+    "keys": {
+     "e": 1.6666666666666667,
+     "t": 1,
+     "a": 0,
+     "o": 1,
+     "i": 1,
+     "n": 2
+    },
+    "pairs": {}
+   },
+   "words": [
+    {
+     "text": "nit",
+     "madeUp": true
+    },
+    {
+     "text": "no",
+     "madeUp": false
+    },
+    {
+     "text": "into",
+     "madeUp": false
+    },
+    {
+     "text": "ete",
+     "madeUp": true
+    },
+    {
+     "text": "etonen",
+     "madeUp": true
+    },
+    {
+     "text": "on",
+     "madeUp": false
+    },
+    {
+     "text": "too",
+     "madeUp": false
+    },
+    {
+     "text": "tea",
+     "madeUp": false
+    },
+    {
+     "text": "entone",
+     "madeUp": true
+    },
+    {
+     "text": "nen",
+     "madeUp": true
+    },
+    {
+     "text": "nini",
+     "madeUp": true
+    },
+    {
+     "text": "in",
+     "madeUp": false
+    },
+    {
+     "text": "inotit",
+     "madeUp": true
+    },
+    {
+     "text": "aton",
+     "madeUp": true
+    },
+    {
+     "text": "nine",
+     "madeUp": false
+    },
+    {
+     "text": "itn",
+     "madeUp": true
+    },
+    {
+     "text": "eton",
+     "madeUp": true
+    },
+    {
+     "text": "itint",
+     "madeUp": true
+    },
+    {
+     "text": "ontini",
+     "madeUp": true
+    },
+    {
+     "text": "ani",
+     "madeUp": true
+    }
+   ]
+  },
+  {
+   "seed": 2,
+   "letters": "asdfjk",
+   "count": 20,
+   "keys": {
+    "e": {
+     "n": 30,
+     "timedN": 30,
+     "msAvg": 500,
+     "errAvg": 0.1
+    },
+    "a": {
+     "n": 30,
+     "timedN": 30,
+     "msAvg": 200,
+     "errAvg": 0
+    }
+   },
+   "scores": {
+    "keys": {
+     "a": 0,
+     "s": 1,
+     "d": 1,
+     "f": 1,
+     "j": 1,
+     "k": 2
+    },
+    "pairs": {}
+   },
+   "words": [
+    {
+     "text": "akaf",
+     "madeUp": true
+    },
+    {
+     "text": "akajas",
+     "madeUp": true
+    },
+    {
+     "text": "aka",
+     "madeUp": true
+    },
+    {
+     "text": "ask",
+     "madeUp": false
+    },
+    {
+     "text": "aska",
+     "madeUp": true
+    },
+    {
+     "text": "afkaka",
+     "madeUp": true
+    },
+    {
+     "text": "add",
+     "madeUp": false
+    },
+    {
+     "text": "as",
+     "madeUp": false
+    },
+    {
+     "text": "jasaja",
+     "madeUp": true
+    },
+    {
+     "text": "sad",
+     "madeUp": false
+    },
+    {
+     "text": "dak",
+     "madeUp": true
+    },
+    {
+     "text": "dad",
+     "madeUp": false
+    },
+    {
+     "text": "kadaj",
+     "madeUp": true
+    },
+    {
+     "text": "afakad",
+     "madeUp": true
+    },
+    {
+     "text": "kad",
+     "madeUp": true
+    },
+    {
+     "text": "aka",
+     "madeUp": true
+    },
+    {
+     "text": "afafak",
+     "madeUp": true
+    },
+    {
+     "text": "afaka",
+     "madeUp": true
+    },
+    {
+     "text": "ada",
+     "madeUp": true
+    },
+    {
+     "text": "ad",
+     "madeUp": false
+    }
+   ]
+  },
+  {
+   "seed": 3,
+   "letters": "etaoinshrdlcu",
+   "count": 30,
+   "keys": {
+    "e": {
+     "n": 30,
+     "timedN": 30,
+     "msAvg": 500,
+     "errAvg": 0.1
+    },
+    "a": {
+     "n": 30,
+     "timedN": 30,
+     "msAvg": 200,
+     "errAvg": 0
+    }
+   },
+   "scores": {
+    "keys": {
+     "e": 1.6666666666666667,
+     "t": 1,
+     "a": 0,
+     "o": 1,
+     "i": 1,
+     "n": 1,
+     "s": 1,
+     "h": 1,
+     "r": 1,
+     "d": 1,
+     "l": 1,
+     "c": 1,
+     "u": 2
+    },
+    "pairs": {}
+   },
+   "words": [
+    {
+     "text": "doctor",
+     "madeUp": false
+    },
+    {
+     "text": "so",
+     "madeUp": false
+    },
+    {
+     "text": "sound",
+     "madeUp": false
+    },
+    {
+     "text": "our",
+     "madeUp": false
+    },
+    {
+     "text": "northern",
+     "madeUp": false
+    },
+    {
+     "text": "natural",
+     "madeUp": false
+    },
+    {
+     "text": "lord",
+     "madeUp": false
+    },
+    {
+     "text": "lot",
+     "madeUp": false
+    },
+    {
+     "text": "research",
+     "madeUp": false
+    },
+    {
+     "text": "access",
+     "madeUp": false
+    },
+    {
+     "text": "seen",
+     "madeUp": false
+    },
+    {
+     "text": "then",
+     "madeUp": false
+    },
+    {
+     "text": "disease",
+     "madeUp": false
+    },
+    {
+     "text": "led",
+     "madeUp": false
+    },
+    {
+     "text": "starts",
+     "madeUp": false
+    },
+    {
+     "text": "corner",
+     "madeUp": false
+    },
+    {
+     "text": "near",
+     "madeUp": false
+    },
+    {
+     "text": "latest",
+     "madeUp": false
+    },
+    {
+     "text": "due",
+     "madeUp": false
+    },
+    {
+     "text": "contract",
+     "madeUp": false
+    },
+    {
+     "text": "union",
+     "madeUp": false
+    },
+    {
+     "text": "handle",
+     "madeUp": false
+    },
+    {
+     "text": "internet",
+     "madeUp": false
+    },
+    {
+     "text": "is",
+     "madeUp": false
+    },
+    {
+     "text": "cells",
+     "madeUp": false
+    },
+    {
+     "text": "soon",
+     "madeUp": false
+    },
+    {
+     "text": "ill",
+     "madeUp": false
+    },
+    {
+     "text": "cities",
+     "madeUp": false
+    },
+    {
+     "text": "hour",
+     "madeUp": false
+    },
+    {
+     "text": "closed",
+     "madeUp": false
+    }
+   ]
+  }
+ ]
+}

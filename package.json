@@ -1,0 +1,21 @@
+{
+  "name": "adaptype",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "An adaptive typing game that learns your weak spots and keeps targeting them.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "vectors": "UPDATE_VECTORS=1 vitest run engine/test/vectors.test.ts"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.4",
+    "typescript": "5.9.3",
+    "vite": "7.3.6",
+    "vitest": "5.0.2"
+  }
+}
