@@ -1,8 +1,20 @@
 // Saved data: one JSON document in localStorage, with a version number so
 // later phases can migrate it.
-import { createProfile, type ErrorMode, type InputProfile, type ProfileState, type RoundType } from "../../engine/src";
+import {
+  createProfile,
+  DEFAULT_MODIFIER_SETTINGS,
+  migrateProfile,
+  type ErrorMode,
+  type InputProfile,
+  type ModifierSettings,
+  type ProfileState,
+  type RoundType,
+} from "../../engine/src";
 
-export const DATA_VERSION = 1;
+export const DATA_VERSION = 2;
+
+export type OsChoice = "auto" | "mac" | "windows" | "windows-intl" | "linux";
+export type TouchLayoutChoice = "auto" | "ios" | "android";
 const STORAGE_KEY = "adaptype";
 const CODE_PREFIX = "ADAPTYPE1:";
 
@@ -10,6 +22,30 @@ export interface Settings {
   activeProfile: InputProfile;
   round: RoundType;
   errorMode: ErrorMode;
+  modifiers: ModifierSettings;
+  /** Extra characters: the curated set of about 20, or the full map. */
+  extraSet: "curated" | "full";
+  os: OsChoice;
+  /** Windows (US) only: allow characters typed with numpad Alt codes. */
+  altCodes: boolean;
+  touchLayout: TouchLayoutChoice;
+  shortcutStyle: "shown" | "named";
+  shortcutAnswer: "press" | "build";
+}
+
+export function defaultSettings(activeProfile: InputProfile): Settings {
+  return {
+    activeProfile,
+    round: { kind: "words", count: 25 },
+    errorMode: "backspace",
+    modifiers: structuredClone(DEFAULT_MODIFIER_SETTINGS),
+    extraSet: "curated",
+    os: "auto",
+    altCodes: false,
+    touchLayout: "auto",
+    shortcutStyle: "shown",
+    shortcutAnswer: "press",
+  };
 }
 
 export interface AppData {
@@ -21,7 +57,7 @@ export interface AppData {
 export function defaultData(activeProfile: InputProfile): AppData {
   return {
     version: DATA_VERSION,
-    settings: { activeProfile, round: { kind: "words", count: 25 }, errorMode: "backspace" },
+    settings: defaultSettings(activeProfile),
     profiles: {},
   };
 }
@@ -85,7 +121,19 @@ export function parseData(text: string): AppData {
       throw new Error("This progress data is damaged and can't be loaded.");
     }
   }
-  return data as unknown as AppData;
+  return migrate(data as unknown as AppData);
+}
+
+/** Upgrades older saved data: version 1 → 2 adds modifier, system and shortcut settings. */
+function migrate(data: AppData): AppData {
+  const defaults = defaultSettings(data.settings.activeProfile ?? "physical");
+  data.settings = { ...defaults, ...data.settings, modifiers: { ...defaults.modifiers, ...data.settings.modifiers } };
+  for (const key of ["physical", "touch"] as const) {
+    const p = data.profiles[key];
+    if (p) data.profiles[key] = migrateProfile(p as unknown as Record<string, unknown>);
+  }
+  data.version = DATA_VERSION;
+  return data;
 }
 
 function isObject(value: unknown): value is Record<string, unknown> {

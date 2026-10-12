@@ -1,9 +1,11 @@
 import {
   completeRound,
   isCalibrating,
-  planWords,
+  isOn,
+  planRound,
   SILENT_CALIBRATION_ROUNDS,
   type RoundType,
+  type RoundWord,
   type TypingEvent,
 } from "../../../engine/src";
 import { TypingRound } from "../../../engine/src/typing";
@@ -12,8 +14,11 @@ import { letterStrip } from "../components/letters";
 import { topBar } from "../components/topBar";
 import { touchKeyboard } from "../components/touchKeyboard";
 import { TypingView } from "../components/typingView";
-import { blocklist, pack } from "../content";
+import { blocklist, characters, pack } from "../content";
 import { formatPercent, h } from "../dom";
+import { roundBanner } from "../explainText";
+import { attachPhysicalInput } from "../physicalInput";
+import { currentTouchLayout, physicalHint, platformFor, touchHint } from "../platform";
 
 const CHUNK = 30;
 const CALIBRATION_SECONDS = 60;
@@ -22,19 +27,24 @@ const CALIBRATION_SECONDS = 60;
 export function practiceScreen(app: App, screen: Screen): ScreenView {
   const calibrationTest = screen.name === "calibration";
   const state = app.profile;
+  const settings = app.data.settings;
   const silent = isCalibrating(state);
-  const roundType: RoundType = calibrationTest ? { kind: "timed", seconds: CALIBRATION_SECONDS } : app.data.settings.round;
-  const touch = app.data.settings.activeProfile === "touch";
+  const roundType: RoundType = calibrationTest ? { kind: "timed", seconds: CALIBRATION_SECONDS } : settings.round;
+  const touch = settings.activeProfile === "touch";
+  const touchLayout = currentTouchLayout(settings);
+  const modifiers = { settings: settings.modifiers, chars: characters, platform: platformFor(app) };
 
   let chunk = 0;
-  const firstWords = planWords(state, {
+  const plan = planRound(state, {
     pack,
     blocklist,
     count: roundType.kind === "words" ? roundType.count : CHUNK,
     calibrationTest,
+    modifiers,
   });
+  const firstWords = plan.words;
   let lastWord = firstWords[firstWords.length - 1]?.text ?? "";
-  const round = new TypingRound(firstWords.map((w) => w.text).join(" "), app.data.settings.errorMode);
+  const round = new TypingRound(firstWords.map((w) => w.text).join(" "), settings.errorMode);
   const view = new TypingView(firstWords);
   const wordTotal = roundType.kind === "words" ? roundType.count : 0;
 
@@ -58,12 +68,17 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
   const startHint = h("p", { class: "start-hint" }, touch ? "Tap the keys below to start" : "Start typing to begin");
   const capsHint = h("p", { class: "caps-hint", role: "status" }, "Caps Lock is on");
   capsHint.hidden = true;
+  const charHint = h("p", { class: "char-hint" });
   const endButton = h(
     "button",
     { type: "button", class: "text-button", onclick: () => endEarly() },
     roundType.kind === "endless" ? "Finish" : "End round",
     touch ? null : h("kbd", null, "Esc"),
   );
+  const shortcutsOn = !touch && !calibrationTest && !silent && isOn("shortcuts", state, settings.modifiers);
+  const drillButton = shortcutsOn
+    ? h("button", { type: "button", class: "text-button", onclick: () => app.go({ name: "shortcuts" }) }, "Shortcut drill")
+    : null;
 
   let notice: HTMLElement | null = null;
   if (calibrationTest) {
@@ -84,16 +99,28 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
   } else if (app.notice) {
     notice = h("p", { class: "notice", role: "status" }, app.notice);
     app.notice = null;
+  } else if (plan.explanation) {
+    notice = h("p", { class: "notice explain" }, roundBanner(plan.explanation));
   }
 
   // Screen reader summary of the text, since the visual text is hidden from them.
   const srText = h("p", { class: "sr-only", "aria-live": "off" }, `Type: ${round.target}`);
 
+  const physical = touch
+    ? null
+    : attachPhysicalInput({
+        onEvent: (event) => handle(event),
+        onEscape: () => endEarly(),
+        onCapsLock: (on) => (capsHint.hidden = !on),
+      });
+
   const keyboard = touch
     ? touchKeyboard({
-        onChar: (char, tap) => handle({ kind: "char", char, t: performance.now(), tap }),
+        layout: touchLayout.layout,
+        layoutName: touchLayout.name,
+        onChar: (char, tap, layer, t) => handle({ kind: "char", char, t, tap, layer: layer || undefined }),
         onBackspace: () => handle({ kind: "backspace", t: performance.now() }),
-        isLocked: (letter) => !calibrationTest && !silent && !state.unlocked.includes(letter),
+        isLocked: (letter) => !calibrationTest && !silent && letter >= "a" && letter <= "z" && !state.unlocked.includes(letter),
       })
     : null;
 
@@ -101,14 +128,15 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
     "main",
     { class: "practice" },
     h("h1", { class: "sr-only", tabindex: "-1" }, calibrationTest ? "Calibration test" : "Practice"),
-    calibrationTest || silent ? null : letterStrip(state),
+    calibrationTest || silent ? null : letterStrip(state, settings.modifiers),
     notice,
-    h("div", { class: "typing-wrap" }, view.el, startHint, capsHint),
+    h("div", { class: "typing-wrap" }, view.el, startHint, capsHint, charHint),
     firstWords.some((w) => w.madeUp)
       ? h("p", { class: "fine" }, "Words with a dotted underline are made-up practice words, used while only a few letters are unlocked.")
       : null,
     srText,
-    h("div", { class: "practice-foot" }, stats, endButton),
+    physical?.el,
+    h("div", { class: "practice-foot" }, stats, h("div", { class: "foot-actions" }, drillButton, endButton)),
   );
   const el = h(
     "div",
@@ -117,6 +145,8 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
     main,
     keyboard,
   );
+  // Clicking anywhere on the practice area keeps typing going.
+  if (physical) main.addEventListener("pointerup", () => physical.focus());
 
   function progressText(): string {
     if (roundType.kind === "words") {
@@ -135,9 +165,17 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
     progressValue.textContent = progressText();
   }
 
+  function refreshHint(): void {
+    const ch = round.target[round.position];
+    const hint = ch === undefined ? null : touch ? touchHint(ch, touchLayout.layout, touchLayout.name) : physicalHint(ch, settings);
+    charHint.replaceChildren();
+    if (hint) charHint.append(h("span", { class: "hint-char" }, ch), hint);
+    charHint.hidden = !hint;
+  }
+
   function addMore(): void {
     chunk += 1;
-    const more = planWords(state, { pack, blocklist, count: CHUNK, chunk, previous: lastWord, calibrationTest });
+    const more: RoundWord[] = planRound(state, { pack, blocklist, count: CHUNK, chunk, previous: lastWord, calibrationTest, modifiers }).words;
     lastWord = more[more.length - 1]?.text ?? lastWord;
     round.append(" " + more.map((w) => w.text).join(" "));
     view.addWords(more);
@@ -154,6 +192,7 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
     }
     round.input(event);
     view.update(round);
+    refreshHint();
     if (roundType.kind !== "words" && view.remaining(round) < 80) addMore();
     if (round.done) finish();
     else if (roundType.kind === "words") progressValue.textContent = progressText();
@@ -181,43 +220,26 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
     finished = true;
     window.clearInterval(ticker);
     const metrics = round.metrics();
-    const outcome = completeRound(state, round, Date.now(), { calibrationTest });
+    const outcome = completeRound(state, round, Date.now(), { calibrationTest, chars: characters });
     app.persist();
     if (calibrationTest) app.go({ name: "goal", measuredWpm: metrics.wpm, from: "test" });
-    else app.go({ name: "results", outcome, metrics, calibrationTest });
+    else app.go({ name: "results", outcome, metrics, calibrationTest, explanation: plan.explanation });
   }
 
-  const onKey = (e: KeyboardEvent) => {
-    if (e.ctrlKey || e.metaKey || e.altKey) return;
-    if (e.target instanceof HTMLElement && e.target.closest("button, a, input, textarea, select") && e.key !== "Escape") {
-      // Let Enter/Space activate a focused control instead of typing.
-      if (e.key === "Enter" || e.key === " ") return;
-    }
-    capsHint.hidden = !e.getModifierState?.("CapsLock");
-    const t = e.timeStamp > 0 ? e.timeStamp : performance.now();
-    if (e.key === "Escape") {
-      e.preventDefault();
-      endEarly();
-    } else if (e.key === "Backspace") {
-      e.preventDefault();
-      handle({ kind: "backspace", t });
-    } else if (e.key.length === 1) {
-      e.preventDefault();
-      handle({ kind: "char", char: e.key, t });
-    }
-  };
-  window.addEventListener("keydown", onKey);
   const onResize = () => view.scroll();
   window.addEventListener("resize", onResize);
-  requestAnimationFrame(() => view.scroll());
+  requestAnimationFrame(() => {
+    view.scroll();
+    refreshHint();
+  });
 
   return {
     el,
-    focus: main.querySelector("h1") as HTMLElement,
+    focus: physical?.el ?? (main.querySelector("h1") as HTMLElement),
     dispose: () => {
       finished = true;
       window.clearInterval(ticker);
-      window.removeEventListener("keydown", onKey);
+      physical?.dispose();
       window.removeEventListener("resize", onResize);
     },
   };
@@ -227,4 +249,3 @@ function clock(ms: number): string {
   const total = Math.ceil(ms / 1000);
   return `${Math.floor(total / 60)}:${String(total % 60).padStart(2, "0")}`;
 }
-

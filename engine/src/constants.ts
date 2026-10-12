@@ -71,6 +71,8 @@ export const LEVEL_RANGES = {
   high: [0.12, 0.5],
   auto: [0.03, 0.5],
 } as const;
+/** At most this share of words gets any modifier: when the rates add up to more, all are scaled down. */
+export const MAX_DECORATED_SHARE = 0.5;
 /** Position inside the range: this much from weakness, the rest from difficulty. */
 export const MODIFIER_WEAKNESS_WEIGHT = 0.7;
 /** Modifier keys (Shift, Option, layer switches) take longer, so their goal interval is this much longer. */

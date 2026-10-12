@@ -100,6 +100,16 @@ describe("modifiers", () => {
     expect(strong).toBeGreaterThan(0);
   });
 
+  it("keeps at least half the words plain", () => {
+    const state = fullyUnlocked();
+    const settings: ModifierSettings = { ...allOn, levels: { caps: "high", punct: "high", numbers: "high", symbols: "high", accents: "high", extra: "high" } };
+    const plan = planRound(state, { pack, blocklist, count: 400, modifiers: { settings, chars, platform: macPlatform } });
+    const total = plan.explanation!.modifiers.reduce((sum, m) => sum + m.rate, 0);
+    expect(total).toBeCloseTo(0.5);
+    const plain = plan.words.filter((w) => /^[a-z]+$/.test(w.text)).length / plan.words.length;
+    expect(plain).toBeGreaterThan(0.4);
+  });
+
   it("capitalizes first letters or any letter", () => {
     const first = applyModifiers(plain(8), ctx({ caps: 1 }, { ...allOn, caps: "first" }));
     for (const w of first) expect(w.text[0]).toMatch(/[A-Z]/);

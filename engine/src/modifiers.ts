@@ -1,5 +1,6 @@
 import {
   LEVEL_RANGES,
+  MAX_DECORATED_SHARE,
   MODIFIER_IDS,
   MODIFIER_MASTERY_SAMPLES,
   MODIFIER_MASTERY_TIMED,
@@ -101,6 +102,17 @@ export function modifierRate(id: ModifierId, state: ProfileState, settings: Modi
   const weak = clamp(weakness(state.keys[modKey(id)], modifierGoal(goal)) / 2, 0, 1);
   const position = clamp(MODIFIER_WEAKNESS_WEIGHT * weak + (1 - MODIFIER_WEAKNESS_WEIGHT) * state.difficulty, 0, 1);
   return min + (max - min) * position;
+}
+
+/**
+ * Keeps at least half the words plain: if the rates add up to more than
+ * MAX_DECORATED_SHARE, every rate is multiplied by MAX_DECORATED_SHARE / sum.
+ */
+export function capRates<T extends { rate: number }>(rates: T[]): T[] {
+  const sum = rates.reduce((total, r) => total + r.rate, 0);
+  if (sum <= MAX_DECORATED_SHARE) return rates;
+  const scale = MAX_DECORATED_SHARE / sum;
+  return rates.map((r) => ({ ...r, rate: r.rate * scale }));
 }
 
 export interface DecorateContext {

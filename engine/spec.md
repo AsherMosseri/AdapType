@@ -408,6 +408,10 @@ position   = clamp(MODIFIER_WEAKNESS_WEIGHT * weak + (1 - MODIFIER_WEAKNESS_WEIG
 rate       = min + (max - min) * position
 ```
 
+Then, if the active rates add up to more than `MAX_DECORATED_SHARE`, every
+rate is multiplied by `MAX_DECORATED_SHARE / sum`, so at least half the words
+stay plain.
+
 ### 10.5 Applying modifiers
 
 Inputs: the words, the generator, active modifiers with rates, a character
@@ -545,6 +549,7 @@ fields.
 | `RECENT_ROUNDS` | 10 |
 | `LEVEL_RANGES` | low 0.03–0.10, medium 0.06–0.25, high 0.12–0.50, auto 0.03–0.50 |
 | `MODIFIER_WEAKNESS_WEIGHT` | 0.7 |
+| `MAX_DECORATED_SHARE` | 0.5 |
 | `MODIFIER_TIME_SLACK` | 1.5 |
 | `MODIFIER_MASTERY_SAMPLES` | 15 |
 | `MODIFIER_MASTERY_TIMED` | 5 |

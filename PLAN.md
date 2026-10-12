@@ -4,7 +4,7 @@ A typing game that learns your weak spots and keeps targeting them. It starts
 as a fun web project. Much later it becomes a micro-app inside a larger app,
 ported to Swift and Kotlin.
 
-Status: phase 1 built (web). Phases 2 to 7 planned.
+Status: phases 1 and 2 built (web). Phases 3 to 7 planned.
 
 ## Principles
 
@@ -452,6 +452,18 @@ back. It adjusts four things, aiming for rounds just below your speed goal:
 - **Tone matches the theme.** Phase 2 only has the clean and minimal theme,
   so it ships with a plain, factual tone. Terminal (terse), cute (playful)
   and mechanical keyboard tones arrive with their themes in phase 6.
+
+### Built differently from the plan
+
+- **Modifier mastery** uses each modifier's running stats (15 samples at the
+  goal) instead of 3 rounds, because a round only has a few capitals or
+  symbols.
+- **At least half of words stay plain:** when the active modifiers' rates add
+  up to more than 50%, they're all scaled down.
+- **Mixing shortcuts into regular rounds** is left for later; phase 2 has the
+  separate drill.
+- Browser testing was automated in Chromium only; Safari, Firefox and Edge
+  still need a manual check.
 
 ### Done when
 

@@ -18,6 +18,7 @@ import { calibrationWords, generateWords, wordPool } from "./generate";
 import {
   activeModifiers,
   applyModifiers,
+  capRates,
   modifierGoal,
   modifierMastered,
   modifierRate,
@@ -294,7 +295,7 @@ export function planRound(state: ProfileState, options: PlanOptions): RoundPlan 
   });
   const mods = options.modifiers;
   const rates = mods
-    ? activeModifiers(state, mods.settings, mods.platform).map((id) => ({ id, rate: modifierRate(id, state, mods.settings, goal) }))
+    ? capRates(activeModifiers(state, mods.settings, mods.platform).map((id) => ({ id, rate: modifierRate(id, state, mods.settings, goal) })))
     : [];
   if (mods && rates.length > 0) {
     const pool = wordPool(options.pack, state.unlocked, params);
