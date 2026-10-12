@@ -1,0 +1,368 @@
+{
+ "goal": {
+  "wpm": 40,
+  "accuracy": 0.95
+ },
+ "params": [
+  {
+   "difficulty": 0,
+   "params": {
+    "maxLength": 5,
+    "rankScale": 1000,
+    "poolCap": 1000,
+    "intensity": 0.5
+   }
+  },
+  {
+   "difficulty": 0.3,
+   "params": {
+    "maxLength": 7,
+    "rankScale": 2500,
+    "poolCap": 1900,
+    "intensity": 0.95
+   }
+  },
+  {
+   "difficulty": 0.5,
+   "params": {
+    "maxLength": 8,
+    "rankScale": 3500,
+    "poolCap": 2500,
+    "intensity": 1.25
+   }
+  },
+  {
+   "difficulty": 1,
+   "params": {
+    "maxLength": 10,
+    "rankScale": 6000,
+    "poolCap": 4000,
+    "intensity": 2
+   }
+  }
+ ],
+ "updates": [
+  {
+   "start": 0,
+   "rounds": [
+    {
+     "at": 0,
+     "wpm": 42,
+     "accuracy": 0.97,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    },
+    {
+     "at": 0,
+     "wpm": 41,
+     "accuracy": 0.96,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    }
+   ],
+   "change": 0,
+   "difficulty": 0
+  },
+  {
+   "start": 1,
+   "rounds": [
+    {
+     "at": 0,
+     "wpm": 42,
+     "accuracy": 0.97,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    },
+    {
+     "at": 0,
+     "wpm": 41,
+     "accuracy": 0.96,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    }
+   ],
+   "change": 0,
+   "difficulty": 1
+  },
+  {
+   "start": 0,
+   "rounds": [
+    {
+     "at": 0,
+     "wpm": 42,
+     "accuracy": 0.97,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    },
+    {
+     "at": 0,
+     "wpm": 41,
+     "accuracy": 0.96,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    },
+    {
+     "at": 0,
+     "wpm": 39,
+     "accuracy": 0.95,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    }
+   ],
+   "change": 0.05,
+   "difficulty": 0.05
+  },
+  {
+   "start": 1,
+   "rounds": [
+    {
+     "at": 0,
+     "wpm": 42,
+     "accuracy": 0.97,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    },
+    {
+     "at": 0,
+     "wpm": 41,
+     "accuracy": 0.96,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    },
+    {
+     "at": 0,
+     "wpm": 39,
+     "accuracy": 0.95,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    }
+   ],
+   "change": 0,
+   "difficulty": 1
+  },
+  {
+   "start": 0,
+   "rounds": [
+    {
+     "at": 0,
+     "wpm": 30,
+     "accuracy": 0.97,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    },
+    {
+     "at": 0,
+     "wpm": 31,
+     "accuracy": 0.96,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    },
+    {
+     "at": 0,
+     "wpm": 29,
+     "accuracy": 0.95,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    }
+   ],
+   "change": 0,
+   "difficulty": 0
+  },
+  {
+   "start": 1,
+   "rounds": [
+    {
+     "at": 0,
+     "wpm": 30,
+     "accuracy": 0.97,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    },
+    {
+     "at": 0,
+     "wpm": 31,
+     "accuracy": 0.96,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    },
+    {
+     "at": 0,
+     "wpm": 29,
+     "accuracy": 0.95,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    }
+   ],
+   "change": -0.050000000000000044,
+   "difficulty": 0.95
+  },
+  {
+   "start": 0,
+   "rounds": [
+    {
+     "at": 0,
+     "wpm": 40,
+     "accuracy": 0.9,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    },
+    {
+     "at": 0,
+     "wpm": 40,
+     "accuracy": 0.91,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    },
+    {
+     "at": 0,
+     "wpm": 40,
+     "accuracy": 0.9,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    }
+   ],
+   "change": 0,
+   "difficulty": 0
+  },
+  {
+   "start": 1,
+   "rounds": [
+    {
+     "at": 0,
+     "wpm": 40,
+     "accuracy": 0.9,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    },
+    {
+     "at": 0,
+     "wpm": 40,
+     "accuracy": 0.91,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    },
+    {
+     "at": 0,
+     "wpm": 40,
+     "accuracy": 0.9,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    }
+   ],
+   "change": -0.050000000000000044,
+   "difficulty": 0.95
+  },
+  {
+   "start": 0,
+   "rounds": [
+    {
+     "at": 0,
+     "wpm": 36,
+     "accuracy": 0.95,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    },
+    {
+     "at": 0,
+     "wpm": 37,
+     "accuracy": 0.95,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    },
+    {
+     "at": 0,
+     "wpm": 38,
+     "accuracy": 0.95,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    }
+   ],
+   "change": 0,
+   "difficulty": 0
+  },
+  {
+   "start": 1,
+   "rounds": [
+    {
+     "at": 0,
+     "wpm": 36,
+     "accuracy": 0.95,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    },
+    {
+     "at": 0,
+     "wpm": 37,
+     "accuracy": 0.95,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    },
+    {
+     "at": 0,
+     "wpm": 38,
+     "accuracy": 0.95,
+     "durationMs": 1,
+     "chars": 1,
+     "corrections": 0,
+     "calibration": false
+    }
+   ],
+   "change": 0,
+   "difficulty": 1
+  }
+ ]
+}

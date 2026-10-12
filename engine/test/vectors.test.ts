@@ -5,9 +5,27 @@ import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import blocklist from "../../content/blocklist.json";
+import charsJson from "../../content/characters.json";
+import loanwords from "../../content/loanwords.json";
+import shortcutPack from "../../content/shortcuts-text-editing.json";
 import fullPack from "../../content/words-en.json";
 import {
+  applyModifiers,
   applyRecords,
+  DEFAULT_MODIFIER_SETTINGS,
+  difficultyParams,
+  explainRound,
+  extraForSystem,
+  keyDetail,
+  LETTERS,
+  modifierRate,
+  planRound,
+  planShortcutDrill,
+  shortcutDrillSeed,
+  updateDifficulty,
+  type CharacterData,
+  type ModifierSettings,
+  type ShortcutPack,
   completeRound,
   computeScores,
   createProfile,
@@ -34,6 +52,8 @@ const UPDATE = process.env.UPDATE_VECTORS === "1";
 /** Vectors use the first 2,000 words of content/words-en.json (version 1). */
 const PACK_SIZE = 2000;
 const pack = { words: fullPack.words.slice(0, PACK_SIZE) };
+const charData: CharacterData = { ...charsJson, loanwords: loanwords.words };
+const macExtra = extraForSystem(charData, "mac", { full: false, altCodes: false });
 
 function check(name: string, build: () => unknown) {
   it(name, () => {
@@ -186,12 +206,119 @@ describe("test vectors", () => {
     };
   });
 
+  check("modifiers", () => {
+    const settings: ModifierSettings = {
+      ...DEFAULT_MODIFIER_SETTINGS,
+      modes: { caps: "on", punct: "on", numbers: "on", symbols: "on", accents: "on", extra: "on", shortcuts: "on" },
+    };
+    const base = "the quick brown fox jumps over lazy dogs and runs far away from home today".split(" ").map((text) => ({ text, madeUp: false }));
+    const cases = [
+      { name: "caps first", rates: { caps: 0.5 }, settings: { ...settings, caps: "first" as const } },
+      { name: "caps any", rates: { caps: 0.5 }, settings: { ...settings, caps: "any" as const } },
+      { name: "sentences", rates: { punct: 0.4 }, settings: { ...settings, punct: "sentence" as const } },
+      { name: "random punctuation", rates: { punct: 0.5 }, settings: { ...settings, punct: "random" as const } },
+      { name: "numbers and symbols", rates: { numbers: 0.4, symbols: 0.4 }, settings },
+      { name: "accents and extra", rates: { accents: 0.3, extra: 0.4 }, settings },
+      { name: "everything", rates: { caps: 0.3, punct: 0.3, numbers: 0.2, symbols: 0.2, accents: 0.2, extra: 0.2 }, settings },
+    ];
+    const order = ["caps", "punct", "numbers", "symbols", "accents", "extra"];
+    return {
+      platformExtra: macExtra,
+      extraWord: "join",
+      charScores: { e: 1.5, "1": 2, "#": 1 },
+      cases: cases.map((c, i) => {
+        const scores: Record<string, number> = { e: 1.5, "1": 2, "#": 1 };
+        const rates = Object.entries(c.rates)
+          .sort((a, b) => order.indexOf(a[0]) - order.indexOf(b[0]))
+          .map(([id, rate]) => ({ id: id as never, rate }));
+        const words = applyModifiers(base, {
+          rng: new Rng(100 + i),
+          chars: charData,
+          settings: c.settings,
+          platform: { extra: macExtra, accents: true },
+          rates,
+          charScore: (ch) => scores[ch] ?? 0,
+          extraWord: () => "join",
+        });
+        return { name: c.name, seed: 100 + i, settings: c.settings, rates, input: base.map((w) => w.text), words };
+      }),
+      rateCases: [
+        { level: "low", stat: null },
+        { level: "medium", stat: { n: 40, timedN: 40, msAvg: 300, errAvg: 0.02 } },
+        { level: "high", stat: { n: 40, timedN: 40, msAvg: 900, errAvg: 0.2 } },
+        { level: "auto", stat: { n: 40, timedN: 40, msAvg: 450, errAvg: 0.05 } },
+      ].map((c) => {
+        const state = createProfile("physical", 1);
+        state.difficulty = 0.6;
+        if (c.stat) state.keys["mod:caps"] = c.stat;
+        const s = { ...settings, levels: { ...settings.levels, caps: c.level as "low" } };
+        return { ...c, difficulty: 0.6, goal: { wpm: 40, accuracy: 0.95 }, rate: modifierRate("caps", state, s, { wpm: 40, accuracy: 0.95 }) };
+      }),
+    };
+  });
+
+  check("difficulty", () => {
+    const goal: Goal = { wpm: 40, accuracy: 0.95 };
+    const r = (wpm: number, accuracy: number) => ({ at: 0, wpm, accuracy, durationMs: 1, chars: 1, corrections: 0, calibration: false });
+    const histories = [
+      [r(42, 0.97), r(41, 0.96)],
+      [r(42, 0.97), r(41, 0.96), r(39, 0.95)],
+      [r(30, 0.97), r(31, 0.96), r(29, 0.95)],
+      [r(40, 0.9), r(40, 0.91), r(40, 0.9)],
+      [r(36, 0.95), r(37, 0.95), r(38, 0.95)],
+    ];
+    return {
+      goal,
+      params: [0, 0.3, 0.5, 1].map((d) => ({ difficulty: d, params: difficultyParams(d) })),
+      updates: histories.flatMap((rounds) =>
+        [0, 1].map((start) => {
+          const state = createProfile("physical", 1);
+          state.difficulty = start;
+          state.rounds = rounds;
+          const change = updateDifficulty(state, goal);
+          return { start, rounds, change, difficulty: state.difficulty };
+        }),
+      ),
+    };
+  });
+
+  check("explain", () => {
+    const goal: Goal = { wpm: 40, accuracy: 0.95 };
+    const state = createProfile("physical", 1);
+    state.goal = goal;
+    state.unlocked = "etaoinsh".split("");
+    state.mastered = "etaoins".split("");
+    for (const l of state.unlocked) state.keys[l] = { n: 30, timedN: 30, msAvg: 250, errAvg: 0.01 };
+    state.keys.o = { n: 30, timedN: 30, msAvg: 520, errAvg: 0.12 };
+    state.keys.s = { n: 30, timedN: 30, msAvg: 380, errAvg: 0.02 };
+    state.pairs.th = { n: 20, timedN: 20, msAvg: 600, errAvg: 0.1 };
+    const scores = computeScores(state, goal);
+    const words = planRound(state, { pack, blocklist, count: 15 }).words;
+    return {
+      state: { unlocked: state.unlocked, mastered: state.mastered, keys: state.keys, pairs: state.pairs, goal },
+      words,
+      scores,
+      explanation: explainRound(state, scores, words, []),
+      details: ["o", "s", "h", "e"].map((k) => ({ key: k, detail: keyDetail(state.keys[k], goal, k === "h") })),
+    };
+  });
+
+  check("shortcuts", () => {
+    const state = createProfile("physical", 77);
+    state.keys["sc:undo"] = { n: 10, timedN: 10, msAvg: 3000, errAvg: 0.3 };
+    state.keys["sc:copy"] = { n: 10, timedN: 10, msAvg: 500, errAvg: 0 };
+    const seed = shortcutDrillSeed(state);
+    const drill = planShortcutDrill(state, shortcutPack as ShortcutPack, 12, new Rng(seed));
+    return { profileSeed: 77, roundCounter: 0, seed, keys: { "sc:undo": state.keys["sc:undo"], "sc:copy": state.keys["sc:copy"] }, drill: drill.map((s) => s.id) };
+  });
+
   check("profile", () => {
     // A full session: test, goal, then practice rounds with a simulated typist.
     // Ports replay the same events and must reach the same state each round.
     return [
       playSession("frequency", 2024, false),
       playSession("homeRow", 7, true),
+      playModifierSession(31),
     ];
   });
 });
@@ -220,6 +347,34 @@ function playSession(order: UnlockOrder, seed: number, skip: boolean) {
   }
   for (let i = 0; i < 8; i++) play(false, 200 + i, 190);
   return { order, seed, packSize: PACK_SIZE, steps };
+}
+
+/** All letters mastered: modifiers unlock in stages as the simulated typist masters them. */
+function playModifierSession(seed: number) {
+  const state = createProfile("physical", seed);
+  state.goal = { wpm: 30, accuracy: 0.9 };
+  state.calibration = "done";
+  state.unlocked = LETTERS.split("");
+  state.mastered = LETTERS.split("");
+  const settings = DEFAULT_MODIFIER_SETTINGS;
+  const platform = { extra: macExtra, accents: true };
+  const steps: unknown[] = [];
+  for (let i = 0; i < 16; i++) {
+    const plan = planRound(state, { pack, blocklist, count: 20, modifiers: { settings, chars: charData, platform } });
+    const target = plan.words.map((w) => w.text).join(" ");
+    const events = simulateTyping(target, { msPerKey: 160, errorRate: 0.02, seed: 300 + i });
+    const round = new TypingRound(target, "backspace");
+    for (const e of events) round.input(e);
+    const outcome = completeRound(state, round, 1_700_000_000_000 + i, { chars: charData });
+    steps.push({
+      words: plan.words,
+      explanation: plan.explanation,
+      events,
+      outcome,
+      state: { ...snapshot(state), modsUnlocked: [...state.modsUnlocked], modsMastered: [...state.modsMastered], difficulty: state.difficulty },
+    });
+  }
+  return { modifierSession: true, seed, packSize: PACK_SIZE, platformExtra: macExtra, settings, steps };
 }
 
 function snapshot(state: ProfileState) {

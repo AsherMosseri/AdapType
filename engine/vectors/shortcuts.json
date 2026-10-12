@@ -1,0 +1,33 @@
+{
+ "profileSeed": 77,
+ "roundCounter": 0,
+ "seed": 1527320516,
+ "keys": {
+  "sc:undo": {
+   "n": 10,
+   "timedN": 10,
+   "msAvg": 3000,
+   "errAvg": 0.3
+  },
+  "sc:copy": {
+   "n": 10,
+   "timedN": 10,
+   "msAvg": 500,
+   "errAvg": 0
+  }
+ },
+ "drill": [
+  "word-left",
+  "save",
+  "find",
+  "find-next",
+  "save",
+  "doc-start",
+  "bold",
+  "find",
+  "select-word-left",
+  "select-word-right",
+  "undo",
+  "select-word-left"
+ ]
+}

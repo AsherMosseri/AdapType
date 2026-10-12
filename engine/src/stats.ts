@@ -1,5 +1,11 @@
-import { KEY_HISTORY_ROUNDS, MIN_AVG_WEIGHT } from "./constants";
-import type { KeyRoundEntry, KeystrokeRecord, StatEntry } from "./types";
+import { KEY_HISTORY_ROUNDS, LEFT_HAND_LETTERS, MIN_AVG_WEIGHT } from "./constants";
+import { categoryOf, modKey } from "./modifiers";
+import type { CharacterData, KeyRoundEntry, KeystrokeRecord, StatEntry } from "./types";
+
+/** Stat key for using the wrong Shift (same hand as the letter). */
+export const SHIFT_SIDE_KEY = "shift:side";
+/** Stat key for characters that needed a touch layer switch. */
+export const TOUCH_LAYER_KEY = "touch:layer";
 
 export function emptyStat(): StatEntry {
   return { n: 0, timedN: 0, msAvg: 0, errAvg: 0 };
@@ -29,27 +35,46 @@ export interface StatsUpdate {
 /**
  * Folds a round's keystrokes into key and pair stats, in place. Only first
  * attempts count. A pair is the previous target character plus this one,
- * when both are letters.
+ * when both are letters. With character data, each modifier character also
+ * counts toward its modifier ("mod:caps" and so on), uppercase letters typed
+ * with a known Shift count toward "shift:side", and touch characters that
+ * needed a layer switch count toward "touch:layer".
  */
 export function applyRecords(
   target: string,
   records: readonly KeystrokeRecord[],
   keys: Record<string, StatEntry>,
   pairs: Record<string, StatEntry>,
+  chars?: CharacterData,
 ): StatsUpdate {
   const perKey: Record<string, KeyRoundEntry> = {};
-  for (const r of records) {
-    if (!r.first) continue;
-    const key = r.expected;
-    const entry = (keys[key] ??= emptyStat());
-    addSample(entry, !r.correct, r.interval);
-
+  const count = (key: string, r: KeystrokeRecord) => {
     const round = (perKey[key] ??= { n: 0, correct: 0, msTotal: 0, msN: 0 });
     round.n += 1;
     if (r.correct) round.correct += 1;
     if (r.interval !== null) {
       round.msTotal += r.interval;
       round.msN += 1;
+    }
+  };
+  for (const r of records) {
+    if (!r.first) continue;
+    const key = r.expected;
+    const entry = (keys[key] ??= emptyStat());
+    addSample(entry, !r.correct, r.interval);
+    count(key, r);
+
+    if (chars) {
+      const category = categoryOf(key, chars);
+      if (category !== "letter" && category !== "space" && category !== "other") {
+        addSample((keys[modKey(category)] ??= emptyStat()), !r.correct, r.interval);
+        count(modKey(category), r);
+      }
+      if (r.shift && key >= "A" && key <= "Z") {
+        const wrongSide = LEFT_HAND_LETTERS.includes(key.toLowerCase()) ? r.shift === "left" : r.shift === "right";
+        addSample((keys[SHIFT_SIDE_KEY] ??= emptyStat()), wrongSide, null);
+      }
+      if (r.layer) addSample((keys[TOUCH_LAYER_KEY] ??= emptyStat()), !r.correct, r.interval);
     }
 
     if (r.index > 0) {

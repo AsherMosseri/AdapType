@@ -1,0 +1,225 @@
+{
+ "state": {
+  "unlocked": [
+   "e",
+   "t",
+   "a",
+   "o",
+   "i",
+   "n",
+   "s",
+   "h"
+  ],
+  "mastered": [
+   "e",
+   "t",
+   "a",
+   "o",
+   "i",
+   "n",
+   "s"
+  ],
+  "keys": {
+   "e": {
+    "n": 30,
+    "timedN": 30,
+    "msAvg": 250,
+    "errAvg": 0.01
+   },
+   "t": {
+    "n": 30,
+    "timedN": 30,
+    "msAvg": 250,
+    "errAvg": 0.01
+   },
+   "a": {
+    "n": 30,
+    "timedN": 30,
+    "msAvg": 250,
+    "errAvg": 0.01
+   },
+   "o": {
+    "n": 30,
+    "timedN": 30,
+    "msAvg": 520,
+    "errAvg": 0.12
+   },
+   "i": {
+    "n": 30,
+    "timedN": 30,
+    "msAvg": 250,
+    "errAvg": 0.01
+   },
+   "n": {
+    "n": 30,
+    "timedN": 30,
+    "msAvg": 250,
+    "errAvg": 0.01
+   },
+   "s": {
+    "n": 30,
+    "timedN": 30,
+    "msAvg": 380,
+    "errAvg": 0.02
+   },
+   "h": {
+    "n": 30,
+    "timedN": 30,
+    "msAvg": 250,
+    "errAvg": 0.01
+   }
+  },
+  "pairs": {
+   "th": {
+    "n": 20,
+    "timedN": 20,
+    "msAvg": 600,
+    "errAvg": 0.1
+   }
+  },
+  "goal": {
+   "wpm": 40,
+   "accuracy": 0.95
+  }
+ },
+ "words": [
+  {
+   "text": "his",
+   "madeUp": false
+  },
+  {
+   "text": "oh",
+   "madeUp": false
+  },
+  {
+   "text": "she",
+   "madeUp": false
+  },
+  {
+   "text": "set",
+   "madeUp": false
+  },
+  {
+   "text": "eat",
+   "madeUp": false
+  },
+  {
+   "text": "host",
+   "madeUp": false
+  },
+  {
+   "text": "then",
+   "madeUp": false
+  },
+  {
+   "text": "on",
+   "madeUp": false
+  },
+  {
+   "text": "to",
+   "madeUp": false
+  },
+  {
+   "text": "has",
+   "madeUp": false
+  },
+  {
+   "text": "not",
+   "madeUp": false
+  },
+  {
+   "text": "so",
+   "madeUp": false
+  },
+  {
+   "text": "this",
+   "madeUp": false
+  },
+  {
+   "text": "note",
+   "madeUp": false
+  },
+  {
+   "text": "he",
+   "madeUp": false
+  }
+ ],
+ "scores": {
+  "keys": {
+   "e": 0.1,
+   "t": 0.1,
+   "a": 0.1,
+   "o": 1.9333333333333333,
+   "i": 0.1,
+   "n": 0.1,
+   "s": 0.4666666666666666,
+   "h": 1.1
+  },
+  "pairs": {
+   "th": 2
+  }
+ },
+ "explanation": {
+  "keys": [
+   "o",
+   "s"
+  ],
+  "pairs": [
+   "th"
+  ],
+  "newLetter": "h",
+  "modifiers": [],
+  "difficulty": 0.3
+ },
+ "details": [
+  {
+   "key": "o",
+   "detail": {
+    "samples": 30,
+    "avgMs": 520,
+    "goalMs": 300,
+    "accuracy": 0.88,
+    "reasons": [
+     "slow",
+     "errors"
+    ]
+   }
+  },
+  {
+   "key": "s",
+   "detail": {
+    "samples": 30,
+    "avgMs": 380,
+    "goalMs": 300,
+    "accuracy": 0.98,
+    "reasons": [
+     "slow"
+    ]
+   }
+  },
+  {
+   "key": "h",
+   "detail": {
+    "samples": 30,
+    "avgMs": 250,
+    "goalMs": 300,
+    "accuracy": 0.99,
+    "reasons": [
+     "new"
+    ]
+   }
+  },
+  {
+   "key": "e",
+   "detail": {
+    "samples": 30,
+    "avgMs": 250,
+    "goalMs": 300,
+    "accuracy": 0.99,
+    "reasons": [
+     "fine"
+    ]
+   }
+  }
+ ]
+}

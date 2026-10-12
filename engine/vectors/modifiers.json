@@ -1,0 +1,888 @@
+{
+ "platformExtra": [
+  "—",
+  "–",
+  "…",
+  "•",
+  "©",
+  "™",
+  "®",
+  "°",
+  "±",
+  "≠",
+  "≤",
+  "≥",
+  "÷",
+  "€",
+  "£",
+  "¢",
+  "¥",
+  "§",
+  "¶",
+  "¿",
+  "¡"
+ ],
+ "extraWord": "join",
+ "charScores": {
+  "1": 2,
+  "e": 1.5,
+  "#": 1
+ },
+ "cases": [
+  {
+   "name": "caps first",
+   "seed": 100,
+   "settings": {
+    "modes": {
+     "caps": "on",
+     "punct": "on",
+     "numbers": "on",
+     "symbols": "on",
+     "accents": "on",
+     "extra": "on",
+     "shortcuts": "on"
+    },
+    "levels": {
+     "caps": "medium",
+     "punct": "medium",
+     "numbers": "low",
+     "symbols": "low",
+     "accents": "low",
+     "extra": "low"
+    },
+    "caps": "first",
+    "punct": "sentence"
+   },
+   "rates": [
+    {
+     "id": "caps",
+     "rate": 0.5
+    }
+   ],
+   "input": [
+    "the",
+    "quick",
+    "brown",
+    "fox",
+    "jumps",
+    "over",
+    "lazy",
+    "dogs",
+    "and",
+    "runs",
+    "far",
+    "away",
+    "from",
+    "home",
+    "today"
+   ],
+   "words": [
+    {
+     "text": "The",
+     "madeUp": false
+    },
+    {
+     "text": "Quick",
+     "madeUp": false
+    },
+    {
+     "text": "brown",
+     "madeUp": false
+    },
+    {
+     "text": "fox",
+     "madeUp": false
+    },
+    {
+     "text": "jumps",
+     "madeUp": false
+    },
+    {
+     "text": "over",
+     "madeUp": false
+    },
+    {
+     "text": "Lazy",
+     "madeUp": false
+    },
+    {
+     "text": "dogs",
+     "madeUp": false
+    },
+    {
+     "text": "And",
+     "madeUp": false
+    },
+    {
+     "text": "runs",
+     "madeUp": false
+    },
+    {
+     "text": "far",
+     "madeUp": false
+    },
+    {
+     "text": "Away",
+     "madeUp": false
+    },
+    {
+     "text": "From",
+     "madeUp": false
+    },
+    {
+     "text": "Home",
+     "madeUp": false
+    },
+    {
+     "text": "Today",
+     "madeUp": false
+    }
+   ]
+  },
+  {
+   "name": "caps any",
+   "seed": 101,
+   "settings": {
+    "modes": {
+     "caps": "on",
+     "punct": "on",
+     "numbers": "on",
+     "symbols": "on",
+     "accents": "on",
+     "extra": "on",
+     "shortcuts": "on"
+    },
+    "levels": {
+     "caps": "medium",
+     "punct": "medium",
+     "numbers": "low",
+     "symbols": "low",
+     "accents": "low",
+     "extra": "low"
+    },
+    "caps": "any",
+    "punct": "sentence"
+   },
+   "rates": [
+    {
+     "id": "caps",
+     "rate": 0.5
+    }
+   ],
+   "input": [
+    "the",
+    "quick",
+    "brown",
+    "fox",
+    "jumps",
+    "over",
+    "lazy",
+    "dogs",
+    "and",
+    "runs",
+    "far",
+    "away",
+    "from",
+    "home",
+    "today"
+   ],
+   "words": [
+    {
+     "text": "thE",
+     "madeUp": false
+    },
+    {
+     "text": "quick",
+     "madeUp": false
+    },
+    {
+     "text": "brown",
+     "madeUp": false
+    },
+    {
+     "text": "foX",
+     "madeUp": false
+    },
+    {
+     "text": "jumps",
+     "madeUp": false
+    },
+    {
+     "text": "over",
+     "madeUp": false
+    },
+    {
+     "text": "Lazy",
+     "madeUp": false
+    },
+    {
+     "text": "dogS",
+     "madeUp": false
+    },
+    {
+     "text": "anD",
+     "madeUp": false
+    },
+    {
+     "text": "Runs",
+     "madeUp": false
+    },
+    {
+     "text": "fAr",
+     "madeUp": false
+    },
+    {
+     "text": "Away",
+     "madeUp": false
+    },
+    {
+     "text": "from",
+     "madeUp": false
+    },
+    {
+     "text": "Home",
+     "madeUp": false
+    },
+    {
+     "text": "today",
+     "madeUp": false
+    }
+   ]
+  },
+  {
+   "name": "sentences",
+   "seed": 102,
+   "settings": {
+    "modes": {
+     "caps": "on",
+     "punct": "on",
+     "numbers": "on",
+     "symbols": "on",
+     "accents": "on",
+     "extra": "on",
+     "shortcuts": "on"
+    },
+    "levels": {
+     "caps": "medium",
+     "punct": "medium",
+     "numbers": "low",
+     "symbols": "low",
+     "accents": "low",
+     "extra": "low"
+    },
+    "caps": "first",
+    "punct": "sentence"
+   },
+   "rates": [
+    {
+     "id": "punct",
+     "rate": 0.4
+    }
+   ],
+   "input": [
+    "the",
+    "quick",
+    "brown",
+    "fox",
+    "jumps",
+    "over",
+    "lazy",
+    "dogs",
+    "and",
+    "runs",
+    "far",
+    "away",
+    "from",
+    "home",
+    "today"
+   ],
+   "words": [
+    {
+     "text": "The",
+     "madeUp": false
+    },
+    {
+     "text": "quick",
+     "madeUp": false
+    },
+    {
+     "text": "brown",
+     "madeUp": false
+    },
+    {
+     "text": "fox",
+     "madeUp": false
+    },
+    {
+     "text": "jumps",
+     "madeUp": false
+    },
+    {
+     "text": "over",
+     "madeUp": false
+    },
+    {
+     "text": "lazy",
+     "madeUp": false
+    },
+    {
+     "text": "dogs",
+     "madeUp": false
+    },
+    {
+     "text": "and",
+     "madeUp": false
+    },
+    {
+     "text": "runs.",
+     "madeUp": false
+    },
+    {
+     "text": "Far",
+     "madeUp": false
+    },
+    {
+     "text": "away",
+     "madeUp": false
+    },
+    {
+     "text": "from",
+     "madeUp": false
+    },
+    {
+     "text": "home",
+     "madeUp": false
+    },
+    {
+     "text": "today",
+     "madeUp": false
+    }
+   ]
+  },
+  {
+   "name": "random punctuation",
+   "seed": 103,
+   "settings": {
+    "modes": {
+     "caps": "on",
+     "punct": "on",
+     "numbers": "on",
+     "symbols": "on",
+     "accents": "on",
+     "extra": "on",
+     "shortcuts": "on"
+    },
+    "levels": {
+     "caps": "medium",
+     "punct": "medium",
+     "numbers": "low",
+     "symbols": "low",
+     "accents": "low",
+     "extra": "low"
+    },
+    "caps": "first",
+    "punct": "random"
+   },
+   "rates": [
+    {
+     "id": "punct",
+     "rate": 0.5
+    }
+   ],
+   "input": [
+    "the",
+    "quick",
+    "brown",
+    "fox",
+    "jumps",
+    "over",
+    "lazy",
+    "dogs",
+    "and",
+    "runs",
+    "far",
+    "away",
+    "from",
+    "home",
+    "today"
+   ],
+   "words": [
+    {
+     "text": "the-join",
+     "madeUp": false
+    },
+    {
+     "text": "\"quick\"",
+     "madeUp": false
+    },
+    {
+     "text": "brown,",
+     "madeUp": false
+    },
+    {
+     "text": "fox.",
+     "madeUp": false
+    },
+    {
+     "text": "jumps",
+     "madeUp": false
+    },
+    {
+     "text": "over.",
+     "madeUp": false
+    },
+    {
+     "text": "lazy!",
+     "madeUp": false
+    },
+    {
+     "text": "dogs",
+     "madeUp": false
+    },
+    {
+     "text": "and.",
+     "madeUp": false
+    },
+    {
+     "text": "runs:",
+     "madeUp": false
+    },
+    {
+     "text": "far",
+     "madeUp": false
+    },
+    {
+     "text": "away",
+     "madeUp": false
+    },
+    {
+     "text": "from",
+     "madeUp": false
+    },
+    {
+     "text": "home",
+     "madeUp": false
+    },
+    {
+     "text": "today",
+     "madeUp": false
+    }
+   ]
+  },
+  {
+   "name": "numbers and symbols",
+   "seed": 104,
+   "settings": {
+    "modes": {
+     "caps": "on",
+     "punct": "on",
+     "numbers": "on",
+     "symbols": "on",
+     "accents": "on",
+     "extra": "on",
+     "shortcuts": "on"
+    },
+    "levels": {
+     "caps": "medium",
+     "punct": "medium",
+     "numbers": "low",
+     "symbols": "low",
+     "accents": "low",
+     "extra": "low"
+    },
+    "caps": "first",
+    "punct": "sentence"
+   },
+   "rates": [
+    {
+     "id": "numbers",
+     "rate": 0.4
+    },
+    {
+     "id": "symbols",
+     "rate": 0.4
+    }
+   ],
+   "input": [
+    "the",
+    "quick",
+    "brown",
+    "fox",
+    "jumps",
+    "over",
+    "lazy",
+    "dogs",
+    "and",
+    "runs",
+    "far",
+    "away",
+    "from",
+    "home",
+    "today"
+   ],
+   "words": [
+    {
+     "text": "the",
+     "madeUp": false
+    },
+    {
+     "text": "(quick)",
+     "madeUp": false
+    },
+    {
+     "text": "#10",
+     "madeUp": false
+    },
+    {
+     "text": "fox",
+     "madeUp": false
+    },
+    {
+     "text": "jumps",
+     "madeUp": false
+    },
+    {
+     "text": "over",
+     "madeUp": false
+    },
+    {
+     "text": "lazy15/join",
+     "madeUp": false
+    },
+    {
+     "text": "dogs",
+     "madeUp": false
+    },
+    {
+     "text": "and21",
+     "madeUp": false
+    },
+    {
+     "text": "runs",
+     "madeUp": false
+    },
+    {
+     "text": "far",
+     "madeUp": false
+    },
+    {
+     "text": "11",
+     "madeUp": false
+    },
+    {
+     "text": "from",
+     "madeUp": false
+    },
+    {
+     "text": "#4961",
+     "madeUp": false
+    },
+    {
+     "text": "today%",
+     "madeUp": false
+    }
+   ]
+  },
+  {
+   "name": "accents and extra",
+   "seed": 105,
+   "settings": {
+    "modes": {
+     "caps": "on",
+     "punct": "on",
+     "numbers": "on",
+     "symbols": "on",
+     "accents": "on",
+     "extra": "on",
+     "shortcuts": "on"
+    },
+    "levels": {
+     "caps": "medium",
+     "punct": "medium",
+     "numbers": "low",
+     "symbols": "low",
+     "accents": "low",
+     "extra": "low"
+    },
+    "caps": "first",
+    "punct": "sentence"
+   },
+   "rates": [
+    {
+     "id": "accents",
+     "rate": 0.3
+    },
+    {
+     "id": "extra",
+     "rate": 0.4
+    }
+   ],
+   "input": [
+    "the",
+    "quick",
+    "brown",
+    "fox",
+    "jumps",
+    "over",
+    "lazy",
+    "dogs",
+    "and",
+    "runs",
+    "far",
+    "away",
+    "from",
+    "home",
+    "today"
+   ],
+   "words": [
+    {
+     "text": "señor",
+     "madeUp": false
+    },
+    {
+     "text": "quick",
+     "madeUp": false
+    },
+    {
+     "text": "brown",
+     "madeUp": false
+    },
+    {
+     "text": "fox",
+     "madeUp": false
+    },
+    {
+     "text": "aperçu",
+     "madeUp": false
+    },
+    {
+     "text": "¶",
+     "madeUp": false
+    },
+    {
+     "text": "lazy",
+     "madeUp": false
+    },
+    {
+     "text": "dogs",
+     "madeUp": false
+    },
+    {
+     "text": "and",
+     "madeUp": false
+    },
+    {
+     "text": "2÷16",
+     "madeUp": false
+    },
+    {
+     "text": "frappé",
+     "madeUp": false
+    },
+    {
+     "text": "0°",
+     "madeUp": false
+    },
+    {
+     "text": "3≥19",
+     "madeUp": false
+    },
+    {
+     "text": "¡home!",
+     "madeUp": false
+    },
+    {
+     "text": "première",
+     "madeUp": false
+    }
+   ]
+  },
+  {
+   "name": "everything",
+   "seed": 106,
+   "settings": {
+    "modes": {
+     "caps": "on",
+     "punct": "on",
+     "numbers": "on",
+     "symbols": "on",
+     "accents": "on",
+     "extra": "on",
+     "shortcuts": "on"
+    },
+    "levels": {
+     "caps": "medium",
+     "punct": "medium",
+     "numbers": "low",
+     "symbols": "low",
+     "accents": "low",
+     "extra": "low"
+    },
+    "caps": "first",
+    "punct": "sentence"
+   },
+   "rates": [
+    {
+     "id": "caps",
+     "rate": 0.3
+    },
+    {
+     "id": "punct",
+     "rate": 0.3
+    },
+    {
+     "id": "numbers",
+     "rate": 0.2
+    },
+    {
+     "id": "symbols",
+     "rate": 0.2
+    },
+    {
+     "id": "accents",
+     "rate": 0.2
+    },
+    {
+     "id": "extra",
+     "rate": 0.2
+    }
+   ],
+   "input": [
+    "the",
+    "quick",
+    "brown",
+    "fox",
+    "jumps",
+    "over",
+    "lazy",
+    "dogs",
+    "and",
+    "runs",
+    "far",
+    "away",
+    "from",
+    "home",
+    "today"
+   ],
+   "words": [
+    {
+     "text": "The_join",
+     "madeUp": false
+    },
+    {
+     "text": "912/join",
+     "madeUp": false
+    },
+    {
+     "text": "brown1&join",
+     "madeUp": false
+    },
+    {
+     "text": "fox",
+     "madeUp": false
+    },
+    {
+     "text": "jumps®",
+     "madeUp": false
+    },
+    {
+     "text": "61%/join",
+     "madeUp": false
+    },
+    {
+     "text": "lazy",
+     "madeUp": false
+    },
+    {
+     "text": "1≠4",
+     "madeUp": false
+    },
+    {
+     "text": "And*",
+     "madeUp": false
+    },
+    {
+     "text": "§11?",
+     "madeUp": false
+    },
+    {
+     "text": "Coupé",
+     "madeUp": false
+    },
+    {
+     "text": "away",
+     "madeUp": false
+    },
+    {
+     "text": "from",
+     "madeUp": false
+    },
+    {
+     "text": "¥889",
+     "madeUp": false
+    },
+    {
+     "text": "Today.",
+     "madeUp": false
+    }
+   ]
+  }
+ ],
+ "rateCases": [
+  {
+   "level": "low",
+   "stat": null,
+   "difficulty": 0.6,
+   "goal": {
+    "wpm": 40,
+    "accuracy": 0.95
+   },
+   "rate": 0.0671
+  },
+  {
+   "level": "medium",
+   "stat": {
+    "n": 40,
+    "timedN": 40,
+    "msAvg": 300,
+    "errAvg": 0.02
+   },
+   "difficulty": 0.6,
+   "goal": {
+    "wpm": 40,
+    "accuracy": 0.95
+   },
+   "rate": 0.1075
+  },
+  {
+   "level": "high",
+   "stat": {
+    "n": 40,
+    "timedN": 40,
+    "msAvg": 900,
+    "errAvg": 0.2
+   },
+   "difficulty": 0.6,
+   "goal": {
+    "wpm": 40,
+    "accuracy": 0.95
+   },
+   "rate": 0.4544
+  },
+  {
+   "level": "auto",
+   "stat": {
+    "n": 40,
+    "timedN": 40,
+    "msAvg": 450,
+    "errAvg": 0.05
+   },
+   "difficulty": 0.6,
+   "goal": {
+    "wpm": 40,
+    "accuracy": 0.95
+   },
+   "rate": 0.19684999999999997
+  }
+ ]
+}
