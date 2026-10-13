@@ -173,7 +173,7 @@ async function drawCard(canvas: HTMLCanvasElement, card: Fingerprint, goalWpm: n
     ctx.fillText("No creatures met yet", 690, 340);
   }
   for (const [i, c] of card.creatures.entries()) {
-    const img = await svgImage(creatureSvg(c.traits, c.stage, { size: 140, health: c.health }));
+    const img = await svgImage(creatureSvg(c.traits, c.stage, { size: 140, health: c.health, legend: c.key }));
     const left = 690 + i * 150;
     ctx.drawImage(img, left, 320, 140, 140);
     ctx.fillStyle = p.ink;

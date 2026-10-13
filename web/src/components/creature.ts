@@ -1,4 +1,10 @@
 import type { CreatureStage, CreatureTraits } from "../../../engine/src";
+import { activeTheme } from "../appearance";
+import type { ThemeId } from "../store";
+
+/** Each theme's drawing style. Every style keeps the creature's traits: body, eyes, top, pattern, mouth, tail. */
+export type CreatureStyle = "clean" | "pixel" | "blob" | "keycap";
+const THEME_STYLES: Record<ThemeId, CreatureStyle> = { clean: "clean", terminal: "pixel", cute: "blob", mechanical: "keycap" };
 
 const NS = "http://www.w3.org/2000/svg";
 
@@ -27,20 +33,23 @@ const BODIES = {
 export function creatureSvg(
   traits: CreatureTraits,
   stage: CreatureStage | null,
-  options: { health?: number; size?: number; label?: string } = {},
+  options: { health?: number; size?: number; label?: string; legend?: string; style?: CreatureStyle } = {},
 ): SVGSVGElement {
   const size = options.size ?? 64;
   const health = options.health ?? 1;
+  const style = options.style ?? THEME_STYLES[activeTheme()];
   const svg = el("svg", {
     viewBox: "0 0 64 64",
     width: size,
     height: size,
-    class: `creature stage-${stage ?? "unmet"}${health < 0.4 ? " unwell" : ""}`,
+    class: `creature style-${style} stage-${stage ?? "unmet"}${health < 0.4 ? " unwell" : ""}`,
     role: "img",
     "aria-label": options.label ?? "",
   });
   svg.style.setProperty("--hue", String(traits.hue));
   svg.style.setProperty("--sat", `${Math.round(20 + 45 * health)}%`);
+  if (style === "pixel") return pixelCreature(svg, traits, stage, health);
+  if (style === "keycap") return keycapCreature(svg, traits, stage, health, options.legend ?? "");
 
   if (stage === null) {
     svg.append(el("path", { d: BODIES[traits.body].d, class: "cr-shadow" }));
@@ -100,8 +109,11 @@ export function creatureSvg(
   for (const [i, x] of xs.entries()) {
     const y = traits.eyes === 3 && i === 1 ? eyeY - 3 : eyeY;
     if (health < 0.4) g.append(el("path", { d: `M${x - r} ${y} Q${x} ${y + r * 0.7} ${x + r} ${y}`, class: "cr-line" }));
+    else if (style === "blob") g.append(el("circle", { cx: x, cy: y, r: r * 0.85, class: "cr-pupil" }), el("circle", { cx: x - r * 0.3, cy: y - r * 0.35, r: r * 0.3, class: "cr-shine" }));
     else g.append(el("circle", { cx: x, cy: y, r, class: "cr-eye" }), el("circle", { cx: x + 0.8, cy: y + 0.6, r: r * 0.45, class: "cr-pupil" }));
   }
+  // Blobs blush.
+  if (style === "blob") g.append(el("ellipse", { cx: xs[0] - 4, cy: eyeY + 6, rx: 3.2, ry: 2, class: "cr-blush" }), el("ellipse", { cx: xs[xs.length - 1] + 4, cy: eyeY + 6, rx: 3.2, ry: 2, class: "cr-blush" }));
 
   // Mouth.
   const my = eyeY + 9;
@@ -112,6 +124,130 @@ export function creatureSvg(
 
   if (stage === 3) {
     g.append(el("path", { d: `M22 ${top - 3} L22 ${top - 13} L27 ${top - 8} L32 ${top - 15} L37 ${top - 8} L42 ${top - 13} L42 ${top - 3} Z`, class: "cr-crown" }));
+    svg.append(el("path", { d: "M6 14 L8 18 L12 20 L8 22 L6 26 L4 22 L0 20 L4 18 Z M57 6 L58.5 9 L61.5 10.5 L58.5 12 L57 15 L55.5 12 L52.5 10.5 L55.5 9 Z", class: "cr-sparkle" }));
+  }
+  return svg;
+}
+
+/** Body masks on a 16 x 16 grid, for pixel creatures. */
+const PIXEL_BODIES: Record<CreatureTraits["body"], (x: number, y: number) => boolean> = {
+  round: (x, y) => ((x - 7.5) / 6.3) ** 2 + ((y - 9.3) / 5.6) ** 2 <= 1,
+  tall: (x, y) => x >= 4 && x <= 11 && y >= 3 && y <= 14 && !((x === 4 || x === 11) && (y === 3 || y === 14)),
+  wide: (x, y) => ((x - 7.5) / 7.4) ** 2 + ((y - 10.5) / 4.1) ** 2 <= 1,
+  pear: (x, y) => y >= 4 && y <= 14 && Math.abs(x - 7.5) <= (y < 8 ? 2.5 + (y - 4) * 0.4 : 4.5 + Math.min(2, (y - 8) * 0.6)),
+};
+const EGG = (x: number, y: number) => ((x - 7.5) / 4.8) ** 2 + ((y - 9) / (y < 9 ? 6.4 : 5.4)) ** 2 <= 1;
+
+/** Terminal style: pixel art on a 16 x 16 grid, one color family (the theme's). */
+function pixelCreature(svg: SVGSVGElement, traits: CreatureTraits, stage: CreatureStage | null, health: number): SVGSVGElement {
+  svg.setAttribute("shape-rendering", "crispEdges");
+  const g = el("g", {});
+  if (stage === 1) g.setAttribute("transform", "translate(32 60) scale(0.8) translate(-32 -60)");
+  svg.append(g);
+  const px = (x: number, y: number, cls: string) => g.append(el("rect", { x: x * 4, y: y * 4, width: 4, height: 4, class: cls }));
+  const mask = stage === null || stage === 0 ? (stage === null ? PIXEL_BODIES[traits.body] : EGG) : PIXEL_BODIES[traits.body];
+  let top = 16;
+  for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) if (mask(x, y)) top = Math.min(top, y);
+  const inside = (x: number, y: number) => x >= 0 && x < 16 && y >= 0 && y < 16 && mask(x, y);
+  for (let y = 0; y < 16; y++) {
+    for (let x = 0; x < 16; x++) {
+      if (!mask(x, y)) continue;
+      if (stage === null) {
+        px(x, y, "px-shadow");
+        continue;
+      }
+      const edge = !inside(x - 1, y) || !inside(x + 1, y) || !inside(x, y - 1) || !inside(x, y + 1);
+      let cls = edge ? "px-edge" : "px-body";
+      if (!edge && traits.pattern === "spots" && (x * 7 + y * 3) % 11 === 0) cls = "px-mark";
+      if (!edge && traits.pattern === "stripes" && y % 3 === 0 && y > top + 3) cls = "px-mark";
+      if (!edge && traits.pattern === "belly" && y >= 11 && Math.abs(x - 7.5) < 3) cls = "px-light";
+      px(x, y, cls);
+    }
+  }
+  if (stage === null || stage === 0) return svg;
+  // Headgear above the top row.
+  if (traits.top === "ears") [[4, top - 1], [11, top - 1], [4, top - 2], [11, top - 2]].forEach(([x, y]) => px(x, y, "px-edge"));
+  else if (traits.top === "horns") [[5, top - 1], [10, top - 1], [4, top - 2], [11, top - 2]].forEach(([x, y]) => px(x, y, "px-mark"));
+  else if (traits.top === "antenna") [[6, top - 1], [9, top - 1], [5, top - 2], [10, top - 2]].forEach(([x, y]) => px(x, y, "px-edge"));
+  else if (traits.top === "tuft") [[7, top - 1], [8, top - 2], [6, top - 2]].forEach(([x, y]) => px(x, y, "px-edge"));
+  if (traits.tail) [[13, 12], [14, 11], [14, 10]].forEach(([x, y]) => !inside(x, y) && px(x, y, "px-edge"));
+  // Face.
+  const eyeY = top + (traits.body === "wide" ? 2 : 3);
+  const eyes = traits.eyes === 1 ? [7] : traits.eyes === 2 ? [5, 10] : [4, 7, 11];
+  for (const x of eyes) {
+    if (health < 0.4) px(x, eyeY + 1, "px-eye");
+    else {
+      px(x, eyeY, "px-eye");
+      if (stage === 1) px(x, eyeY + 1, "px-eye");
+    }
+  }
+  const my = eyeY + 3;
+  if (traits.mouth === "open") px(7, my, "px-eye"), px(8, my, "px-eye"), px(7, my + 1, "px-eye"), px(8, my + 1, "px-eye");
+  else if (traits.mouth === "beak") px(7, my, "px-mark"), px(8, my, "px-mark");
+  else {
+    px(6, my, "px-eye");
+    px(7, my + 1, "px-eye");
+    px(8, my + 1, "px-eye");
+    px(9, my, "px-eye");
+    if (traits.mouth === "fangs") px(7, my + 2, "px-light"), px(8, my + 2, "px-light");
+  }
+  if (stage === 3) {
+    for (const [x, y] of [[5, top - 3], [7, top - 4], [9, top - 4], [11, top - 3], [5, top - 2], [6, top - 2], [7, top - 2], [8, top - 2], [9, top - 2], [10, top - 2], [11, top - 2], [7, top - 3], [9, top - 3]]) px(x, y, "px-gold");
+    for (const [x, y] of [[1, 2], [14, 1], [1, 12]]) px(x, y, "px-gold");
+  }
+  return svg;
+}
+
+/** Mechanical style: a keycap critter, with the key's legend on its cap. */
+function keycapCreature(svg: SVGSVGElement, traits: CreatureTraits, stage: CreatureStage | null, health: number, legend: string): SVGSVGElement {
+  const g = el("g", {});
+  if (stage === 0) g.setAttribute("transform", "translate(32 58) scale(0.72) translate(-32 -58)");
+  else if (stage === 1) g.setAttribute("transform", "translate(32 58) scale(0.82) translate(-32 -58)");
+  svg.append(g);
+  const wide = traits.body === "wide" ? 4 : traits.body === "tall" ? -3 : 0;
+  const tall = traits.body === "tall" ? -4 : traits.body === "wide" ? 4 : 0;
+  const x0 = 11 - wide;
+  const x1 = 53 + wide;
+  const y0 = 16 + tall;
+  if (stage === null) {
+    g.append(el("rect", { x: x0, y: y0, width: x1 - x0, height: 56 - y0, rx: 9, class: "cr-shadow" }));
+    const q = el("text", { x: 32, y: 44, "text-anchor": "middle", class: "cr-unknown" });
+    q.textContent = "?";
+    g.append(q);
+    return svg;
+  }
+  if (stage > 0) {
+    if (traits.tail) g.append(el("path", { d: `M${x1} 46 C${x1 + 8} 46 ${x1 + 9} 38 ${x1 + 5} 34`, class: "cr-tail" }));
+    if (traits.top === "ears") g.append(el("path", { d: `M${x0 + 2} ${y0 + 6} L${x0 + 3} ${y0 - 7} L${x0 + 12} ${y0 + 1} Z M${x1 - 2} ${y0 + 6} L${x1 - 3} ${y0 - 7} L${x1 - 12} ${y0 + 1} Z`, class: "cap-side" }));
+    else if (traits.top === "horns") g.append(el("path", { d: `M${x0 + 6} ${y0 + 1} Q${x0} ${y0 - 6} ${x0 + 4} ${y0 - 10} Q${x0 + 8} ${y0 - 3} ${x0 + 12} ${y0} Z M${x1 - 6} ${y0 + 1} Q${x1} ${y0 - 6} ${x1 - 4} ${y0 - 10} Q${x1 - 8} ${y0 - 3} ${x1 - 12} ${y0} Z`, class: "cr-horn" }));
+    else if (traits.top === "antenna") g.append(el("path", { d: `M27 ${y0} L23 ${y0 - 9} M37 ${y0} L41 ${y0 - 9}`, class: "cr-line" }), el("circle", { cx: 23, cy: y0 - 10, r: 2.5, class: "cr-horn" }), el("circle", { cx: 41, cy: y0 - 10, r: 2.5, class: "cr-horn" }));
+    else if (traits.top === "tuft") g.append(el("path", { d: `M28 ${y0} Q27 ${y0 - 7} 30 ${y0 - 9} M32 ${y0} Q32 ${y0 - 9} 34 ${y0 - 11} M36 ${y0} Q38 ${y0 - 6} 40 ${y0 - 7}`, class: "cr-line" }));
+  }
+  // The cap: a darker skirt and a lighter, slightly inset top face.
+  g.append(el("rect", { x: x0, y: y0, width: x1 - x0, height: 56 - y0, rx: 9, class: "cap-side" }));
+  g.append(el("rect", { x: x0 + 5, y: y0 + 2, width: x1 - x0 - 10, height: 56 - y0 - 12, rx: 6, class: "cap-top" }));
+  if (traits.pattern === "stripes") g.append(el("path", { d: `M${x0 + 1} ${52} L${x1 - 1} ${52}`, class: "cr-stripe" }));
+  else if (traits.pattern === "spots") g.append(el("circle", { cx: x0 + 3, cy: 50, r: 1.6, class: "cr-mark" }), el("circle", { cx: x1 - 3, cy: 48, r: 1.6, class: "cr-mark" }));
+  if (legend) {
+    const t = el("text", { x: x0 + 9, y: y0 + 11, class: "cap-legend" });
+    t.textContent = legend;
+    g.append(t);
+  }
+  g.append(el("ellipse", { cx: 25, cy: 57.5, rx: 4.5, ry: 2, class: "cr-foot" }), el("ellipse", { cx: 39, cy: 57.5, rx: 4.5, ry: 2, class: "cr-foot" }));
+  if (stage === 0) return svg;
+  const eyeY = y0 + 20;
+  const xs = traits.eyes === 1 ? [32] : traits.eyes === 2 ? [27, 37] : [24, 32, 40];
+  for (const x of xs) {
+    if (health < 0.4) g.append(el("path", { d: `M${x - 3} ${eyeY} L${x + 3} ${eyeY}`, class: "cr-line" }));
+    else g.append(el("rect", { x: x - 2, y: eyeY - 3, width: 4, height: 6, rx: 1.5, class: "cr-pupil" }));
+  }
+  const my = eyeY + 7;
+  if (traits.mouth === "open") g.append(el("rect", { x: 29.5, y: my - 1, width: 5, height: 4, rx: 1.5, class: "cr-pupil" }));
+  else if (traits.mouth === "beak") g.append(el("path", { d: `M29 ${my - 1} L35 ${my - 1} L32 ${my + 3} Z`, class: "cr-beak" }));
+  else g.append(el("path", { d: `M28 ${my} L32 ${my + 2.5} L36 ${my}`, class: "cr-line" }));
+  if (traits.mouth === "fangs") g.append(el("path", { d: `M29.5 ${my + 1} L30.5 ${my + 4} L31.5 ${my + 1.7} M32.5 ${my + 1.7} L33.5 ${my + 4} L34.5 ${my + 1}`, class: "cr-fang" }));
+  if (stage === 3) {
+    g.append(el("path", { d: `M22 ${y0 - 2} L22 ${y0 - 12} L27 ${y0 - 7} L32 ${y0 - 14} L37 ${y0 - 7} L42 ${y0 - 12} L42 ${y0 - 2} Z`, class: "cr-crown" }));
     svg.append(el("path", { d: "M6 14 L8 18 L12 20 L8 22 L6 26 L4 22 L0 20 L4 18 Z M57 6 L58.5 9 L61.5 10.5 L58.5 12 L57 15 L55.5 12 L52.5 10.5 L55.5 9 Z", class: "cr-sparkle" }));
   }
   return svg;

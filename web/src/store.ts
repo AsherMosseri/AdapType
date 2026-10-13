@@ -14,7 +14,7 @@ import {
   type RoundType,
 } from "../../engine/src";
 
-export const DATA_VERSION = 5;
+export const DATA_VERSION = 6;
 
 export type OsChoice = "auto" | "mac" | "windows" | "windows-intl" | "linux";
 export type TouchLayoutChoice = "auto" | "ios" | "android";
@@ -45,6 +45,38 @@ export interface Settings {
   /** Phase 4. */
   arcadeLives: LivesMode;
   rivalPace: RivalPace;
+  /** Phase 6. */
+  theme: ThemeId;
+  /** Light or dark: follow the device, or a fixed choice. */
+  colorMode: "auto" | "light" | "dark";
+  a11y: A11ySettings;
+  sound: SoundSettings;
+}
+
+export type ThemeId = "clean" | "terminal" | "cute" | "mechanical";
+
+export interface A11ySettings {
+  /** "theme" uses the theme's own fonts; "dyslexic" switches everything to OpenDyslexic. */
+  font: "theme" | "dyslexic";
+  /** 0 normal, 1 wide, 2 wider: letter spacing for the text you type. */
+  letterSpacing: 0 | 1 | 2;
+  /** 0 normal, 1 relaxed, 2 loose: line spacing for the text you type and for reading. */
+  lineSpacing: 0 | 1 | 2;
+  /** Text size in percent, independent of the device setting. */
+  textSize: number;
+  /** Heatmap colors: the theme's, or a color-blind-safe palette with patterns. */
+  heatmap: "theme" | "colorblind";
+  /** Motion: follow the device setting, or always reduce. */
+  motion: "auto" | "reduce";
+  /** Screen readers: announce the current word, errors and results. */
+  announce: boolean;
+}
+
+export interface SoundSettings {
+  on: boolean;
+  /** 0..1 */
+  volume: number;
+  keyClicks: boolean;
 }
 
 export function defaultSettings(activeProfile: InputProfile): Settings {
@@ -66,6 +98,10 @@ export function defaultSettings(activeProfile: InputProfile): Settings {
     hitZones: "train",
     arcadeLives: "lives",
     rivalPace: { kind: "ahead" },
+    theme: "clean",
+    colorMode: "auto",
+    a11y: { font: "theme", letterSpacing: 0, lineSpacing: 0, textSize: 100, heatmap: "theme", motion: "auto", announce: true },
+    sound: { on: true, volume: 0.5, keyClicks: true },
   };
 }
 
@@ -145,10 +181,23 @@ export function parseData(text: string): AppData {
   return migrate(data as unknown as AppData);
 }
 
-/** Upgrades older saved data: version 1 → 2 adds modifier, system and shortcut settings; 2 → 3 adds practice settings; 3 → 4 arcade settings; 4 → 5 changes nothing here (profiles gain phase 5 data). Profiles migrate in the engine. */
+/**
+ * Upgrades older saved data: version 1 → 2 adds modifier, system and shortcut
+ * settings; 2 → 3 adds practice settings; 3 → 4 arcade settings; 4 → 5
+ * changes nothing here (profiles gain phase 5 data); 5 → 6 adds theme, color
+ * mode, accessibility and sound. Missing settings take their defaults.
+ * Profiles migrate in the engine.
+ */
 function migrate(data: AppData): AppData {
   const defaults = defaultSettings(data.settings.activeProfile ?? "physical");
-  data.settings = { ...defaults, ...data.settings, modifiers: { ...defaults.modifiers, ...data.settings.modifiers } };
+  const saved = data.settings;
+  data.settings = {
+    ...defaults,
+    ...saved,
+    modifiers: { ...defaults.modifiers, ...saved.modifiers },
+    a11y: { ...defaults.a11y, ...saved.a11y },
+    sound: { ...defaults.sound, ...saved.sound },
+  };
   for (const key of ["physical", "touch"] as const) {
     const p = data.profiles[key];
     if (p) data.profiles[key] = migrateProfile(p as unknown as Record<string, unknown>);

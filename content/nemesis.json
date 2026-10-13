@@ -141,5 +141,43 @@
   "{key} slipped away once more.",
   "{name} isn't going anywhere yet."
  ],
- "defeat": "{name} is defeated. Your {key} is at your goal now."
+ "defeat": "{name} is defeated. Your {key} is at your goal now.",
+ "tones": {
+  "terse": {
+   "taunts": [
+    "{name}: hit.",
+    "ERR {key}. {name} logged it.",
+    "{name} still online.",
+    "{name} +1.",
+    "{key}: miss.",
+    "{name} remains.",
+    "retry {key}."
+   ],
+   "defeat": "{name}: terminated. {key} at goal."
+  },
+  "playful": {
+   "taunts": [
+    "Hehe! {name} got you again!",
+    "Oopsie, {key}! {name} is giggling.",
+    "{name} is doing a happy dance.",
+    "{name} wants to play some more!",
+    "Boop! {name} snuck that {key} away.",
+    "{name} blows a raspberry at you.",
+    "{name} isn't ready to say bye-bye yet!"
+   ],
+   "defeat": "Hooray! {name} waves goodbye. Your {key} is at your goal now!"
+  },
+  "matter": {
+   "taunts": [
+    "{key} missed. {name} scores.",
+    "{name} gains a point.",
+    "{name} remains undefeated.",
+    "Another miss on {key}.",
+    "{name} is still in play.",
+    "{key}: error recorded.",
+    "{name} holds."
+   ],
+   "defeat": "{name} defeated. {key} is at goal."
+  }
+ }
 }

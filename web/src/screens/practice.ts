@@ -26,7 +26,10 @@ import { TypingView } from "../components/typingView";
 import { blocklist, characters, nemesisContent, pack } from "../content";
 import { formatPercent, h } from "../dom";
 import { list, roundBanner } from "../explainText";
+import { announce, wordAt } from "../announce";
 import { attachPhysicalInput } from "../physicalInput";
+import { playSound } from "../sound";
+import { keystrokeFeedback } from "../typingFeedback";
 import { localDate } from "./daily";
 import { currentTouchLayout, physicalHint, platformFor, touchHint } from "../platform";
 
@@ -78,6 +81,7 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
   const inputEvents: TypingEvent[] = [];
   let finished = false;
   let ticker = 0;
+  let beatTimer = 0;
 
   // Live stats.
   const wpmValue = h("span", { class: "stat-value" }, "0");
@@ -191,7 +195,7 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
           "p",
           { class: "metronome" },
           h("span", { class: "beat", "aria-hidden": "true" }),
-          `Metronome: one beat per word at ${goalWpm} WPM`,
+          `Metronome: one beat per word at ${goalWpm} WPM${settings.sound.on ? ", out loud" : ""}`,
         )
       : null;
   metronome?.style.setProperty("--beat", `${Math.round(60000 / goalWpm)}ms`);
@@ -288,9 +292,12 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
       startHint.hidden = true;
       el.classList.add("running");
       ticker = window.setInterval(tick, 250);
+      if (metronome) beatTimer = window.setInterval(() => playSound("beat"), Math.round(60000 / goalWpm));
     }
-    round.input(event);
+    const before = round.position;
+    const record = round.input(event);
     inputEvents.push({ kind: event.kind, char: event.char, t: event.t });
+    keystrokeFeedback(round, record, before);
     view.update(round);
     refreshHint();
     if (settings.livePulse) refreshPulse();
@@ -320,6 +327,7 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
     if (finished) return;
     finished = true;
     window.clearInterval(ticker);
+    window.clearInterval(beatTimer);
     const metrics = round.metrics();
     const outcome = completeRound(state, round, Date.now(), { calibrationTest, chars: characters, pack, warmup });
     const nemesisChange = calibrationTest || silent ? null : updateNemesis(state, Date.now(), nemesisContent);
@@ -337,6 +345,7 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
     view.scroll();
     refreshHint();
   });
+  announce(`Ready. First word: ${wordAt(round.target, 0)}.`);
 
   return {
     el,
@@ -344,6 +353,7 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
     dispose: () => {
       finished = true;
       window.clearInterval(ticker);
+      window.clearInterval(beatTimer);
       physical?.dispose();
       window.removeEventListener("resize", onResize);
     },

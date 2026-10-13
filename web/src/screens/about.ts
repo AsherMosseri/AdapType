@@ -39,7 +39,13 @@ export function aboutScreen(app: App, screen: Screen): ScreenView {
         ", copyright 2000-2026 Kevin Atkinson, so only real, correctly spelled words appear.",
       ),
       h("h2", null, "Fonts"),
-      h("p", null, "Atkinson Hyperlegible Next and Atkinson Hyperlegible Mono, from the Braille Institute, under the SIL Open Font License."),
+      h(
+        "p",
+        null,
+        "Atkinson Hyperlegible Next and Atkinson Hyperlegible Mono, from the Braille Institute (clean theme); JetBrains Mono, by JetBrains, and VT323, by Peter Hull (terminal); Nunito, by Vernon Adams (cute); Space Grotesk, by Florian Karsten (mechanical); and OpenDyslexic, by Abbie Gonzalez (accessibility). All under the SIL Open Font License.",
+      ),
+      h("h2", null, "Sound"),
+      h("p", null, "Every sound is made in code as you play. There are no recorded audio files."),
     ),
   );
   return { el };

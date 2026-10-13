@@ -8,6 +8,7 @@ import {
   type CreatureView,
 } from "../../../engine/src";
 import type { App, Screen, ScreenView } from "../app";
+import { scrollBehavior } from "../appearance";
 import { creatureSvg, STAGE_NAMES } from "../components/creature";
 import { topBar } from "../components/topBar";
 import { characters } from "../content";
@@ -47,14 +48,14 @@ export function collectionScreen(app: App, screen: Screen): ScreenView {
     button.setAttribute("aria-pressed", "true");
     detail.hidden = false;
     detail.replaceChildren(...detailContent(v));
-    detail.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    detail.scrollIntoView({ block: "nearest", behavior: scrollBehavior() });
   };
 
   const detailContent = (v: CreatureView): (HTMLElement | SVGElement)[] => {
     const name = `${keyName(v.key)} creature`;
     if (v.stage === null) {
       return [
-        creatureSvg(v.traits, null, { size: 96, label: `Unmet ${name}` }),
+        creatureSvg(v.traits, null, { size: 96, label: `Unmet ${name}`, legend: v.key }),
         h("div", null, h("h2", null, `The ${keyName(v.key)} creature`), h("p", null, `You haven't met it yet. Type ${keyName(v.key)} in a round to find its egg.`)),
       ];
     }
@@ -73,7 +74,7 @@ export function collectionScreen(app: App, screen: Screen): ScreenView {
     else next = "Fully evolved. Keep it healthy by practicing now and then.";
     const days = v.daysSince === null ? "" : v.daysSince === 0 ? "Typed today." : v.daysSince === 1 ? "Last typed yesterday." : `Last typed ${v.daysSince} days ago.`;
     return [
-      creatureSvg(v.traits, v.stage, { size: 112, health: v.health, label: `${STAGE_NAMES[v.stage]} ${name}` }),
+      creatureSvg(v.traits, v.stage, { size: 112, health: v.health, label: `${STAGE_NAMES[v.stage]} ${name}`, legend: v.key }),
       h(
         "div",
         null,
@@ -107,7 +108,7 @@ export function collectionScreen(app: App, screen: Screen): ScreenView {
             const button = h(
               "button",
               { type: "button", class: `creature-cell${v.stage === null ? " unmet" : ""}`, "aria-pressed": "false", "aria-label": label },
-              creatureSvg(v.traits, v.stage, { size: 56, health: v.health }),
+              creatureSvg(v.traits, v.stage, { size: 56, health: v.health, legend: v.key }),
               h("span", { class: "creature-key" }, keyName(v.key)),
             );
             button.addEventListener("click", () => show(v, button));

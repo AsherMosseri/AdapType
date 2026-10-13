@@ -91,13 +91,17 @@ html,
 body {
   height: 100%;
 }
+html {
+  /* Text size setting: everything is sized in rem. */
+  font-size: calc(var(--text-scale, 1) * 100%);
+}
 body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
   font-family: var(--font-ui);
   font-size: var(--step-0);
-  line-height: 1.55;
+  line-height: calc(1.55 * var(--line-scale, 1));
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
 }
@@ -114,6 +118,7 @@ h3 {
   margin: 0;
 }
 h1 {
+  font-family: var(--font-display, inherit);
   font-size: var(--step-3);
   font-weight: 800;
   letter-spacing: -0.02em;
@@ -577,8 +582,9 @@ textarea {
   gap: 3px;
 }
 .letter {
-  width: 24px;
-  height: 30px;
+  min-width: 1.5rem;
+  min-height: 1.9rem;
+  padding-inline: 0.15rem;
   display: grid;
   place-items: center;
   font-family: var(--font-mono);
@@ -619,7 +625,9 @@ textarea {
   position: relative;
 }
 .typing {
-  --lh: 1.75em;
+  --lh: calc(1.75em * var(--line-scale, 1));
+  letter-spacing: var(--type-tracking, 0);
+  word-spacing: calc(var(--type-tracking, 0em) * 2);
   font-family: var(--font-mono);
   font-size: clamp(1.3rem, 4.2vw, 1.9rem);
   line-height: var(--lh);

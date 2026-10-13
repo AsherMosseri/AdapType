@@ -1,7 +1,10 @@
 import type { CreatureChange, KeystrokeRecord, NemesisChange, ProfileState, RoundExplanation, RoundOutcome } from "../../engine/src";
 import type { RoundMetrics } from "../../engine/src/typing";
 import { updateCreatures } from "../../engine/src";
+import { configureAnnounce } from "./announce";
+import { applyAppearance } from "./appearance";
 import { characters } from "./content";
+import { configureSound } from "./sound";
 import { defaultData, detectProfile, load, newProfile, save, type AppData } from "./store";
 
 export type Screen =
@@ -49,6 +52,14 @@ export class App {
     this.data = load() ?? defaultData(detectProfile());
     // Creatures follow stats; catch them up quietly (saved data from before phase 5 has none yet).
     for (const p of Object.values(this.data.profiles)) if (p) updateCreatures(p, Date.now(), characters);
+    this.applyLook();
+  }
+
+  /** Applies theme, color mode, accessibility and sound settings. */
+  applyLook(): void {
+    applyAppearance(this.data.settings);
+    configureSound(this.data.settings.sound, this.data.settings.theme);
+    configureAnnounce(this.data.settings.a11y.announce);
   }
 
   register(name: Screen["name"], renderer: ScreenRenderer): void {

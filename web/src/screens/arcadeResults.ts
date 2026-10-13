@@ -1,8 +1,9 @@
 import type { NemesisChange } from "../../../engine/src";
 import type { App, Screen } from "../app";
 import { nemesisFace } from "../components/nemesisFace";
-import { nemesisContent } from "../content";
+import { nemesisContentFor } from "../content";
 import { h } from "../dom";
+import { currentTone } from "../explainText";
 
 export interface GameOverOptions {
   title: string;
@@ -51,7 +52,7 @@ export function gameOverPanel(app: App, o: GameOverOptions): HTMLElement {
           "div",
           { class: "nemesis-news" },
           nemesisFace(defeated, 48, true),
-          h("p", null, nemesisContent.defeat.replaceAll("{name}", defeated.name).replaceAll("{key}", defeated.key), " It joins your hall of defeated in Progress."),
+          h("p", null, nemesisContentFor(currentTone()).defeat.replaceAll("{name}", defeated.name).replaceAll("{key}", defeated.key), " It joins your hall of defeated in Progress."),
         )
       : null,
     chosen

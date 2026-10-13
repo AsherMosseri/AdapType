@@ -23,7 +23,10 @@ import { touchKeyboard } from "../components/touchKeyboard";
 import { TypingView } from "../components/typingView";
 import { blocklist, characters, nemesisContent, pack } from "../content";
 import { formatPercent, h } from "../dom";
+import { announce, wordAt } from "../announce";
 import { attachPhysicalInput } from "../physicalInput";
+import { playSound } from "../sound";
+import { keystrokeFeedback } from "../typingFeedback";
 import { currentTouchLayout, platformFor } from "../platform";
 import { gameOverPanel } from "./arcadeResults";
 
@@ -173,7 +176,8 @@ export function raceScreen(app: App, screen: Screen): ScreenView {
       el.classList.add("running");
       raf = requestAnimationFrame(frame);
     }
-    round.input(event);
+    const before = round.position;
+    keystrokeFeedback(round, round.input(event), before);
     view.update(round);
     if (round.done) finish();
   }
@@ -196,6 +200,7 @@ export function raceScreen(app: App, screen: Screen): ScreenView {
     app.persist();
 
     const won = hasOpponent ? opponentDone === null || elapsed < opponentDone : null;
+    playSound(won === false ? "error" : "success");
     let verdict: string;
     if (kind === "ghost") {
       verdict = newGhost
@@ -235,6 +240,7 @@ export function raceScreen(app: App, screen: Screen): ScreenView {
     app.go({ name: "arcade" });
   }
 
+  announce(`Ready. First word: ${wordAt(round.target, 0)}.`);
   const onResize = () => view.scroll();
   window.addEventListener("resize", onResize);
   requestAnimationFrame(() => {
