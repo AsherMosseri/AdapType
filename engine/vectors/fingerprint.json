@@ -1,0 +1,302 @@
+{
+ "keys": {
+  "e": {
+   "n": 30,
+   "timedN": 30,
+   "msAvg": 200,
+   "errAvg": 0.01
+  },
+  "t": {
+   "n": 31,
+   "timedN": 30,
+   "msAvg": 225,
+   "errAvg": 0.03
+  },
+  "a": {
+   "n": 32,
+   "timedN": 30,
+   "msAvg": 250,
+   "errAvg": 0.05
+  },
+  "o": {
+   "n": 33,
+   "timedN": 30,
+   "msAvg": 275,
+   "errAvg": 0.06999999999999999
+  },
+  "i": {
+   "n": 34,
+   "timedN": 30,
+   "msAvg": 300,
+   "errAvg": 0.01
+  },
+  "n": {
+   "n": 35,
+   "timedN": 30,
+   "msAvg": 325,
+   "errAvg": 0.03
+  },
+  "s": {
+   "n": 36,
+   "timedN": 30,
+   "msAvg": 350,
+   "errAvg": 0.05
+  },
+  "h": {
+   "n": 37,
+   "timedN": 30,
+   "msAvg": 375,
+   "errAvg": 0.06999999999999999
+  },
+  "r": {
+   "n": 38,
+   "timedN": 30,
+   "msAvg": 400,
+   "errAvg": 0.01
+  },
+  "d": {
+   "n": 39,
+   "timedN": 30,
+   "msAvg": 425,
+   "errAvg": 0.03
+  },
+  "l": {
+   "n": 40,
+   "timedN": 30,
+   "msAvg": 450,
+   "errAvg": 0.05
+  },
+  "c": {
+   "n": 41,
+   "timedN": 30,
+   "msAvg": 475,
+   "errAvg": 0.06999999999999999
+  },
+  "z": {
+   "n": 5,
+   "timedN": 5,
+   "msAvg": 900,
+   "errAvg": 0.3
+  }
+ },
+ "rounds": [
+  {
+   "at": 1000,
+   "wpm": 41,
+   "accuracy": 0.975,
+   "durationMs": 30000,
+   "chars": 150,
+   "corrections": 3,
+   "calibration": false,
+   "consistency": 0.6,
+   "firstErrors": 3
+  },
+  {
+   "at": 1001,
+   "wpm": 42,
+   "accuracy": 0.975,
+   "durationMs": 30000,
+   "chars": 150,
+   "corrections": 3,
+   "calibration": false,
+   "consistency": 0.6,
+   "firstErrors": 3
+  },
+  {
+   "at": 1002,
+   "wpm": 43,
+   "accuracy": 0.975,
+   "durationMs": 30000,
+   "chars": 150,
+   "corrections": 3,
+   "calibration": false,
+   "consistency": 0.6,
+   "firstErrors": 3
+  },
+  {
+   "at": 1003,
+   "wpm": 41,
+   "accuracy": 0.975,
+   "durationMs": 30000,
+   "chars": 150,
+   "corrections": 3,
+   "calibration": false,
+   "consistency": 0.6,
+   "firstErrors": 3
+  },
+  {
+   "at": 1004,
+   "wpm": 42,
+   "accuracy": 0.975,
+   "durationMs": 30000,
+   "chars": 150,
+   "corrections": 3,
+   "calibration": false,
+   "consistency": 0.6,
+   "firstErrors": 3
+  },
+  {
+   "at": 1005,
+   "wpm": 43,
+   "accuracy": 0.975,
+   "durationMs": 30000,
+   "chars": 150,
+   "corrections": 3,
+   "calibration": false,
+   "consistency": 0.6,
+   "firstErrors": 3
+  },
+  {
+   "at": 1006,
+   "wpm": 41,
+   "accuracy": 0.975,
+   "durationMs": 30000,
+   "chars": 150,
+   "corrections": 3,
+   "calibration": false,
+   "consistency": 0.6,
+   "firstErrors": 3
+  },
+  {
+   "at": 1007,
+   "wpm": 42,
+   "accuracy": 0.975,
+   "durationMs": 30000,
+   "chars": 150,
+   "corrections": 3,
+   "calibration": false,
+   "consistency": 0.6,
+   "firstErrors": 3
+  },
+  {
+   "at": 1008,
+   "wpm": 43,
+   "accuracy": 0.975,
+   "durationMs": 30000,
+   "chars": 150,
+   "corrections": 3,
+   "calibration": false,
+   "consistency": 0.6,
+   "firstErrors": 3
+  },
+  {
+   "at": 1009,
+   "wpm": 41,
+   "accuracy": 0.975,
+   "durationMs": 30000,
+   "chars": 150,
+   "corrections": 3,
+   "calibration": false,
+   "consistency": 0.6,
+   "firstErrors": 3
+  },
+  {
+   "at": 1010,
+   "wpm": 42,
+   "accuracy": 0.975,
+   "durationMs": 30000,
+   "chars": 150,
+   "corrections": 3,
+   "calibration": false,
+   "consistency": 0.6,
+   "firstErrors": 3
+  },
+  {
+   "at": 1011,
+   "wpm": 43,
+   "accuracy": 0.975,
+   "durationMs": 30000,
+   "chars": 150,
+   "corrections": 3,
+   "calibration": false,
+   "consistency": 0.6,
+   "firstErrors": 3
+  }
+ ],
+ "card": {
+  "wpm": 42.1,
+  "accuracy": 0.9749999999999999,
+  "best": [
+   "e",
+   "i",
+   "t"
+  ],
+  "worst": [
+   "c",
+   "l",
+   "h"
+  ],
+  "traits": [
+   "steady",
+   "precise",
+   "fixer",
+   "at-goal"
+  ],
+  "heat": {
+   "a": 0.5,
+   "c": 1.283,
+   "d": 0.717,
+   "e": 0.1,
+   "h": 0.95,
+   "i": 0.1,
+   "l": 1,
+   "n": 0.383,
+   "o": 0.7,
+   "r": 0.433,
+   "s": 0.667,
+   "t": 0.3,
+   "z": 5
+  },
+  "creatures": [
+   {
+    "key": "e",
+    "group": "letters",
+    "stage": 1,
+    "health": 1,
+    "daysSince": 0,
+    "traits": {
+     "body": "tall",
+     "eyes": 2,
+     "top": "none",
+     "pattern": "belly",
+     "mouth": "smile",
+     "tail": false,
+     "hue": 96
+    }
+   },
+   {
+    "key": "i",
+    "group": "letters",
+    "stage": 1,
+    "health": 1,
+    "daysSince": 0,
+    "traits": {
+     "body": "tall",
+     "eyes": 2,
+     "top": "tuft",
+     "pattern": "spots",
+     "mouth": "open",
+     "tail": false,
+     "hue": 289
+    }
+   },
+   {
+    "key": "t",
+    "group": "letters",
+    "stage": 1,
+    "health": 1,
+    "daysSince": 0,
+    "traits": {
+     "body": "wide",
+     "eyes": 1,
+     "top": "antenna",
+     "pattern": "stripes",
+     "mouth": "smile",
+     "tail": true,
+     "hue": 337
+    }
+   }
+  ],
+  "rounds": 10
+ }
+}

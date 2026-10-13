@@ -8,6 +8,7 @@ import {
   nextLetter,
   nextModifierStage,
   recentAverage,
+  creatureTraits,
   roundKeySummary,
   SHIFT_SIDE_KEY,
   TOUCH_LAYER_KEY,
@@ -18,6 +19,7 @@ import {
 import type { App, Screen, ScreenView } from "../app";
 import { rhythmGraph } from "../components/charts";
 import { heatmap } from "../components/heatmap";
+import { creatureSvg } from "../components/creature";
 import { nemesisFace } from "../components/nemesisFace";
 import { topBar } from "../components/topBar";
 import { formatPercent, h } from "../dom";
@@ -126,6 +128,27 @@ export function resultsScreen(app: App, screen: Screen): ScreenView {
       ),
     );
   }
+  const grown = screen.creatureChanges ?? [];
+  if (grown.length > 0) {
+    const lines = grown.map((c) => (c.to === 1 ? `${c.key} hatched` : c.to === 2 ? `${c.key} grew up` : `${c.key} became legendary`));
+    events.push(
+      h(
+        "div",
+        { class: "callout unlock creature-callout", role: "status" },
+        h("div", { class: "creature-row" }, grown.slice(0, 4).map((c) => creatureSvg(creatureTraits(c.key), c.to, { size: 48 }))),
+        h(
+          "div",
+          null,
+          h("p", { class: "callout-title" }, grown.length === 1 ? `Your ${lines[0]}!` : `${grown.length} creatures evolved`),
+          grown.length > 1 ? h("p", null, `${list(lines)}.`) : null,
+          h("div", { class: "actions wrap" }, h("button", { type: "button", class: "button", onclick: () => app.go({ name: "collection", returnTo: view }) }, "See your creatures")),
+        ),
+      ),
+    );
+  }
+  if (screen.replayRank === 1 && state.replays.best.length > 1) {
+    events.push(callout("New best run", "This round is now your best replay. Watch it, or race it side by side with your next one in Replays.", "unlock"));
+  }
   if (outcome.difficultyChange > 0) {
     events.push(h("p", { class: "fine" }, "You've been at your goal, so rounds just got a little harder: longer and less common words, and a bit more focus on weak spots."));
   } else if (outcome.difficultyChange < 0) {
@@ -214,7 +237,12 @@ export function resultsScreen(app: App, screen: Screen): ScreenView {
 
   const next = h("button", { type: "button", class: "button primary", onclick: () => app.go({ name: "practice" }) }, "Next round", h("kbd", null, "Enter"));
   const endSession = h("button", { type: "button", class: "button", onclick: () => app.go({ name: "session" }) }, "End session");
-  el.querySelector("main")!.append(h("div", { class: "actions sticky-actions" }, next, state.session && state.session.rounds > 0 ? endSession : null));
+  const replayIndex = state.replays.recent.length - 1;
+  const watch =
+    screen.replay && replayIndex >= 0
+      ? h("button", { type: "button", class: "button", onclick: () => app.go({ name: "replay", list: "recent", index: replayIndex, returnTo: view }) }, "Watch replay")
+      : null;
+  el.querySelector("main")!.append(h("div", { class: "actions sticky-actions" }, next, watch, state.session && state.session.rounds > 0 ? endSession : null));
 
   /** Error types, self-correction, hesitations and reviews. */
   function mistakesPanel(): HTMLElement | null {

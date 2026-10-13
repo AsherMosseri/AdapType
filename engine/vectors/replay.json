@@ -1,0 +1,158 @@
+{
+ "events": [
+  {
+   "kind": "char",
+   "char": "t",
+   "t": 1000
+  },
+  {
+   "kind": "char",
+   "char": "h",
+   "t": 1180
+  },
+  {
+   "kind": "char",
+   "char": "r",
+   "t": 1350
+  },
+  {
+   "kind": "backspace",
+   "t": 1600
+  },
+  {
+   "kind": "char",
+   "char": "e",
+   "t": 1720
+  },
+  {
+   "kind": "char",
+   "char": " ",
+   "t": 1880
+  },
+  {
+   "kind": "char",
+   "char": "c",
+   "t": 2050
+  },
+  {
+   "kind": "char",
+   "char": "a",
+   "t": 2200
+  },
+  {
+   "kind": "char",
+   "char": "t",
+   "t": 3400
+  }
+ ],
+ "run": {
+  "at": 77,
+  "target": "the cat",
+  "errorMode": "backspace",
+  "events": [
+   [
+    0,
+    "t"
+   ],
+   [
+    180,
+    "h"
+   ],
+   [
+    350,
+    "r"
+   ],
+   [
+    600,
+    "\b"
+   ],
+   [
+    720,
+    "e"
+   ],
+   [
+    880,
+    " "
+   ],
+   [
+    1050,
+    "c"
+   ],
+   [
+    1200,
+    "a"
+   ],
+   [
+    2400,
+    "t"
+   ]
+  ],
+  "wpm": 35,
+  "accuracy": 0.875,
+  "source": "practice"
+ },
+ "markers": [
+  {
+   "t": 350,
+   "index": 2,
+   "kind": "error"
+  },
+  {
+   "t": 2400,
+   "index": 6,
+   "kind": "hesitation"
+  }
+ ],
+ "frames": [
+  {
+   "ms": 0,
+   "position": 1,
+   "typed": "t"
+  },
+  {
+   "ms": 180,
+   "position": 2,
+   "typed": "th"
+  },
+  {
+   "ms": 600,
+   "position": 2,
+   "typed": "th"
+  },
+  {
+   "ms": 700,
+   "position": 2,
+   "typed": "th"
+  },
+  {
+   "ms": 1219,
+   "position": 6,
+   "typed": "the ca"
+  },
+  {
+   "ms": 5000,
+   "position": 7,
+   "typed": "the cat"
+  }
+ ],
+ "ranks": [
+  1,
+  1,
+  3,
+  2,
+  null,
+  null
+ ],
+ "recentAt": [
+  2,
+  3,
+  4,
+  5,
+  6
+ ],
+ "bestAt": [
+  2,
+  4,
+  1
+ ]
+}

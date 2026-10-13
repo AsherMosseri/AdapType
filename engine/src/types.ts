@@ -221,7 +221,7 @@ export interface ArcadeState {
 }
 
 export interface ProfileState {
-  version: 4;
+  version: 5;
   profile: InputProfile;
   goal: Goal | null;
   calibration: CalibrationStatus;
@@ -267,6 +267,55 @@ export interface ProfileState {
   gripTaps: Partial<Record<Grip, Record<string, TapPoint[]>>>;
   /** Phase 4: high scores, the ghost run, the nemesis and the hall of defeated. */
   arcade: ArcadeState;
+  /** Phase 5: per-key results by day, newest last, for forecasts and creature health. */
+  keyDays: Record<string, DayEntry[]>;
+  /** Phase 5: the highest stage each key's creature has reached. */
+  creatures: Record<string, CreatureRecord>;
+  /** Phase 5: recent runs and personal bests, for slow-motion replay. */
+  replays: ReplayStore;
+  /** Phase 5: daily challenge results by date (YYYY-MM-DD); only the first attempt is kept. */
+  daily: Record<string, DailyResult>;
+}
+
+/**
+ * One key's results on one day: [day, samples, correct, msTotal, msN], where
+ * day = floor(ms since epoch / DAY_MS). Stored as a tuple to keep saves small.
+ */
+export type DayEntry = [day: number, n: number, correct: number, msTotal: number, msN: number];
+
+/** 0 egg, 1 baby, 2 grown, 3 legendary. */
+export type CreatureStage = 0 | 1 | 2 | 3;
+
+export interface CreatureRecord {
+  stage: CreatureStage;
+  /** When it reached that stage. */
+  at: number;
+}
+
+/** A recorded run: every keystroke as [ms after the first keystroke, character or "\b" for backspace]. */
+export interface ReplayRun {
+  at: number;
+  target: string;
+  errorMode: ErrorMode;
+  events: [number, string][];
+  wpm: number;
+  accuracy: number;
+  source: "practice" | "daily";
+}
+
+export interface ReplayStore {
+  /** Newest last. */
+  recent: ReplayRun[];
+  /** Best first, by wpm x accuracy. */
+  best: ReplayRun[];
+}
+
+export interface DailyResult {
+  wpm: number;
+  accuracy: number;
+  at: number;
+  /** One letter per word: g clean, y corrected, r left wrong. */
+  marks: string;
 }
 
 export interface RoundWord {
@@ -277,6 +326,9 @@ export interface RoundWord {
 export interface WordPack {
   /** Words, most common first. A word's index is its rank. */
   words: readonly string[];
+  /** Pack id and version; the daily challenge's text depends on both. */
+  id?: string;
+  version?: number;
 }
 
 export interface Blocklist {

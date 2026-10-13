@@ -1,0 +1,1219 @@
+{
+ "goal": {
+  "wpm": 40,
+  "accuracy": 0.95
+ },
+ "roster": "abcdefghijklmnopqrstuvwxyz0123456789.,!?;:'\"-@#$%&*()[]{}<>/\\|_+=~^",
+ "traits": [
+  {
+   "key": "a",
+   "body": "tall",
+   "eyes": 1,
+   "top": "none",
+   "pattern": "plain",
+   "mouth": "smile",
+   "tail": true,
+   "hue": 280
+  },
+  {
+   "key": "b",
+   "body": "round",
+   "eyes": 2,
+   "top": "ears",
+   "pattern": "stripes",
+   "mouth": "fangs",
+   "tail": false,
+   "hue": 232
+  },
+  {
+   "key": "c",
+   "body": "pear",
+   "eyes": 1,
+   "top": "horns",
+   "pattern": "spots",
+   "mouth": "open",
+   "tail": false,
+   "hue": 8
+  },
+  {
+   "key": "d",
+   "body": "wide",
+   "eyes": 2,
+   "top": "tuft",
+   "pattern": "plain",
+   "mouth": "smile",
+   "tail": false,
+   "hue": 320
+  },
+  {
+   "key": "e",
+   "body": "tall",
+   "eyes": 2,
+   "top": "none",
+   "pattern": "belly",
+   "mouth": "smile",
+   "tail": false,
+   "hue": 96
+  },
+  {
+   "key": "f",
+   "body": "round",
+   "eyes": 3,
+   "top": "horns",
+   "pattern": "stripes",
+   "mouth": "open",
+   "tail": true,
+   "hue": 47
+  },
+  {
+   "key": "g",
+   "body": "pear",
+   "eyes": 2,
+   "top": "antenna",
+   "pattern": "spots",
+   "mouth": "beak",
+   "tail": true,
+   "hue": 183
+  },
+  {
+   "key": "h",
+   "body": "wide",
+   "eyes": 2,
+   "top": "antenna",
+   "pattern": "stripes",
+   "mouth": "fangs",
+   "tail": false,
+   "hue": 153
+  },
+  {
+   "key": "i",
+   "body": "tall",
+   "eyes": 2,
+   "top": "tuft",
+   "pattern": "spots",
+   "mouth": "open",
+   "tail": false,
+   "hue": 289
+  },
+  {
+   "key": "j",
+   "body": "round",
+   "eyes": 3,
+   "top": "ears",
+   "pattern": "plain",
+   "mouth": "smile",
+   "tail": false,
+   "hue": 241
+  },
+  {
+   "key": "k",
+   "body": "pear",
+   "eyes": 2,
+   "top": "horns",
+   "pattern": "belly",
+   "mouth": "smile",
+   "tail": false,
+   "hue": 17
+  },
+  {
+   "key": "l",
+   "body": "wide",
+   "eyes": 3,
+   "top": "antenna",
+   "pattern": "spots",
+   "mouth": "open",
+   "tail": true,
+   "hue": 328
+  },
+  {
+   "key": "m",
+   "body": "tall",
+   "eyes": 3,
+   "top": "none",
+   "pattern": "plain",
+   "mouth": "beak",
+   "tail": true,
+   "hue": 104
+  },
+  {
+   "key": "n",
+   "body": "round",
+   "eyes": 1,
+   "top": "ears",
+   "pattern": "belly",
+   "mouth": "smile",
+   "tail": true,
+   "hue": 56
+  },
+  {
+   "key": "o",
+   "body": "pear",
+   "eyes": 3,
+   "top": "horns",
+   "pattern": "stripes",
+   "mouth": "fangs",
+   "tail": true,
+   "hue": 192
+  },
+  {
+   "key": "p",
+   "body": "wide",
+   "eyes": 3,
+   "top": "antenna",
+   "pattern": "belly",
+   "mouth": "beak",
+   "tail": true,
+   "hue": 161
+  },
+  {
+   "key": "q",
+   "body": "tall",
+   "eyes": 3,
+   "top": "tuft",
+   "pattern": "stripes",
+   "mouth": "smile",
+   "tail": false,
+   "hue": 298
+  },
+  {
+   "key": "r",
+   "body": "round",
+   "eyes": 1,
+   "top": "none",
+   "pattern": "spots",
+   "mouth": "open",
+   "tail": true,
+   "hue": 249
+  },
+  {
+   "key": "s",
+   "body": "pear",
+   "eyes": 3,
+   "top": "ears",
+   "pattern": "plain",
+   "mouth": "beak",
+   "tail": true,
+   "hue": 25
+  },
+  {
+   "key": "t",
+   "body": "wide",
+   "eyes": 1,
+   "top": "antenna",
+   "pattern": "stripes",
+   "mouth": "smile",
+   "tail": true,
+   "hue": 337
+  },
+  {
+   "key": "u",
+   "body": "tall",
+   "eyes": 1,
+   "top": "tuft",
+   "pattern": "stripes",
+   "mouth": "fangs",
+   "tail": true,
+   "hue": 113
+  },
+  {
+   "key": "v",
+   "body": "round",
+   "eyes": 2,
+   "top": "ears",
+   "pattern": "plain",
+   "mouth": "beak",
+   "tail": false,
+   "hue": 65
+  },
+  {
+   "key": "w",
+   "body": "pear",
+   "eyes": 1,
+   "top": "horns",
+   "pattern": "belly",
+   "mouth": "beak",
+   "tail": false,
+   "hue": 201
+  },
+  {
+   "key": "x",
+   "body": "wide",
+   "eyes": 1,
+   "top": "horns",
+   "pattern": "plain",
+   "mouth": "open",
+   "tail": true,
+   "hue": 170
+  },
+  {
+   "key": "y",
+   "body": "tall",
+   "eyes": 1,
+   "top": "antenna",
+   "pattern": "belly",
+   "mouth": "open",
+   "tail": true,
+   "hue": 306
+  },
+  {
+   "key": "z",
+   "body": "round",
+   "eyes": 2,
+   "top": "none",
+   "pattern": "stripes",
+   "mouth": "smile",
+   "tail": true,
+   "hue": 258
+  },
+  {
+   "key": "0",
+   "body": "wide",
+   "eyes": 1,
+   "top": "horns",
+   "pattern": "stripes",
+   "mouth": "fangs",
+   "tail": true,
+   "hue": 91
+  },
+  {
+   "key": "1",
+   "body": "tall",
+   "eyes": 1,
+   "top": "antenna",
+   "pattern": "spots",
+   "mouth": "open",
+   "tail": true,
+   "hue": 227
+  },
+  {
+   "key": "2",
+   "body": "round",
+   "eyes": 2,
+   "top": "tuft",
+   "pattern": "belly",
+   "mouth": "beak",
+   "tail": false,
+   "hue": 179
+  },
+  {
+   "key": "3",
+   "body": "pear",
+   "eyes": 1,
+   "top": "none",
+   "pattern": "stripes",
+   "mouth": "smile",
+   "tail": true,
+   "hue": 315
+  },
+  {
+   "key": "4",
+   "body": "wide",
+   "eyes": 2,
+   "top": "horns",
+   "pattern": "spots",
+   "mouth": "open",
+   "tail": false,
+   "hue": 267
+  },
+  {
+   "key": "5",
+   "body": "tall",
+   "eyes": 2,
+   "top": "antenna",
+   "pattern": "plain",
+   "mouth": "beak",
+   "tail": false,
+   "hue": 43
+  },
+  {
+   "key": "6",
+   "body": "round",
+   "eyes": 3,
+   "top": "none",
+   "pattern": "belly",
+   "mouth": "smile",
+   "tail": false,
+   "hue": 355
+  },
+  {
+   "key": "7",
+   "body": "pear",
+   "eyes": 2,
+   "top": "ears",
+   "pattern": "stripes",
+   "mouth": "fangs",
+   "tail": false,
+   "hue": 131
+  },
+  {
+   "key": "8",
+   "body": "wide",
+   "eyes": 2,
+   "top": "ears",
+   "pattern": "belly",
+   "mouth": "beak",
+   "tail": false,
+   "hue": 100
+  },
+  {
+   "key": "9",
+   "body": "tall",
+   "eyes": 2,
+   "top": "horns",
+   "pattern": "stripes",
+   "mouth": "smile",
+   "tail": true,
+   "hue": 236
+  },
+  {
+   "key": ".",
+   "body": "round",
+   "eyes": 2,
+   "top": "none",
+   "pattern": "spots",
+   "mouth": "open",
+   "tail": false,
+   "hue": 346
+  },
+  {
+   "key": ",",
+   "body": "wide",
+   "eyes": 1,
+   "top": "horns",
+   "pattern": "plain",
+   "mouth": "smile",
+   "tail": true,
+   "hue": 258
+  },
+  {
+   "key": "!",
+   "body": "tall",
+   "eyes": 2,
+   "top": "tuft",
+   "pattern": "stripes",
+   "mouth": "fangs",
+   "tail": false,
+   "hue": 210
+  },
+  {
+   "key": "?",
+   "body": "pear",
+   "eyes": 3,
+   "top": "none",
+   "pattern": "belly",
+   "mouth": "beak",
+   "tail": true,
+   "hue": 139
+  },
+  {
+   "key": ";",
+   "body": "pear",
+   "eyes": 2,
+   "top": "none",
+   "pattern": "plain",
+   "mouth": "beak",
+   "tail": false,
+   "hue": 324
+  },
+  {
+   "key": ":",
+   "body": "round",
+   "eyes": 3,
+   "top": "tuft",
+   "pattern": "plain",
+   "mouth": "open",
+   "tail": false,
+   "hue": 188
+  },
+  {
+   "key": "'",
+   "body": "pear",
+   "eyes": 1,
+   "top": "antenna",
+   "pattern": "belly",
+   "mouth": "smile",
+   "tail": true,
+   "hue": 9
+  },
+  {
+   "key": "\"",
+   "body": "round",
+   "eyes": 3,
+   "top": "none",
+   "pattern": "spots",
+   "mouth": "beak",
+   "tail": true,
+   "hue": 161
+  },
+  {
+   "key": "-",
+   "body": "tall",
+   "eyes": 1,
+   "top": "tuft",
+   "pattern": "belly",
+   "mouth": "smile",
+   "tail": true,
+   "hue": 34
+  },
+  {
+   "key": "@",
+   "body": "wide",
+   "eyes": 3,
+   "top": "ears",
+   "pattern": "plain",
+   "mouth": "open",
+   "tail": false,
+   "hue": 109
+  },
+  {
+   "key": "#",
+   "body": "pear",
+   "eyes": 2,
+   "top": "ears",
+   "pattern": "plain",
+   "mouth": "smile",
+   "tail": false,
+   "hue": 298
+  },
+  {
+   "key": "$",
+   "body": "wide",
+   "eyes": 1,
+   "top": "tuft",
+   "pattern": "belly",
+   "mouth": "fangs",
+   "tail": true,
+   "hue": 145
+  },
+  {
+   "key": "%",
+   "body": "tall",
+   "eyes": 1,
+   "top": "none",
+   "pattern": "stripes",
+   "mouth": "open",
+   "tail": true,
+   "hue": 281
+  },
+  {
+   "key": "&",
+   "body": "round",
+   "eyes": 2,
+   "top": "horns",
+   "pattern": "plain",
+   "mouth": "smile",
+   "tail": true,
+   "hue": 233
+  },
+  {
+   "key": "*",
+   "body": "round",
+   "eyes": 1,
+   "top": "none",
+   "pattern": "stripes",
+   "mouth": "fangs",
+   "tail": true,
+   "hue": 170
+  },
+  {
+   "key": "(",
+   "body": "wide",
+   "eyes": 3,
+   "top": "horns",
+   "pattern": "plain",
+   "mouth": "beak",
+   "tail": true,
+   "hue": 82
+  },
+  {
+   "key": ")",
+   "body": "tall",
+   "eyes": 3,
+   "top": "antenna",
+   "pattern": "belly",
+   "mouth": "beak",
+   "tail": true,
+   "hue": 218
+  },
+  {
+   "key": "[",
+   "body": "pear",
+   "eyes": 3,
+   "top": "antenna",
+   "pattern": "plain",
+   "mouth": "smile",
+   "tail": true,
+   "hue": 359
+  },
+  {
+   "key": "]",
+   "body": "tall",
+   "eyes": 1,
+   "top": "ears",
+   "pattern": "stripes",
+   "mouth": "open",
+   "tail": false,
+   "hue": 87
+  },
+  {
+   "key": "{",
+   "body": "pear",
+   "eyes": 1,
+   "top": "ears",
+   "pattern": "spots",
+   "mouth": "fangs",
+   "tail": true,
+   "hue": 34
+  },
+  {
+   "key": "}",
+   "body": "tall",
+   "eyes": 2,
+   "top": "tuft",
+   "pattern": "belly",
+   "mouth": "beak",
+   "tail": false,
+   "hue": 122
+  },
+  {
+   "key": "<",
+   "body": "wide",
+   "eyes": 3,
+   "top": "ears",
+   "pattern": "stripes",
+   "mouth": "smile",
+   "tail": false,
+   "hue": 276
+  },
+  {
+   "key": ">",
+   "body": "round",
+   "eyes": 1,
+   "top": "tuft",
+   "pattern": "plain",
+   "mouth": "beak",
+   "tail": true,
+   "hue": 3
+  },
+  {
+   "key": "/",
+   "body": "pear",
+   "eyes": 1,
+   "top": "ears",
+   "pattern": "spots",
+   "mouth": "beak",
+   "tail": false,
+   "hue": 122
+  },
+  {
+   "key": "\\",
+   "body": "wide",
+   "eyes": 1,
+   "top": "tuft",
+   "pattern": "belly",
+   "mouth": "fangs",
+   "tail": false,
+   "hue": 311
+  },
+  {
+   "key": "|",
+   "body": "wide",
+   "eyes": 2,
+   "top": "horns",
+   "pattern": "plain",
+   "mouth": "beak",
+   "tail": false,
+   "hue": 346
+  },
+  {
+   "key": "_",
+   "body": "pear",
+   "eyes": 1,
+   "top": "antenna",
+   "pattern": "plain",
+   "mouth": "fangs",
+   "tail": false,
+   "hue": 175
+  },
+  {
+   "key": "+",
+   "body": "pear",
+   "eyes": 3,
+   "top": "ears",
+   "pattern": "spots",
+   "mouth": "open",
+   "tail": true,
+   "hue": 306
+  },
+  {
+   "key": "=",
+   "body": "tall",
+   "eyes": 3,
+   "top": "antenna",
+   "pattern": "spots",
+   "mouth": "fangs",
+   "tail": false,
+   "hue": 52
+  },
+  {
+   "key": "~",
+   "body": "round",
+   "eyes": 3,
+   "top": "none",
+   "pattern": "spots",
+   "mouth": "fangs",
+   "tail": false,
+   "hue": 74
+  },
+  {
+   "key": "^",
+   "body": "round",
+   "eyes": 2,
+   "top": "horns",
+   "pattern": "spots",
+   "mouth": "smile",
+   "tail": false,
+   "hue": 39
+  }
+ ],
+ "stages": [
+  {
+   "entry": {
+    "n": 0,
+    "timedN": 0,
+    "msAvg": 0,
+    "errAvg": 0
+   },
+   "stage": null
+  },
+  {
+   "entry": {
+    "n": 3,
+    "timedN": 2,
+    "msAvg": 400,
+    "errAvg": 0.1
+   },
+   "stage": 0
+  },
+  {
+   "entry": {
+    "n": 15,
+    "timedN": 14,
+    "msAvg": 500,
+    "errAvg": 0.05
+   },
+   "stage": 1
+  },
+  {
+   "entry": {
+    "n": 40,
+    "timedN": 38,
+    "msAvg": 290,
+    "errAvg": 0.02
+   },
+   "stage": 2
+  },
+  {
+   "entry": {
+    "n": 40,
+    "timedN": 38,
+    "msAvg": 340,
+    "errAvg": 0.02
+   },
+   "stage": 1
+  },
+  {
+   "entry": {
+    "n": 150,
+    "timedN": 150,
+    "msAvg": 230,
+    "errAvg": 0.015
+   },
+   "stage": 3
+  },
+  {
+   "entry": {
+    "n": 150,
+    "timedN": 150,
+    "msAvg": 230,
+    "errAvg": 0.03
+   },
+   "stage": 2
+  },
+  {
+   "entry": {
+    "n": 60,
+    "timedN": 60,
+    "msAvg": 900,
+    "errAvg": 0.2
+   },
+   "stage": 1
+  }
+ ],
+ "health": [
+  {
+   "entry": {
+    "n": 3,
+    "timedN": 2,
+    "msAvg": 400,
+    "errAvg": 0.1
+   },
+   "daysSince": 0,
+   "health": 0.16
+  },
+  {
+   "entry": {
+    "n": 15,
+    "timedN": 14,
+    "msAvg": 500,
+    "errAvg": 0.05
+   },
+   "daysSince": 0,
+   "health": 0.49
+  },
+  {
+   "entry": {
+    "n": 40,
+    "timedN": 38,
+    "msAvg": 290,
+    "errAvg": 0.02
+   },
+   "daysSince": 0,
+   "health": 1
+  },
+  {
+   "entry": {
+    "n": 40,
+    "timedN": 38,
+    "msAvg": 340,
+    "errAvg": 0.02
+   },
+   "daysSince": 0,
+   "health": 0.98
+  },
+  {
+   "entry": {
+    "n": 150,
+    "timedN": 150,
+    "msAvg": 230,
+    "errAvg": 0.015
+   },
+   "daysSince": 0,
+   "health": 1
+  },
+  {
+   "entry": {
+    "n": 150,
+    "timedN": 150,
+    "msAvg": 230,
+    "errAvg": 0.03
+   },
+   "daysSince": 0,
+   "health": 1
+  },
+  {
+   "entry": {
+    "n": 60,
+    "timedN": 60,
+    "msAvg": 900,
+    "errAvg": 0.2
+   },
+   "daysSince": 0,
+   "health": 0.05
+  },
+  {
+   "entry": {
+    "n": 3,
+    "timedN": 2,
+    "msAvg": 400,
+    "errAvg": 0.1
+   },
+   "daysSince": 7,
+   "health": 0.16
+  },
+  {
+   "entry": {
+    "n": 15,
+    "timedN": 14,
+    "msAvg": 500,
+    "errAvg": 0.05
+   },
+   "daysSince": 7,
+   "health": 0.49
+  },
+  {
+   "entry": {
+    "n": 40,
+    "timedN": 38,
+    "msAvg": 290,
+    "errAvg": 0.02
+   },
+   "daysSince": 7,
+   "health": 1
+  },
+  {
+   "entry": {
+    "n": 40,
+    "timedN": 38,
+    "msAvg": 340,
+    "errAvg": 0.02
+   },
+   "daysSince": 7,
+   "health": 0.98
+  },
+  {
+   "entry": {
+    "n": 150,
+    "timedN": 150,
+    "msAvg": 230,
+    "errAvg": 0.015
+   },
+   "daysSince": 7,
+   "health": 1
+  },
+  {
+   "entry": {
+    "n": 150,
+    "timedN": 150,
+    "msAvg": 230,
+    "errAvg": 0.03
+   },
+   "daysSince": 7,
+   "health": 1
+  },
+  {
+   "entry": {
+    "n": 60,
+    "timedN": 60,
+    "msAvg": 900,
+    "errAvg": 0.2
+   },
+   "daysSince": 7,
+   "health": 0.05
+  },
+  {
+   "entry": {
+    "n": 3,
+    "timedN": 2,
+    "msAvg": 400,
+    "errAvg": 0.1
+   },
+   "daysSince": 8,
+   "health": 0.15
+  },
+  {
+   "entry": {
+    "n": 15,
+    "timedN": 14,
+    "msAvg": 500,
+    "errAvg": 0.05
+   },
+   "daysSince": 8,
+   "health": 0.48
+  },
+  {
+   "entry": {
+    "n": 40,
+    "timedN": 38,
+    "msAvg": 290,
+    "errAvg": 0.02
+   },
+   "daysSince": 8,
+   "health": 0.98
+  },
+  {
+   "entry": {
+    "n": 40,
+    "timedN": 38,
+    "msAvg": 340,
+    "errAvg": 0.02
+   },
+   "daysSince": 8,
+   "health": 0.96
+  },
+  {
+   "entry": {
+    "n": 150,
+    "timedN": 150,
+    "msAvg": 230,
+    "errAvg": 0.015
+   },
+   "daysSince": 8,
+   "health": 0.98
+  },
+  {
+   "entry": {
+    "n": 150,
+    "timedN": 150,
+    "msAvg": 230,
+    "errAvg": 0.03
+   },
+   "daysSince": 8,
+   "health": 0.98
+  },
+  {
+   "entry": {
+    "n": 60,
+    "timedN": 60,
+    "msAvg": 900,
+    "errAvg": 0.2
+   },
+   "daysSince": 8,
+   "health": 0.05
+  },
+  {
+   "entry": {
+    "n": 3,
+    "timedN": 2,
+    "msAvg": 400,
+    "errAvg": 0.1
+   },
+   "daysSince": 22,
+   "health": 0.12
+  },
+  {
+   "entry": {
+    "n": 15,
+    "timedN": 14,
+    "msAvg": 500,
+    "errAvg": 0.05
+   },
+   "daysSince": 22,
+   "health": 0.37
+  },
+  {
+   "entry": {
+    "n": 40,
+    "timedN": 38,
+    "msAvg": 290,
+    "errAvg": 0.02
+   },
+   "daysSince": 22,
+   "health": 0.75
+  },
+  {
+   "entry": {
+    "n": 40,
+    "timedN": 38,
+    "msAvg": 340,
+    "errAvg": 0.02
+   },
+   "daysSince": 22,
+   "health": 0.74
+  },
+  {
+   "entry": {
+    "n": 150,
+    "timedN": 150,
+    "msAvg": 230,
+    "errAvg": 0.015
+   },
+   "daysSince": 22,
+   "health": 0.75
+  },
+  {
+   "entry": {
+    "n": 150,
+    "timedN": 150,
+    "msAvg": 230,
+    "errAvg": 0.03
+   },
+   "daysSince": 22,
+   "health": 0.75
+  },
+  {
+   "entry": {
+    "n": 60,
+    "timedN": 60,
+    "msAvg": 900,
+    "errAvg": 0.2
+   },
+   "daysSince": 22,
+   "health": 0.05
+  },
+  {
+   "entry": {
+    "n": 3,
+    "timedN": 2,
+    "msAvg": 400,
+    "errAvg": 0.1
+   },
+   "daysSince": 37,
+   "health": 0.08
+  },
+  {
+   "entry": {
+    "n": 15,
+    "timedN": 14,
+    "msAvg": 500,
+    "errAvg": 0.05
+   },
+   "daysSince": 37,
+   "health": 0.25
+  },
+  {
+   "entry": {
+    "n": 40,
+    "timedN": 38,
+    "msAvg": 290,
+    "errAvg": 0.02
+   },
+   "daysSince": 37,
+   "health": 0.5
+  },
+  {
+   "entry": {
+    "n": 40,
+    "timedN": 38,
+    "msAvg": 340,
+    "errAvg": 0.02
+   },
+   "daysSince": 37,
+   "health": 0.49
+  },
+  {
+   "entry": {
+    "n": 150,
+    "timedN": 150,
+    "msAvg": 230,
+    "errAvg": 0.015
+   },
+   "daysSince": 37,
+   "health": 0.5
+  },
+  {
+   "entry": {
+    "n": 150,
+    "timedN": 150,
+    "msAvg": 230,
+    "errAvg": 0.03
+   },
+   "daysSince": 37,
+   "health": 0.5
+  },
+  {
+   "entry": {
+    "n": 60,
+    "timedN": 60,
+    "msAvg": 900,
+    "errAvg": 0.2
+   },
+   "daysSince": 37,
+   "health": 0.05
+  },
+  {
+   "entry": {
+    "n": 3,
+    "timedN": 2,
+    "msAvg": 400,
+    "errAvg": 0.1
+   },
+   "daysSince": 60,
+   "health": 0.08
+  },
+  {
+   "entry": {
+    "n": 15,
+    "timedN": 14,
+    "msAvg": 500,
+    "errAvg": 0.05
+   },
+   "daysSince": 60,
+   "health": 0.25
+  },
+  {
+   "entry": {
+    "n": 40,
+    "timedN": 38,
+    "msAvg": 290,
+    "errAvg": 0.02
+   },
+   "daysSince": 60,
+   "health": 0.5
+  },
+  {
+   "entry": {
+    "n": 40,
+    "timedN": 38,
+    "msAvg": 340,
+    "errAvg": 0.02
+   },
+   "daysSince": 60,
+   "health": 0.49
+  },
+  {
+   "entry": {
+    "n": 150,
+    "timedN": 150,
+    "msAvg": 230,
+    "errAvg": 0.015
+   },
+   "daysSince": 60,
+   "health": 0.5
+  },
+  {
+   "entry": {
+    "n": 150,
+    "timedN": 150,
+    "msAvg": 230,
+    "errAvg": 0.03
+   },
+   "daysSince": 60,
+   "health": 0.5
+  },
+  {
+   "entry": {
+    "n": 60,
+    "timedN": 60,
+    "msAvg": 900,
+    "errAvg": 0.2
+   },
+   "daysSince": 60,
+   "health": 0.05
+  }
+ ],
+ "updates": {
+  "first": [
+   {
+    "key": "e",
+    "from": null,
+    "to": 2
+   },
+   {
+    "key": "t",
+    "from": null,
+    "to": 1
+   },
+   {
+    "key": "?",
+    "from": null,
+    "to": 2
+   }
+  ],
+  "second": [
+   {
+    "key": "t",
+    "from": 1,
+    "to": 3
+   }
+  ],
+  "creatures": {
+   "a": {
+    "stage": 0,
+    "at": 1000
+   },
+   "e": {
+    "stage": 2,
+    "at": 1000
+   },
+   "t": {
+    "stage": 3,
+    "at": 2000
+   },
+   "?": {
+    "stage": 2,
+    "at": 1000
+   }
+  }
+ }
+}

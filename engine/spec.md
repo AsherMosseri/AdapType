@@ -917,6 +917,144 @@ hall, 0 games.
 
 Vectors: `nemesis.json`.
 
+## 28. Key days
+
+After every round, arcade game, race and daily challenge, each single
+character typed (not space) adds its round results to `keyDays[key]`: an
+entry `[day, n, correct, msTotal, msN]` with `day = floor(time / DAY_MS)`
+(UTC days). Results on the same day as the newest entry merge into it;
+otherwise a new entry is appended. Each key keeps its newest
+`KEY_DAYS_KEPT` entries. Arcade and race results count at full size here
+(the weight only applies to stats).
+
+## 29. Key creatures
+
+**Roster:** a–z, 0–9, then `characters.json` punctuation and symbols, in
+that order. Letters use the goal; every other key uses the modifier goal
+(goal WPM / `MODIFIER_TIME_SLACK`).
+
+**Stages** earned by a key's stats (null when it has no samples):
+
+- 3 legendary: n ≥ `CREATURE_LEGENDARY_SAMPLES`, timedN > 0, msAvg ≤
+  `CREATURE_LEGENDARY_SPEED` × goal ms, errAvg ≤ `CREATURE_LEGENDARY_ERRORS`
+- 2 grown: n ≥ `CREATURE_GROWN_SAMPLES` and weakness ≤ `CREATURE_GROWN_WEAKNESS`
+- 1 baby: n ≥ `CREATURE_BABY_SAMPLES`
+- 0 egg: otherwise
+
+`updateCreatures` raises each saved stage to the earned one (stages never
+fall) and reports changes to stage 1 or higher, in roster order.
+
+**Health** = max(`CREATURE_MIN_HEALTH`, round2(skill × recency)):
+
+- skill = clamp(1 − (weakness − GROWN_WEAKNESS) / (SICK_WEAKNESS − GROWN_WEAKNESS), 0, 1)
+- recency = max(MIN_RECENCY, 1 − (1 − MIN_RECENCY) × max(0, days − GRACE_DAYS) / DECAY_DAYS)
+
+`days` is today's day minus the key's newest key-days entry, or the last
+round's day when it has none.
+
+**Traits** (the same in every theme): with `h = hashString("creature:" + key)`,
+body `[round, tall, wide, pear][h & 3]`, eyes `(h >>> 2) % 3 + 1`, top
+`[none, ears, horns, antenna, tuft][(h >>> 4) % 5]`, pattern
+`[plain, spots, stripes, belly][(h >>> 7) & 3]`, mouth
+`[smile, fangs, open, beak][(h >>> 9) & 3]`, tail `(h >>> 11) & 1`, hue
+`(h >>> 12) % 360`.
+
+Vectors: `creatures.json`.
+
+## 30. Forecasts
+
+**Trend.** Points `(x = day − today, y)`. With fewer than
+`FORECAST_MIN_DAYS` points (or all x equal): none (data). Least squares
+gives `y = a + b·x` and the slope's standard error
+`se = sqrt(Σ residual² / (n − 2) / Σ (x − x̄)²)`. With direction `d` (+1 when
+y rises toward the target, −1 when it falls): `gap = d·(target − a)`; gap ≤ 0
+is reached. `rate = d·b`; rate ≤ 0 is none (flat). `days = gap / rate`,
+`low = gap / (rate + se)`, `high = gap / (rate − se)` (infinite when
+rate ≤ se). low > `FORECAST_MAX_DAYS`: none (far). With at least
+`FORECAST_ESTIMATE_DAYS` points, `se ≤ FORECAST_ESTIMATE_SPREAD × rate` and
+days ≤ max: estimate. Else high ≤ max: range. Else none (uncertain). Days
+are rounded to 0.1.
+
+**Speed goal.** Reached when the recent average (`RECENT_ROUNDS`) is at the
+goal WPM. Otherwise the trend of each day's mean WPM, over practice rounds
+(not calibration or warm-up) from the last `FORECAST_WINDOW_DAYS` days.
+
+**A key.** Reached when its running msAvg ≤ goal ms and 1 − errAvg ≥ goal
+accuracy (with timed samples). None (accuracy) when the window's key days
+have accuracy below the goal. Otherwise the trend (direction −1) of each
+day's msTotal / msN toward goal ms, over window days with msN ≥
+`FORECAST_KEY_MIN_TIMED`.
+
+**Next unlock.** Nothing when every letter is unlocked. Otherwise every
+unlocked, unmastered letter's key forecast: the first none (in unlock
+order) decides; with no estimates or ranges left it's reached; with only
+estimates, an estimate of the largest; otherwise a range of the largest
+low and largest high (estimates count as both).
+
+Vectors: `forecast.json`.
+
+## 31. Replays
+
+A replay stores the target, error mode, and events `[ms, char]` where ms is
+whole milliseconds after the first event (rounded) and `"\b"` is a
+backspace. The target is cut at the first space at or after where the run
+ended (or kept whole). WPM and accuracy come from feeding the events into a
+fresh round. A moment `t` is shown by feeding events with time ≤ t.
+
+Markers: every wrong keystroke (error) and every rhythm stall (hesitation,
+section 18), sorted by time, then index, then kind.
+
+Saving: the newest `REPLAYS_RECENT` runs, and the best `REPLAYS_BEST` by
+WPM × accuracy (inserted before the first lower score; ties keep the earlier
+run). Runs with fewer than 2 events aren't kept.
+
+Vectors: `replay.json`.
+
+## 32. Daily challenge
+
+The text depends only on the date (`YYYY-MM-DD`, the player's local date)
+and the word pack's id and version:
+
+1. `rng = Rng(deriveSeed("daily", packId, packVersion, date))`.
+2. Pool: the first `DAILY_POOL` pack words that are only a–z, between
+   `DAILY_MIN_LENGTH` and `DAILY_MAX_LENGTH` letters, and not blocked, in
+   pack order.
+3. `DAILY_WORDS` words: each `pool[int(pool.length)]`; if it equals the
+   previous word, one more pick replaces it.
+4. Sentences, in order: length `DAILY_SENTENCE_MIN + int(MAX − MIN + 1)`
+   (fewer if fewer words remain); then for each word but the last, a comma
+   when `next() < DAILY_COMMA_CHANCE`. A sentence under 3 words joins the
+   one before.
+5. Capitalize each sentence's first letter, end it with "." (replacing a
+   trailing comma), and join everything with spaces.
+
+Word marks: per word typed (counting the space after it), `g` when every first attempt was right, `y`
+when a first attempt was wrong but the word ended right, `r` when it ended
+wrong. A daily attempt applies its records to stats (full weight), error
+analysis and key days, not to unlocks, difficulty, rounds or sessions. Only
+the first attempt on a date is kept (`DAILY_KEPT` dates). The streak counts
+consecutive dates with a result back from today, or from yesterday when
+today has none. The share text is the date, WPM and accuracy (rounded),
+the streak when over 1, and the marks as 🟩🟨🟥 in rows of 10.
+
+Vectors: `daily.json` (sample dates use the full pack, version 1).
+
+## 33. Fingerprint card
+
+From the last `RECENT_ROUNDS` non-calibration rounds: steady when mean
+consistency ≥ `TRAIT_STEADY`, bursty when below `TRAIT_BURSTY`; precise when
+recent accuracy ≥ `TRAIT_PRECISE`, daring when below `TRAIT_DARING`; fixer
+when corrections / first errors ≥ `TRAIT_FIXER` and presses-on when ≤
+`TRAIT_PRESSES_ON` (with at least 5 first errors); at-goal when recent WPM
+is at the goal. Best letters: the 3 lowest weakness among letters with at
+least `FINGERPRINT_MIN_SAMPLES` samples (ties: faster, then alphabetical);
+worst: the 3 highest of the rest (ties: slower, then alphabetical). Top
+creatures: up to 3 met ones by stage, then health, then roster order.
+
+Profile version 5 adds empty `keyDays`, `creatures`, `replays` and `daily`.
+
+Vectors: `fingerprint.json`.
+
 ## Constants
 
 | Name | Value |
@@ -1009,6 +1147,18 @@ Vectors: `nemesis.json`.
 | `RIVAL_AHEAD`, `RUBBER_BAND_CHARS`, `RUBBER_BAND_STRENGTH` | 1.05, 15, 0.3 |
 | `RIVAL_WARMUP_SECONDS`, `RACE_WORDS` | 3, 30 |
 | `NEMESIS_MIN_SAMPLES`, `NEMESIS_MIN_WEAKNESS`, `NEMESIS_DEFEAT_WEAKNESS` | 20, 1, 0.3 |
+| `KEY_DAYS_KEPT` | 30 |
+| `CREATURE_BABY_SAMPLES`, `CREATURE_GROWN_SAMPLES`, `CREATURE_LEGENDARY_SAMPLES` | 15, 40, 150 |
+| `CREATURE_GROWN_WEAKNESS`, `CREATURE_SICK_WEAKNESS` | 0.3, 2 |
+| `CREATURE_LEGENDARY_SPEED`, `CREATURE_LEGENDARY_ERRORS` | 0.8, 0.02 |
+| `CREATURE_GRACE_DAYS`, `CREATURE_DECAY_DAYS`, `CREATURE_MIN_RECENCY`, `CREATURE_MIN_HEALTH` | 7, 30, 0.5, 0.05 |
+| `FORECAST_WINDOW_DAYS`, `FORECAST_MIN_DAYS`, `FORECAST_ESTIMATE_DAYS` | 30, 3, 7 |
+| `FORECAST_ESTIMATE_SPREAD`, `FORECAST_MAX_DAYS`, `FORECAST_KEY_MIN_TIMED` | 0.35, 365, 3 |
+| `REPLAYS_RECENT`, `REPLAYS_BEST` | 5, 3 |
+| `DAILY_WORDS`, `DAILY_POOL`, `DAILY_MIN_LENGTH`, `DAILY_MAX_LENGTH` | 30, 3000, 2, 10 |
+| `DAILY_SENTENCE_MIN`, `DAILY_SENTENCE_MAX`, `DAILY_COMMA_CHANCE`, `DAILY_KEPT` | 5, 9, 0.12, 400 |
+| `TRAIT_STEADY`, `TRAIT_BURSTY`, `TRAIT_PRECISE`, `TRAIT_DARING` | 0.55, 0.4, 0.97, 0.9 |
+| `TRAIT_FIXER`, `TRAIT_PRESSES_ON`, `FINGERPRINT_MIN_SAMPLES` | 0.8, 0.3, 20 |
 
 ## Test vectors
 
@@ -1036,6 +1186,11 @@ Vectors: `nemesis.json`.
 | `arcadeResults.json` | arcade stats at reduced weight and high scores |
 | `race.json` | rival pacing and ghost runs |
 | `nemesis.json` | nemesis names, choice and defeat |
+| `creatures.json` | creature roster, traits, stages, health and updates |
+| `forecast.json` | trend forecasts, speed goal, key and unlock forecasts |
+| `replay.json` | building, replaying, markers and keeping replays |
+| `daily.json` | daily challenge text for sample dates, marks, streaks, share text |
+| `fingerprint.json` | fingerprint card traits, best and worst keys, top creatures |
 
 Vectors that use the word pack use the first `packSize` words of
 `content/words-en.json` version 1 and `content/blocklist.json`.

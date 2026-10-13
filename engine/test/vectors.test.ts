@@ -11,6 +11,25 @@ import nemesisContent from "../../content/nemesis.json";
 import shortcutPack from "../../content/shortcuts-text-editing.json";
 import fullPack from "../../content/words-en.json";
 import {
+  completeDaily,
+  creatureHealth,
+  creatureKeys,
+  creatureTraits,
+  dailyShareText,
+  dailyStreak,
+  dailyText,
+  earnedStage,
+  fingerprint,
+  forecastGoal,
+  forecastKey,
+  forecastUnlock,
+  makeReplay,
+  recordKeyDays,
+  replayMarkers,
+  replayRound,
+  saveReplay,
+  trendForecast,
+  updateCreatures,
   ArcadeGame,
   arcadeWordSource,
   bossWeights,
@@ -607,6 +626,150 @@ describe("test vectors", () => {
       names: LETTERS.split("").map((k) => ({ key: k, name: nemesisName(state, k, nemesisContent) })),
       steps,
     };
+  });
+
+  check("creatures", () => {
+    const goal = { wpm: 40, accuracy: 0.95 };
+    const entries: StatEntry[] = [
+      { n: 0, timedN: 0, msAvg: 0, errAvg: 0 },
+      { n: 3, timedN: 2, msAvg: 400, errAvg: 0.1 },
+      { n: 15, timedN: 14, msAvg: 500, errAvg: 0.05 },
+      { n: 40, timedN: 38, msAvg: 290, errAvg: 0.02 },
+      { n: 40, timedN: 38, msAvg: 340, errAvg: 0.02 },
+      { n: 150, timedN: 150, msAvg: 230, errAvg: 0.015 },
+      { n: 150, timedN: 150, msAvg: 230, errAvg: 0.03 },
+      { n: 60, timedN: 60, msAvg: 900, errAvg: 0.2 },
+    ];
+    const state = createProfile("physical", 5);
+    state.goal = goal;
+    state.keys = { e: entries[3], t: entries[2], a: entries[1], "?": { n: 50, timedN: 50, msAvg: 330, errAvg: 0.01 } };
+    const first = updateCreatures(state, 1000, charData);
+    state.keys.t = entries[5];
+    state.keys.e = entries[7];
+    const second = updateCreatures(state, 2000, charData);
+    return {
+      goal,
+      roster: creatureKeys(charData).map((c) => c.key).join(""),
+      traits: creatureKeys(charData).map(({ key }) => ({ key, ...creatureTraits(key) })),
+      stages: entries.map((entry) => ({ entry, stage: earnedStage(entry, goal) })),
+      health: [0, 7, 8, 22, 37, 60].flatMap((days) => entries.slice(1).map((entry) => ({ entry, daysSince: days, health: creatureHealth(entry, goal, days) }))),
+      updates: { first, second, creatures: state.creatures },
+    };
+  });
+
+  check("forecast", () => {
+    const line = (n: number, start: number, slope: number, noise: number[]) => Array.from({ length: n }, (_, i) => ({ x: i - n + 1, y: start + slope * i + (noise[i % noise.length] ?? 0) }));
+    const cases = [
+      { points: line(2, 30, 1, [0]), target: 40, direction: 1 as const },
+      { points: line(8, 30, 1, [0.2, -0.3, 0.1]), target: 40, direction: 1 as const },
+      { points: line(4, 30, 1, [2, -3, 1]), target: 40, direction: 1 as const },
+      { points: line(5, 30, -0.5, [0.1, -0.1]), target: 40, direction: 1 as const },
+      { points: line(5, 45, 0.5, [0]), target: 40, direction: 1 as const },
+      { points: line(10, 400, -5, [10, -12, 4]), target: 300, direction: -1 as const },
+      { points: line(4, 30, 0.01, [0.5, -0.5]), target: 40, direction: 1 as const },
+      { points: line(3, 30, 3, [4, -4, 0]), target: 40, direction: 1 as const },
+    ];
+    const now = 20_000 * DAY_MS + 3_600_000;
+    const state = createProfile("physical", 9);
+    state.goal = { wpm: 40, accuracy: 0.95 };
+    state.unlocked = "etaoin".split("");
+    state.mastered = "etao".split("");
+    for (let d = 0; d < 9; d++) {
+      for (let r = 0; r < 2; r++) {
+        state.rounds.push({ at: now - (8 - d) * DAY_MS + r * 1000, wpm: 28 + d * 1.2 + (r ? 0.5 : -0.5), accuracy: 0.95, durationMs: 30000, chars: 120, corrections: 0, calibration: false });
+      }
+      const day = 20_000 - 8 + d;
+      recordKeyDays(state.keyDays, { i: { n: 10, correct: 10, msTotal: (420 - d * 12) * 8, msN: 8 }, n: { n: 10, correct: 8, msTotal: 3000, msN: 8 }, e: { n: 10, correct: 10, msTotal: 2000, msN: 8 } }, day * DAY_MS + 5000);
+    }
+    recordKeyDays(state.keyDays, { i: { n: 2, correct: 2, msTotal: 600, msN: 2 } }, now);
+    state.keys.i = { n: 92, timedN: 74, msAvg: 330, errAvg: 0.01 };
+    state.keys.n = { n: 90, timedN: 72, msAvg: 375, errAvg: 0.2 };
+    state.keys.e = { n: 90, timedN: 72, msAvg: 250, errAvg: 0.01 };
+    return {
+      trend: cases.map((c) => ({ ...c, forecast: trendForecast(c.points, c.target, c.direction) })),
+      profile: {
+        now,
+        rounds: state.rounds,
+        keyDays: state.keyDays,
+        keys: { i: state.keys.i, n: state.keys.n, e: state.keys.e },
+        goal: forecastGoal(state, now),
+        keyI: forecastKey(state, "i", now),
+        keyN: forecastKey(state, "n", now),
+        keyE: forecastKey(state, "e", now),
+        unlock: forecastUnlock(state, now),
+      },
+    };
+  });
+
+  check("replay", () => {
+    const events: TypingEvent[] = [
+      { kind: "char", char: "t", t: 1000 },
+      { kind: "char", char: "h", t: 1180 },
+      { kind: "char", char: "r", t: 1350 },
+      { kind: "backspace", t: 1600 },
+      { kind: "char", char: "e", t: 1720 },
+      { kind: "char", char: " ", t: 1880 },
+      { kind: "char", char: "c", t: 2050 },
+      { kind: "char", char: "a", t: 2200 },
+      { kind: "char", char: "t", t: 3400 },
+    ];
+    const run = makeReplay("the cat sat on", "backspace", events, 77, "practice");
+    const state = createProfile("physical", 1);
+    const variant = (wpm: number, accuracy: number, at: number) => ({ ...run, wpm, accuracy, at });
+    const ranks = [variant(40, 0.9, 1), variant(50, 0.9, 2), variant(30, 1, 3), variant(45, 1, 4), variant(20, 1, 5), variant(60, 0.5, 6)].map((r) => saveReplay(state, r));
+    return {
+      events,
+      run,
+      markers: replayMarkers(run),
+      frames: [0, 180, 600, 700, 1219, 5000].map((ms) => {
+        const r = replayRound(run, ms);
+        return { ms, position: r.position, typed: r.typed.join("") };
+      }),
+      ranks,
+      recentAt: state.replays.recent.map((r) => r.at),
+      bestAt: state.replays.best.map((r) => r.at),
+    };
+  });
+
+  check("daily", () => {
+    const daily = { words: fullPack.words, id: fullPack.id, version: fullPack.version };
+    const dates = ["2026-01-01", "2026-10-12", "2027-02-28", "2028-02-29", "2030-12-31"];
+    const state = createProfile("physical", 3);
+    const round = new TypingRound("Ab cd, ef.", "backspace");
+    const typing: TypingEvent[] = [
+      ...chars("Ab ", 0, 150),
+      { kind: "char", char: "x", t: 500 },
+      { kind: "backspace", t: 600 },
+      ...chars("cd, ", 700, 150),
+      { kind: "char", char: "e", t: 1400 },
+      { kind: "char", char: "x", t: 1550 },
+      { kind: "char", char: ".", t: 1700 },
+    ];
+    for (const e of typing) round.input(e);
+    const first = completeDaily(state, "2026-10-10", round, 1000);
+    const again = completeDaily(state, "2026-10-10", round, 2000);
+    state.daily["2026-10-11"] = { ...first.result, at: 3000 };
+    state.daily["2026-10-08"] = { ...first.result, at: 4000 };
+    return {
+      pack: { id: daily.id, version: daily.version },
+      texts: dates.map((date) => ({ date, text: dailyText(date, daily, blocklist) })),
+      typing,
+      first,
+      again: { scored: again.scored },
+      streaks: ["2026-10-11", "2026-10-12", "2026-10-13", "2026-10-09"].map((today) => ({ today, streak: dailyStreak(state, today) })),
+      share: dailyShareText("2026-10-10", { ...first.result, marks: "gggyrgggggggyg" }, 4),
+    };
+  });
+
+  check("fingerprint", () => {
+    const state = createProfile("physical", 4);
+    state.goal = { wpm: 40, accuracy: 0.95 };
+    const letters = "etaoinshrdlc";
+    letters.split("").forEach((k, i) => (state.keys[k] = { n: 30 + i, timedN: 30, msAvg: 200 + i * 25, errAvg: 0.01 + (i % 4) * 0.02 }));
+    state.keys.z = { n: 5, timedN: 5, msAvg: 900, errAvg: 0.3 };
+    for (let i = 0; i < 12; i++) state.rounds.push({ at: 1000 + i, wpm: 41 + (i % 3), accuracy: 0.975, durationMs: 30000, chars: 150, corrections: 3, calibration: false, consistency: 0.6, firstErrors: 3 });
+    updateCreatures(state, 5000, charData);
+    return { keys: state.keys, rounds: state.rounds, card: fingerprint(state, 5000, charData) };
   });
 
   check("profile", () => {

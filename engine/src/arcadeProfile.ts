@@ -5,7 +5,7 @@ import { DEFAULT_GOAL } from "./profile";
 export { emptyArcade } from "./profile";
 import { hashString, type Rng } from "./rng";
 import { weakness } from "./scoring";
-import { applyRecords } from "./stats";
+import { applyRecords, recordKeyDays } from "./stats";
 import type {
   ArcadeMode,
   CharacterData,
@@ -19,17 +19,18 @@ import type {
 
 /**
  * Folds arcade keystrokes into stats at ARCADE_WEIGHT (letters, pairs and
- * modifiers), and into error analysis. Arcade play doesn't touch mastery,
+ * modifiers), into error analysis, and (given a time) into key days. Arcade play doesn't touch mastery,
  * unlocks, difficulty, reviews or the session.
  */
 export function applyArcadeRecords(
   state: ProfileState,
   target: string,
   records: readonly KeystrokeRecord[],
-  options: { chars?: CharacterData; pack?: WordPack } = {},
+  options: { chars?: CharacterData; pack?: WordPack; at?: number } = {},
 ): void {
-  applyRecords(target, records, state.keys, state.pairs, options.chars, ARCADE_WEIGHT);
+  const { perKey } = applyRecords(target, records, state.keys, state.pairs, options.chars, ARCADE_WEIGHT);
   applyErrorAnalysis(state, target, records, options.pack ?? null);
+  if (options.at !== undefined) recordKeyDays(state.keyDays, perKey, options.at);
 }
 
 /**
@@ -54,7 +55,7 @@ export function completeArcadeGame(
   at: number,
   options: { chars?: CharacterData; pack?: WordPack } = {},
 ): { entry: ScoreEntry; rank: number | null } {
-  applyArcadeRecords(state, game.log, game.records, options);
+  applyArcadeRecords(state, game.log, game.records, { ...options, at });
   state.arcade.games += 1;
   state.roundCounter += 1;
   const entry: ScoreEntry = {

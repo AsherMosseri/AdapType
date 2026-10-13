@@ -1,6 +1,10 @@
 import {
   DAY_MS,
   DEFAULT_GOAL,
+  forecastGoal,
+  forecastKey,
+  forecastUnlock,
+  weakness,
   drift,
   FINGERS,
   groupBreakdown,
@@ -18,6 +22,7 @@ import {
 import type { App, Screen, ScreenView } from "../app";
 import { speedHistory } from "../components/charts";
 import { nemesisFace } from "../components/nemesisFace";
+import { forecastText, isTimed } from "../forecastText";
 import { topBar } from "../components/topBar";
 import { formatPercent, h } from "../dom";
 import { QWERTY_ROWS } from "../keyboardLayout";
@@ -28,11 +33,22 @@ export function progressScreen(app: App, screen: Screen): ScreenView {
   const state = app.profile;
   const goal = state.goal ?? DEFAULT_GOAL;
   const practice = state.rounds.filter((r) => !r.calibration);
+  const here: Screen = { name: "progress", returnTo };
 
   const main = h(
     "main",
     { class: "progress" },
     h("h1", { tabindex: "-1" }, "Progress"),
+    h(
+      "nav",
+      { class: "hub-links", "aria-label": "More" },
+      [
+        ["Creatures", { name: "collection", returnTo: here }],
+        ["Replays", { name: "replays", returnTo: here }],
+        ["Daily challenge", { name: "daily" }],
+        ["Fingerprint card", { name: "card", returnTo: here }],
+      ].map(([label, to]) => h("button", { type: "button", class: "button", onclick: () => app.go(to as Screen) }, label as string)),
+    ),
     practice.length === 0
       ? h("p", { class: "lead" }, "Play a few rounds and your speed history, mistakes and reviews show up here.")
       : h(
@@ -42,6 +58,7 @@ export function progressScreen(app: App, screen: Screen): ScreenView {
           h("p", { class: "panel-lead" }, `Your last ${Math.min(30, practice.length)} rounds against your goal of ${goal.wpm} WPM. Hover a point for details.`),
           speedHistory(practice, goal.wpm),
         ),
+    forecastPanel(state),
     reviewsPanel(state),
     mistakesPanel(state),
     handsPanel(app, state),
@@ -272,5 +289,36 @@ function hallPanel(state: ProfileState): HTMLElement | null {
           ),
         )
       : null,
+  );
+}
+
+/** When you'll reach your goal, unlock the next letter, and fix your weakest keys. Honest about uncertainty. */
+function forecastPanel(state: ProfileState): HTMLElement | null {
+  if (state.calibration !== "done" || !state.goal) return null;
+  const now = Date.now();
+  const goal = state.goal;
+  const rows: HTMLElement[] = [];
+  const row = (what: string, f: ReturnType<typeof forecastGoal>, subject: "goal" | "key") =>
+    h("li", { class: isTimed(f) ? "timed" : "" }, h("span", { class: "forecast-what" }, what), h("span", { class: "forecast-when" }, forecastText(f, subject)));
+  rows.push(row(`Reaching ${goal.wpm} WPM`, forecastGoal(state, now), "goal"));
+  const unlock = forecastUnlock(state, now);
+  if (unlock) {
+    const f = unlock.forecast;
+    const note = f.kind === "none" && unlock.blocking.length ? ` (waiting on ${unlock.blocking.join(" ")})` : "";
+    rows.push(h("li", { class: isTimed(f) ? "timed" : "" }, h("span", { class: "forecast-what" }, `Unlocking ${unlock.letter}${note}`), h("span", { class: "forecast-when" }, f.kind === "reached" ? "Soon: keep practicing" : forecastText(f, "key"))));
+  }
+  const weakest = state.unlocked
+    .filter((k) => state.keys[k] && state.keys[k].n >= 10)
+    .map((k) => ({ k, w: weakness(state.keys[k], goal) }))
+    .filter((x) => x.w > 0.3)
+    .sort((a, b) => b.w - a.w)
+    .slice(0, 3);
+  for (const { k } of weakest) rows.push(row(`${k} reaching your goal`, forecastKey(state, k, now), "key"));
+  return h(
+    "section",
+    { class: "panel" },
+    h("h2", null, "Forecasts"),
+    h("p", { class: "panel-lead" }, "Based on your daily results over the last month. A range means the trend is still noisy; with too little data there's no forecast at all."),
+    h("ul", { class: "forecast-list" }, rows),
   );
 }

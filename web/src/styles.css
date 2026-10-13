@@ -711,7 +711,8 @@ textarea {
   padding-bottom: 0;
 }
 #app[data-screen="practice"],
-#app[data-screen="calibration"] {
+#app[data-screen="calibration"],
+#app[data-screen="daily"] {
   height: 100%;
 }
 .practice-screen.touch .practice {
@@ -2283,4 +2284,470 @@ button.choice:hover {
   .toast {
     transition: none;
   }
+}
+
+/* Phase 5: creatures (clean theme style: flat color from the creature's hue, ink outline) */
+.creature {
+  --sat: 60%;
+  flex: none;
+  overflow: visible;
+}
+.cr-body,
+.cr-tail {
+  fill: hsl(var(--hue) var(--sat) 72%);
+  stroke: var(--ink);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+.cr-tail {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+.cr-horn {
+  fill: hsl(calc(var(--hue) + 40) var(--sat) 82%);
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+.cr-mark {
+  fill: hsl(var(--hue) var(--sat) 52%);
+}
+.cr-stripe {
+  fill: none;
+  stroke: hsl(var(--hue) var(--sat) 52%);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+.cr-belly {
+  fill: hsl(var(--hue) var(--sat) 86%);
+}
+.cr-foot {
+  fill: hsl(var(--hue) var(--sat) 52%);
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+.cr-eye {
+  fill: #fff;
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+.cr-pupil {
+  fill: #14171f;
+}
+.cr-line {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.cr-fang {
+  fill: #fff;
+  stroke: var(--ink);
+  stroke-width: 1;
+}
+.cr-beak {
+  fill: hsl(40 85% 60%);
+  stroke: var(--ink);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+.cr-crown {
+  fill: hsl(45 95% 58%);
+  stroke: var(--ink);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+.cr-sparkle {
+  fill: hsl(45 95% 58%);
+}
+.cr-shadow {
+  fill: var(--line);
+}
+.cr-unknown {
+  fill: var(--muted);
+  font-family: var(--font-ui);
+  font-weight: 800;
+  font-size: 20px;
+}
+.creature.stage-0 {
+  animation: wobble 3.2s ease-in-out infinite;
+  transform-origin: 50% 90%;
+}
+@keyframes wobble {
+  0%,
+  80%,
+  100% {
+    transform: rotate(0);
+  }
+  85% {
+    transform: rotate(-6deg);
+  }
+  90% {
+    transform: rotate(5deg);
+  }
+  95% {
+    transform: rotate(-3deg);
+  }
+}
+.creature.unwell {
+  opacity: 0.85;
+}
+
+/* Collection */
+.stage-counts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.25rem;
+  color: var(--muted);
+}
+.collection {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+.creature-group h2 {
+  margin-bottom: 0.75rem;
+}
+.creature-group h2 .fine {
+  text-transform: none;
+  letter-spacing: 0;
+  font-weight: 400;
+}
+.creature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  gap: 0.5rem;
+}
+.creature-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  padding: 0.5rem 0.25rem 0.35rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+.creature-cell:hover {
+  border-color: var(--accent);
+}
+.creature-cell[aria-pressed="true"] {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-soft);
+}
+.creature-cell.unmet {
+  background: transparent;
+}
+.creature-key {
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+.creature-cell.unmet .creature-key {
+  color: var(--muted);
+}
+.creature-detail {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 1.25rem;
+}
+.creature-detail > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+.creature-detail h2 {
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--ink);
+  font-size: var(--step-1);
+}
+.health-meter {
+  height: 0.6rem;
+  width: min(100%, 16rem);
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+.health-meter span {
+  display: block;
+  height: 100%;
+  background: var(--good);
+}
+.creature-row {
+  display: flex;
+  gap: 0.25rem;
+}
+.creature-callout {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.creature-callout > div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+@media (max-width: 480px) {
+  .creature-detail {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .creature-detail .health-meter {
+    margin-inline: auto;
+  }
+}
+
+/* Progress hub and forecasts */
+.hub-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.forecast-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.forecast-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 0;
+  border-top: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+.forecast-list li:first-child {
+  border-top: 0;
+}
+.forecast-what {
+  font-weight: 600;
+}
+.forecast-when {
+  color: var(--muted);
+}
+.forecast-list li.timed .forecast-when {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* Replays */
+.replay-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.replay-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--line);
+}
+.replay-row:first-child {
+  border-top: 0;
+}
+.replay-rank {
+  font-family: var(--font-mono);
+  color: var(--muted);
+  width: 2rem;
+}
+.replay-main {
+  flex: 1;
+  min-width: 0;
+}
+.replay-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.replay-time {
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+}
+.play-button {
+  min-width: 7.5rem;
+}
+.timeline {
+  position: relative;
+  padding-top: 14px;
+}
+.scrub {
+  width: 100%;
+  accent-color: var(--accent);
+}
+.marker-layer {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  top: 0;
+  height: 14px;
+}
+.marker {
+  position: absolute;
+  top: 0;
+  width: 12px;
+  height: 12px;
+  padding: 0;
+  margin-left: -6px;
+  border: 2px solid var(--surface);
+  border-radius: 50%;
+  cursor: pointer;
+}
+.marker.error,
+.dot.error {
+  background: var(--bad);
+}
+.marker.hesitation,
+.dot.hesitation {
+  background: hsl(40 90% 50%);
+}
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  vertical-align: middle;
+}
+.replay-track {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.replay-track-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.replay-stats {
+  color: var(--muted);
+  font-size: var(--step--1);
+}
+.replay-lane {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--line);
+  overflow: hidden;
+}
+.replay-fill {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--accent);
+}
+.replay-track.best .replay-fill {
+  background: var(--upcoming);
+}
+.replay-track.best .typing {
+  font-size: clamp(1.05rem, 3.4vw, 1.4rem);
+}
+
+/* Daily challenge */
+.daily-date {
+  color: var(--muted);
+  font-weight: 600;
+}
+.streak {
+  color: var(--accent);
+}
+.daily-score {
+  font-size: var(--step-2);
+  font-weight: 800;
+}
+.mark-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-width: calc(10 * 22px + 9 * 4px);
+}
+.mark {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  background: var(--line);
+}
+.mark.clean {
+  background: var(--good);
+}
+.mark.fixed {
+  background: hsl(45 90% 52%);
+}
+.mark.wrong {
+  background: var(--bad);
+}
+.share-text {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  white-space: pre-wrap;
+  user-select: all;
+}
+
+/* Fingerprint card */
+.card-frame {
+  border-radius: calc(var(--radius) + 4px);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.card-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.offscreen {
+  position: fixed;
+  left: -10000px;
+  top: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .creature.stage-0 {
+    animation: none;
+  }
+}
+.daily-score .num {
+  font-size: inherit;
+  font-family: var(--font-ui);
+}
+
+/* Narrow phones: the input chip shows just its icon so the top bar fits. */
+@media (max-width: 380px) {
+  .chip {
+    font-size: 0;
+    gap: 0;
+    padding-inline: 0.5rem;
+  }
+  .top-actions {
+    gap: 0;
+  }
+}
+
+/* Daily challenge on touch: the intro scrolls, and steps aside once you start typing. */
+.daily-screen.touch .practice {
+  overflow-y: auto;
+  justify-content: flex-start;
+}
+.daily-screen.touch.running .daily > h1,
+.daily-screen.touch.running .daily-date,
+.daily-screen.touch.running .daily > .notice {
+  display: none;
 }

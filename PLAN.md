@@ -4,7 +4,7 @@ A typing game that learns your weak spots and keeps targeting them. It starts
 as a fun web project. Much later it becomes a micro-app inside a larger app,
 ported to Swift and Kotlin.
 
-Status: phases 1 to 4 built (web). Phases 5 to 7 planned.
+Status: phases 1 to 5 built (web). Phases 6 and 7 planned.
 
 ## Principles
 
@@ -744,6 +744,34 @@ your weak keys, and typing it triggers the power-up. Starting set:
 - Your most evolved creatures.
 - Rendered as an image you can save, copy, or share (using the phone's share
   sheet where available).
+
+### Built differently from the plan
+
+- **Creatures** cover 67 keys: letters, digits, punctuation and symbols.
+  Capital letters count toward the capitals modifier, not the letter's
+  creature. Stages: egg once typed, baby after 15 presses, grown once the
+  key is close to your goal (40+ presses), legendary when it's well past
+  your goal with almost no mistakes (150+ presses). Stages never go back
+  down; health is what drops.
+- **Forecasts** use results logged by day, which start with this version,
+  so existing players see them after a few days of practice. A key short
+  on accuracy shows "accuracy first" instead of a date, since speed alone
+  won't get it to the goal.
+- **Replays** play your best run on the same clock, stacked above and
+  below rather than side by side, so they fit on a phone. Rounds are
+  adaptive, so the best run is usually different text: it's a race of
+  pace, not of the same words.
+- **The daily challenge** draws from the 3,000 most common words, with
+  sentence capitals, commas and periods as its fixed modifiers. It counts
+  toward key stats like practice, but not toward unlocks or difficulty.
+  The date is the player's local date.
+- **The fingerprint card** is a 1200 x 675 image in your current theme's
+  colors.
+- **Where to find it all:** Progress links to creatures, replays, the
+  daily challenge and the card; practice shows a Daily challenge button
+  until you've played today; results celebrate creatures that evolved and
+  offer the replay.
+- Browser testing was automated in Chromium only.
 
 ### Done when
 

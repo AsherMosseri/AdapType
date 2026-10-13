@@ -11,6 +11,7 @@ import {
   saveGhostIfBest,
   stepRival,
   TypingRound,
+  updateCreatures,
   updateNemesis,
   type GhostRun,
   type RoundWord,
@@ -183,7 +184,8 @@ export function raceScreen(app: App, screen: Screen): ScreenView {
     const now = Date.now();
     const elapsed = performance.now() - (startedAt ?? performance.now());
     const metrics = round.metrics();
-    applyArcadeRecords(state, round.target, round.records, { chars: characters, pack });
+    applyArcadeRecords(state, round.target, round.records, { chars: characters, pack, at: now });
+    updateCreatures(state, now, characters);
     state.arcade.games += 1;
     state.roundCounter += 1;
     let newGhost = false;
@@ -227,7 +229,7 @@ export function raceScreen(app: App, screen: Screen): ScreenView {
     if (!finished && round.records.length > 0) {
       // An unfinished race still counts toward your stats, without a score.
       finished = true;
-      applyArcadeRecords(state, round.target, round.records, { chars: characters, pack });
+      applyArcadeRecords(state, round.target, round.records, { chars: characters, pack, at: Date.now() });
       app.persist();
     }
     app.go({ name: "arcade" });

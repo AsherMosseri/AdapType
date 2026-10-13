@@ -14,7 +14,7 @@ import {
   type RoundType,
 } from "../../engine/src";
 
-export const DATA_VERSION = 4;
+export const DATA_VERSION = 5;
 
 export type OsChoice = "auto" | "mac" | "windows" | "windows-intl" | "linux";
 export type TouchLayoutChoice = "auto" | "ios" | "android";
@@ -145,7 +145,7 @@ export function parseData(text: string): AppData {
   return migrate(data as unknown as AppData);
 }
 
-/** Upgrades older saved data: version 1 → 2 adds modifier, system and shortcut settings; 2 → 3 adds practice settings. Profiles migrate in the engine. */
+/** Upgrades older saved data: version 1 → 2 adds modifier, system and shortcut settings; 2 → 3 adds practice settings; 3 → 4 arcade settings; 4 → 5 changes nothing here (profiles gain phase 5 data). Profiles migrate in the engine. */
 function migrate(data: AppData): AppData {
   const defaults = defaultSettings(data.settings.activeProfile ?? "physical");
   data.settings = { ...defaults, ...data.settings, modifiers: { ...defaults.modifiers, ...data.settings.modifiers } };

@@ -9,6 +9,7 @@ import {
   Rng,
   START_LIVES,
   topWeakKeys,
+  updateCreatures,
   updateNemesis,
   WEAK_KEYS_FOR_BONUS,
   type ArcadeEvent,
@@ -260,6 +261,7 @@ export function arcadeGameScreen(app: App, screen: Screen): ScreenView {
     cancelAnimationFrame(raf);
     const { entry, rank } = completeArcadeGame(state, game, Date.now(), { chars: characters, pack });
     const nemesisChange = updateNemesis(state, Date.now(), nemesisContent);
+    updateCreatures(state, Date.now(), characters);
     app.persist();
     main.append(
       gameOverPanel(app, {
