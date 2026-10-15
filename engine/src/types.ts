@@ -1,5 +1,6 @@
 // Shared data types. These are the shapes the engine spec describes and that
 // the Swift and Kotlin ports mirror.
+import type { LayoutId } from "./layouts";
 
 export type InputProfile = "physical" | "touch";
 export type UnlockOrder = "frequency" | "homeRow";
@@ -221,7 +222,7 @@ export interface ArcadeState {
 }
 
 export interface ProfileState {
-  version: 6;
+  version: 7;
   profile: InputProfile;
   goal: Goal | null;
   calibration: CalibrationStatus;
@@ -277,6 +278,8 @@ export interface ProfileState {
   daily: Record<string, DailyResult>;
   /** Phase 6: passages (code and quotes) typed lately, newest last, so they don't repeat right away. */
   recentPassages: string[];
+  /** Phase 6: the keyboard layout these stats belong to (each layout keeps its own profile). */
+  layout: LayoutId;
 }
 
 /**

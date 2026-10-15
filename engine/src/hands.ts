@@ -1,49 +1,13 @@
 import { DRIFT_MIN_TAPS, DRIFT_THRESHOLD } from "./constants";
+import { fingerMap, screenZoneMap, thumbMap, zoneMap } from "./layouts";
 import { weakness } from "./scoring";
 import type { Goal, StatEntry, TapPoint } from "./types";
 
-/** Standard touch-typing fingers on QWERTY. */
-export const FINGERS: Record<string, string> = {
-  "Left pinky": "qaz",
-  "Left ring": "wsx",
-  "Left middle": "edc",
-  "Left index": "rfvtgb",
-  "Right index": "yhnujm",
-  "Right middle": "ik",
-  "Right ring": "ol",
-  "Right pinky": "p",
-};
-
-/** Keyboard zones for people who don't touch-type: columns by rows. */
-export const ZONES: Record<string, string> = {
-  "Left, top row": "qwe",
-  "Left, home row": "asd",
-  "Left, bottom row": "zxc",
-  "Center, top row": "rtyu",
-  "Center, home row": "fghj",
-  "Center, bottom row": "vbnm",
-  "Right, top row": "iop",
-  "Right, home row": "kl",
-};
-
-/** Thumbs when holding a phone with two thumbs. */
-export const THUMBS: Record<string, string> = {
-  "Left thumb": "qwertasdfgzxcv",
-  "Right thumb": "yuiophjklbnm",
-};
-
-/** Screen zones on a phone keyboard: left, middle and right by row. */
-export const SCREEN_ZONES: Record<string, string> = {
-  "Left, top row": "qwe",
-  "Middle, top row": "rtyu",
-  "Right, top row": "iop",
-  "Left, middle row": "asd",
-  "Middle, middle row": "fghj",
-  "Right, middle row": "kl",
-  "Left, bottom row": "zx",
-  "Middle, bottom row": "cvb",
-  "Right, bottom row": "nm",
-};
+/** The QWERTY maps; other layouts use fingerMap, zoneMap, thumbMap and screenZoneMap from layouts.ts. */
+export const FINGERS: Record<string, string> = fingerMap("qwerty");
+export const ZONES: Record<string, string> = zoneMap("qwerty");
+export const THUMBS: Record<string, string> = thumbMap("qwerty");
+export const SCREEN_ZONES: Record<string, string> = screenZoneMap("qwerty");
 
 export interface GroupScore {
   name: string;

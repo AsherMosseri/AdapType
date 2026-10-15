@@ -1099,6 +1099,47 @@ has a Mac combo, a combo for Windows and Linux, and optionally a Linux combo
 that replaces it on Linux. Shortcut ids are unique across packs (packs added
 in phase 6 prefix them, as in `vscode:comment`), so each keeps its own stats.
 
+## 37. Keyboard layouts
+
+Each profile has a `layout`: qwerty (also US-International and UK, which
+only differ in symbols), azerty, qwertz, dvorak, colemak or colemak-dh. The
+layout table gives three rows of ten key positions (top, home, bottom) and
+a home-row unlock order:
+
+| Layout | Rows | Home-row order |
+| --- | --- | --- |
+| qwerty | `qwertyuiop` `asdfghjkl;` `zxcvbnm,./` | `asdfjklhgeriotuwypqncmvbxz` |
+| azerty | `azertyuiop` `qsdfghjklm` `wxcvbn,;:!` | `qsdfjklmhgetaoiruypzncwbvx` |
+| qwertz | `qwertzuiop` `asdfghjklö` `yxcvbnm,.-` | `asdfjklhgetoiruwpqzncmybvx` |
+| dvorak | `',.pyfgcrl` `aoeuidhtns` `;qjkxbmwvz` | `aoeuhtnsdirlcfgypmwbvkjxqz` |
+| colemak | `qwfpgjluy;` `arstdhneio` `zxcvbkm,./` | `arstneiohdluwfgypjqcmbvkxz` |
+| colemak-dh | `qwfpbjluy;` `arstgmneio` `zxcdvkh,./` | `arstneiomgluwfypbjqhdcvkxz` |
+
+QWERTY keeps its original order. The others are: the home row's home
+positions (columns 1-4, then 7-10), then column 6 and column 5, then the top
+row's letters and the bottom row's, each by English frequency. The
+frequency order is the same on every layout.
+
+From the rows (letters only):
+
+- **Neighbors** (error types, section 17): rows offset by 0, 0.25 and 0.75
+  key; two keys are neighbors when they differ by at most one row and their
+  offset columns by at most one.
+- **Left hand** (Shift side): columns 1-5.
+- **Fingers:** column 1 left pinky, 2 left ring, 3 left middle, 4-5 left
+  index, 6-7 right index, 8 right middle, 9 right ring, 10 right pinky.
+- **Zones:** left columns 1-3, center 4-7, right 8-10, per row.
+- **Thumbs:** the left thumb takes columns 1-5 of the top and home rows and
+  columns 1-4 of the bottom row; the right thumb the rest.
+- **Screen zones:** top and middle rows split at 1-3, 4-7, 8-10; the bottom
+  row at 1-2, 3-5, 6-10.
+
+Profile version 7 adds `layout`, qwerty for existing profiles. Apps keep a
+separate profile per input profile and layout, so a new layout starts with
+its own calibration, unlocks and stats.
+
+Vectors: `layouts.json`.
+
 ## Constants
 
 | Name | Value |
@@ -1239,6 +1280,7 @@ in phase 6 prefix them, as in `vscode:comment`), so each keeps its own stats.
 | `fingerprint.json` | fingerprint card traits, best and worst keys, top creatures |
 | `packs.json` | words from pasted text, and mixing packs by weight |
 | `passages.json` | passage weights and picks, auto-indent, completion, Linux combos |
+| `layouts.json` | every layout's rows, home-row order, hands, fingers, zones and neighbors |
 
 Vectors that use the word pack use the first `packSize` words of
 `content/words-en.json` version 1 and `content/blocklist.json`.

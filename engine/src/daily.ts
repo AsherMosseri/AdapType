@@ -122,7 +122,7 @@ export function completeDaily(
   at: number,
   options: { chars?: CharacterData; pack?: WordPack } = {},
 ): { scored: boolean; result: DailyResult; streak: number } {
-  const { perKey } = applyRecords(round.target, round.records, state.keys, state.pairs, options.chars);
+  const { perKey } = applyRecords(round.target, round.records, state.keys, state.pairs, options.chars, 1, state.layout);
   applyErrorAnalysis(state, round.target, round.records, options.pack ?? null);
   recordKeyDays(state.keyDays, perKey, at);
   const m = round.metrics();

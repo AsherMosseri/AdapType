@@ -1,4 +1,5 @@
-import { DAY_MS, KEY_DAYS_KEPT, KEY_HISTORY_ROUNDS, LEFT_HAND_LETTERS, MIN_AVG_WEIGHT } from "./constants";
+import { DAY_MS, KEY_DAYS_KEPT, KEY_HISTORY_ROUNDS, MIN_AVG_WEIGHT } from "./constants";
+import { leftHandLetters, type LayoutId } from "./layouts";
 import { categoryOf, modKey } from "./modifiers";
 import type { CharacterData, DayEntry, KeyRoundEntry, KeystrokeRecord, StatEntry } from "./types";
 
@@ -57,7 +58,10 @@ export function applyRecords(
   chars?: CharacterData,
   /** Weight factor for every sample (TIRED_WEIGHT for rounds played while fatigued). */
   factor = 1,
+  /** Which hand types each letter, for the Shift side check. */
+  layout: LayoutId = "qwerty",
 ): StatsUpdate {
+  const leftHand = leftHandLetters(layout);
   const perKey: Record<string, KeyRoundEntry> = {};
   const count = (key: string, r: KeystrokeRecord) => {
     const round = (perKey[key] ??= { n: 0, correct: 0, msTotal: 0, msN: 0 });
@@ -82,7 +86,7 @@ export function applyRecords(
         count(modKey(category), r);
       }
       if (r.shift && key >= "A" && key <= "Z") {
-        const wrongSide = LEFT_HAND_LETTERS.includes(key.toLowerCase()) ? r.shift === "left" : r.shift === "right";
+        const wrongSide = leftHand.includes(key.toLowerCase()) ? r.shift === "left" : r.shift === "right";
         addSample((keys[SHIFT_SIDE_KEY] ??= emptyStat()), wrongSide, null, factor);
       }
       if (r.layer) addSample((keys[TOUCH_LAYER_KEY] ??= emptyStat()), !r.correct, r.interval, factor);

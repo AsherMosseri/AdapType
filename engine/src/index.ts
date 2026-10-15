@@ -12,6 +12,7 @@ export * from "./fingerprint";
 export * from "./forecast";
 export * from "./generate";
 export * from "./hands";
+export * from "./layouts";
 export * from "./modifiers";
 export * from "./packs";
 export * from "./passages";

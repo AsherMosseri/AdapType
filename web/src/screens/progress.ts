@@ -1,20 +1,20 @@
 import {
   DAY_MS,
   DEFAULT_GOAL,
+  fingerMap,
   forecastGoal,
   forecastKey,
   forecastUnlock,
   weakness,
   drift,
-  FINGERS,
   groupBreakdown,
   LETTERS,
-  SCREEN_ZONES,
-  THUMBS,
+  screenZoneMap,
+  thumbMap,
   topMissedWords,
-  UNLOCK_ORDERS,
+  unlockSequence,
   wpmToMs,
-  ZONES,
+  zoneMap,
   type ErrorType,
   type GroupScore,
   type ProfileState,
@@ -25,7 +25,7 @@ import { nemesisFace } from "../components/nemesisFace";
 import { forecastText, isTimed } from "../forecastText";
 import { topBar } from "../components/topBar";
 import { formatPercent, h } from "../dom";
-import { QWERTY_ROWS } from "../keyboardLayout";
+import { keyboardRows } from "../keyboardRows";
 
 /** Longer-term stats: speed, mistakes, reviews, keys, fingers or thumbs, and tap drift. */
 export function progressScreen(app: App, screen: Screen): ScreenView {
@@ -152,7 +152,7 @@ function handsPanel(app: App, state: ProfileState): HTMLElement | null {
   if (state.profile === "touch") {
     const grip = state.session?.grip ?? "two";
     const keys = state.gripKeys[grip] ?? {};
-    const groups = groupBreakdown(grip === "two" ? THUMBS : SCREEN_ZONES, keys, goal);
+    const groups = groupBreakdown(grip === "two" ? thumbMap(state.layout) : screenZoneMap(state.layout), keys, goal);
     if (groups.length === 0) return null;
     return h(
       "section",
@@ -162,7 +162,7 @@ function handsPanel(app: App, state: ProfileState): HTMLElement | null {
       groupList(groups, "presses"),
     );
   }
-  const groups = groupBreakdown(state.touchTyping ? FINGERS : ZONES, state.keys, goal);
+  const groups = groupBreakdown(state.touchTyping ? fingerMap(state.layout) : zoneMap(state.layout), state.keys, goal);
   if (groups.length === 0) return null;
   const ask =
     state.touchTyping === null
@@ -188,11 +188,12 @@ function handsPanel(app: App, state: ProfileState): HTMLElement | null {
 function driftPanel(state: ProfileState): HTMLElement | null {
   const grip = state.session?.grip;
   const taps = (grip && state.gripTaps[grip]) || state.taps;
-  const rows = QWERTY_ROWS.map((row, i) =>
+  const rows = keyboardRows(state.layout).map((row, i) =>
     h(
       "div",
       { class: `heat-row row-${i}` },
-      [...row].map((letter) => {
+      row.map((letter) => {
+        if (letter === null) return h("span", { class: "drift-key spacer", "aria-hidden": "true" });
         const d = drift(taps[letter]);
         const dot = d && d.taps >= 3 ? h("span", { class: d.offset > 0.22 ? "drift-dot far" : "drift-dot", style: { left: `${50 + Math.max(-45, Math.min(45, d.dx * 100))}%`, top: `${50 + Math.max(-45, Math.min(45, d.dy * 100))}%` } }) : null;
         const label = d ? `${letter}: average tap ${Math.round(Math.abs(d.dx) * 100)}% ${d.dx >= 0 ? "right" : "left"}, ${Math.round(Math.abs(d.dy) * 100)}% ${d.dy >= 0 ? "low" : "high"}, ${d.taps} taps` : `${letter}: no taps yet`;
@@ -214,7 +215,7 @@ function driftPanel(state: ProfileState): HTMLElement | null {
 function keysPanel(state: ProfileState): HTMLElement | null {
   const goal = state.goal ?? DEFAULT_GOAL;
   const goalMs = wpmToMs(goal.wpm);
-  const letters = [...UNLOCK_ORDERS[state.unlockOrder]].filter((l) => state.keys[l]?.n);
+  const letters = [...unlockSequence(state.unlockOrder, state.layout)].filter((l) => state.keys[l]?.n);
   if (letters.length === 0) return null;
   const trend = (l: string) => {
     const hist = state.keyHistory[l] ?? [];

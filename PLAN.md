@@ -4,7 +4,7 @@ A typing game that learns your weak spots and keeps targeting them. It starts
 as a fun web project. Much later it becomes a micro-app inside a larger app,
 ported to Swift and Kotlin.
 
-Status: phases 1 to 5 built (web). Phase 6 in progress: themes, sound, accessibility, content packs and shortcut packs built; keyboard layouts next. Phase 7 planned.
+Status: phases 1 to 6 built (web). Phase 7 (Swift and Kotlin ports) planned.
 
 ## Principles
 
@@ -846,8 +846,8 @@ your weak keys, and typing it triggers the power-up. Starting set:
 
 ### Built so far, and how it differs from the plan
 
-Parts 1 and 2 of 3 (themes, sound, accessibility; content and shortcut
-packs) are built. Keyboard layouts come next.
+All three parts are built: themes, sound and accessibility; content and
+shortcut packs; keyboard layouts.
 
 - **Fonts** for the new themes are bundled with the app (JetBrains Mono and
   VT323 for terminal, Nunito for cute, Space Grotesk for mechanical, and
@@ -880,6 +880,17 @@ packs) are built. Keyboard layouts come next.
   lot) in practice and the arcade; the daily challenge stays English so
   results compare. Words with apostrophes or numbers are left out, and a
   word only shows up once its letters are unlocked.
+- **Keyboard layouts** are picked per input profile in Settings, with a
+  "Detect my layout" button where the browser can read the keyboard map.
+  QWERTY US, UK and US-International share one profile, since their
+  letters sit in the same places; AZERTY, QWERTZ, Dvorak, Colemak and
+  Colemak-DH each get their own, with their own calibration, unlocks and
+  stats. Switching back brings your progress back. Home row first follows
+  each layout's home row; QWERTY keeps its original order.
+- **Fingers, zones, thumbs and neighbors** come from each layout's key
+  positions, and the heatmap, drift map, fingerprint card and on-screen
+  keyboard draw the layout you picked (on touch, the letter rows change
+  and the phone's own number and symbol pages stay).
 - **Shortcut packs** are picked at the top of the drill. OS-wide packs only
   show on their own system; Linux follows GNOME. Shortcuts the system or
   browser keeps for itself are answered with the on-screen builder.

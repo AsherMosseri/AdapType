@@ -44,6 +44,7 @@ import { rhythm, type Rhythm } from "./rhythm";
 import { deriveSeed, Rng } from "./rng";
 import { clamp, computeScores, weakness, type Scores } from "./scoring";
 import { addGripSignal, recordSessionRound, suggestGrip, type FatigueChange } from "./session";
+import { KEY_LAYOUTS, type LayoutId } from "./layouts";
 import { addSample, appendHistory, applyRecords, emptyStat, isLetter, recordKeyDays } from "./stats";
 import { wpmToMs, type TypingRound } from "./typing";
 import type {
@@ -68,15 +69,15 @@ import type {
 /** Placeholder goal used for scoring before the player sets one. */
 export const DEFAULT_GOAL: Goal = { wpm: 40, accuracy: 0.95 };
 
-export function createProfile(profile: InputProfile, seed: number, order: UnlockOrder = "frequency"): ProfileState {
+export function createProfile(profile: InputProfile, seed: number, order: UnlockOrder = "frequency", layout: LayoutId = "qwerty"): ProfileState {
   return {
-    version: 6,
+    version: 7,
     profile,
     goal: null,
     calibration: "none",
     silentRoundsLeft: 0,
     unlockOrder: order,
-    unlocked: UNLOCK_ORDERS[order].slice(0, START_LETTERS).split(""),
+    unlocked: unlockSequence(order, layout).slice(0, START_LETTERS).split(""),
     mastered: [],
     keys: {},
     pairs: {},
@@ -92,7 +93,13 @@ export function createProfile(profile: InputProfile, seed: number, order: Unlock
     arcade: emptyArcade(),
     ...phase5Defaults(),
     recentPassages: [],
+    layout,
   };
+}
+
+/** The letters in unlock order: by frequency (the same on every layout), or the layout's home row first. */
+export function unlockSequence(order: UnlockOrder, layout: LayoutId = "qwerty"): string {
+  return order === "homeRow" ? KEY_LAYOUTS[layout].homeRow : UNLOCK_ORDERS.frequency;
 }
 
 function phase5Defaults() {
@@ -125,7 +132,8 @@ function phase3Defaults() {
  * sessions, the touch-typing answer and per-grip stats; 3 → 4 adds the arcade
  * (scores, ghost run, nemesis, hall of defeated); 4 → 5 adds key days,
  * creatures, replays and daily results (creatures fill in on the next
- * updateCreatures call); 5 → 6 adds recent passages.
+ * updateCreatures call); 5 → 6 adds recent passages; 6 → 7 adds the
+ * keyboard layout (QWERTY for existing profiles).
  */
 export function migrateProfile(saved: Record<string, unknown>): ProfileState {
   let p = { ...saved } as Record<string, unknown>;
@@ -146,6 +154,9 @@ export function migrateProfile(saved: Record<string, unknown>): ProfileState {
   }
   if (p.version === 5) {
     p = { ...p, recentPassages: [], version: 6 };
+  }
+  if (p.version === 6) {
+    p = { ...p, layout: "qwerty", version: 7 };
   }
   return p as unknown as ProfileState;
 }
@@ -191,7 +202,7 @@ export function masteryProgress(history: readonly KeyRoundEntry[] | undefined, g
 
 /** The next letter in the unlock order that isn't unlocked yet. */
 export function nextLetter(state: ProfileState): string | null {
-  for (const letter of UNLOCK_ORDERS[state.unlockOrder]) {
+  for (const letter of unlockSequence(state.unlockOrder, state.layout)) {
     if (!state.unlocked.includes(letter)) return letter;
   }
   return null;
@@ -273,7 +284,7 @@ export function testsOut(state: ProfileState, letter: string, goal: Goal): boole
  */
 export function applyTestOut(state: ProfileState): string[] {
   const goal = state.goal ?? DEFAULT_GOAL;
-  const order = UNLOCK_ORDERS[state.unlockOrder];
+  const order = unlockSequence(state.unlockOrder, state.layout);
   const testedOut: string[] = [];
   const unlocked: string[] = [];
   for (let i = 0; i < order.length; i++) {
@@ -294,7 +305,7 @@ export function applyTestOut(state: ProfileState): string[] {
  */
 export function setUnlockOrder(state: ProfileState, order: UnlockOrder): void {
   state.unlockOrder = order;
-  const sequence = UNLOCK_ORDERS[order];
+  const sequence = unlockSequence(order, state.layout);
   state.unlocked = sequence
     .split("")
     .filter((l, i) => i < START_LETTERS || state.mastered.includes(l));
@@ -516,7 +527,7 @@ export function completeRound(
   const session = state.session;
   const tired = !calibration && !!session?.fatigued;
   const hesitated = judgeHesitations(state, round);
-  const { perKey } = applyRecords(round.target, round.records, state.keys, state.pairs, options.chars, tired ? TIRED_WEIGHT : 1);
+  const { perKey } = applyRecords(round.target, round.records, state.keys, state.pairs, options.chars, tired ? TIRED_WEIGHT : 1, state.layout);
   const errors = applyErrorAnalysis(state, round.target, round.records, options.pack ?? null);
   const flow = rhythm(round.records);
   const historyKeys: Record<string, KeyRoundEntry> = {};

@@ -1,28 +1,10 @@
 import { BIAS_WEIGHT, MAX_MISSED_WORDS } from "./constants";
+import { areNeighbors, type LayoutId } from "./layouts";
 import { addSample, emptyStat, isLetter } from "./stats";
 import type { BiasType, ErrorType, KeystrokeRecord, ProfileState, WordPack } from "./types";
 
-const ROWS = ["qwertyuiop", "asdfghjkl", "zxcvbnm"];
-/** Row offsets so neighbors line up like a staggered keyboard. */
-const OFFSETS = [0, 0.25, 0.75];
-
-/** Whether two letters are next to each other on QWERTY (including diagonals). */
-export function areNeighbors(a: string, b: string): boolean {
-  const pa = position(a.toLowerCase());
-  const pb = position(b.toLowerCase());
-  if (!pa || !pb || (pa[0] === pb[0] && pa[1] === pb[1])) return false;
-  const dy = Math.abs(pa[0] - pb[0]);
-  const dx = Math.abs(pa[1] + OFFSETS[pa[0]] - (pb[1] + OFFSETS[pb[0]]));
-  return dy <= 1 && dx <= 1;
-}
-
-function position(ch: string): [number, number] | null {
-  for (let r = 0; r < ROWS.length; r++) {
-    const c = ROWS[r].indexOf(ch);
-    if (c >= 0) return [r, c];
-  }
-  return null;
-}
+/** Neighbors moved to layouts.ts (they depend on the keyboard layout); re-exported here for existing callers. */
+export { areNeighbors } from "./layouts";
 
 export interface ClassifiedError {
   index: number;
@@ -42,10 +24,10 @@ export interface ClassifiedError {
  *   skipped:       actual is the next target character otherwise (th → t_e)
  *   double:        actual equals the previous target character (lettter)
  *   case:          same letter, wrong case
- *   neighbor:      actual is next to expected on QWERTY
+ *   neighbor:      actual is next to expected on the keyboard layout
  *   other
  */
-export function classifyErrors(target: string, records: readonly KeystrokeRecord[]): ClassifiedError[] {
+export function classifyErrors(target: string, records: readonly KeystrokeRecord[], layout: LayoutId = "qwerty"): ClassifiedError[] {
   const out: ClassifiedError[] = [];
   let shift: { dir: 1 | -1; index: number } | null = null;
   for (let k = 0; k < records.length; k++) {
@@ -72,7 +54,7 @@ export function classifyErrors(target: string, records: readonly KeystrokeRecord
       type = following && following.index === i + 1 && following.actual === e ? "swap" : "skipped";
     } else if (prev !== undefined && a === prev) type = "double";
     else if (a.toLowerCase() === e.toLowerCase()) type = "case";
-    else if (areNeighbors(a, e)) type = "neighbor";
+    else if (areNeighbors(a, e, layout)) type = "neighbor";
     else type = "other";
     out.push({ index: i, expected: e, actual: a, type });
     if (type === "missed-double" || type === "skipped") shift = { dir: 1, index: i };
@@ -105,7 +87,7 @@ function wordAt(target: string, index: number): string {
  * sample on the swapped letter pair, so swaps get pair drills.
  */
 export function applyErrorAnalysis(state: ProfileState, target: string, records: readonly KeystrokeRecord[], pack: WordPack | null): ErrorRoundSummary {
-  const errors = classifyErrors(target, records);
+  const errors = classifyErrors(target, records, state.layout);
   const counts: Partial<Record<ErrorType, number>> = {};
   const missed = new Set<string>();
   for (const err of errors) {

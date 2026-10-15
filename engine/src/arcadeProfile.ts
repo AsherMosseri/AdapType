@@ -28,7 +28,7 @@ export function applyArcadeRecords(
   records: readonly KeystrokeRecord[],
   options: { chars?: CharacterData; pack?: WordPack; at?: number } = {},
 ): void {
-  const { perKey } = applyRecords(target, records, state.keys, state.pairs, options.chars, ARCADE_WEIGHT);
+  const { perKey } = applyRecords(target, records, state.keys, state.pairs, options.chars, ARCADE_WEIGHT, state.layout);
   applyErrorAnalysis(state, target, records, options.pack ?? null);
   if (options.at !== undefined) recordKeyDays(state.keyDays, perKey, options.at);
 }

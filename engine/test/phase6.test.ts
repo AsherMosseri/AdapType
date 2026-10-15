@@ -3,7 +3,26 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import code from "../../content/code.json";
 import quotes from "../../content/quotes.json";
-import { createProfile, migrateProfile, mixWordPacks, TypingRound, wordsFromText, type ShortcutPack, type TypingEvent } from "../src";
+import {
+  areNeighbors,
+  classifyErrors,
+  createProfile,
+  fingerMap,
+  KEY_LAYOUTS,
+  LAYOUT_IDS,
+  LETTERS,
+  migrateProfile,
+  mixWordPacks,
+  nextLetter,
+  screenZoneMap,
+  setUnlockOrder,
+  thumbMap,
+  TypingRound,
+  wordsFromText,
+  zoneMap,
+  type ShortcutPack,
+  type TypingEvent,
+} from "../src";
 
 const CONTENT = join(__dirname, "..", "..", "content");
 const shortcutPacks: ShortcutPack[] = readdirSync(CONTENT)
@@ -79,12 +98,56 @@ describe("content", () => {
   });
 });
 
+describe("keyboard layouts", () => {
+  it("every layout has all 26 letters once, and a home-row order of all 26", () => {
+    for (const id of LAYOUT_IDS) {
+      const l = KEY_LAYOUTS[id];
+      const letters = l.rows.join("").replace(/[^a-z]/g, "");
+      expect([...letters].sort().join(""), id).toBe(LETTERS);
+      expect([...l.homeRow].sort().join(""), id).toBe(LETTERS);
+      for (const map of [fingerMap(id), zoneMap(id), thumbMap(id), screenZoneMap(id)]) {
+        expect(Object.values(map).join("").split("").sort().join(""), id).toBe(LETTERS);
+      }
+    }
+  });
+
+  it("QWERTY keeps its old maps", () => {
+    const sorted = (m: Record<string, string>) => Object.fromEntries(Object.entries(m).map(([k, v]) => [k, [...v].sort().join("")]));
+    expect(sorted(fingerMap("qwerty"))).toEqual(sorted({ "Left pinky": "qaz", "Left ring": "wsx", "Left middle": "edc", "Left index": "rfvtgb", "Right index": "yhnujm", "Right middle": "ik", "Right ring": "ol", "Right pinky": "p" }));
+    expect(thumbMap("qwerty")).toEqual({ "Left thumb": "qwertasdfgzxcv", "Right thumb": "yuiophjklbnm" });
+    expect(sorted(screenZoneMap("qwerty"))).toEqual(sorted({ "Left, top row": "qwe", "Middle, top row": "rtyu", "Right, top row": "iop", "Left, middle row": "asd", "Middle, middle row": "fghj", "Right, middle row": "kl", "Left, bottom row": "zx", "Middle, bottom row": "cvb", "Right, bottom row": "nm" }));
+  });
+
+  it("neighbors, home-row unlocks and error types follow the layout", () => {
+    expect(areNeighbors("e", "u", "dvorak")).toBe(true);
+    expect(areNeighbors("e", "u", "qwerty")).toBe(false);
+    const dvorak = createProfile("physical", 1, "homeRow", "dvorak");
+    expect(dvorak.unlocked).toEqual(["a", "o", "e", "u", "h", "t"]);
+    expect(nextLetter(dvorak)).toBe("n");
+    const round = new TypingRound("the", "backspace");
+    for (const [char, t] of [["t", 0], ["h", 100], ["u", 200]] as const) round.input({ kind: "char", char, t });
+    expect(classifyErrors(round.target, round.records, "dvorak")[0].type).toBe("neighbor");
+    expect(classifyErrors(round.target, round.records, "qwerty")[0].type).toBe("other");
+    const colemak = createProfile("physical", 1, "frequency", "colemak");
+    setUnlockOrder(colemak, "homeRow");
+    expect(colemak.unlocked).toEqual(["a", "r", "s", "t", "n", "e"]);
+  });
+});
+
 describe("migration", () => {
+  it("upgrades version 6 profiles to QWERTY", () => {
+    const v6 = { ...createProfile("physical", 1), version: 6 } as Record<string, unknown>;
+    delete v6.layout;
+    const p = migrateProfile(v6);
+    expect(p.version).toBe(7);
+    expect(p.layout).toBe("qwerty");
+  });
+
   it("upgrades version 5 profiles", () => {
     const v5 = { ...createProfile("physical", 1), version: 5 } as Record<string, unknown>;
     delete v5.recentPassages;
     const p = migrateProfile(v5);
-    expect(p.version).toBe(6);
+    expect(p.version).toBe(7);
     expect(p.recentPassages).toEqual([]);
   });
 });

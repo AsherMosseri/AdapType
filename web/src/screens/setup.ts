@@ -33,7 +33,7 @@ export function welcomeScreen(app: App): ScreenView {
     );
   };
 
-  const otherReady = (["physical", "touch"] as const).some((p) => p !== app.data.settings.activeProfile && app.data.profiles[p]?.goal);
+  const otherReady = Object.entries(app.data.profiles).some(([key, p]) => key !== app.profileKey && p?.goal);
   const el = h(
     "div",
     { class: "screen" },
@@ -54,7 +54,7 @@ export function welcomeScreen(app: App): ScreenView {
         choice("physical", "Keyboard", "A physical keyboard on a laptop or desktop.", ICONS.keyboard),
         choice("touch", "Touch screen", "AdapType's own on-screen keyboard, built for thumbs.", ICONS.phone),
       ),
-      otherReady ? h("p", { class: "fine" }, "Keyboard and touch progress are kept separately, so each starts with its own test.") : null,
+      otherReady ? h("p", { class: "fine" }, "Keyboard, touch and each keyboard layout keep their own progress, so each starts with its own test.") : null,
       h(
         "section",
         { class: "panel" },
