@@ -37,7 +37,7 @@ export function welcomeScreen(app: App): ScreenView {
   const el = h(
     "div",
     { class: "screen" },
-    h("header", { class: "top-bar" }, h("span", { class: "wordmark" }, "Adap", h("b", null, "Type"))),
+    topBar(app, { settingsOnly: true, returnTo: { name: "welcome" } }),
     h(
       "main",
       { class: "welcome" },
@@ -104,7 +104,7 @@ export function goalScreen(app: App, screen: Screen): ScreenView {
   const el = h(
     "div",
     { class: "screen" },
-    topBar(app, { noSettings: true }),
+    topBar(app, { settingsOnly: true, returnTo: { name: "welcome" } }),
     h(
       "main",
       { class: "goal-screen" },

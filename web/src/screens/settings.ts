@@ -53,7 +53,9 @@ export function settingsScreen(app: App, screen: Screen): ScreenView {
   const leave = () => {
     app.persist();
     if (app.needsSetup) app.go({ name: "welcome" });
-    else app.go(returnTo ?? { name: "practice" });
+    // Came from setup, but this profile is ready (for example, switched back to a layout with progress).
+    else if (!returnTo || returnTo.name === "welcome" || returnTo.name === "goal") app.go({ name: "practice" });
+    else app.go(returnTo);
   };
 
   const roundId = ROUND_CHOICES.find((c) => JSON.stringify(c.round) === JSON.stringify(settings.round))?.id ?? "w25";
