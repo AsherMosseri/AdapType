@@ -4,7 +4,7 @@ A typing game that learns your weak spots and keeps targeting them. It starts
 as a fun web project. Much later it becomes a micro-app inside a larger app,
 ported to Swift and Kotlin.
 
-Status: phases 1 to 5 built (web). Phases 6 and 7 planned.
+Status: phases 1 to 5 built (web). Phase 6 in progress: themes, sound and accessibility built; packs and keyboard layouts next. Phase 7 planned.
 
 ## Principles
 
@@ -843,6 +843,31 @@ your weak keys, and typing it triggers the power-up. Starting set:
 - OS-wide (macOS, Windows, Linux) and browser packs.
 - First app packs: VS Code, Google Docs and Sheets, Figma, Slack. More over
   time.
+
+### Built so far, and how it differs from the plan
+
+Part 1 of 3 (themes, sound, accessibility) is built. Content and shortcut
+packs come next, then keyboard layouts.
+
+- **Fonts** for the new themes are bundled with the app (JetBrains Mono and
+  VT323 for terminal, Nunito for cute, Space Grotesk for mechanical, and
+  OpenDyslexic), so they work offline and no font service is contacted.
+- **Tones** cover the round banner and the nemesis taunts and defeat line.
+  Other text stays plain in every theme so instructions read the same.
+- **Creature styles:** terminal draws pixel art in the theme's one color,
+  cute draws soft blobs with blush and shiny eyes, and mechanical draws
+  keycap critters with the key's legend on the cap.
+- **Sound** is on by default at half volume, with a separate switch for key
+  clicks. The metronome beats out loud when sound is on.
+- **Letter spacing** applies to the text you type; line spacing and text
+  size apply everywhere. Text size runs from 80% to 160%, on top of the
+  device setting.
+- **Reduce motion** is also a setting, for when the device setting isn't
+  available or you want it only here.
+- **Screen readers** hear the first word, each new word, mistakes as they
+  happen and the results; in the arcade, the word you lock onto. These were
+  checked through the live regions in automated Chromium runs; a hands-on
+  pass with VoiceOver and TalkBack is still to do.
 
 ### Done when
 

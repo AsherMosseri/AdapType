@@ -18,3 +18,10 @@ export type TouchLayout = Record<TouchLayerName, string[][]>;
 export const touchLayouts = touchJson.layouts as Record<"ios" | "android", TouchLayout>;
 export const touchAlternates: Record<string, string> = touchJson.alternates;
 export const nemesisContent: NemesisContent = nemesisJson;
+
+/** Nemesis names with taunts and the defeat line in a theme's tone (plain is the default set). */
+export function nemesisContentFor(tone: "plain" | "terse" | "playful" | "matter"): NemesisContent {
+  if (tone === "plain") return nemesisContent;
+  const t = nemesisJson.tones[tone];
+  return { names: nemesisJson.names, taunts: t.taunts, defeat: t.defeat };
+}

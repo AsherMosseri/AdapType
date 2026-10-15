@@ -15,7 +15,9 @@ import { sessionScreen } from "./screens/session";
 import { settingsScreen } from "./screens/settings";
 import { shortcutsScreen } from "./screens/shortcuts";
 import { goalScreen, welcomeScreen } from "./screens/setup";
+import { armSound } from "./sound";
 import "./styles.css";
+import "./themes.css";
 
 const root = document.getElementById("app")!;
 const app = new App(root);
@@ -37,4 +39,5 @@ app.register("replays", replaysScreen);
 app.register("replay", replayScreen);
 app.register("daily", dailyScreen);
 app.register("card", cardScreen);
+armSound();
 app.home();

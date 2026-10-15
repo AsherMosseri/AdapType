@@ -16,7 +16,11 @@ import { touchKeyboard } from "../components/touchKeyboard";
 import { TypingView } from "../components/typingView";
 import { blocklist, characters, pack } from "../content";
 import { formatPercent, h } from "../dom";
+import { announce, wordAt } from "../announce";
+import { scrollBehavior } from "../appearance";
 import { attachPhysicalInput } from "../physicalInput";
+import { playSound } from "../sound";
+import { keystrokeFeedback } from "../typingFeedback";
 import { currentTouchLayout } from "../platform";
 
 /** Today's date where the player is, as YYYY-MM-DD. */
@@ -133,8 +137,10 @@ export function dailyScreen(app: App): ScreenView {
       el.classList.add("running");
       ticker = window.setInterval(refresh, 250);
     }
-    round.input(event);
+    const before = round.position;
+    const record = round.input(event);
     inputEvents.push({ kind: event.kind, char: event.char, t: event.t });
+    keystrokeFeedback(round, record, before);
     view.update(round);
     if (round.done) finish();
   }
@@ -153,6 +159,8 @@ export function dailyScreen(app: App): ScreenView {
     const { scored, result, streak: newStreak } = completeDaily(state, date, round, now, { chars: characters, pack });
     if (inputEvents.length >= 2) saveReplay(state, makeReplay(round.target, round.mode, inputEvents, now, "daily"));
     const grown = updateCreatures(state, now, characters);
+    playSound("success");
+    announce(`Done. ${Math.round(result.wpm)} words per minute, ${formatPercent(result.accuracy)} accuracy.${scored ? " This is today's score." : " Practice try; today's score stays."}`);
     app.persist();
     keyboard?.remove();
     el.classList.remove("touch");
@@ -209,11 +217,12 @@ export function dailyScreen(app: App): ScreenView {
       ),
     );
     requestAnimationFrame(() => {
-      resultArea.scrollIntoView({ block: "start", behavior: "smooth" });
+      resultArea.scrollIntoView({ block: "start", behavior: scrollBehavior() });
       shareButton.focus({ preventScroll: true });
     });
   }
 
+  announce(`Ready. First word: ${wordAt(round.target, 0)}.`);
   const onResize = () => view.scroll();
   window.addEventListener("resize", onResize);
   requestAnimationFrame(() => view.scroll());

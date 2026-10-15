@@ -19,11 +19,13 @@ import {
 import type { App, Screen, ScreenView } from "../app";
 import { rhythmGraph } from "../components/charts";
 import { heatmap } from "../components/heatmap";
+import { announce } from "../announce";
 import { creatureSvg } from "../components/creature";
 import { nemesisFace } from "../components/nemesisFace";
 import { topBar } from "../components/topBar";
 import { formatPercent, h } from "../dom";
 import { list, MODIFIER_NAMES } from "../explainText";
+import { playSound } from "../sound";
 
 export function resultsScreen(app: App, screen: Screen): ScreenView {
   if (screen.name !== "results") throw new Error("results screen needs an outcome");
@@ -135,7 +137,7 @@ export function resultsScreen(app: App, screen: Screen): ScreenView {
       h(
         "div",
         { class: "callout unlock creature-callout", role: "status" },
-        h("div", { class: "creature-row" }, grown.slice(0, 4).map((c) => creatureSvg(creatureTraits(c.key), c.to, { size: 48 }))),
+        h("div", { class: "creature-row" }, grown.slice(0, 4).map((c) => creatureSvg(creatureTraits(c.key), c.to, { size: 48, legend: c.key }))),
         h(
           "div",
           null,
@@ -235,6 +237,10 @@ export function resultsScreen(app: App, screen: Screen): ScreenView {
     ),
   );
 
+  announce(
+    `Round done. ${Math.round(metrics.wpm)} words per minute, ${formatPercent(metrics.accuracy)} accuracy.${outcome.newlyUnlocked ? ` New letter: ${outcome.newlyUnlocked}.` : ""}${grown.length ? ` ${grown.length === 1 ? "A creature" : `${grown.length} creatures`} evolved.` : ""}`,
+  );
+  if (outcome.newlyUnlocked || outcome.newlyUnlockedMods.length || outcome.newlyMastered.length || grown.length) playSound("success");
   const next = h("button", { type: "button", class: "button primary", onclick: () => app.go({ name: "practice" }) }, "Next round", h("kbd", null, "Enter"));
   const endSession = h("button", { type: "button", class: "button", onclick: () => app.go({ name: "session" }) }, "End session");
   const replayIndex = state.replays.recent.length - 1;

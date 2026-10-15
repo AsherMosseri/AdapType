@@ -1,5 +1,6 @@
 import {
   ArcadeGame,
+  COMBO_STEP,
   arcadeWordSource,
   completeArcadeGame,
   computeScores,
@@ -20,9 +21,12 @@ import type { App, Screen, ScreenView } from "../app";
 import { nemesisFace } from "../components/nemesisFace";
 import { topBar } from "../components/topBar";
 import { touchKeyboard } from "../components/touchKeyboard";
-import { blocklist, characters, nemesisContent, pack } from "../content";
+import { blocklist, characters, nemesisContent, nemesisContentFor, pack } from "../content";
 import { formatPercent, h } from "../dom";
+import { currentTone } from "../explainText";
+import { announce } from "../announce";
 import { attachPhysicalInput } from "../physicalInput";
+import { playSound } from "../sound";
 import { currentTouchLayout, platformFor } from "../platform";
 import { gameOverPanel } from "./arcadeResults";
 
@@ -173,6 +177,18 @@ export function arcadeGameScreen(app: App, screen: Screen): ScreenView {
 
   function handleEvents(events: ArcadeEvent[]): void {
     for (const e of events) {
+      if (e.type === "correct") playSound("key");
+      else if (e.type === "error") playSound("error");
+      else if (e.type === "damage") playSound("error");
+      else if (e.type === "cleared" && game.combo > 0 && game.combo % COMBO_STEP === 0) playSound("combo");
+      else if (e.type === "powerUp") playSound("powerUp");
+      else if (e.type === "levelUp") playSound("levelUp");
+      else if (e.type === "bossHit") playSound("bossHit");
+      else if (e.type === "bossDefeated") playSound("success");
+      else if (e.type === "lock") {
+        const w = game.words.find((x) => x.id === e.id);
+        if (w) announce(w.text);
+      }
       if (e.type === "powerUp") showToast(POWER_LABELS[e.kind], "power");
       else if (e.type === "levelUp") showToast(`Level ${e.level}`);
       else if (e.type === "bossStart") showToast(e.nemesis && nemesis ? `${nemesis.name} appears!` : "Boss round!", "boss");
@@ -183,7 +199,7 @@ export function arcadeGameScreen(app: App, screen: Screen): ScreenView {
       else if (e.type === "landed") flash();
       else if (e.type === "error" && nemesis && e.expected?.toLowerCase() === nemesis.key && game.time - lastTaunt > 4) {
         lastTaunt = game.time;
-        showToast(nemesisTaunt(nemesis, nemesisContent, tauntRng), "bad");
+        showToast(nemesisTaunt(nemesis, nemesisContentFor(currentTone()), tauntRng), "bad");
       } else if (e.type === "cleared") {
         const w = wordEls.get(e.id);
         if (w) {

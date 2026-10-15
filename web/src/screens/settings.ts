@@ -13,10 +13,12 @@ import {
 import type { App, Screen, ScreenView } from "../app";
 import { goalControls } from "../components/goalControls";
 import { topBar } from "../components/topBar";
+import { THEMES } from "../appearance";
 import { h } from "../dom";
 import { MODIFIER_NAMES } from "../explainText";
 import { currentOs, detectOs, detectTouchLayout, OS_NAMES, platformFor, type Os } from "../platform";
-import { clearSaved, defaultData, fromCode, newProfile, parseData, toCode, type AppData, type OsChoice, type TouchLayoutChoice } from "../store";
+import { playSound, type SoundKind } from "../sound";
+import { clearSaved, defaultData, fromCode, newProfile, parseData, toCode, type AppData, type OsChoice, type ThemeId, type TouchLayoutChoice } from "../store";
 
 const ROUND_CHOICES: { id: string; label: string; round: RoundType }[] = [
   { id: "w25", label: "25 words", round: { kind: "words", count: 25 } },
@@ -53,6 +55,9 @@ export function settingsScreen(app: App, screen: Screen): ScreenView {
     "main",
     { class: "settings" },
     h("h1", { tabindex: "-1" }, "Settings"),
+    appearanceSection(app),
+    soundSection(app),
+    accessibilitySection(app),
     section(
       "Rounds",
       radioGroup("round", "Round length", ROUND_CHOICES.map((c) => ({ id: c.id, label: c.label })), roundId, (id) => {
@@ -376,6 +381,161 @@ function keyboardSection(app: App, returnTo: Screen | undefined): HTMLElement {
       : null,
     os === "windows" ? h("p", { class: "fine" }, "Tip: the US-International layout (a free Windows setting) types accents and many symbols with AltGr.") : null,
     os === "linux" ? h("p", { class: "fine" }, "Linux layouts vary, so hints say AltGr or Compose. Turn on a Compose key in your system settings to type all of these.") : null,
+  );
+}
+
+/** Theme, with a small preview of each, and light or dark. */
+function appearanceSection(app: App): HTMLElement {
+  const settings = app.data.settings;
+  const apply = () => {
+    app.applyLook();
+    app.persist();
+  };
+  const SWATCHES: Record<ThemeId, string[]> = {
+    clean: ["#f5f6f8", "#ffffff", "#2d4fd6", "#14171f"],
+    terminal: ["#050805", "#0b120b", "#39ff6a", "#8cff9e"],
+    cute: ["#fff5fa", "#fde3f1", "#d63d8f", "#3a2440"],
+    mechanical: ["#e9e6df", "#f7f5f0", "#d9480f", "#24221f"],
+  };
+  const themeChoices = h(
+    "div",
+    { class: "theme-choices", role: "radiogroup", "aria-label": "Theme" },
+    THEMES.map((t) => {
+      const id = `theme-${t.id}`;
+      const input = h("input", { type: "radio", name: "theme", id, value: t.id, checked: t.id === settings.theme });
+      input.addEventListener("change", () => {
+        settings.theme = t.id;
+        apply();
+      });
+      return h(
+        "label",
+        { class: "theme-choice", for: id },
+        input,
+        h(
+          "span",
+          { class: "theme-card" },
+          h("span", { class: "theme-swatch", "aria-hidden": "true" }, SWATCHES[t.id].map((c) => h("span", { style: `background:${c}` }))),
+          h("span", { class: "theme-name" }, t.name),
+          h("span", { class: "fine" }, t.blurb),
+        ),
+      );
+    }),
+  );
+  return section(
+    "Appearance",
+    themeChoices,
+    radioGroup("color-mode", "Light or dark", [
+      { id: "auto", label: "Match device" },
+      { id: "light", label: "Light" },
+      { id: "dark", label: "Dark" },
+    ], settings.colorMode, (v) => {
+      settings.colorMode = v as "auto" | "light" | "dark";
+      apply();
+    }, true),
+  );
+}
+
+/** Sound on or off, volume, key clicks, and a test button. */
+function soundSection(app: App): HTMLElement {
+  const sound = app.data.settings.sound;
+  const apply = () => {
+    app.applyLook();
+    app.persist();
+  };
+  const value = h("span", { class: "range-value" }, `${Math.round(sound.volume * 100)}%`);
+  const volume = h("input", { type: "range", id: "volume", min: "0", max: "100", step: "5", value: String(Math.round(sound.volume * 100)), "aria-label": "Volume" });
+  volume.addEventListener("input", () => {
+    sound.volume = Number(volume.value) / 100;
+    value.textContent = `${volume.value}%`;
+    apply();
+  });
+  volume.addEventListener("change", () => playSound("success"));
+  return section(
+    "Sound",
+    h("p", { class: "panel-lead" }, "Each theme has its own sounds, made in code as you play. The metronome (under Practice) beats out loud too."),
+    toggle("sound-on", "Sound", "Key clicks, combo chimes, the error buzz, level-ups and boss hits.", sound.on, (on) => {
+      sound.on = on;
+      apply();
+    }),
+    toggle("key-clicks", "Key clicks", "A click on every key. Turn off to keep just the effects.", sound.keyClicks, (on) => {
+      sound.keyClicks = on;
+      apply();
+    }),
+    h("div", { class: "range-row" }, h("label", { for: "volume" }, "Volume"), volume, value),
+    h(
+      "div",
+      { class: "actions wrap" },
+      h("button", { type: "button", class: "button", onclick: () => ["key", "key", "combo"].forEach((k, i) => window.setTimeout(() => playSound(k as SoundKind), i * 140)) }, "Play a sample"),
+    ),
+  );
+}
+
+/** Font, spacing, text size, heatmap colors, motion and screen reader announcements. */
+function accessibilitySection(app: App): HTMLElement {
+  const a = app.data.settings.a11y;
+  const apply = () => {
+    app.applyLook();
+    app.persist();
+  };
+  const sizeValue = h("span", { class: "range-value" }, `${a.textSize}%`);
+  const size = h("input", { type: "range", id: "text-size", min: "80", max: "160", step: "10", value: String(a.textSize), "aria-label": "Text size" });
+  size.addEventListener("change", () => {
+    a.textSize = Number(size.value);
+    sizeValue.textContent = `${a.textSize}%`;
+    apply();
+  });
+  size.addEventListener("input", () => (sizeValue.textContent = `${size.value}%`));
+  return section(
+    "Accessibility",
+    h("h3", null, "Font"),
+    radioGroup("a11y-font", "Font", [
+      { id: "theme", label: "Theme font", hint: "The font that comes with your theme." },
+      { id: "dyslexic", label: "OpenDyslexic", hint: "A font designed for readers with dyslexia, everywhere in the app." },
+    ], a.font, (v) => {
+      a.font = v as "theme" | "dyslexic";
+      apply();
+    }),
+    h("h3", null, "Letter spacing"),
+    radioGroup("a11y-tracking", "Letter spacing for the text you type", [
+      { id: "0", label: "Normal" },
+      { id: "1", label: "Wide" },
+      { id: "2", label: "Wider" },
+    ], String(a.letterSpacing), (v) => {
+      a.letterSpacing = Number(v) as 0 | 1 | 2;
+      apply();
+    }, true),
+    h("h3", null, "Line spacing"),
+    radioGroup("a11y-leading", "Line spacing", [
+      { id: "0", label: "Normal" },
+      { id: "1", label: "Relaxed" },
+      { id: "2", label: "Loose" },
+    ], String(a.lineSpacing), (v) => {
+      a.lineSpacing = Number(v) as 0 | 1 | 2;
+      apply();
+    }, true),
+    h("h3", null, "Text size"),
+    h("div", { class: "range-row" }, h("label", { for: "text-size", class: "sr-only" }, "Text size"), size, sizeValue),
+    h("p", { class: "fine" }, "Applies on top of your device's text size."),
+    h("h3", null, "Heatmap colors"),
+    radioGroup("a11y-heat", "Heatmap colors", [
+      { id: "theme", label: "Theme colors", hint: "Green for strong keys through red for weak ones." },
+      { id: "colorblind", label: "Color-blind safe", hint: "Blue through orange, with a pattern for each level, readable with red-green color blindness." },
+    ], a.heatmap, (v) => {
+      a.heatmap = v as "theme" | "colorblind";
+      apply();
+    }),
+    h("h3", null, "Motion"),
+    radioGroup("a11y-motion", "Motion", [
+      { id: "auto", label: "Match device", hint: "Animations unless your device asks to reduce motion." },
+      { id: "reduce", label: "Reduce motion", hint: "No animations or smooth scrolling. Celebrations become static." },
+    ], a.motion, (v) => {
+      a.motion = v as "auto" | "reduce";
+      apply();
+    }),
+    toggle("a11y-announce", "Screen reader announcements", "Reads the word you're on, mistakes as they happen, and your results.", a.announce, (on) => {
+      a.announce = on;
+      apply();
+    }),
   );
 }
 
