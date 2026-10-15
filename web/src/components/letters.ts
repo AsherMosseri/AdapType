@@ -1,4 +1,4 @@
-import { focusLetter, isOn, MODIFIER_STAGES, UNLOCK_ORDERS, type ModifierSettings, type ProfileState, type UnlockableId } from "../../../engine/src";
+import { focusLetter, isOn, MODIFIER_STAGES, unlockSequence, type ModifierSettings, type ProfileState, type UnlockableId } from "../../../engine/src";
 import { h } from "../dom";
 import { MODIFIER_GLYPHS, MODIFIER_NAMES } from "../explainText";
 
@@ -8,7 +8,7 @@ import { MODIFIER_GLYPHS, MODIFIER_NAMES } from "../explainText";
  */
 export function letterStrip(state: ProfileState, modifiers?: ModifierSettings): HTMLElement {
   const focus = focusLetter(state);
-  const order = UNLOCK_ORDERS[state.unlockOrder];
+  const order = unlockSequence(state.unlockOrder, state.layout);
   const items = [...order].map((letter) => {
     const unlocked = state.unlocked.includes(letter);
     const mastered = state.mastered.includes(letter);

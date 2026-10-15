@@ -1,11 +1,11 @@
-import type { CreatureChange, KeystrokeRecord, NemesisChange, ProfileState, RoundExplanation, RoundOutcome } from "../../engine/src";
+import type { CreatureChange, KeystrokeRecord, LayoutId, NemesisChange, ProfileState, RoundExplanation, RoundOutcome } from "../../engine/src";
 import type { RoundMetrics } from "../../engine/src/typing";
 import { updateCreatures } from "../../engine/src";
 import { configureAnnounce } from "./announce";
 import { applyAppearance } from "./appearance";
 import { characters } from "./content";
 import { configureSound } from "./sound";
-import { defaultData, detectProfile, load, newProfile, save, type AppData } from "./store";
+import { defaultData, detectProfile, familyOf, load, newProfile, profileKey, save, type AppData } from "./store";
 
 export type Screen =
   | { name: "welcome" }
@@ -68,15 +68,24 @@ export class App {
     this.renderers[name] = renderer;
   }
 
-  /** The active input profile's state, created on first use. */
+  /** The active input profile's layout (letter arrangement). */
+  get layout(): LayoutId {
+    return familyOf(this.data.settings.layouts[this.data.settings.activeProfile]);
+  }
+
+  /** Where the active profile is saved: one per input profile and layout. */
+  get profileKey(): string {
+    return profileKey(this.data.settings.activeProfile, this.layout);
+  }
+
+  /** The active profile's state for its layout, created on first use. */
   get profile(): ProfileState {
-    const key = this.data.settings.activeProfile;
-    return (this.data.profiles[key] ??= newProfile(key));
+    return (this.data.profiles[this.profileKey] ??= newProfile(this.data.settings.activeProfile, this.layout));
   }
 
   /** Whether the active profile still needs its first-launch setup. */
   get needsSetup(): boolean {
-    const p = this.data.profiles[this.data.settings.activeProfile];
+    const p = this.data.profiles[this.profileKey];
     return !p || p.calibration === "none" || p.goal === null;
   }
 

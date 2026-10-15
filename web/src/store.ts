@@ -7,6 +7,7 @@ import {
   migrateProfile,
   type ErrorMode,
   type InputProfile,
+  type LayoutId,
   type LivesMode,
   type RivalPace,
   type ModifierSettings,
@@ -14,7 +15,7 @@ import {
   type RoundType,
 } from "../../engine/src";
 
-export const DATA_VERSION = 7;
+export const DATA_VERSION = 8;
 
 export type OsChoice = "auto" | "mac" | "windows" | "windows-intl" | "linux";
 export type TouchLayoutChoice = "auto" | "ios" | "android";
@@ -55,6 +56,31 @@ export interface Settings {
   content: ContentSettings;
   /** The shortcut pack the drill uses. */
   shortcutPack: string;
+  /** The keyboard layout for each input profile. */
+  layouts: Record<InputProfile, LayoutChoice>;
+}
+
+/** Layouts you can pick. QWERTY US, UK and International share letters, so they share one set of stats. */
+export type LayoutChoice = "qwerty-us" | "qwerty-uk" | "qwerty-intl" | "azerty" | "qwertz" | "dvorak" | "colemak" | "colemak-dh";
+
+export const LAYOUT_CHOICES: { id: LayoutChoice; name: string; family: LayoutId; hint: string }[] = [
+  { id: "qwerty-us", name: "QWERTY (US)", family: "qwerty", hint: "The most common layout in the US and many other countries." },
+  { id: "qwerty-uk", name: "QWERTY (UK)", family: "qwerty", hint: "Same letters as US QWERTY; some symbols move." },
+  { id: "qwerty-intl", name: "QWERTY (US International)", family: "qwerty", hint: "US QWERTY with dead keys for accents." },
+  { id: "azerty", name: "AZERTY", family: "azerty", hint: "French and Belgian keyboards." },
+  { id: "qwertz", name: "QWERTZ", family: "qwertz", hint: "German, Austrian and Swiss keyboards." },
+  { id: "dvorak", name: "Dvorak", family: "dvorak", hint: "Vowels on the left home row, common consonants on the right." },
+  { id: "colemak", name: "Colemak", family: "colemak", hint: "Most-used letters on the home row, close to QWERTY." },
+  { id: "colemak-dh", name: "Colemak-DH", family: "colemak-dh", hint: "Colemak with D and H moved to easier spots." },
+];
+
+export function familyOf(choice: LayoutChoice): LayoutId {
+  return LAYOUT_CHOICES.find((c) => c.id === choice)?.family ?? "qwerty";
+}
+
+/** Where a profile is saved: "physical" or "touch" for QWERTY (as always), else with the layout, like "physical:dvorak". */
+export function profileKey(profile: InputProfile, layout: LayoutId): string {
+  return layout === "qwerty" ? profile : `${profile}:${layout}`;
 }
 
 /** A pack's share of practice words: 0 off, 1 a little, 2 even, 4 a lot. */
@@ -126,13 +152,15 @@ export function defaultSettings(activeProfile: InputProfile): Settings {
     sound: { on: true, volume: 0.5, keyClicks: true },
     content: { english: 2, code: ["javascript", "python", "typescript", "html", "css", "java", "swift", "kotlin", "cpp"] },
     shortcutPack: "text-editing",
+    layouts: { physical: "qwerty-us", touch: "qwerty-us" },
   };
 }
 
 export interface AppData {
   version: number;
   settings: Settings;
-  profiles: Partial<Record<InputProfile, ProfileState>>;
+  /** One profile per input profile and layout, keyed by profileKey. */
+  profiles: Partial<Record<string, ProfileState>>;
   /** Phase 6: your own word packs, shared by both input profiles. */
   customPacks: CustomPack[];
 }
@@ -152,9 +180,9 @@ export function detectProfile(): InputProfile {
   return coarse && !fine ? "touch" : "physical";
 }
 
-export function newProfile(profile: InputProfile): ProfileState {
+export function newProfile(profile: InputProfile, layout: LayoutId = "qwerty"): ProfileState {
   const seed = crypto.getRandomValues(new Uint32Array(1))[0];
-  return createProfile(profile, seed);
+  return createProfile(profile, seed, "frequency", layout);
 }
 
 export function load(): AppData | null {
@@ -199,8 +227,7 @@ export function parseData(text: string): AppData {
   if (data.version > DATA_VERSION) {
     throw new Error("This progress comes from a newer version of AdapType. Reload the page to update, then try again.");
   }
-  for (const key of ["physical", "touch"] as const) {
-    const p = data.profiles[key];
+  for (const p of Object.values(data.profiles)) {
     if (p !== undefined && (!isObject(p) || !Array.isArray(p.unlocked) || !isObject(p.keys))) {
       throw new Error("This progress data is damaged and can't be loaded.");
     }
@@ -213,7 +240,8 @@ export function parseData(text: string): AppData {
  * settings; 2 → 3 adds practice settings; 3 → 4 arcade settings; 4 → 5
  * changes nothing here (profiles gain phase 5 data); 5 → 6 adds theme, color
  * mode, accessibility and sound; 6 → 7 adds content settings, the shortcut
- * pack and custom word packs. Missing settings take their defaults.
+ * pack and custom word packs; 7 → 8 adds a layout per input profile (and
+ * profiles keyed by layout). Missing settings take their defaults.
  * Profiles migrate in the engine.
  */
 function migrate(data: AppData): AppData {
@@ -226,9 +254,10 @@ function migrate(data: AppData): AppData {
     a11y: { ...defaults.a11y, ...saved.a11y },
     sound: { ...defaults.sound, ...saved.sound },
     content: { ...defaults.content, ...saved.content },
+    layouts: { ...defaults.layouts, ...saved.layouts },
   };
   if (!Array.isArray(data.customPacks)) data.customPacks = [];
-  for (const key of ["physical", "touch"] as const) {
+  for (const key of Object.keys(data.profiles)) {
     const p = data.profiles[key];
     if (p) data.profiles[key] = migrateProfile(p as unknown as Record<string, unknown>);
   }

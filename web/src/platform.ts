@@ -1,8 +1,8 @@
 // Which system the player is on, what it can type, and how to type special characters.
-import { extraForSystem, type Platform } from "../../engine/src";
+import { extraForSystem, letterRows, type Platform } from "../../engine/src";
 import type { App } from "./app";
 import { characters, touchAlternates, touchLayouts, type TouchLayerName, type TouchLayout } from "./content";
-import type { OsChoice, Settings } from "./store";
+import { familyOf, type OsChoice, type Settings } from "./store";
 
 export type Os = Exclude<OsChoice, "auto">;
 
@@ -30,9 +30,25 @@ export function detectTouchLayout(): "ios" | "android" {
   return "ios";
 }
 
+const touchCache = new Map<string, TouchLayout>();
+
+/**
+ * The on-screen keyboard: the phone style's number and symbol pages and
+ * bottom row, with letter rows from the touch profile's keyboard layout.
+ */
 export function currentTouchLayout(settings: Settings): { name: "ios" | "android"; layout: TouchLayout } {
   const name = settings.touchLayout === "auto" ? detectTouchLayout() : settings.touchLayout;
-  return { name, layout: touchLayouts[name] };
+  const family = familyOf(settings.layouts.touch);
+  if (family === "qwerty") return { name, layout: touchLayouts[name] };
+  const key = `${name}:${family}`;
+  let layout = touchCache.get(key);
+  if (!layout) {
+    const base = touchLayouts[name];
+    const [top, home, bottom] = letterRows(family);
+    layout = { ...base, letters: [[...top], [...home], ["shift", ...bottom, "backspace"], base.letters[3]] };
+    touchCache.set(key, layout);
+  }
+  return { name, layout };
 }
 
 /** Every character reachable on a touch layout, by layer key or long-press. */

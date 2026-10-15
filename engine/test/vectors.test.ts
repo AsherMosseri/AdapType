@@ -11,6 +11,15 @@ import nemesisContent from "../../content/nemesis.json";
 import shortcutPack from "../../content/shortcuts-text-editing.json";
 import fullPack from "../../content/words-en.json";
 import {
+  KEY_LAYOUTS,
+  LAYOUT_IDS,
+  areNeighbors,
+  fingerMap,
+  leftHandLetters,
+  letterRows,
+  screenZoneMap,
+  thumbMap,
+  zoneMap,
   comboFor,
   completePassage,
   mixWordPacks,
@@ -823,6 +832,22 @@ describe("test vectors", () => {
         comboFor({ id: "t", action: "", group: "", mac: { mods: ["meta"], key: "f" }, other: { mods: ["shift", "alt"], key: "f" } }, false, true),
       ],
     };
+  });
+
+  check("layouts", () => {
+    const pairs: [string, string][] = [["e", "u"], ["a", "o"], ["r", "s"], ["q", "a"], ["z", "w"], ["n", "h"], ["t", "g"], ["m", "k"]];
+    return LAYOUT_IDS.map((id) => ({
+      id,
+      ...KEY_LAYOUTS[id],
+      letterRows: letterRows(id),
+      leftHand: leftHandLetters(id),
+      fingers: fingerMap(id),
+      zones: zoneMap(id),
+      thumbs: thumbMap(id),
+      screenZones: screenZoneMap(id),
+      neighbors: pairs.map(([a, b]) => ({ a, b, neighbors: areNeighbors(a, b, id) })),
+      unlocked: createProfile("physical", 1, "homeRow", id).unlocked,
+    }));
   });
 
   check("profile", () => {

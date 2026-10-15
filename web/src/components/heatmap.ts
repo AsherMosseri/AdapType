@@ -13,7 +13,7 @@ import {
 } from "../../../engine/src";
 import { formatPercent, h } from "../dom";
 import { MODIFIER_GLYPHS, MODIFIER_NAMES, reasonText } from "../explainText";
-import { QWERTY_ROWS } from "../keyboardLayout";
+import { keyboardRows } from "../keyboardRows";
 
 const LEVELS = [
   { id: "strong", label: "At goal", max: 0.25 },
@@ -87,11 +87,12 @@ export function heatmap(state: ProfileState, goal: Goal, modifiers?: ModifierSet
   };
 
   const focus = focusLetter(state);
-  const rows = QWERTY_ROWS.map((row, i) =>
+  const rows = keyboardRows(state.layout).map((row, i) =>
     h(
       "div",
       { class: `heat-row row-${i}` },
-      [...row].map((letter) => {
+      row.map((letter) => {
+        if (letter === null) return h("span", { class: "heat-key spacer", "aria-hidden": "true" });
         const level = heatLevel(state, letter, goal);
         const button = h(
           "button",

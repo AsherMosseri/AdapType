@@ -2836,3 +2836,12 @@ button.choice:hover {
 .passages-screen.touch .passage-text {
   max-height: calc(1.6em * 6);
 }
+
+/* Gaps where a layout has punctuation, so letters sit where they really are. */
+.heat-key.spacer,
+.drift-key.spacer {
+  visibility: hidden;
+}
+.chip {
+  white-space: nowrap;
+}

@@ -60,7 +60,7 @@ export function completePassage(
   at: number,
   options: { chars?: CharacterData; pack?: WordPack } = {},
 ): RoundMetrics {
-  const { perKey } = applyRecords(round.target, round.records, state.keys, state.pairs, options.chars);
+  const { perKey } = applyRecords(round.target, round.records, state.keys, state.pairs, options.chars, 1, state.layout);
   applyErrorAnalysis(state, round.target, round.records, options.pack ?? null);
   recordKeyDays(state.keyDays, perKey, at);
   state.recentPassages = [...state.recentPassages.filter((id) => id !== passage.id), passage.id].slice(-PASSAGE_RECENT);

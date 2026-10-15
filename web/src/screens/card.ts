@@ -4,7 +4,7 @@ import { creatureSvg, STAGE_NAMES } from "../components/creature";
 import { topBar } from "../components/topBar";
 import { characters } from "../content";
 import { formatPercent, h } from "../dom";
-import { QWERTY_ROWS } from "../keyboardLayout";
+import { keyboardRows } from "../keyboardRows";
 
 export const TRAIT_LABELS: Record<Trait, string> = {
   steady: "Steady rhythm",
@@ -62,7 +62,7 @@ function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: numbe
   ctx.roundRect(x, y, w, hh, r);
 }
 
-async function drawCard(canvas: HTMLCanvasElement, card: Fingerprint, goalWpm: number): Promise<void> {
+async function drawCard(canvas: HTMLCanvasElement, card: Fingerprint, goalWpm: number, rows: readonly (string | null)[][]): Promise<void> {
   await document.fonts.ready;
   const p = palette();
   const ctx = canvas.getContext("2d")!;
@@ -148,8 +148,9 @@ async function drawCard(canvas: HTMLCanvasElement, card: Fingerprint, goalWpm: n
   const kx = 690;
   const ky = 110;
   const size = 40;
-  QWERTY_ROWS.forEach((row, r) => {
-    [...row].forEach((k, i) => {
+  rows.forEach((row, r) => {
+    row.forEach((k, i) => {
+      if (k === null) return;
       const left = kx + r * (size * 0.5) + i * (size + 6);
       const top = ky + r * (size + 6);
       const w = card.heat[k];
@@ -259,7 +260,7 @@ export function cardScreen(app: App, screen: Screen): ScreenView {
     status,
     h("p", { class: "fine" }, summary),
   );
-  void drawCard(canvas, card, goalWpm);
+  void drawCard(canvas, card, goalWpm, keyboardRows(state.layout));
   const el = h("div", { class: "screen" }, topBar(app, { back: () => (returnTo ? app.go(returnTo) : app.go({ name: "progress" })), backLabel: "Back" }), main);
   return { el };
 }

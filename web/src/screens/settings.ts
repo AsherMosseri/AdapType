@@ -1,9 +1,11 @@
 import {
   DEFAULT_GOAL,
+  KEY_LAYOUTS,
   MODIFIER_STAGES,
   setUnlockOrder,
   type ErrorMode,
   type InputProfile,
+  type LayoutId,
   type ModifierLevel,
   type ModifierMode,
   type RoundType,
@@ -18,7 +20,7 @@ import { h } from "../dom";
 import { MODIFIER_NAMES } from "../explainText";
 import { currentOs, detectOs, detectTouchLayout, OS_NAMES, platformFor, type Os } from "../platform";
 import { playSound, type SoundKind } from "../sound";
-import { clearSaved, defaultData, fromCode, newProfile, parseData, toCode, type AppData, type OsChoice, type PackWeight, type ThemeId, type TouchLayoutChoice } from "../store";
+import { clearSaved, defaultData, fromCode, LAYOUT_CHOICES, newProfile, parseData, toCode, type AppData, type LayoutChoice, type OsChoice, type PackWeight, type ThemeId, type TouchLayoutChoice } from "../store";
 import { WEIGHT_CHOICES } from "./words";
 
 const ROUND_CHOICES: { id: string; label: string; round: RoundType }[] = [
@@ -35,10 +37,14 @@ const ERROR_CHOICES: { id: ErrorMode; label: string; hint: string }[] = [
   { id: "skip", label: "Mark and move on", hint: "Errors show in red and you keep going." },
 ];
 
-const ORDER_CHOICES: { id: UnlockOrder; label: string; hint: string }[] = [
-  { id: "frequency", label: "Most common first", hint: "e t a o i n… so real words show up early." },
-  { id: "homeRow", label: "Home row first", hint: "a s d f j k l, then the top and bottom rows. Best for physical keyboards." },
-];
+/** Unlock orders, with the active layout's home row in the hint. */
+function orderChoices(layout: LayoutId): { id: UnlockOrder; label: string; hint: string }[] {
+  const home = KEY_LAYOUTS[layout].homeRow;
+  return [
+    { id: "frequency", label: "Most common first", hint: "e t a o i n… so real words show up early." },
+    { id: "homeRow", label: "Home row first", hint: `${[...home.slice(0, 8)].join(" ")}, then the top and bottom rows. Best for physical keyboards.` },
+  ];
+}
 
 export function settingsScreen(app: App, screen: Screen): ScreenView {
   const returnTo = screen.name === "settings" ? screen.returnTo : undefined;
@@ -47,7 +53,9 @@ export function settingsScreen(app: App, screen: Screen): ScreenView {
   const leave = () => {
     app.persist();
     if (app.needsSetup) app.go({ name: "welcome" });
-    else app.go(returnTo ?? { name: "practice" });
+    // Came from setup, but this profile is ready (for example, switched back to a layout with progress).
+    else if (!returnTo || returnTo.name === "welcome" || returnTo.name === "goal") app.go({ name: "practice" });
+    else app.go(returnTo);
   };
 
   const roundId = ROUND_CHOICES.find((c) => JSON.stringify(c.round) === JSON.stringify(settings.round))?.id ?? "w25";
@@ -85,7 +93,7 @@ export function settingsScreen(app: App, screen: Screen): ScreenView {
     ),
     section(
       "Unlock order",
-      radioGroup("order", "Which letters unlock first", ORDER_CHOICES, state.unlockOrder, (id) => {
+      radioGroup("order", "Which letters unlock first", orderChoices(state.layout), state.unlockOrder, (id) => {
         setUnlockOrder(state, id as UnlockOrder);
         app.persist();
       }),
@@ -330,6 +338,55 @@ function practiceSection(app: App): HTMLElement {
   );
 }
 
+/**
+ * Your keyboard layout. Each layout keeps its own letters, unlocks and stats,
+ * so switching starts that layout fresh, and switching back brings yours back.
+ */
+function layoutPicker(app: App, returnTo: Screen | undefined): HTMLElement[] {
+  const settings = app.data.settings;
+  const profile = settings.activeProfile;
+  const status = h("p", { class: "status", role: "status" });
+  const choose = (id: LayoutChoice) => {
+    settings.layouts[profile] = id;
+    app.persist();
+    app.go({ name: "settings", returnTo });
+  };
+  const keyboardApi = (navigator as Navigator & { keyboard?: { getLayoutMap?: () => Promise<Map<string, string>> } }).keyboard;
+  const detect = async () => {
+    try {
+      const map = await keyboardApi!.getLayoutMap!();
+      const at = (code: string) => map.get(code) ?? "";
+      const found: LayoutChoice =
+        at("KeyQ") === "a" && at("KeyW") === "z"
+          ? "azerty"
+          : at("KeyY") === "z"
+            ? "qwertz"
+            : at("KeyQ") === "'"
+              ? "dvorak"
+              : at("KeyE") === "f" && at("KeyT") === "b"
+                ? "colemak-dh"
+                : at("KeyE") === "f"
+                  ? "colemak"
+                  : at("Backslash") === "#"
+                    ? "qwerty-uk"
+                    : "qwerty-us";
+      if (found === settings.layouts[profile]) status.textContent = `Your keyboard looks like ${LAYOUT_CHOICES.find((c) => c.id === found)!.name}, which is already picked.`;
+      else choose(found);
+    } catch {
+      status.textContent = "This browser can't read your keyboard layout. Pick it from the list.";
+    }
+  };
+  return [
+    h("h3", null, "Layout"),
+    h("p", { class: "fine" }, "Each layout keeps its own letters, unlocks and stats. Switching starts fresh on the new one; switching back brings your progress back."),
+    radioGroup("layout", "Keyboard layout", LAYOUT_CHOICES.map((c) => ({ id: c.id, label: c.name, hint: c.hint })), settings.layouts[profile], (v) => choose(v as LayoutChoice)),
+    profile === "physical" && keyboardApi?.getLayoutMap
+      ? h("div", { class: "actions wrap" }, h("button", { type: "button", class: "button", onclick: () => void detect() }, "Detect my layout"))
+      : null,
+    status,
+  ].filter((x): x is HTMLElement => x !== null);
+}
+
 /** Which system you type on, so accents and extra characters match your keyboard. */
 function keyboardSection(app: App, returnTo: Screen | undefined): HTMLElement {
   const settings = app.data.settings;
@@ -337,6 +394,8 @@ function keyboardSection(app: App, returnTo: Screen | undefined): HTMLElement {
     const detected = detectTouchLayout() === "ios" ? "iPhone" : "Android";
     return section(
       "Touch keyboard",
+      ...layoutPicker(app, returnTo),
+      h("h3", null, "Symbol pages"),
       radioGroup("touch-layout", "Symbol layout", [
         { id: "auto", label: `Match this device (${detected})`, hint: "Number and symbol pages laid out like your phone's own keyboard." },
         { id: "ios", label: "iPhone", hint: "123 and #+= pages." },
@@ -357,6 +416,8 @@ function keyboardSection(app: App, returnTo: Screen | undefined): HTMLElement {
   });
   return section(
     "Your keyboard",
+    ...layoutPicker(app, returnTo),
+    h("h3", null, "System"),
     h("p", { class: "panel-lead" }, "Accented letters and extra characters are typed differently on each system. AdapType shows how when one comes up."),
     radioGroup(
       "os",
@@ -722,8 +783,7 @@ function dataSection(app: App, returnTo: Screen | undefined): HTMLElement {
   const profileName = app.data.settings.activeProfile === "touch" ? "touch" : "keyboard";
   const resetProfile = () =>
     confirm(`Delete all ${profileName} progress? Letters, stats and your goal for ${profileName} start over.`, `Delete ${profileName} progress`, () => {
-      const key = app.data.settings.activeProfile;
-      app.data.profiles[key] = newProfile(key);
+      app.data.profiles[app.profileKey] = newProfile(app.data.settings.activeProfile, app.layout);
       app.persist();
       app.go({ name: "welcome" });
     });

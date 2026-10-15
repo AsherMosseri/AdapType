@@ -1,3 +1,4 @@
+import { KEY_LAYOUTS } from "../../../engine/src";
 import type { App, Screen } from "../app";
 import { h, icon, ICONS } from "../dom";
 
@@ -7,6 +8,8 @@ export interface TopBarOptions {
   backLabel?: string;
   /** Hides the settings button (on the settings screen itself). */
   noSettings?: boolean;
+  /** Shows only the settings button (setup screens, before there's progress or an arcade to show). */
+  settingsOnly?: boolean;
   returnTo?: Screen;
 }
 
@@ -20,11 +23,14 @@ export function topBar(app: App, options: TopBarOptions = {}): HTMLElement {
         h("span", null, options.backLabel ?? "Back"),
       )
     : h("span", { class: "wordmark" }, "Adap", h("b", null, "Type"));
+  // Non-QWERTY layouts keep their own progress, so the chip names the layout (the icon shows keyboard or touch).
+  const kind = profile === "touch" ? "Touch" : "Keyboard";
+  const label = app.layout === "qwerty" ? kind : KEY_LAYOUTS[app.layout].name;
   const chip = h(
     "span",
-    { class: "chip", title: profile === "touch" ? "Touch screen" : "Keyboard" },
+    { class: "chip", title: app.layout === "qwerty" ? (profile === "touch" ? "Touch screen" : "Keyboard") : `${kind}, ${label} layout` },
     icon(profile === "touch" ? [...ICONS.phone] : [...ICONS.keyboard]),
-    profile === "touch" ? "Touch" : "Keyboard",
+    label,
   );
   const settings = options.noSettings
     ? null
@@ -38,14 +44,14 @@ export function topBar(app: App, options: TopBarOptions = {}): HTMLElement {
         },
         icon([...ICONS.settings]),
       );
-  const progress = options.noSettings
+  const progress = options.noSettings || options.settingsOnly
     ? null
     : h(
         "button",
         { type: "button", class: "icon-button", "aria-label": "Progress", onclick: () => app.go({ name: "progress", returnTo: options.returnTo }) },
         icon([...ICONS.progress]),
       );
-  const arcade = options.noSettings
+  const arcade = options.noSettings || options.settingsOnly
     ? null
     : h("button", { type: "button", class: "icon-button", "aria-label": "Arcade", onclick: () => app.go({ name: "arcade" }) }, icon([...ICONS.arcade]));
   return h("header", { class: "top-bar" }, left, h("div", { class: "top-actions" }, chip, arcade, progress, settings));

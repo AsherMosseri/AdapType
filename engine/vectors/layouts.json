@@ -1,0 +1,607 @@
+[
+ {
+  "id": "qwerty",
+  "name": "QWERTY",
+  "rows": [
+   "qwertyuiop",
+   "asdfghjkl;",
+   "zxcvbnm,./"
+  ],
+  "homeRow": "asdfjklhgeriotuwypqncmvbxz",
+  "letterRows": [
+   "qwertyuiop",
+   "asdfghjkl",
+   "zxcvbnm"
+  ],
+  "leftHand": "qwertasdfgzxcvb",
+  "fingers": {
+   "Left pinky": "qaz",
+   "Left ring": "wsx",
+   "Left middle": "edc",
+   "Left index": "rtfgvb",
+   "Right index": "yuhjnm",
+   "Right middle": "ik",
+   "Right ring": "ol",
+   "Right pinky": "p"
+  },
+  "zones": {
+   "Left, top row": "qwe",
+   "Left, home row": "asd",
+   "Left, bottom row": "zxc",
+   "Center, top row": "rtyu",
+   "Center, home row": "fghj",
+   "Center, bottom row": "vbnm",
+   "Right, top row": "iop",
+   "Right, home row": "kl"
+  },
+  "thumbs": {
+   "Left thumb": "qwertasdfgzxcv",
+   "Right thumb": "yuiophjklbnm"
+  },
+  "screenZones": {
+   "Left, top row": "qwe",
+   "Middle, top row": "rtyu",
+   "Right, top row": "iop",
+   "Left, middle row": "asd",
+   "Middle, middle row": "fghj",
+   "Right, middle row": "kl",
+   "Left, bottom row": "zx",
+   "Middle, bottom row": "cvb",
+   "Right, bottom row": "nm"
+  },
+  "neighbors": [
+   {
+    "a": "e",
+    "b": "u",
+    "neighbors": false
+   },
+   {
+    "a": "a",
+    "b": "o",
+    "neighbors": false
+   },
+   {
+    "a": "r",
+    "b": "s",
+    "neighbors": false
+   },
+   {
+    "a": "q",
+    "b": "a",
+    "neighbors": true
+   },
+   {
+    "a": "z",
+    "b": "w",
+    "neighbors": false
+   },
+   {
+    "a": "n",
+    "b": "h",
+    "neighbors": true
+   },
+   {
+    "a": "t",
+    "b": "g",
+    "neighbors": true
+   },
+   {
+    "a": "m",
+    "b": "k",
+    "neighbors": true
+   }
+  ],
+  "unlocked": [
+   "a",
+   "s",
+   "d",
+   "f",
+   "j",
+   "k"
+  ]
+ },
+ {
+  "id": "azerty",
+  "name": "AZERTY",
+  "rows": [
+   "azertyuiop",
+   "qsdfghjklm",
+   "wxcvbn,;:!"
+  ],
+  "homeRow": "qsdfjklmhgetaoiruypzncwbvx",
+  "letterRows": [
+   "azertyuiop",
+   "qsdfghjklm",
+   "wxcvbn"
+  ],
+  "leftHand": "azertqsdfgwxcvb",
+  "fingers": {
+   "Left pinky": "aqw",
+   "Left ring": "zsx",
+   "Left middle": "edc",
+   "Left index": "rtfgvb",
+   "Right index": "yuhjn",
+   "Right middle": "ik",
+   "Right ring": "ol",
+   "Right pinky": "pm"
+  },
+  "zones": {
+   "Left, top row": "aze",
+   "Left, home row": "qsd",
+   "Left, bottom row": "wxc",
+   "Center, top row": "rtyu",
+   "Center, home row": "fghj",
+   "Center, bottom row": "vbn",
+   "Right, top row": "iop",
+   "Right, home row": "klm"
+  },
+  "thumbs": {
+   "Left thumb": "azertqsdfgwxcv",
+   "Right thumb": "yuiophjklmbn"
+  },
+  "screenZones": {
+   "Left, top row": "aze",
+   "Middle, top row": "rtyu",
+   "Right, top row": "iop",
+   "Left, middle row": "qsd",
+   "Middle, middle row": "fghj",
+   "Right, middle row": "klm",
+   "Left, bottom row": "wx",
+   "Middle, bottom row": "cvb",
+   "Right, bottom row": "n"
+  },
+  "neighbors": [
+   {
+    "a": "e",
+    "b": "u",
+    "neighbors": false
+   },
+   {
+    "a": "a",
+    "b": "o",
+    "neighbors": false
+   },
+   {
+    "a": "r",
+    "b": "s",
+    "neighbors": false
+   },
+   {
+    "a": "q",
+    "b": "a",
+    "neighbors": true
+   },
+   {
+    "a": "z",
+    "b": "w",
+    "neighbors": false
+   },
+   {
+    "a": "n",
+    "b": "h",
+    "neighbors": true
+   },
+   {
+    "a": "t",
+    "b": "g",
+    "neighbors": true
+   },
+   {
+    "a": "m",
+    "b": "k",
+    "neighbors": false
+   }
+  ],
+  "unlocked": [
+   "q",
+   "s",
+   "d",
+   "f",
+   "j",
+   "k"
+  ]
+ },
+ {
+  "id": "qwertz",
+  "name": "QWERTZ",
+  "rows": [
+   "qwertzuiop",
+   "asdfghjklö",
+   "yxcvbnm,.-"
+  ],
+  "homeRow": "asdfjklhgetoiruwpqzncmybvx",
+  "letterRows": [
+   "qwertzuiop",
+   "asdfghjkl",
+   "yxcvbnm"
+  ],
+  "leftHand": "qwertasdfgyxcvb",
+  "fingers": {
+   "Left pinky": "qay",
+   "Left ring": "wsx",
+   "Left middle": "edc",
+   "Left index": "rtfgvb",
+   "Right index": "zuhjnm",
+   "Right middle": "ik",
+   "Right ring": "ol",
+   "Right pinky": "p"
+  },
+  "zones": {
+   "Left, top row": "qwe",
+   "Left, home row": "asd",
+   "Left, bottom row": "yxc",
+   "Center, top row": "rtzu",
+   "Center, home row": "fghj",
+   "Center, bottom row": "vbnm",
+   "Right, top row": "iop",
+   "Right, home row": "kl"
+  },
+  "thumbs": {
+   "Left thumb": "qwertasdfgyxcv",
+   "Right thumb": "zuiophjklbnm"
+  },
+  "screenZones": {
+   "Left, top row": "qwe",
+   "Middle, top row": "rtzu",
+   "Right, top row": "iop",
+   "Left, middle row": "asd",
+   "Middle, middle row": "fghj",
+   "Right, middle row": "kl",
+   "Left, bottom row": "yx",
+   "Middle, bottom row": "cvb",
+   "Right, bottom row": "nm"
+  },
+  "neighbors": [
+   {
+    "a": "e",
+    "b": "u",
+    "neighbors": false
+   },
+   {
+    "a": "a",
+    "b": "o",
+    "neighbors": false
+   },
+   {
+    "a": "r",
+    "b": "s",
+    "neighbors": false
+   },
+   {
+    "a": "q",
+    "b": "a",
+    "neighbors": true
+   },
+   {
+    "a": "z",
+    "b": "w",
+    "neighbors": false
+   },
+   {
+    "a": "n",
+    "b": "h",
+    "neighbors": true
+   },
+   {
+    "a": "t",
+    "b": "g",
+    "neighbors": true
+   },
+   {
+    "a": "m",
+    "b": "k",
+    "neighbors": true
+   }
+  ],
+  "unlocked": [
+   "a",
+   "s",
+   "d",
+   "f",
+   "j",
+   "k"
+  ]
+ },
+ {
+  "id": "dvorak",
+  "name": "Dvorak",
+  "rows": [
+   "',.pyfgcrl",
+   "aoeuidhtns",
+   ";qjkxbmwvz"
+  ],
+  "homeRow": "aoeuhtnsdirlcfgypmwbvkjxqz",
+  "letterRows": [
+   "pyfgcrl",
+   "aoeuidhtns",
+   "qjkxbmwvz"
+  ],
+  "leftHand": "pyaoeuiqjkx",
+  "fingers": {
+   "Left pinky": "a",
+   "Left ring": "oq",
+   "Left middle": "ej",
+   "Left index": "pyuikx",
+   "Right index": "fgdhbm",
+   "Right middle": "ctw",
+   "Right ring": "rnv",
+   "Right pinky": "lsz"
+  },
+  "zones": {
+   "Left, home row": "aoe",
+   "Left, bottom row": "qj",
+   "Center, top row": "pyfg",
+   "Center, home row": "uidh",
+   "Center, bottom row": "kxbm",
+   "Right, top row": "crl",
+   "Right, home row": "tns",
+   "Right, bottom row": "wvz"
+  },
+  "thumbs": {
+   "Left thumb": "pyaoeuiqjk",
+   "Right thumb": "fgcrldhtnsxbmwvz"
+  },
+  "screenZones": {
+   "Middle, top row": "pyfg",
+   "Right, top row": "crl",
+   "Left, middle row": "aoe",
+   "Middle, middle row": "uidh",
+   "Right, middle row": "tns",
+   "Left, bottom row": "q",
+   "Middle, bottom row": "jkx",
+   "Right, bottom row": "bmwvz"
+  },
+  "neighbors": [
+   {
+    "a": "e",
+    "b": "u",
+    "neighbors": true
+   },
+   {
+    "a": "a",
+    "b": "o",
+    "neighbors": true
+   },
+   {
+    "a": "r",
+    "b": "s",
+    "neighbors": false
+   },
+   {
+    "a": "q",
+    "b": "a",
+    "neighbors": false
+   },
+   {
+    "a": "z",
+    "b": "w",
+    "neighbors": false
+   },
+   {
+    "a": "n",
+    "b": "h",
+    "neighbors": false
+   },
+   {
+    "a": "t",
+    "b": "g",
+    "neighbors": false
+   },
+   {
+    "a": "m",
+    "b": "k",
+    "neighbors": false
+   }
+  ],
+  "unlocked": [
+   "a",
+   "o",
+   "e",
+   "u",
+   "h",
+   "t"
+  ]
+ },
+ {
+  "id": "colemak",
+  "name": "Colemak",
+  "rows": [
+   "qwfpgjluy;",
+   "arstdhneio",
+   "zxcvbkm,./"
+  ],
+  "homeRow": "arstneiohdluwfgypjqcmbvkxz",
+  "letterRows": [
+   "qwfpgjluy",
+   "arstdhneio",
+   "zxcvbkm"
+  ],
+  "leftHand": "qwfpgarstdzxcvb",
+  "fingers": {
+   "Left pinky": "qaz",
+   "Left ring": "wrx",
+   "Left middle": "fsc",
+   "Left index": "pgtdvb",
+   "Right index": "jlhnkm",
+   "Right middle": "ue",
+   "Right ring": "yi",
+   "Right pinky": "o"
+  },
+  "zones": {
+   "Left, top row": "qwf",
+   "Left, home row": "ars",
+   "Left, bottom row": "zxc",
+   "Center, top row": "pgjl",
+   "Center, home row": "tdhn",
+   "Center, bottom row": "vbkm",
+   "Right, top row": "uy",
+   "Right, home row": "eio"
+  },
+  "thumbs": {
+   "Left thumb": "qwfpgarstdzxcv",
+   "Right thumb": "jluyhneiobkm"
+  },
+  "screenZones": {
+   "Left, top row": "qwf",
+   "Middle, top row": "pgjl",
+   "Right, top row": "uy",
+   "Left, middle row": "ars",
+   "Middle, middle row": "tdhn",
+   "Right, middle row": "eio",
+   "Left, bottom row": "zx",
+   "Middle, bottom row": "cvb",
+   "Right, bottom row": "km"
+  },
+  "neighbors": [
+   {
+    "a": "e",
+    "b": "u",
+    "neighbors": true
+   },
+   {
+    "a": "a",
+    "b": "o",
+    "neighbors": false
+   },
+   {
+    "a": "r",
+    "b": "s",
+    "neighbors": true
+   },
+   {
+    "a": "q",
+    "b": "a",
+    "neighbors": true
+   },
+   {
+    "a": "z",
+    "b": "w",
+    "neighbors": false
+   },
+   {
+    "a": "n",
+    "b": "h",
+    "neighbors": true
+   },
+   {
+    "a": "t",
+    "b": "g",
+    "neighbors": true
+   },
+   {
+    "a": "m",
+    "b": "k",
+    "neighbors": true
+   }
+  ],
+  "unlocked": [
+   "a",
+   "r",
+   "s",
+   "t",
+   "n",
+   "e"
+  ]
+ },
+ {
+  "id": "colemak-dh",
+  "name": "Colemak-DH",
+  "rows": [
+   "qwfpbjluy;",
+   "arstgmneio",
+   "zxcdvkh,./"
+  ],
+  "homeRow": "arstneiomgluwfypbjqhdcvkxz",
+  "letterRows": [
+   "qwfpbjluy",
+   "arstgmneio",
+   "zxcdvkh"
+  ],
+  "leftHand": "qwfpbarstgzxcdv",
+  "fingers": {
+   "Left pinky": "qaz",
+   "Left ring": "wrx",
+   "Left middle": "fsc",
+   "Left index": "pbtgdv",
+   "Right index": "jlmnkh",
+   "Right middle": "ue",
+   "Right ring": "yi",
+   "Right pinky": "o"
+  },
+  "zones": {
+   "Left, top row": "qwf",
+   "Left, home row": "ars",
+   "Left, bottom row": "zxc",
+   "Center, top row": "pbjl",
+   "Center, home row": "tgmn",
+   "Center, bottom row": "dvkh",
+   "Right, top row": "uy",
+   "Right, home row": "eio"
+  },
+  "thumbs": {
+   "Left thumb": "qwfpbarstgzxcd",
+   "Right thumb": "jluymneiovkh"
+  },
+  "screenZones": {
+   "Left, top row": "qwf",
+   "Middle, top row": "pbjl",
+   "Right, top row": "uy",
+   "Left, middle row": "ars",
+   "Middle, middle row": "tgmn",
+   "Right, middle row": "eio",
+   "Left, bottom row": "zx",
+   "Middle, bottom row": "cdv",
+   "Right, bottom row": "kh"
+  },
+  "neighbors": [
+   {
+    "a": "e",
+    "b": "u",
+    "neighbors": true
+   },
+   {
+    "a": "a",
+    "b": "o",
+    "neighbors": false
+   },
+   {
+    "a": "r",
+    "b": "s",
+    "neighbors": true
+   },
+   {
+    "a": "q",
+    "b": "a",
+    "neighbors": true
+   },
+   {
+    "a": "z",
+    "b": "w",
+    "neighbors": false
+   },
+   {
+    "a": "n",
+    "b": "h",
+    "neighbors": true
+   },
+   {
+    "a": "t",
+    "b": "g",
+    "neighbors": true
+   },
+   {
+    "a": "m",
+    "b": "k",
+    "neighbors": true
+   }
+  ],
+  "unlocked": [
+   "a",
+   "r",
+   "s",
+   "t",
+   "n",
+   "e"
+  ]
+ }
+]
