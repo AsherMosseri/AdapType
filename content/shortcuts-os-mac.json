@@ -1,0 +1,294 @@
+{
+ "id": "os-mac",
+ "name": "macOS",
+ "os": "mac",
+ "about": "System-wide macOS shortcuts. Many are taken by the system before the browser sees them; build those on screen.",
+ "shortcuts": [
+  {
+   "id": "mac:spotlight",
+   "action": "Open Spotlight search",
+   "group": "System",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "Space"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "Space"
+   }
+  },
+  {
+   "id": "mac:switch-app",
+   "action": "Switch apps",
+   "group": "Windows and apps",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "Tab"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "Tab"
+   }
+  },
+  {
+   "id": "mac:switch-window",
+   "action": "Switch windows of the same app",
+   "group": "Windows and apps",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "`"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "`"
+   }
+  },
+  {
+   "id": "mac:quit",
+   "action": "Quit the app",
+   "group": "Windows and apps",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "q"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "q"
+   }
+  },
+  {
+   "id": "mac:hide",
+   "action": "Hide the app",
+   "group": "Windows and apps",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "h"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "h"
+   }
+  },
+  {
+   "id": "mac:minimize",
+   "action": "Minimize the window",
+   "group": "Windows and apps",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "m"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "m"
+   }
+  },
+  {
+   "id": "mac:close",
+   "action": "Close the window",
+   "group": "Windows and apps",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "w"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "w"
+   }
+  },
+  {
+   "id": "mac:new-window",
+   "action": "New window",
+   "group": "Windows and apps",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "n"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "n"
+   }
+  },
+  {
+   "id": "mac:settings",
+   "action": "Open the app's settings",
+   "group": "Windows and apps",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": ","
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": ","
+   }
+  },
+  {
+   "id": "mac:force-quit",
+   "action": "Force quit",
+   "group": "System",
+   "mac": {
+    "mods": [
+     "meta",
+     "alt"
+    ],
+    "key": "Escape"
+   },
+   "other": {
+    "mods": [
+     "meta",
+     "alt"
+    ],
+    "key": "Escape"
+   }
+  },
+  {
+   "id": "mac:lock",
+   "action": "Lock the screen",
+   "group": "System",
+   "mac": {
+    "mods": [
+     "ctrl",
+     "meta"
+    ],
+    "key": "q"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "meta"
+    ],
+    "key": "q"
+   }
+  },
+  {
+   "id": "mac:emoji",
+   "action": "Emoji and symbols",
+   "group": "System",
+   "mac": {
+    "mods": [
+     "ctrl",
+     "meta"
+    ],
+    "key": "Space"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "meta"
+    ],
+    "key": "Space"
+   }
+  },
+  {
+   "id": "mac:shot-area",
+   "action": "Screenshot of an area",
+   "group": "Screenshots",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "4"
+   },
+   "other": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "4"
+   }
+  },
+  {
+   "id": "mac:shot-screen",
+   "action": "Screenshot of the screen",
+   "group": "Screenshots",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "3"
+   },
+   "other": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "3"
+   }
+  },
+  {
+   "id": "mac:shot-tools",
+   "action": "Screenshot and recording tools",
+   "group": "Screenshots",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "5"
+   },
+   "other": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "5"
+   }
+  },
+  {
+   "id": "mac:fullscreen",
+   "action": "Full screen",
+   "group": "Windows and apps",
+   "mac": {
+    "mods": [
+     "ctrl",
+     "meta"
+    ],
+    "key": "f"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "meta"
+    ],
+    "key": "f"
+   }
+  }
+ ]
+}

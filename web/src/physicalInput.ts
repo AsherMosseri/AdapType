@@ -5,6 +5,8 @@ export interface PhysicalInputOptions {
   onEvent: (event: TypingEvent) => void;
   onEscape: () => void;
   onCapsLock: (on: boolean) => void;
+  /** Enter types a newline (for code and quotes) instead of being ignored. */
+  enter?: boolean;
 }
 
 export interface PhysicalInput {
@@ -57,6 +59,11 @@ export function attachPhysicalInput(options: PhysicalInputOptions): PhysicalInpu
     if (e.key === "Backspace") {
       e.preventDefault();
       options.onEvent({ kind: "backspace", t });
+      return;
+    }
+    if (e.key === "Enter" && options.enter) {
+      e.preventDefault();
+      options.onEvent({ kind: "char", char: "\n", t });
       return;
     }
     if (e.key === "Enter" || e.key === "Tab") {

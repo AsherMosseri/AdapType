@@ -14,7 +14,7 @@ import {
 } from "../../../engine/src";
 import type { App, ScreenView } from "../app";
 import { topBar } from "../components/topBar";
-import { textEditingShortcuts } from "../content";
+import { shortcutPacks } from "../content";
 import { formatPercent, h } from "../dom";
 import { currentOs } from "../platform";
 
@@ -27,13 +27,40 @@ interface Answer {
   ms: number;
 }
 
-/** The text-editing shortcut drill. Physical keyboards only. */
+/** Keys the drill reads by position (e.code), so Shift doesn't change them: "/" stays "/" with Shift held. */
+const CODE_KEYS: Record<string, string> = {
+  Slash: "/",
+  Backslash: "\\",
+  BracketLeft: "[",
+  BracketRight: "]",
+  Semicolon: ";",
+  Quote: "'",
+  Comma: ",",
+  Period: ".",
+  Equal: "=",
+  Minus: "-",
+  Backquote: "`",
+  Space: "Space",
+};
+
+/** The packs for this system: OS-wide packs only on their own system. */
+export function availablePacks(os: string) {
+  const system = os === "mac" ? "mac" : os === "linux" ? "linux" : "windows";
+  return shortcutPacks.filter((p) => !p.os || p.os === system);
+}
+
+/** The shortcut drill, with a pack picker. Physical keyboards only. */
 export function shortcutsScreen(app: App): ScreenView {
   const settings = app.data.settings;
   const state = app.profile;
-  const mac = currentOs(settings) === "mac";
+  const os = currentOs(settings);
+  const mac = os === "mac";
+  const linux = os === "linux";
+  const packs = availablePacks(os);
+  const pack = packs.find((p) => p.id === settings.shortcutPack) ?? packs[0];
+  const comboOf = (s: Shortcut) => comboFor(s, mac, linux);
   const rng = new Rng(shortcutDrillSeed(state));
-  const prompts = planShortcutDrill(state, textEditingShortcuts, SHORTCUT_DRILL_LENGTH, rng);
+  const prompts = planShortcutDrill(state, pack, SHORTCUT_DRILL_LENGTH, rng);
   const answers: Answer[] = [];
 
   let index = 0;
@@ -44,6 +71,16 @@ export function shortcutsScreen(app: App): ScreenView {
   let busy = false;
   let done = false;
 
+  const packPicker = h(
+    "select",
+    { id: "shortcut-pack", class: "select" },
+    packs.map((p) => h("option", { value: p.id, selected: p.id === pack.id }, p.name)),
+  );
+  packPicker.addEventListener("change", () => {
+    settings.shortcutPack = packPicker.value;
+    app.persist();
+    app.go({ name: "shortcuts" });
+  });
   const counter = h("p", { class: "drill-counter" });
   const prompt = h("p", { class: "drill-prompt" });
   const sub = h("p", { class: "drill-sub" });
@@ -60,7 +97,14 @@ export function shortcutsScreen(app: App): ScreenView {
     "main",
     { class: "drill" },
     h("h1", { tabindex: "-1" }, "Shortcut drill"),
-    h("p", { class: "lead" }, `${textEditingShortcuts.name}. ${building ? "Build each combo on screen." : `Press each shortcut. ${mac ? "⌘ is Command, ⌥ is Option." : ""}`}`),
+    h(
+      "div",
+      { class: "pack-picker" },
+      h("label", { for: "shortcut-pack", class: "field-label" }, "Pack"),
+      packPicker,
+    ),
+    pack.about ? h("p", { class: "fine" }, pack.about) : null,
+    h("p", { class: "lead" }, `${pack.name}. ${building ? "Build each combo on screen." : `Press each shortcut. ${mac ? "⌘ is Command, ⌥ is Option." : ""}`}`),
     card,
     h("div", { class: "foot-actions" }, switchButton, fullscreenButton, h("button", { type: "button", class: "text-button", onclick: () => finish() }, "End drill", h("kbd", null, "Esc"))),
   );
@@ -72,7 +116,7 @@ export function shortcutsScreen(app: App): ScreenView {
 
   function show(): void {
     const sc = current();
-    const combo = comboFor(sc, mac);
+    const combo = comboOf(sc);
     counter.textContent = `${index + 1} of ${prompts.length} · ${sc.group}`;
     if (settings.shortcutStyle === "shown") {
       prompt.textContent = formatCombo(combo, mac);
@@ -102,7 +146,7 @@ export function shortcutsScreen(app: App): ScreenView {
       return;
     }
     builder.hidden = false;
-    const target = comboFor(current(), mac);
+    const target = comboOf(current());
     const chosen = new Set<ModifierKey>();
     const modOrder: ModifierKey[] = mac ? ["ctrl", "alt", "shift", "meta"] : ["ctrl", "alt", "shift"];
     const modLabel: Record<ModifierKey, string> = mac
@@ -118,7 +162,7 @@ export function shortcutsScreen(app: App): ScreenView {
       return b;
     });
     // The right key plus five others from the pack, in a seeded shuffle.
-    const pool = [...new Set(textEditingShortcuts.shortcuts.map((s) => comboFor(s, mac).key))].filter((k) => k !== target.key);
+    const pool = [...new Set(pack.shortcuts.map((s) => comboOf(s).key))].filter((k) => k !== target.key);
     const keys = [target.key];
     while (keys.length < 6 && pool.length > 0) keys.push(pool.splice(rng.int(pool.length), 1)[0]);
     for (let i = keys.length - 1; i > 0; i--) {
@@ -139,7 +183,7 @@ export function shortcutsScreen(app: App): ScreenView {
   function attempt(combo: Combo): void {
     if (busy || done) return;
     const sc = current();
-    const target = comboFor(sc, mac);
+    const target = comboOf(sc);
     if (sameCombo(combo, target)) {
       busy = true;
       const ms = performance.now() - shownAt;
@@ -164,7 +208,7 @@ export function shortcutsScreen(app: App): ScreenView {
 
   const onKey = (e: KeyboardEvent) => {
     if (done) return;
-    if (e.key === "Escape") {
+    if (e.key === "Escape" && !e.metaKey && !e.ctrlKey && !e.altKey && !e.shiftKey) {
       e.preventDefault();
       finish();
       return;
@@ -178,7 +222,7 @@ export function shortcutsScreen(app: App): ScreenView {
     if (e.ctrlKey) mods.push("ctrl");
     if (e.altKey) mods.push("alt");
     if (e.shiftKey) mods.push("shift");
-    const key = e.code.startsWith("Key") ? e.code.slice(3).toLowerCase() : e.code.startsWith("Digit") ? e.code.slice(5) : e.key;
+    const key = e.code.startsWith("Key") ? e.code.slice(3).toLowerCase() : e.code.startsWith("Digit") ? e.code.slice(5) : (CODE_KEYS[e.code] ?? e.key);
     attempt({ mods, key });
   };
   window.addEventListener("keydown", onKey);
@@ -225,7 +269,7 @@ export function shortcutsScreen(app: App): ScreenView {
           "ul",
           { class: "target-list" },
           slowest.map((a) =>
-            h("li", { class: "target" }, h("span", { class: "target-name wide" }, formatCombo(comboFor(a.shortcut, mac), mac)), h("span", null, `${a.shortcut.action}: ${(a.ms / 1000).toFixed(1)} s${a.firstTry ? "" : ", not right first time"}`)),
+            h("li", { class: "target" }, h("span", { class: "target-name wide" }, formatCombo(comboOf(a.shortcut), mac)), h("span", null, `${a.shortcut.action}: ${(a.ms / 1000).toFixed(1)} s${a.firstTry ? "" : ", not right first time"}`)),
           ),
         ),
         h("p", { class: "fine" }, "Slow and missed shortcuts come back more often next time."),

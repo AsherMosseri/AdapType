@@ -247,7 +247,7 @@ describe("migration", () => {
     const v3 = { ...createProfile("physical", 1), version: 3 } as Record<string, unknown>;
     delete v3.arcade;
     const p = migrateProfile(v3);
-    expect(p.version).toBe(5);
+    expect(p.version).toBe(6);
     expect(p.arcade).toEqual({ scores: {}, ghost: null, nemesis: null, hall: [], games: 0 });
   });
 });

@@ -18,7 +18,8 @@ import { h } from "../dom";
 import { MODIFIER_NAMES } from "../explainText";
 import { currentOs, detectOs, detectTouchLayout, OS_NAMES, platformFor, type Os } from "../platform";
 import { playSound, type SoundKind } from "../sound";
-import { clearSaved, defaultData, fromCode, newProfile, parseData, toCode, type AppData, type OsChoice, type ThemeId, type TouchLayoutChoice } from "../store";
+import { clearSaved, defaultData, fromCode, newProfile, parseData, toCode, type AppData, type OsChoice, type PackWeight, type ThemeId, type TouchLayoutChoice } from "../store";
+import { WEIGHT_CHOICES } from "./words";
 
 const ROUND_CHOICES: { id: string; label: string; round: RoundType }[] = [
   { id: "w25", label: "25 words", round: { kind: "words", count: 25 } },
@@ -58,6 +59,7 @@ export function settingsScreen(app: App, screen: Screen): ScreenView {
     appearanceSection(app),
     soundSection(app),
     accessibilitySection(app),
+    contentSection(app),
     section(
       "Rounds",
       radioGroup("round", "Round length", ROUND_CHOICES.map((c) => ({ id: c.id, label: c.label })), roundId, (id) => {
@@ -381,6 +383,69 @@ function keyboardSection(app: App, returnTo: Screen | undefined): HTMLElement {
       : null,
     os === "windows" ? h("p", { class: "fine" }, "Tip: the US-International layout (a free Windows setting) types accents and many symbols with AltGr.") : null,
     os === "linux" ? h("p", { class: "fine" }, "Linux layouts vary, so hints say AltGr or Compose. Turn on a Compose key in your system settings to type all of these.") : null,
+  );
+}
+
+/** Which word packs go into practice and how much of each, and your own packs. */
+function contentSection(app: App): HTMLElement {
+  const content = app.data.settings.content;
+  const packs = app.data.customPacks;
+  const here: Screen = { name: "settings" };
+  const rows = packs.map((p) =>
+    h(
+      "div",
+      { class: "mod-row" },
+      h("div", { class: "mod-head" }, h("strong", null, p.name), h("span", { class: "mod-status" }, `${p.words.length.toLocaleString()} words`)),
+      radioGroup(`pack-${p.id}`, `${p.name}: how much`, WEIGHT_CHOICES, String(p.weight), (v) => {
+        p.weight = Number(v) as PackWeight;
+        app.persist();
+      }, true),
+      h(
+        "div",
+        { class: "actions wrap" },
+        h("button", { type: "button", class: "text-button", onclick: () => app.go({ name: "words", id: p.id, returnTo: here }) }, "Edit"),
+        h(
+          "button",
+          {
+            type: "button",
+            class: "text-button",
+            onclick: (e: Event) => {
+              const b = e.currentTarget as HTMLButtonElement;
+              if (b.dataset.confirm !== "1") {
+                b.dataset.confirm = "1";
+                b.textContent = `Delete ${p.name}? Click again`;
+                return;
+              }
+              app.data.customPacks = app.data.customPacks.filter((x) => x.id !== p.id);
+              app.persist();
+              app.go({ name: "settings" });
+            },
+          },
+          "Delete",
+        ),
+      ),
+    ),
+  );
+  return section(
+    "Content",
+    h("p", { class: "panel-lead" }, "Practice words come from these packs, mixed by how much you pick. Code and quotes are on the practice screen."),
+    h(
+      "div",
+      { class: "mod-rows" },
+      h(
+        "div",
+        { class: "mod-row" },
+        h("div", { class: "mod-head" }, h("strong", null, "English words"), h("span", { class: "mod-status" }, "10,000 common words")),
+        radioGroup("pack-english", "English words: how much", WEIGHT_CHOICES, String(content.english), (v) => {
+          content.english = Number(v) as PackWeight;
+          app.persist();
+        }, true),
+      ),
+      rows,
+    ),
+    packs.length > 0 && content.english === 0 ? h("p", { class: "fine" }, "With English off, practice uses only your own words. If none fit your unlocked letters yet, it falls back to made-up words.") : null,
+    h("div", { class: "actions wrap" }, h("button", { type: "button", class: "button", onclick: () => app.go({ name: "words", returnTo: here }) }, "Add your own words")),
+    h("p", { class: "fine" }, "Your own words stay on this device and come along in export and import. Only the words and their counts are kept, never the text you paste."),
   );
 }
 

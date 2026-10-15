@@ -1055,6 +1055,50 @@ Profile version 5 adds empty `keyDays`, `creatures`, `replays` and `daily`.
 
 Vectors: `fingerprint.json`.
 
+## 34. Word packs: your own words and mixing
+
+**From text.** Lowercase the text and split it on every character that
+isn't a–z or an apostrophe. Drop tokens with an apostrophe and tokens
+shorter than `CUSTOM_MIN_LENGTH` or longer than `CUSTOM_MAX_LENGTH`. Count
+each word; sort by count (most first), then alphabetically; keep
+`CUSTOM_MAX_WORDS`. Only these words and counts are stored, never the text.
+
+**Mixing.** Packs with weight 0 or no words are left out. Each step, every
+pack that still has unused words adds its weight to its credit; the one
+with the most credit (ties: the earlier pack) gives its next word not
+already taken and loses the total weight of the packs still in play.
+Repeat until every pack is used up. The result is one pack, used wherever
+the English pack would be (practice, arcade); the daily challenge always
+uses the English pack alone.
+
+Vectors: `packs.json`.
+
+## 35. Passages: code and quotes
+
+A passage is a whole text (code or a quote) typed as one round. Its weight
+is `PASSAGE_BASE_WEIGHT` plus the mean character score over its characters
+other than spaces and newlines: a letter (either case) scores its key score;
+any other character its weakness against the modifier goal, capped at
+`PASSAGE_CHAR_CAP`. A pick is `weightedIndex` over the weights, with recent
+passages at 0 (unless every passage is recent).
+
+Passages are typed with **auto-indent**: after a correct newline, the spaces
+that start the next line are filled in with no keystrokes recorded. A typed
+passage applies its records to stats (full weight), error analysis and key
+days, not to unlocks, difficulty, rounds or sessions, and joins
+`recentPassages` (newest last, `PASSAGE_RECENT` kept).
+
+Profile version 6 adds an empty `recentPassages`.
+
+Vectors: `passages.json`.
+
+## 36. Shortcut packs
+
+A pack may be for one system only (`os`: mac, windows or linux). A shortcut
+has a Mac combo, a combo for Windows and Linux, and optionally a Linux combo
+that replaces it on Linux. Shortcut ids are unique across packs (packs added
+in phase 6 prefix them, as in `vscode:comment`), so each keeps its own stats.
+
 ## Constants
 
 | Name | Value |
@@ -1159,6 +1203,8 @@ Vectors: `fingerprint.json`.
 | `DAILY_SENTENCE_MIN`, `DAILY_SENTENCE_MAX`, `DAILY_COMMA_CHANCE`, `DAILY_KEPT` | 5, 9, 0.12, 400 |
 | `TRAIT_STEADY`, `TRAIT_BURSTY`, `TRAIT_PRECISE`, `TRAIT_DARING` | 0.55, 0.4, 0.97, 0.9 |
 | `TRAIT_FIXER`, `TRAIT_PRESSES_ON`, `FINGERPRINT_MIN_SAMPLES` | 0.8, 0.3, 20 |
+| `CUSTOM_MAX_WORDS`, `CUSTOM_MIN_LENGTH`, `CUSTOM_MAX_LENGTH` | 5000, 2, 20 |
+| `PASSAGE_RECENT`, `PASSAGE_CHAR_CAP`, `PASSAGE_BASE_WEIGHT` | 8, 2, 0.2 |
 
 ## Test vectors
 
@@ -1191,6 +1237,8 @@ Vectors: `fingerprint.json`.
 | `replay.json` | building, replaying, markers and keeping replays |
 | `daily.json` | daily challenge text for sample dates, marks, streaks, share text |
 | `fingerprint.json` | fingerprint card traits, best and worst keys, top creatures |
+| `packs.json` | words from pasted text, and mixing packs by weight |
+| `passages.json` | passage weights and picks, auto-indent, completion, Linux combos |
 
 Vectors that use the word pack use the first `packSize` words of
 `content/words-en.json` version 1 and `content/blocklist.json`.

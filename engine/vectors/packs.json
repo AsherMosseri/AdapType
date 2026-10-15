@@ -1,0 +1,117 @@
+{
+ "text": "The cat and the hat. THE CAT sat; don't sit! A cat's hat, x, supercalifragilisticexpialidocious hat.",
+ "words": [
+  [
+   "hat",
+   3
+  ],
+  [
+   "the",
+   3
+  ],
+  [
+   "cat",
+   2
+  ],
+  [
+   "and",
+   1
+  ],
+  [
+   "sat",
+   1
+  ],
+  [
+   "sit",
+   1
+  ]
+ ],
+ "mixes": [
+  {
+   "packs": [
+    {
+     "words": [
+      "a",
+      "b",
+      "c",
+      "d"
+     ],
+     "weight": 2
+    },
+    {
+     "words": [
+      "x",
+      "b",
+      "y"
+     ],
+     "weight": 1
+    }
+   ],
+   "mixed": [
+    "a",
+    "x",
+    "b",
+    "c",
+    "y",
+    "d"
+   ]
+  },
+  {
+   "packs": [
+    {
+     "words": [
+      "a",
+      "b"
+     ],
+     "weight": 1
+    },
+    {
+     "words": [
+      "c",
+      "d",
+      "e",
+      "f"
+     ],
+     "weight": 1
+    },
+    {
+     "words": [
+      "g"
+     ],
+     "weight": 4
+    }
+   ],
+   "mixed": [
+    "g",
+    "a",
+    "c",
+    "b",
+    "d",
+    "e",
+    "f"
+   ]
+  },
+  {
+   "packs": [
+    {
+     "words": [
+      "a",
+      "b"
+     ],
+     "weight": 0
+    },
+    {
+     "words": [
+      "c",
+      "d"
+     ],
+     "weight": 1
+    }
+   ],
+   "mixed": [
+    "c",
+    "d"
+   ]
+  }
+ ]
+}

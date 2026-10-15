@@ -221,7 +221,7 @@ export interface ArcadeState {
 }
 
 export interface ProfileState {
-  version: 5;
+  version: 6;
   profile: InputProfile;
   goal: Goal | null;
   calibration: CalibrationStatus;
@@ -275,6 +275,8 @@ export interface ProfileState {
   replays: ReplayStore;
   /** Phase 5: daily challenge results by date (YYYY-MM-DD); only the first attempt is kept. */
   daily: Record<string, DailyResult>;
+  /** Phase 6: passages (code and quotes) typed lately, newest last, so they don't repeat right away. */
+  recentPassages: string[];
 }
 
 /**

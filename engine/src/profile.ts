@@ -70,7 +70,7 @@ export const DEFAULT_GOAL: Goal = { wpm: 40, accuracy: 0.95 };
 
 export function createProfile(profile: InputProfile, seed: number, order: UnlockOrder = "frequency"): ProfileState {
   return {
-    version: 5,
+    version: 6,
     profile,
     goal: null,
     calibration: "none",
@@ -91,6 +91,7 @@ export function createProfile(profile: InputProfile, seed: number, order: Unlock
     ...phase3Defaults(),
     arcade: emptyArcade(),
     ...phase5Defaults(),
+    recentPassages: [],
   };
 }
 
@@ -124,7 +125,7 @@ function phase3Defaults() {
  * sessions, the touch-typing answer and per-grip stats; 3 → 4 adds the arcade
  * (scores, ghost run, nemesis, hall of defeated); 4 → 5 adds key days,
  * creatures, replays and daily results (creatures fill in on the next
- * updateCreatures call).
+ * updateCreatures call); 5 → 6 adds recent passages.
  */
 export function migrateProfile(saved: Record<string, unknown>): ProfileState {
   let p = { ...saved } as Record<string, unknown>;
@@ -142,6 +143,9 @@ export function migrateProfile(saved: Record<string, unknown>): ProfileState {
   }
   if (p.version === 4) {
     p = { ...p, ...phase5Defaults(), version: 5 };
+  }
+  if (p.version === 5) {
+    p = { ...p, recentPassages: [], version: 6 };
   }
   return p as unknown as ProfileState;
 }

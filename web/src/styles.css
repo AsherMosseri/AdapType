@@ -720,7 +720,8 @@ textarea {
 }
 #app[data-screen="practice"],
 #app[data-screen="calibration"],
-#app[data-screen="daily"] {
+#app[data-screen="daily"],
+#app[data-screen="passages"] {
   height: 100%;
 }
 .practice-screen.touch .practice {
@@ -2758,4 +2759,80 @@ button.choice:hover {
 .daily-screen.touch.running .daily-date,
 .daily-screen.touch.running .daily > .notice {
   display: none;
+}
+
+/* Phase 6: packs, passages and the shortcut pack picker */
+.text-input,
+.text-area,
+.select {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+}
+.text-area {
+  min-height: 10rem;
+  resize: vertical;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+.lang-picker summary {
+  cursor: pointer;
+  color: var(--accent);
+  font-weight: 600;
+  padding-block: 0.25rem;
+}
+.lang-picker[open] .chip-row {
+  margin-top: 0.5rem;
+}
+.select {
+  width: auto;
+  min-width: 14rem;
+}
+.pack-picker {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+.pack-preview {
+  min-height: 2rem;
+}
+.passage-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.passage-text {
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 3.2vw, 1.35rem);
+  line-height: calc(1.6em * var(--line-scale, 1));
+  letter-spacing: var(--type-tracking, 0);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--upcoming);
+  max-height: calc(1.6em * 9);
+  overflow-y: auto;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  user-select: none;
+}
+.passage-text .ch.newline {
+  opacity: 0.45;
+}
+.passage-text .ch.newline.ok,
+.passage-text .ch.newline.current {
+  opacity: 1;
+}
+.passage-credit {
+  font-style: italic;
+}
+.passages-screen.touch .passage-text {
+  max-height: calc(1.6em * 6);
 }

@@ -1,0 +1,287 @@
+{
+ "id": "figma",
+ "name": "Figma",
+ "about": "Figma's default shortcuts. Tool shortcuts are single keys.",
+ "shortcuts": [
+  {
+   "id": "figma:move",
+   "action": "Move tool",
+   "group": "Tools",
+   "mac": {
+    "mods": [],
+    "key": "v"
+   },
+   "other": {
+    "mods": [],
+    "key": "v"
+   }
+  },
+  {
+   "id": "figma:frame",
+   "action": "Frame tool",
+   "group": "Tools",
+   "mac": {
+    "mods": [],
+    "key": "f"
+   },
+   "other": {
+    "mods": [],
+    "key": "f"
+   }
+  },
+  {
+   "id": "figma:rectangle",
+   "action": "Rectangle tool",
+   "group": "Tools",
+   "mac": {
+    "mods": [],
+    "key": "r"
+   },
+   "other": {
+    "mods": [],
+    "key": "r"
+   }
+  },
+  {
+   "id": "figma:ellipse",
+   "action": "Ellipse tool",
+   "group": "Tools",
+   "mac": {
+    "mods": [],
+    "key": "o"
+   },
+   "other": {
+    "mods": [],
+    "key": "o"
+   }
+  },
+  {
+   "id": "figma:line",
+   "action": "Line tool",
+   "group": "Tools",
+   "mac": {
+    "mods": [],
+    "key": "l"
+   },
+   "other": {
+    "mods": [],
+    "key": "l"
+   }
+  },
+  {
+   "id": "figma:pen",
+   "action": "Pen tool",
+   "group": "Tools",
+   "mac": {
+    "mods": [],
+    "key": "p"
+   },
+   "other": {
+    "mods": [],
+    "key": "p"
+   }
+  },
+  {
+   "id": "figma:text",
+   "action": "Text tool",
+   "group": "Tools",
+   "mac": {
+    "mods": [],
+    "key": "t"
+   },
+   "other": {
+    "mods": [],
+    "key": "t"
+   }
+  },
+  {
+   "id": "figma:comment",
+   "action": "Comment tool",
+   "group": "Tools",
+   "mac": {
+    "mods": [],
+    "key": "c"
+   },
+   "other": {
+    "mods": [],
+    "key": "c"
+   }
+  },
+  {
+   "id": "figma:group",
+   "action": "Group the selection",
+   "group": "Layers",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "g"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "g"
+   }
+  },
+  {
+   "id": "figma:ungroup",
+   "action": "Ungroup",
+   "group": "Layers",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "g"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "g"
+   }
+  },
+  {
+   "id": "figma:frame-selection",
+   "action": "Frame the selection",
+   "group": "Layers",
+   "mac": {
+    "mods": [
+     "meta",
+     "alt"
+    ],
+    "key": "g"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "alt"
+    ],
+    "key": "g"
+   }
+  },
+  {
+   "id": "figma:component",
+   "action": "Create a component",
+   "group": "Layers",
+   "mac": {
+    "mods": [
+     "meta",
+     "alt"
+    ],
+    "key": "k"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "alt"
+    ],
+    "key": "k"
+   }
+  },
+  {
+   "id": "figma:auto-layout",
+   "action": "Add auto layout",
+   "group": "Layers",
+   "mac": {
+    "mods": [
+     "shift"
+    ],
+    "key": "a"
+   },
+   "other": {
+    "mods": [
+     "shift"
+    ],
+    "key": "a"
+   }
+  },
+  {
+   "id": "figma:duplicate",
+   "action": "Duplicate",
+   "group": "Layers",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "d"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "d"
+   }
+  },
+  {
+   "id": "figma:rename",
+   "action": "Rename the layer",
+   "group": "Layers",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "r"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "r"
+   }
+  },
+  {
+   "id": "figma:zoom-fit",
+   "action": "Zoom to fit",
+   "group": "View",
+   "mac": {
+    "mods": [
+     "shift"
+    ],
+    "key": "1"
+   },
+   "other": {
+    "mods": [
+     "shift"
+    ],
+    "key": "1"
+   }
+  },
+  {
+   "id": "figma:zoom-selection",
+   "action": "Zoom to the selection",
+   "group": "View",
+   "mac": {
+    "mods": [
+     "shift"
+    ],
+    "key": "2"
+   },
+   "other": {
+    "mods": [
+     "shift"
+    ],
+    "key": "2"
+   }
+  },
+  {
+   "id": "figma:hide-ui",
+   "action": "Show or hide the interface",
+   "group": "View",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "\\"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "\\"
+   }
+  }
+ ]
+}

@@ -285,3 +285,14 @@ export const TRAIT_DARING = 0.9;
 export const TRAIT_FIXER = 0.8;
 export const TRAIT_PRESSES_ON = 0.3;
 export const FINGERPRINT_MIN_SAMPLES = 20;
+
+/** Phase 6: your own words. Words kept from pasted text, and their length range. */
+export const CUSTOM_MAX_WORDS = 5000;
+export const CUSTOM_MIN_LENGTH = 2;
+export const CUSTOM_MAX_LENGTH = 20;
+
+/** Phase 6: passages (code and quotes). Recently typed passages sit out for this many picks. */
+export const PASSAGE_RECENT = 8;
+/** A non-letter character's score in a passage is its weakness (against the modifier goal), capped here. */
+export const PASSAGE_CHAR_CAP = 2;
+export const PASSAGE_BASE_WEIGHT = 0.2;

@@ -11,6 +11,12 @@ import nemesisContent from "../../content/nemesis.json";
 import shortcutPack from "../../content/shortcuts-text-editing.json";
 import fullPack from "../../content/words-en.json";
 import {
+  comboFor,
+  completePassage,
+  mixWordPacks,
+  passageWeight,
+  pickPassage,
+  wordsFromText,
   completeDaily,
   creatureHealth,
   creatureKeys,
@@ -770,6 +776,53 @@ describe("test vectors", () => {
     for (let i = 0; i < 12; i++) state.rounds.push({ at: 1000 + i, wpm: 41 + (i % 3), accuracy: 0.975, durationMs: 30000, chars: 150, corrections: 3, calibration: false, consistency: 0.6, firstErrors: 3 });
     updateCreatures(state, 5000, charData);
     return { keys: state.keys, rounds: state.rounds, card: fingerprint(state, 5000, charData) };
+  });
+
+  check("packs", () => {
+    const text = "The cat and the hat. THE CAT sat; don't sit! A cat's hat, x, supercalifragilisticexpialidocious hat.";
+    return {
+      text,
+      words: wordsFromText(text),
+      mixes: [
+        { packs: [{ words: ["a", "b", "c", "d"], weight: 2 }, { words: ["x", "b", "y"], weight: 1 }] },
+        { packs: [{ words: ["a", "b"], weight: 1 }, { words: ["c", "d", "e", "f"], weight: 1 }, { words: ["g"], weight: 4 }] },
+        { packs: [{ words: ["a", "b"], weight: 0 }, { words: ["c", "d"], weight: 1 }] },
+      ].map((m) => ({ ...m, mixed: mixWordPacks(m.packs).words })),
+    };
+  });
+
+  check("passages", () => {
+    const state = createProfile("physical", 21);
+    state.goal = { wpm: 40, accuracy: 0.95 };
+    for (const l of "etaoinshrdlc") state.keys[l] = { n: 30, timedN: 30, msAvg: 250, errAvg: 0.02 };
+    state.keys.x = { n: 30, timedN: 30, msAvg: 700, errAvg: 0.2 };
+    state.keys["{"] = { n: 10, timedN: 10, msAvg: 900, errAvg: 0.3 };
+    const scores = computeScores(state, state.goal);
+    const passages = [
+      { id: "a", text: "the cat sat" },
+      { id: "b", text: "fix x {\n  max(x)\n}" },
+      { id: "c", text: "Hello, there." },
+    ];
+    const weights = passages.map((p) => passageWeight(p.text, state, scores));
+    state.recentPassages = ["b"];
+    const rng = new Rng(4);
+    const picks = Array.from({ length: 6 }, () => pickPassage(state, passages, scores, rng)!.id);
+    const round = new TypingRound("if x {\n    y\n}", "backspace", { autoIndent: true });
+    const events: TypingEvent[] = [..."if x {\n"].map((char, i) => ({ kind: "char", char, t: i * 100 }));
+    events.push({ kind: "char", char: "y", t: 800 }, { kind: "char", char: "\n", t: 900 }, { kind: "char", char: "}", t: 1000 });
+    for (const e of events) round.input(e);
+    const metrics = completePassage(state, passages[1], round, 5 * DAY_MS);
+    return {
+      weights,
+      picks,
+      autoIndent: { target: round.target, events, typed: round.typed.join(""), records: round.records.length, done: round.done, metrics },
+      recentPassages: state.recentPassages,
+      keyDays: state.keyDays["{"],
+      combos: [
+        comboFor({ id: "t", action: "", group: "", mac: { mods: ["meta"], key: "f" }, other: { mods: ["shift", "alt"], key: "f" }, linux: { mods: ["ctrl", "shift"], key: "i" } }, false, true),
+        comboFor({ id: "t", action: "", group: "", mac: { mods: ["meta"], key: "f" }, other: { mods: ["shift", "alt"], key: "f" } }, false, true),
+      ],
+    };
   });
 
   check("profile", () => {

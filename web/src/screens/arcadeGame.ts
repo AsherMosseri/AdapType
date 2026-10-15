@@ -28,6 +28,7 @@ import { announce } from "../announce";
 import { attachPhysicalInput } from "../physicalInput";
 import { playSound } from "../sound";
 import { currentTouchLayout, platformFor } from "../platform";
+import { practicePack } from "../wordPacks";
 import { gameOverPanel } from "./arcadeResults";
 
 const POWER_LABELS: Record<PowerUpKind, string> = { slow: "Slow time", clear: "Clear screen", shield: "Shield", double: "Double points" };
@@ -45,7 +46,7 @@ export function arcadeGameScreen(app: App, screen: Screen): ScreenView {
   const nemesis = state.arcade.nemesis;
   const seed = deriveSeed(state.seed, "arcade", state.roundCounter);
   const source = arcadeWordSource(state, {
-    pack,
+    pack: practicePack(app),
     blocklist,
     modifiers: { settings: settings.modifiers, chars: characters, platform: platformFor(app) },
     now,

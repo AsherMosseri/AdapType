@@ -19,11 +19,15 @@ export interface Shortcut {
   mac: Combo;
   /** Windows and Linux. */
   other: Combo;
+  /** Linux only, when it differs from Windows. */
+  linux?: Combo;
 }
 
 export interface ShortcutPack {
   id: string;
   name: string;
+  /** Only for this system (OS-wide packs); otherwise every system. */
+  os?: "mac" | "windows" | "linux";
   shortcuts: readonly Shortcut[];
 }
 
@@ -34,8 +38,10 @@ export function shortcutKey(id: string): string {
   return `sc:${id}`;
 }
 
-export function comboFor(shortcut: Shortcut, mac: boolean): Combo {
-  return mac ? shortcut.mac : shortcut.other;
+/** The combo on this system: the Mac one, else Linux's own when there is one, else Windows and Linux's. */
+export function comboFor(shortcut: Shortcut, mac: boolean, linux = false): Combo {
+  if (mac) return shortcut.mac;
+  return linux && shortcut.linux ? shortcut.linux : shortcut.other;
 }
 
 const MOD_ORDER: ModifierKey[] = ["ctrl", "alt", "shift", "meta"];
@@ -64,8 +70,15 @@ const KEY_NAMES: Record<string, string> = {
   ArrowUp: "↑",
   ArrowDown: "↓",
   Backspace: "Backspace",
+  Escape: "Esc",
+  Enter: "Enter",
+  Tab: "Tab",
+  Space: "Space",
+  PageUp: "Page Up",
+  PageDown: "Page Down",
+  PrintScreen: "Print Screen",
 };
-const MAC_KEY_NAMES: Record<string, string> = { Backspace: "⌫" };
+const MAC_KEY_NAMES: Record<string, string> = { Backspace: "⌫", Enter: "↩", Escape: "⎋ Esc", Tab: "⇥ Tab" };
 
 /**
  * Picks the shortcuts for a drill, favoring weak and unseen ones: weight is
