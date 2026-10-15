@@ -97,6 +97,7 @@ export function goalScreen(app: App, screen: Screen): ScreenView {
       state.goal = goal;
       skipCalibration(state);
     }
+    delete app.data.pendingTest;
     app.persist();
     app.go({ name: "practice" });
   };
@@ -119,6 +120,37 @@ export function goalScreen(app: App, screen: Screen): ScreenView {
       h("section", { class: "panel" }, goalControls(goal, (g) => (goal = g))),
       h("p", { class: "fine" }, "You can change your goal anytime in settings."),
       h("div", { class: "actions" }, h("button", { type: "button", class: "button primary", onclick: start }, "Start practicing")),
+    ),
+  );
+  return { el };
+}
+
+/** Saved progress exists but this page can't read it. Nothing is saved until you choose. */
+export function loadProblemScreen(app: App): ScreenView {
+  const problem = app.loadProblem;
+  const newer = problem?.newer ?? false;
+  const el = h(
+    "div",
+    { class: "screen" },
+    h("header", { class: "top-bar" }, h("span", { class: "wordmark" }, "Adap", h("b", null, "Type"))),
+    h(
+      "main",
+      { class: "load-problem" },
+      h("h1", { tabindex: "-1" }, newer ? "This page is out of date" : "Your progress couldn't be loaded"),
+      h(
+        "p",
+        { class: "lead" },
+        newer
+          ? "Your progress was saved by a newer version of AdapType than this page. Reload to get the latest version. Your progress is safe."
+          : `${problem?.message ?? ""} It hasn't been changed or deleted. Reloading may help; if it doesn't, you can start over.`,
+      ),
+      h(
+        "div",
+        { class: "actions wrap" },
+        h("button", { type: "button", class: "button primary", onclick: () => location.reload() }, "Reload"),
+        h("button", { type: "button", class: "button", onclick: () => app.startOver() }, "Start over"),
+      ),
+      h("p", { class: "fine" }, "Starting over keeps a copy of the old progress in this browser rather than deleting it."),
     ),
   );
   return { el };

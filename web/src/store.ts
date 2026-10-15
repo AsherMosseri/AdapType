@@ -20,6 +20,8 @@ export const DATA_VERSION = 8;
 export type OsChoice = "auto" | "mac" | "windows" | "windows-intl" | "linux";
 export type TouchLayoutChoice = "auto" | "ios" | "android";
 const STORAGE_KEY = "adaptype";
+/** Where saved data that couldn't be read is copied, so starting over never destroys it. */
+const UNREADABLE_KEY = "adaptype-unreadable";
 const CODE_PREFIX = "ADAPTYPE1:";
 
 export interface Settings {
@@ -163,6 +165,8 @@ export interface AppData {
   profiles: Partial<Record<string, ProfileState>>;
   /** Phase 6: your own word packs, shared by both input profiles. */
   customPacks: CustomPack[];
+  /** A finished test whose goal isn't picked yet, so a refresh returns to the goal screen instead of the test. */
+  pendingTest?: { profileKey: string; wpm: number };
 }
 
 export function defaultData(activeProfile: InputProfile): AppData {
@@ -185,13 +189,35 @@ export function newProfile(profile: InputProfile, layout: LayoutId = "qwerty"): 
   return createProfile(profile, seed, "frequency", layout);
 }
 
-export function load(): AppData | null {
+export type LoadResult =
+  | { data: AppData | null; problem?: undefined }
+  /** Saved data exists but couldn't be read. It's left in place (and copied) so nothing overwrites it. */
+  | { data: null; problem: string; newer: boolean };
+
+export function load(): LoadResult {
+  let raw: string | null;
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
-    return parseData(raw);
+    raw = localStorage.getItem(STORAGE_KEY);
   } catch {
-    return null;
+    return { data: null };
+  }
+  if (!raw) return { data: null };
+  try {
+    return { data: parseData(raw) };
+  } catch (e) {
+    try {
+      localStorage.setItem(UNREADABLE_KEY, raw);
+    } catch {
+      // The original is still under the main key.
+    }
+    const newer = (() => {
+      try {
+        return (JSON.parse(raw) as { version?: number }).version! > DATA_VERSION;
+      } catch {
+        return false;
+      }
+    })();
+    return { data: null, problem: e instanceof Error ? e.message : String(e), newer };
   }
 }
 

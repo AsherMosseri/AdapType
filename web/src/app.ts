@@ -9,6 +9,7 @@ import { defaultData, detectProfile, familyOf, load, newProfile, profileKey, sav
 
 export type Screen =
   | { name: "welcome" }
+  | { name: "load-problem" }
   | { name: "calibration" }
   | { name: "goal"; measuredWpm?: number; from: "test" | "skip" }
   | { name: "practice"; skipWarmup?: boolean }
@@ -43,6 +44,12 @@ export class App {
   data: AppData;
   /** False once a save fails, so the UI can say progress isn't being kept. */
   saving = true;
+  /**
+   * Set when saved progress exists but couldn't be read (for example, an
+   * older copy of the page meeting data from a newer one). Nothing is saved
+   * until it's resolved, so the progress isn't overwritten.
+   */
+  loadProblem: { message: string; newer: boolean } | null = null;
   /** A one-time message for the next practice screen (for example, letters unlocked by the test). */
   notice: string | null = null;
   /** The screen showing now. */
@@ -53,7 +60,9 @@ export class App {
 
   constructor(root: HTMLElement) {
     this.root = root;
-    this.data = load() ?? defaultData(detectProfile());
+    const loaded = load();
+    if (loaded.problem !== undefined) this.loadProblem = { message: loaded.problem, newer: loaded.newer };
+    this.data = loaded.data ?? defaultData(detectProfile());
     // Creatures follow stats; catch them up quietly (saved data from before phase 5 has none yet).
     for (const p of Object.values(this.data.profiles)) if (p) updateCreatures(p, Date.now(), characters);
     this.applyLook();
@@ -92,7 +101,17 @@ export class App {
   }
 
   persist(): void {
+    if (this.loadProblem) return;
     this.saving = save(this.data);
+  }
+
+  /** Gives up on saved progress that can't be read and starts fresh (a copy stays in the browser). */
+  startOver(): void {
+    this.loadProblem = null;
+    this.data = defaultData(detectProfile());
+    this.persist();
+    this.applyLook();
+    this.home();
   }
 
   go(screen: Screen): void {
@@ -110,6 +129,9 @@ export class App {
 
   /** Goes to setup or practice, whichever the active profile needs. */
   home(): void {
+    if (this.loadProblem) return this.go({ name: "load-problem" });
+    const pending = this.data.pendingTest;
+    if (this.needsSetup && pending?.profileKey === this.profileKey) return this.go({ name: "goal", measuredWpm: pending.wpm, from: "test" });
     this.go(this.needsSetup ? { name: "welcome" } : { name: "practice" });
   }
 }

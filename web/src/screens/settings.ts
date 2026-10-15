@@ -52,7 +52,7 @@ export function settingsScreen(app: App, screen: Screen): ScreenView {
   const state = app.profile;
   const leave = () => {
     app.persist();
-    if (app.needsSetup) app.go({ name: "welcome" });
+    if (app.needsSetup) app.home();
     // Came from setup, but this profile is ready (for example, switched back to a layout with progress).
     else if (!returnTo || returnTo.name === "welcome" || returnTo.name === "goal") app.go({ name: "practice" });
     else app.go(returnTo);
