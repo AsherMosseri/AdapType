@@ -1,0 +1,358 @@
+{
+ "id": "browser",
+ "name": "Browser",
+ "about": "Chrome and Edge shortcuts; most also work in Firefox and Safari. Browsers keep some of these for themselves; build those on screen.",
+ "shortcuts": [
+  {
+   "id": "browser:new-tab",
+   "action": "New tab",
+   "group": "Tabs",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "t"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "t"
+   }
+  },
+  {
+   "id": "browser:close-tab",
+   "action": "Close tab",
+   "group": "Tabs",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "w"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "w"
+   }
+  },
+  {
+   "id": "browser:reopen-tab",
+   "action": "Reopen the last closed tab",
+   "group": "Tabs",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "t"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "t"
+   }
+  },
+  {
+   "id": "browser:next-tab",
+   "action": "Next tab",
+   "group": "Tabs",
+   "mac": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "Tab"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "Tab"
+   }
+  },
+  {
+   "id": "browser:prev-tab",
+   "action": "Previous tab",
+   "group": "Tabs",
+   "mac": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "Tab"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "Tab"
+   }
+  },
+  {
+   "id": "browser:first-tab",
+   "action": "Go to the first tab",
+   "group": "Tabs",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "1"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "1"
+   }
+  },
+  {
+   "id": "browser:last-tab",
+   "action": "Go to the last tab",
+   "group": "Tabs",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "9"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "9"
+   }
+  },
+  {
+   "id": "browser:address",
+   "action": "Jump to the address bar",
+   "group": "Pages",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "l"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "l"
+   }
+  },
+  {
+   "id": "browser:reload",
+   "action": "Reload",
+   "group": "Pages",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "r"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "r"
+   }
+  },
+  {
+   "id": "browser:hard-reload",
+   "action": "Reload, skipping the cache",
+   "group": "Pages",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "r"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "r"
+   }
+  },
+  {
+   "id": "browser:back",
+   "action": "Back",
+   "group": "Pages",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "["
+   },
+   "other": {
+    "mods": [
+     "alt"
+    ],
+    "key": "ArrowLeft"
+   }
+  },
+  {
+   "id": "browser:forward",
+   "action": "Forward",
+   "group": "Pages",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "]"
+   },
+   "other": {
+    "mods": [
+     "alt"
+    ],
+    "key": "ArrowRight"
+   }
+  },
+  {
+   "id": "browser:bookmark",
+   "action": "Bookmark this page",
+   "group": "Pages",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "d"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "d"
+   }
+  },
+  {
+   "id": "browser:zoom-in",
+   "action": "Zoom in",
+   "group": "View",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "="
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "="
+   }
+  },
+  {
+   "id": "browser:zoom-out",
+   "action": "Zoom out",
+   "group": "View",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "-"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "-"
+   }
+  },
+  {
+   "id": "browser:zoom-reset",
+   "action": "Reset zoom",
+   "group": "View",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "0"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "0"
+   }
+  },
+  {
+   "id": "browser:new-window",
+   "action": "New window",
+   "group": "Windows",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "n"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "n"
+   }
+  },
+  {
+   "id": "browser:private",
+   "action": "New private window",
+   "group": "Windows",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "n"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "n"
+   }
+  },
+  {
+   "id": "browser:devtools",
+   "action": "Developer tools",
+   "group": "Tools",
+   "mac": {
+    "mods": [
+     "meta",
+     "alt"
+    ],
+    "key": "i"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "i"
+   }
+  },
+  {
+   "id": "browser:downloads",
+   "action": "Downloads",
+   "group": "Tools",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "j"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "j"
+   }
+  }
+ ]
+}

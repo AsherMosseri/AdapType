@@ -1,0 +1,261 @@
+{
+ "id": "os-linux",
+ "name": "Linux (GNOME)",
+ "os": "linux",
+ "about": "GNOME desktop shortcuts, as on Ubuntu and Fedora. Other desktops differ. The system keeps most of these from the browser; build those on screen.",
+ "shortcuts": [
+  {
+   "id": "linux:switch-app",
+   "action": "Switch apps",
+   "group": "Windows and apps",
+   "mac": {
+    "mods": [
+     "alt"
+    ],
+    "key": "Tab"
+   },
+   "other": {
+    "mods": [
+     "alt"
+    ],
+    "key": "Tab"
+   }
+  },
+  {
+   "id": "linux:close",
+   "action": "Close the window",
+   "group": "Windows and apps",
+   "mac": {
+    "mods": [
+     "alt"
+    ],
+    "key": "F4"
+   },
+   "other": {
+    "mods": [
+     "alt"
+    ],
+    "key": "F4"
+   }
+  },
+  {
+   "id": "linux:apps",
+   "action": "Show all apps",
+   "group": "System",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "a"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "a"
+   }
+  },
+  {
+   "id": "linux:lock",
+   "action": "Lock the screen",
+   "group": "System",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "l"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "l"
+   }
+  },
+  {
+   "id": "linux:notifications",
+   "action": "Show notifications",
+   "group": "System",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "v"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "v"
+   }
+  },
+  {
+   "id": "linux:run",
+   "action": "Run a command",
+   "group": "System",
+   "mac": {
+    "mods": [
+     "alt"
+    ],
+    "key": "F2"
+   },
+   "other": {
+    "mods": [
+     "alt"
+    ],
+    "key": "F2"
+   }
+  },
+  {
+   "id": "linux:terminal",
+   "action": "Open a terminal (Ubuntu)",
+   "group": "System",
+   "mac": {
+    "mods": [
+     "ctrl",
+     "alt"
+    ],
+    "key": "t"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "alt"
+    ],
+    "key": "t"
+   }
+  },
+  {
+   "id": "linux:hide",
+   "action": "Hide the window",
+   "group": "Windows and apps",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "h"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "h"
+   }
+  },
+  {
+   "id": "linux:maximize",
+   "action": "Maximize the window",
+   "group": "Windows and apps",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "ArrowUp"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "ArrowUp"
+   }
+  },
+  {
+   "id": "linux:restore",
+   "action": "Restore the window",
+   "group": "Windows and apps",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "ArrowDown"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "ArrowDown"
+   }
+  },
+  {
+   "id": "linux:tile-left",
+   "action": "Tile the window left",
+   "group": "Windows and apps",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "ArrowLeft"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "ArrowLeft"
+   }
+  },
+  {
+   "id": "linux:tile-right",
+   "action": "Tile the window right",
+   "group": "Windows and apps",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "ArrowRight"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "ArrowRight"
+   }
+  },
+  {
+   "id": "linux:workspace-up",
+   "action": "Previous workspace",
+   "group": "Workspaces",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "PageUp"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "PageUp"
+   }
+  },
+  {
+   "id": "linux:workspace-down",
+   "action": "Next workspace",
+   "group": "Workspaces",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "PageDown"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "PageDown"
+   }
+  },
+  {
+   "id": "linux:screenshot",
+   "action": "Screenshot tool",
+   "group": "Screenshots",
+   "mac": {
+    "mods": [],
+    "key": "PrintScreen"
+   },
+   "other": {
+    "mods": [],
+    "key": "PrintScreen"
+   }
+  }
+ ]
+}

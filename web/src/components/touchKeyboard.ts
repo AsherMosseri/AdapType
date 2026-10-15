@@ -14,6 +14,8 @@ export interface TouchKeyboardOptions {
   assist?: (letter: string) => { dx: number; dy: number } | null;
   /** Landscape: each row split in two halves, one for each thumb. */
   split?: boolean;
+  /** A return key on the bottom row that types a newline (for code and quotes). */
+  returnKey?: boolean;
 }
 
 const LONG_PRESS_MS = 380;
@@ -39,7 +41,8 @@ export function touchKeyboard(options: TouchKeyboardOptions): HTMLElement {
   const label = (value: string) => (shift && value.length === 1 ? value.toUpperCase() : value);
 
   const render = () => {
-    const rows = options.layout[layer].map((row, i) => {
+    const rows = options.layout[layer].map((layoutRow, i, all) => {
+      const row = options.returnKey && i === all.length - 1 ? [...layoutRow, "return"] : layoutRow;
       const keys: HTMLElement[] = row.map((value) => keyButton(value));
       // Split rows break at the middle key; the space bar row stays whole.
       if (options.split && !row.includes("space")) keys.splice(Math.ceil(keys.length / 2), 0, h("span", { class: "split-gap" }));
@@ -57,6 +60,7 @@ export function touchKeyboard(options: TouchKeyboardOptions): HTMLElement {
       abc: () => h("button", { type: "button", class: "tkey wide mod", dataset: { key: "abc" }, "aria-label": "Letters", tabindex: "-1" }, "ABC"),
       sym: () => h("button", { type: "button", class: "tkey wide mod", dataset: { key: "sym" }, "aria-label": "More symbols", tabindex: "-1" }, SYMBOL_KEY_LABEL[options.layoutName]),
       space: () => h("button", { type: "button", class: "tkey space", dataset: { key: " " }, "aria-label": "Space", tabindex: "-1" }, "space"),
+      return: () => h("button", { type: "button", class: "tkey wide mod", dataset: { key: "\n" }, "aria-label": "Return", tabindex: "-1" }, "return"),
     };
     if (special[value]) return special[value]();
     const locked = layer === "letters" && options.isLocked(value);
@@ -89,7 +93,7 @@ export function touchKeyboard(options: TouchKeyboardOptions): HTMLElement {
 
   const type = (char: string, tap: TapPoint, key: HTMLElement, t: number) => {
     const out = shift ? char.toUpperCase() : char;
-    if (char !== " ") showPopup(key, out);
+    if (char !== " " && char !== "\n") showPopup(key, out);
     options.onChar(out, tap, layer !== "letters", t);
     if (shift) {
       shift = false;

@@ -1,0 +1,111 @@
+{
+ "weights": [
+  0.33333333333333337,
+  0.65,
+  0.45
+ ],
+ "picks": [
+  "c",
+  "a",
+  "a",
+  "a",
+  "a",
+  "c"
+ ],
+ "autoIndent": {
+  "target": "if x {\n    y\n}",
+  "events": [
+   {
+    "kind": "char",
+    "char": "i",
+    "t": 0
+   },
+   {
+    "kind": "char",
+    "char": "f",
+    "t": 100
+   },
+   {
+    "kind": "char",
+    "char": " ",
+    "t": 200
+   },
+   {
+    "kind": "char",
+    "char": "x",
+    "t": 300
+   },
+   {
+    "kind": "char",
+    "char": " ",
+    "t": 400
+   },
+   {
+    "kind": "char",
+    "char": "{",
+    "t": 500
+   },
+   {
+    "kind": "char",
+    "char": "\n",
+    "t": 600
+   },
+   {
+    "kind": "char",
+    "char": "y",
+    "t": 800
+   },
+   {
+    "kind": "char",
+    "char": "\n",
+    "t": 900
+   },
+   {
+    "kind": "char",
+    "char": "}",
+    "t": 1000
+   }
+  ],
+  "typed": "if x {\n    y\n}",
+  "records": 10,
+  "done": true,
+  "metrics": {
+   "correctChars": 14,
+   "keystrokes": 10,
+   "correctKeystrokes": 10,
+   "corrections": 0,
+   "firstErrors": 0,
+   "elapsedMs": 1000,
+   "wpm": 168,
+   "accuracy": 1
+  }
+ },
+ "recentPassages": [
+  "b"
+ ],
+ "keyDays": [
+  [
+   5,
+   1,
+   1,
+   100,
+   1
+  ]
+ ],
+ "combos": [
+  {
+   "mods": [
+    "ctrl",
+    "shift"
+   ],
+   "key": "i"
+  },
+  {
+   "mods": [
+    "shift",
+    "alt"
+   ],
+   "key": "f"
+  }
+ ]
+}

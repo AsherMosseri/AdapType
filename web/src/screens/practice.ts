@@ -30,6 +30,7 @@ import { announce, wordAt } from "../announce";
 import { attachPhysicalInput } from "../physicalInput";
 import { playSound } from "../sound";
 import { keystrokeFeedback } from "../typingFeedback";
+import { practicePack } from "../wordPacks";
 import { localDate } from "./daily";
 import { currentTouchLayout, physicalHint, platformFor, touchHint } from "../platform";
 
@@ -58,10 +59,11 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
       : settings.round;
   const touchLayout = currentTouchLayout(settings);
   const modifiers = { settings: settings.modifiers, chars: characters, platform: platformFor(app) };
+  const words = practicePack(app);
 
   let chunk = 0;
   const plan = planRound(state, {
-    pack,
+    pack: words,
     blocklist,
     count: roundType.kind === "words" ? roundType.count : CHUNK,
     calibrationTest,
@@ -110,6 +112,8 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
     !calibrationTest && !silent && !state.daily[localDate()]
       ? h("button", { type: "button", class: "text-button", onclick: () => app.go({ name: "daily" }) }, "Daily challenge")
       : null;
+  const passagesButton =
+    !calibrationTest && !silent ? h("button", { type: "button", class: "text-button", onclick: () => app.go({ name: "passages", kind: "code" }) }, "Code and quotes") : null;
   const shortcutsOn = !touch && !calibrationTest && !silent && isOn("shortcuts", state, settings.modifiers);
   const drillButton = shortcutsOn
     ? h("button", { type: "button", class: "text-button", onclick: () => app.go({ name: "shortcuts" }) }, "Shortcut drill")
@@ -213,7 +217,7 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
       : null,
     srText,
     physical?.el,
-    h("div", { class: "practice-foot" }, stats, h("div", { class: "foot-actions" }, dailyButton, drillButton, endButton)),
+    h("div", { class: "practice-foot" }, stats, h("div", { class: "foot-actions" }, dailyButton, passagesButton, drillButton, endButton)),
   );
   const el = h(
     "div",
@@ -268,7 +272,7 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
   function addMore(): void {
     chunk += 1;
     const more: RoundWord[] = planRound(state, {
-      pack,
+      pack: words,
       blocklist,
       count: CHUNK,
       chunk,

@@ -14,7 +14,7 @@ import {
   type RoundType,
 } from "../../engine/src";
 
-export const DATA_VERSION = 6;
+export const DATA_VERSION = 7;
 
 export type OsChoice = "auto" | "mac" | "windows" | "windows-intl" | "linux";
 export type TouchLayoutChoice = "auto" | "ios" | "android";
@@ -51,6 +51,28 @@ export interface Settings {
   colorMode: "auto" | "light" | "dark";
   a11y: A11ySettings;
   sound: SoundSettings;
+  /** How much of each word pack goes into practice, and which code languages are on. */
+  content: ContentSettings;
+  /** The shortcut pack the drill uses. */
+  shortcutPack: string;
+}
+
+/** A pack's share of practice words: 0 off, 1 a little, 2 even, 4 a lot. */
+export type PackWeight = 0 | 1 | 2 | 4;
+
+export interface ContentSettings {
+  english: PackWeight;
+  /** Code languages on for code passages. */
+  code: string[];
+}
+
+/** Your own words: only the words and how often each appeared, never the text they came from. */
+export interface CustomPack {
+  id: string;
+  name: string;
+  words: [word: string, count: number][];
+  weight: PackWeight;
+  at: number;
 }
 
 export type ThemeId = "clean" | "terminal" | "cute" | "mechanical";
@@ -102,6 +124,8 @@ export function defaultSettings(activeProfile: InputProfile): Settings {
     colorMode: "auto",
     a11y: { font: "theme", letterSpacing: 0, lineSpacing: 0, textSize: 100, heatmap: "theme", motion: "auto", announce: true },
     sound: { on: true, volume: 0.5, keyClicks: true },
+    content: { english: 2, code: ["javascript", "python", "typescript", "html", "css", "java", "swift", "kotlin", "cpp"] },
+    shortcutPack: "text-editing",
   };
 }
 
@@ -109,6 +133,8 @@ export interface AppData {
   version: number;
   settings: Settings;
   profiles: Partial<Record<InputProfile, ProfileState>>;
+  /** Phase 6: your own word packs, shared by both input profiles. */
+  customPacks: CustomPack[];
 }
 
 export function defaultData(activeProfile: InputProfile): AppData {
@@ -116,6 +142,7 @@ export function defaultData(activeProfile: InputProfile): AppData {
     version: DATA_VERSION,
     settings: defaultSettings(activeProfile),
     profiles: {},
+    customPacks: [],
   };
 }
 
@@ -185,7 +212,8 @@ export function parseData(text: string): AppData {
  * Upgrades older saved data: version 1 → 2 adds modifier, system and shortcut
  * settings; 2 → 3 adds practice settings; 3 → 4 arcade settings; 4 → 5
  * changes nothing here (profiles gain phase 5 data); 5 → 6 adds theme, color
- * mode, accessibility and sound. Missing settings take their defaults.
+ * mode, accessibility and sound; 6 → 7 adds content settings, the shortcut
+ * pack and custom word packs. Missing settings take their defaults.
  * Profiles migrate in the engine.
  */
 function migrate(data: AppData): AppData {
@@ -197,7 +225,9 @@ function migrate(data: AppData): AppData {
     modifiers: { ...defaults.modifiers, ...saved.modifiers },
     a11y: { ...defaults.a11y, ...saved.a11y },
     sound: { ...defaults.sound, ...saved.sound },
+    content: { ...defaults.content, ...saved.content },
   };
+  if (!Array.isArray(data.customPacks)) data.customPacks = [];
   for (const key of ["physical", "touch"] as const) {
     const p = data.profiles[key];
     if (p) data.profiles[key] = migrateProfile(p as unknown as Record<string, unknown>);

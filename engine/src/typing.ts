@@ -34,9 +34,16 @@ export class TypingRound {
   /** True when the previous keystroke was a correct first attempt. */
   private lastWasCleanFirst = false;
 
-  constructor(target: string, mode: ErrorMode) {
+  /**
+   * autoIndent: after a correct newline, the spaces that start the next line
+   * are filled in automatically (no keystrokes recorded), like a code editor.
+   */
+  readonly autoIndent: boolean;
+
+  constructor(target: string, mode: ErrorMode, options: { autoIndent?: boolean } = {}) {
     this.target = target;
     this.mode = mode;
+    this.autoIndent = !!options.autoIndent;
   }
 
   get position(): number {
@@ -84,6 +91,9 @@ export class TypingRound {
     this.attempted.add(index);
     if (first && !correct) this.firstWrong.add(index);
     if (correct || this.mode !== "block") this.typed.push(actual);
+    if (this.autoIndent && correct && actual === "\n") {
+      while (this.typed.length < this.target.length && this.target[this.typed.length] === " ") this.typed.push(" ");
+    }
     this.lastT = event.t;
     this.lastWasCleanFirst = correct && first;
     return record;

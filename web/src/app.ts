@@ -24,6 +24,8 @@ export type Screen =
   | { name: "replay"; list: "recent" | "best"; index: number; returnTo?: Screen }
   | { name: "daily" }
   | { name: "card"; returnTo?: Screen }
+  | { name: "words"; id?: string; returnTo?: Screen }
+  | { name: "passages"; kind: "code" | "quotes" }
   | { name: "settings"; returnTo?: Screen }
   | { name: "about"; returnTo?: Screen };
 

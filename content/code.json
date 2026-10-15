@@ -1,0 +1,140 @@
+{
+ "about": "Code snippets written for AdapType, so they're free to use. Indentation fills in automatically after a newline.",
+ "languages": {
+  "swift": {
+   "name": "Swift",
+   "snippets": [
+    "let names = [\"Ada\", \"Grace\", \"Alan\"]\nfor name in names {\n    print(\"Hello, \\(name)!\")\n}",
+    "struct Point {\n    var x: Double\n    var y: Double\n\n    func distance(to other: Point) -> Double {\n        let dx = x - other.x\n        let dy = y - other.y\n        return (dx * dx + dy * dy).squareRoot()\n    }\n}",
+    "func average(_ values: [Double]) -> Double? {\n    guard !values.isEmpty else { return nil }\n    return values.reduce(0, +) / Double(values.count)\n}",
+    "enum Direction: String, CaseIterable {\n    case north, east, south, west\n}\nlet all = Direction.allCases.map { $0.rawValue }",
+    "var scores: [String: Int] = [:]\nscores[\"mia\", default: 0] += 10\nif let best = scores.max(by: { $0.value < $1.value }) {\n    print(best.key)\n}",
+    "let evens = (1...20).filter { $0 % 2 == 0 }\nlet squares = evens.map { $0 * $0 }\nprint(squares.prefix(3))",
+    "class Counter {\n    private(set) var count = 0\n    func increment(by step: Int = 1) {\n        count += step\n    }\n}",
+    "func loadTitle(from url: URL) async throws -> String {\n    let (data, _) = try await URLSession.shared.data(from: url)\n    return String(decoding: data, as: UTF8.self)\n}",
+    "protocol Shape {\n    var area: Double { get }\n}\nstruct Square: Shape {\n    let side: Double\n    var area: Double { side * side }\n}",
+    "switch temperature {\ncase ..<0:\n    print(\"freezing\")\ncase 0..<20:\n    print(\"cool\")\ndefault:\n    print(\"warm\")\n}"
+   ]
+  },
+  "kotlin": {
+   "name": "Kotlin",
+   "snippets": [
+    "fun main() {\n    val names = listOf(\"Ada\", \"Grace\", \"Alan\")\n    names.forEach { println(\"Hello, $it!\") }\n}",
+    "data class User(val name: String, val age: Int)\n\nval users = listOf(User(\"Mia\", 31), User(\"Leo\", 24))\nval oldest = users.maxByOrNull { it.age }",
+    "fun average(values: List<Double>): Double? =\n    if (values.isEmpty()) null else values.sum() / values.size",
+    "enum class Direction { NORTH, EAST, SOUTH, WEST }\n\nfun turnRight(d: Direction): Direction =\n    Direction.values()[(d.ordinal + 1) % 4]",
+    "val counts = mutableMapOf<String, Int>()\nfor (word in text.split(\" \")) {\n    counts[word] = (counts[word] ?: 0) + 1\n}",
+    "val evens = (1..20).filter { it % 2 == 0 }\nval squares = evens.map { it * it }\nprintln(squares.take(3))",
+    "when (temperature) {\n    in Int.MIN_VALUE until 0 -> println(\"freezing\")\n    in 0 until 20 -> println(\"cool\")\n    else -> println(\"warm\")\n}",
+    "class Counter {\n    var count = 0\n        private set\n\n    fun increment(step: Int = 1) {\n        count += step\n    }\n}",
+    "suspend fun loadTitle(id: Int): String {\n    delay(100)\n    return \"Item #$id\"\n}",
+    "val name: String? = readLine()\nval greeting = name?.trim()?.takeIf { it.isNotEmpty() } ?: \"stranger\"\nprintln(\"Hi, $greeting\")"
+   ]
+  },
+  "javascript": {
+   "name": "JavaScript",
+   "snippets": [
+    "const names = [\"Ada\", \"Grace\", \"Alan\"];\nfor (const name of names) {\n  console.log(`Hello, ${name}!`);\n}",
+    "function average(values) {\n  if (values.length === 0) return null;\n  return values.reduce((sum, v) => sum + v, 0) / values.length;\n}",
+    "const user = { name: \"Mia\", age: 31, city: \"Lyon\" };\nconst { name, ...rest } = user;\nconsole.log(name, Object.keys(rest));",
+    "async function loadJson(url) {\n  const response = await fetch(url);\n  if (!response.ok) throw new Error(`HTTP ${response.status}`);\n  return response.json();\n}",
+    "const counts = {};\nfor (const word of text.split(/\\s+/)) {\n  counts[word] = (counts[word] ?? 0) + 1;\n}",
+    "button.addEventListener(\"click\", (event) => {\n  event.preventDefault();\n  panel.hidden = !panel.hidden;\n});",
+    "class Counter {\n  #count = 0;\n  increment(step = 1) {\n    this.#count += step;\n    return this.#count;\n  }\n}",
+    "const evens = [...Array(20).keys()].filter((n) => n % 2 === 0);\nconst squares = evens.map((n) => n * n);",
+    "export function debounce(fn, ms = 200) {\n  let timer;\n  return (...args) => {\n    clearTimeout(timer);\n    timer = setTimeout(() => fn(...args), ms);\n  };\n}",
+    "const sorted = [...people].sort((a, b) => a.age - b.age || a.name.localeCompare(b.name));"
+   ]
+  },
+  "typescript": {
+   "name": "TypeScript",
+   "snippets": [
+    "interface User {\n  id: number;\n  name: string;\n  email?: string;\n}",
+    "function first<T>(items: readonly T[]): T | undefined {\n  return items[0];\n}",
+    "type Shape =\n  | { kind: \"circle\"; radius: number }\n  | { kind: \"square\"; side: number };\n\nfunction area(s: Shape): number {\n  return s.kind === \"circle\" ? Math.PI * s.radius ** 2 : s.side ** 2;\n}",
+    "const scores: Record<string, number> = {};\nscores[\"mia\"] = (scores[\"mia\"] ?? 0) + 10;",
+    "export async function loadUser(id: number): Promise<User> {\n  const res = await fetch(`/api/users/${id}`);\n  return (await res.json()) as User;\n}",
+    "enum Direction {\n  Up = \"UP\",\n  Down = \"DOWN\",\n}",
+    "class Stack<T> {\n  private items: T[] = [];\n  push(item: T): void {\n    this.items.push(item);\n  }\n  pop(): T | undefined {\n    return this.items.pop();\n  }\n}",
+    "type Readonly<T> = { readonly [K in keyof T]: T[K] };",
+    "const ids = users.map((u) => u.id).filter((id): id is number => id !== null);",
+    "function assertNever(value: never): never {\n  throw new Error(`Unexpected: ${JSON.stringify(value)}`);\n}"
+   ]
+  },
+  "python": {
+   "name": "Python",
+   "snippets": [
+    "names = [\"Ada\", \"Grace\", \"Alan\"]\nfor name in names:\n    print(f\"Hello, {name}!\")",
+    "def average(values):\n    if not values:\n        return None\n    return sum(values) / len(values)",
+    "from collections import Counter\n\ncounts = Counter(text.lower().split())\nprint(counts.most_common(3))",
+    "squares = [n * n for n in range(20) if n % 2 == 0]\nlookup = {n: n * n for n in range(5)}",
+    "class Point:\n    def __init__(self, x, y):\n        self.x = x\n        self.y = y\n\n    def __repr__(self):\n        return f\"Point({self.x}, {self.y})\"",
+    "with open(\"notes.txt\", encoding=\"utf-8\") as f:\n    for line in f:\n        print(line.rstrip())",
+    "from dataclasses import dataclass\n\n@dataclass\nclass User:\n    name: str\n    age: int = 0",
+    "try:\n    value = int(raw)\nexcept ValueError:\n    value = 0\nfinally:\n    print(\"parsed\", value)",
+    "def fib(n):\n    a, b = 0, 1\n    for _ in range(n):\n        a, b = b, a + b\n    return a",
+    "people.sort(key=lambda p: (p[\"age\"], p[\"name\"]))\noldest = max(people, key=lambda p: p[\"age\"])"
+   ]
+  },
+  "java": {
+   "name": "Java",
+   "snippets": [
+    "public class Hello {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, world!\");\n    }\n}",
+    "List<String> names = List.of(\"Ada\", \"Grace\", \"Alan\");\nfor (String name : names) {\n    System.out.println(\"Hello, \" + name + \"!\");\n}",
+    "public record Point(double x, double y) {\n    public double distanceTo(Point other) {\n        return Math.hypot(x - other.x, y - other.y);\n    }\n}",
+    "Map<String, Integer> counts = new HashMap<>();\nfor (String word : text.split(\" \")) {\n    counts.merge(word, 1, Integer::sum);\n}",
+    "List<Integer> squares = IntStream.rangeClosed(1, 10)\n    .map(n -> n * n)\n    .boxed()\n    .collect(Collectors.toList());",
+    "try {\n    int value = Integer.parseInt(raw);\n} catch (NumberFormatException e) {\n    System.err.println(\"Not a number: \" + raw);\n}",
+    "public interface Shape {\n    double area();\n}",
+    "enum Direction { NORTH, EAST, SOUTH, WEST }",
+    "Optional<User> user = repository.findById(id);\nString name = user.map(User::name).orElse(\"unknown\");",
+    "switch (day) {\n    case SATURDAY, SUNDAY -> System.out.println(\"weekend\");\n    default -> System.out.println(\"weekday\");\n}"
+   ]
+  },
+  "cpp": {
+   "name": "C++",
+   "snippets": [
+    "#include <iostream>\n\nint main() {\n    std::cout << \"Hello, world!\\n\";\n    return 0;\n}",
+    "std::vector<std::string> names{\"Ada\", \"Grace\", \"Alan\"};\nfor (const auto& name : names) {\n    std::cout << \"Hello, \" << name << \"!\\n\";\n}",
+    "struct Point {\n    double x;\n    double y;\n};\n\ndouble distance(const Point& a, const Point& b) {\n    return std::hypot(a.x - b.x, a.y - b.y);\n}",
+    "std::map<std::string, int> counts;\nfor (const auto& word : words) {\n    ++counts[word];\n}",
+    "auto evens = std::count_if(v.begin(), v.end(), [](int n) { return n % 2 == 0; });",
+    "template <typename T>\nT clampValue(T value, T low, T high) {\n    return std::max(low, std::min(value, high));\n}",
+    "class Counter {\npublic:\n    void increment(int step = 1) { count_ += step; }\n    int count() const { return count_; }\n\nprivate:\n    int count_ = 0;\n};",
+    "auto ptr = std::make_unique<Widget>(\"panel\");\nptr->show();",
+    "std::sort(people.begin(), people.end(),\n          [](const Person& a, const Person& b) { return a.age < b.age; });",
+    "for (int i = 0; i < 10; ++i) {\n    if (i % 3 == 0) continue;\n    total += i;\n}"
+   ]
+  },
+  "html": {
+   "name": "HTML",
+   "snippets": [
+    "<!doctype html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"utf-8\" />\n    <title>Hello</title>\n  </head>\n</html>",
+    "<nav>\n  <ul>\n    <li><a href=\"/\">Home</a></li>\n    <li><a href=\"/about\">About</a></li>\n  </ul>\n</nav>",
+    "<form action=\"/signup\" method=\"post\">\n  <label for=\"email\">Email</label>\n  <input id=\"email\" name=\"email\" type=\"email\" required />\n  <button type=\"submit\">Sign up</button>\n</form>",
+    "<img src=\"cat.jpg\" alt=\"A cat asleep in the sun\" width=\"320\" height=\"240\" />",
+    "<table>\n  <tr><th>Name</th><th>Score</th></tr>\n  <tr><td>Mia</td><td>42</td></tr>\n</table>",
+    "<button type=\"button\" aria-pressed=\"false\">Mute</button>",
+    "<details>\n  <summary>Show more</summary>\n  <p>Here is the rest of the story.</p>\n</details>",
+    "<select name=\"size\">\n  <option value=\"s\">Small</option>\n  <option value=\"m\" selected>Medium</option>\n</select>",
+    "<article>\n  <h2>Release notes</h2>\n  <p>Fixed <strong>three</strong> bugs and added <em>one</em> feature.</p>\n</article>",
+    "<link rel=\"stylesheet\" href=\"styles.css\" />\n<script type=\"module\" src=\"main.js\"></script>"
+   ]
+  },
+  "css": {
+   "name": "CSS",
+   "snippets": [
+    ".card {\n  padding: 1rem;\n  border: 1px solid #ddd;\n  border-radius: 8px;\n}",
+    ".row {\n  display: flex;\n  gap: 0.5rem;\n  align-items: center;\n  justify-content: space-between;\n}",
+    ".grid {\n  display: grid;\n  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));\n  gap: 1rem;\n}",
+    ":root {\n  --accent: #2d4fd6;\n  --radius: 10px;\n}\n.button {\n  background: var(--accent);\n  border-radius: var(--radius);\n}",
+    "a:hover,\na:focus-visible {\n  text-decoration: underline;\n}",
+    "@media (max-width: 600px) {\n  .sidebar {\n    display: none;\n  }\n}",
+    "@keyframes fade-in {\n  from { opacity: 0; }\n  to { opacity: 1; }\n}",
+    ".title {\n  font: 700 2rem/1.2 system-ui, sans-serif;\n  letter-spacing: -0.02em;\n}",
+    "input:invalid {\n  border-color: crimson;\n}",
+    ".list > li + li {\n  margin-top: 0.25rem;\n}"
+   ]
+  }
+ }
+}

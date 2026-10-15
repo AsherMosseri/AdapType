@@ -1,0 +1,289 @@
+{
+ "id": "slack",
+ "name": "Slack",
+ "about": "Slack's desktop and browser shortcuts.",
+ "shortcuts": [
+  {
+   "id": "slack:switcher",
+   "action": "Jump to a conversation",
+   "group": "Moving around",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "k"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "k"
+   }
+  },
+  {
+   "id": "slack:unreads",
+   "action": "All unreads",
+   "group": "Moving around",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "a"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "a"
+   }
+  },
+  {
+   "id": "slack:threads",
+   "action": "Threads",
+   "group": "Moving around",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "t"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "t"
+   }
+  },
+  {
+   "id": "slack:dms",
+   "action": "Direct messages",
+   "group": "Moving around",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "k"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "k"
+   }
+  },
+  {
+   "id": "slack:mentions",
+   "action": "Mentions and reactions",
+   "group": "Moving around",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "m"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "m"
+   }
+  },
+  {
+   "id": "slack:channels",
+   "action": "Browse channels",
+   "group": "Moving around",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "l"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "l"
+   }
+  },
+  {
+   "id": "slack:prev-channel",
+   "action": "Previous conversation",
+   "group": "Moving around",
+   "mac": {
+    "mods": [
+     "alt"
+    ],
+    "key": "ArrowUp"
+   },
+   "other": {
+    "mods": [
+     "alt"
+    ],
+    "key": "ArrowUp"
+   }
+  },
+  {
+   "id": "slack:next-channel",
+   "action": "Next conversation",
+   "group": "Moving around",
+   "mac": {
+    "mods": [
+     "alt"
+    ],
+    "key": "ArrowDown"
+   },
+   "other": {
+    "mods": [
+     "alt"
+    ],
+    "key": "ArrowDown"
+   }
+  },
+  {
+   "id": "slack:back",
+   "action": "Back in history",
+   "group": "Moving around",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "["
+   },
+   "other": {
+    "mods": [
+     "alt"
+    ],
+    "key": "ArrowLeft"
+   }
+  },
+  {
+   "id": "slack:new-message",
+   "action": "New message",
+   "group": "Messages",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "n"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "n"
+   }
+  },
+  {
+   "id": "slack:edit-last",
+   "action": "Edit your last message",
+   "group": "Messages",
+   "mac": {
+    "mods": [],
+    "key": "ArrowUp"
+   },
+   "other": {
+    "mods": [],
+    "key": "ArrowUp"
+   }
+  },
+  {
+   "id": "slack:upload",
+   "action": "Upload a file",
+   "group": "Messages",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "u"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "u"
+   }
+  },
+  {
+   "id": "slack:mark-read",
+   "action": "Mark everything as read",
+   "group": "Messages",
+   "mac": {
+    "mods": [
+     "shift"
+    ],
+    "key": "Escape"
+   },
+   "other": {
+    "mods": [
+     "shift"
+    ],
+    "key": "Escape"
+   }
+  },
+  {
+   "id": "slack:status",
+   "action": "Set your status",
+   "group": "You",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "y"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "y"
+   }
+  },
+  {
+   "id": "slack:huddle",
+   "action": "Start or join a huddle",
+   "group": "You",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "h"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "h"
+   }
+  },
+  {
+   "id": "slack:shortcuts",
+   "action": "List all shortcuts",
+   "group": "You",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "/"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "/"
+   }
+  }
+ ]
+}

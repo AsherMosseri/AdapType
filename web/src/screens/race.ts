@@ -28,6 +28,7 @@ import { attachPhysicalInput } from "../physicalInput";
 import { playSound } from "../sound";
 import { keystrokeFeedback } from "../typingFeedback";
 import { currentTouchLayout, platformFor } from "../platform";
+import { practicePack } from "../wordPacks";
 import { gameOverPanel } from "./arcadeResults";
 
 /** Ghost race (your best run on the same text) and rival race (a paced opponent). */
@@ -45,7 +46,7 @@ export function raceScreen(app: App, screen: Screen): ScreenView {
   if (ghost) words = ghost.target.split(" ").map((text) => ({ text, madeUp: false }));
   else {
     words = planRound(state, {
-      pack,
+      pack: practicePack(app),
       blocklist,
       count: RACE_WORDS,
       modifiers: { settings: settings.modifiers, chars: characters, platform: platformFor(app) },

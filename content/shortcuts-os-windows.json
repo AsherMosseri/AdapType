@@ -1,0 +1,267 @@
+{
+ "id": "os-windows",
+ "name": "Windows",
+ "os": "windows",
+ "about": "System-wide Windows shortcuts. Windows keeps most Win key shortcuts from the browser; build those on screen.",
+ "shortcuts": [
+  {
+   "id": "win:switch-app",
+   "action": "Switch apps",
+   "group": "Windows and apps",
+   "mac": {
+    "mods": [
+     "alt"
+    ],
+    "key": "Tab"
+   },
+   "other": {
+    "mods": [
+     "alt"
+    ],
+    "key": "Tab"
+   }
+  },
+  {
+   "id": "win:close",
+   "action": "Close the app",
+   "group": "Windows and apps",
+   "mac": {
+    "mods": [
+     "alt"
+    ],
+    "key": "F4"
+   },
+   "other": {
+    "mods": [
+     "alt"
+    ],
+    "key": "F4"
+   }
+  },
+  {
+   "id": "win:desktop",
+   "action": "Show the desktop",
+   "group": "Windows and apps",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "d"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "d"
+   }
+  },
+  {
+   "id": "win:explorer",
+   "action": "Open File Explorer",
+   "group": "System",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "e"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "e"
+   }
+  },
+  {
+   "id": "win:lock",
+   "action": "Lock the PC",
+   "group": "System",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "l"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "l"
+   }
+  },
+  {
+   "id": "win:settings",
+   "action": "Open Settings",
+   "group": "System",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "i"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "i"
+   }
+  },
+  {
+   "id": "win:run",
+   "action": "Run a command",
+   "group": "System",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "r"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "r"
+   }
+  },
+  {
+   "id": "win:task-manager",
+   "action": "Task Manager",
+   "group": "System",
+   "mac": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "Escape"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "Escape"
+   }
+  },
+  {
+   "id": "win:clipboard",
+   "action": "Clipboard history",
+   "group": "System",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "v"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "v"
+   }
+  },
+  {
+   "id": "win:emoji",
+   "action": "Emoji panel",
+   "group": "System",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "."
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "."
+   }
+  },
+  {
+   "id": "win:snip",
+   "action": "Snip an area of the screen",
+   "group": "Screenshots",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "s"
+   },
+   "other": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "s"
+   }
+  },
+  {
+   "id": "win:snap-left",
+   "action": "Snap the window left",
+   "group": "Windows and apps",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "ArrowLeft"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "ArrowLeft"
+   }
+  },
+  {
+   "id": "win:snap-right",
+   "action": "Snap the window right",
+   "group": "Windows and apps",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "ArrowRight"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "ArrowRight"
+   }
+  },
+  {
+   "id": "win:maximize",
+   "action": "Maximize the window",
+   "group": "Windows and apps",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "ArrowUp"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "ArrowUp"
+   }
+  },
+  {
+   "id": "win:task-view",
+   "action": "Task View",
+   "group": "Windows and apps",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "Tab"
+   },
+   "other": {
+    "mods": [
+     "meta"
+    ],
+    "key": "Tab"
+   }
+  }
+ ]
+}

@@ -4,7 +4,7 @@ A typing game that learns your weak spots and keeps targeting them. It starts
 as a fun web project. Much later it becomes a micro-app inside a larger app,
 ported to Swift and Kotlin.
 
-Status: phases 1 to 5 built (web). Phase 6 in progress: themes, sound and accessibility built; packs and keyboard layouts next. Phase 7 planned.
+Status: phases 1 to 5 built (web). Phase 6 in progress: themes, sound, accessibility, content packs and shortcut packs built; keyboard layouts next. Phase 7 planned.
 
 ## Principles
 
@@ -846,8 +846,8 @@ your weak keys, and typing it triggers the power-up. Starting set:
 
 ### Built so far, and how it differs from the plan
 
-Part 1 of 3 (themes, sound, accessibility) is built. Content and shortcut
-packs come next, then keyboard layouts.
+Parts 1 and 2 of 3 (themes, sound, accessibility; content and shortcut
+packs) are built. Keyboard layouts come next.
 
 - **Fonts** for the new themes are bundled with the app (JetBrains Mono and
   VT323 for terminal, Nunito for cute, Space Grotesk for mechanical, and
@@ -868,6 +868,21 @@ packs come next, then keyboard layouts.
   happen and the results; in the arcade, the word you lock onto. These were
   checked through the live regions in automated Chromium runs; a hands-on
   pass with VoiceOver and TalkBack is still to do.
+- **Code and quotes** are their own practice screen ("Code and quotes" on
+  the practice screen), since they're whole texts rather than word lists.
+  Each passage is picked to lean on your weak keys, including symbols.
+  Enter (or a return key on touch) types a new line, and indentation fills
+  in by itself. They count toward key stats, not unlocks or difficulty.
+- **The code pack** starts with 10 snippets per language (90 in all), and
+  the quote pack with 34 passages, all ASCII so every keyboard can type
+  them.
+- **Your own words** mix with English by weight (off, a little, even, a
+  lot) in practice and the arcade; the daily challenge stays English so
+  results compare. Words with apostrophes or numbers are left out, and a
+  word only shows up once its letters are unlocked.
+- **Shortcut packs** are picked at the top of the drill. OS-wide packs only
+  show on their own system; Linux follows GNOME. Shortcuts the system or
+  browser keeps for itself are answered with the on-screen builder.
 
 ### Done when
 

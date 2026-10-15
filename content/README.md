@@ -7,6 +7,12 @@ Kotlin later).
 | --- | --- | --- |
 | `words-en.json` | 10,000 common English words, most common first. | CC BY-SA 4.0 (derived from wordfreq) |
 | `blocklist.json` | Words never shown in practice, also used to filter made-up words. | Part of AdapType |
+| `characters.json`, `loanwords.json` | Punctuation, symbols, accented letters and extra characters, with how to type them. | Part of AdapType |
+| `touch-layouts.json` | The on-screen keyboard layouts and long-press alternates. | Part of AdapType |
+| `nemesis.json` | Nemesis names, taunts and defeat lines, in each theme's tone. | Part of AdapType |
+| `code.json` | Code snippets in nine languages, written for AdapType. | Part of AdapType |
+| `quotes.json` | Passages from public-domain works, each credited. | Public domain |
+| `shortcuts-*.json` | Shortcut packs: text editing, macOS, Windows, Linux (GNOME), browser, VS Code, Google Docs and Sheets, Figma, Slack. | Part of AdapType |
 
 ## Credits
 

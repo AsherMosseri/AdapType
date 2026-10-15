@@ -1,0 +1,400 @@
+{
+ "id": "vscode",
+ "name": "VS Code",
+ "about": "Default Visual Studio Code keybindings.",
+ "shortcuts": [
+  {
+   "id": "vscode:palette",
+   "action": "Command palette",
+   "group": "Find your way",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "p"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "p"
+   }
+  },
+  {
+   "id": "vscode:quick-open",
+   "action": "Quick open a file",
+   "group": "Find your way",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "p"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "p"
+   }
+  },
+  {
+   "id": "vscode:go-to-line",
+   "action": "Go to line",
+   "group": "Find your way",
+   "mac": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "g"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "g"
+   }
+  },
+  {
+   "id": "vscode:definition",
+   "action": "Go to definition",
+   "group": "Find your way",
+   "mac": {
+    "mods": [],
+    "key": "F12"
+   },
+   "other": {
+    "mods": [],
+    "key": "F12"
+   }
+  },
+  {
+   "id": "vscode:find-files",
+   "action": "Search across files",
+   "group": "Find your way",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "f"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "f"
+   }
+  },
+  {
+   "id": "vscode:sidebar",
+   "action": "Show or hide the sidebar",
+   "group": "Layout",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "b"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "b"
+   }
+  },
+  {
+   "id": "vscode:terminal",
+   "action": "Show or hide the terminal",
+   "group": "Layout",
+   "mac": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "`"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "`"
+   }
+  },
+  {
+   "id": "vscode:split",
+   "action": "Split the editor",
+   "group": "Layout",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "\\"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "\\"
+   }
+  },
+  {
+   "id": "vscode:close-editor",
+   "action": "Close the editor",
+   "group": "Layout",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "w"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "w"
+   }
+  },
+  {
+   "id": "vscode:comment",
+   "action": "Comment or uncomment the line",
+   "group": "Editing",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "/"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "/"
+   }
+  },
+  {
+   "id": "vscode:delete-line",
+   "action": "Delete the line",
+   "group": "Editing",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "k"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "k"
+   }
+  },
+  {
+   "id": "vscode:move-up",
+   "action": "Move the line up",
+   "group": "Editing",
+   "mac": {
+    "mods": [
+     "alt"
+    ],
+    "key": "ArrowUp"
+   },
+   "other": {
+    "mods": [
+     "alt"
+    ],
+    "key": "ArrowUp"
+   }
+  },
+  {
+   "id": "vscode:move-down",
+   "action": "Move the line down",
+   "group": "Editing",
+   "mac": {
+    "mods": [
+     "alt"
+    ],
+    "key": "ArrowDown"
+   },
+   "other": {
+    "mods": [
+     "alt"
+    ],
+    "key": "ArrowDown"
+   }
+  },
+  {
+   "id": "vscode:copy-down",
+   "action": "Copy the line down",
+   "group": "Editing",
+   "mac": {
+    "mods": [
+     "shift",
+     "alt"
+    ],
+    "key": "ArrowDown"
+   },
+   "other": {
+    "mods": [
+     "shift",
+     "alt"
+    ],
+    "key": "ArrowDown"
+   },
+   "linux": {
+    "mods": [
+     "ctrl",
+     "shift",
+     "alt"
+    ],
+    "key": "ArrowDown"
+   }
+  },
+  {
+   "id": "vscode:line-below",
+   "action": "Insert a line below",
+   "group": "Editing",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "Enter"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "Enter"
+   }
+  },
+  {
+   "id": "vscode:indent",
+   "action": "Indent the line",
+   "group": "Editing",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "]"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "]"
+   }
+  },
+  {
+   "id": "vscode:outdent",
+   "action": "Outdent the line",
+   "group": "Editing",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "["
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "["
+   }
+  },
+  {
+   "id": "vscode:next-match",
+   "action": "Select the next match",
+   "group": "Multiple cursors",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "d"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "d"
+   }
+  },
+  {
+   "id": "vscode:all-matches",
+   "action": "Select every match",
+   "group": "Multiple cursors",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "l"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "l"
+   }
+  },
+  {
+   "id": "vscode:rename",
+   "action": "Rename the symbol",
+   "group": "Refactoring",
+   "mac": {
+    "mods": [],
+    "key": "F2"
+   },
+   "other": {
+    "mods": [],
+    "key": "F2"
+   }
+  },
+  {
+   "id": "vscode:format",
+   "action": "Format the document",
+   "group": "Refactoring",
+   "mac": {
+    "mods": [
+     "shift",
+     "alt"
+    ],
+    "key": "f"
+   },
+   "other": {
+    "mods": [
+     "shift",
+     "alt"
+    ],
+    "key": "f"
+   },
+   "linux": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "i"
+   }
+  },
+  {
+   "id": "vscode:wrap",
+   "action": "Toggle word wrap",
+   "group": "Layout",
+   "mac": {
+    "mods": [
+     "alt"
+    ],
+    "key": "z"
+   },
+   "other": {
+    "mods": [
+     "alt"
+    ],
+    "key": "z"
+   }
+  }
+ ]
+}

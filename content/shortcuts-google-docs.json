@@ -1,0 +1,352 @@
+{
+ "id": "google-docs",
+ "name": "Google Docs and Sheets",
+ "about": "Google Docs and Sheets in the browser.",
+ "shortcuts": [
+  {
+   "id": "gdocs:link",
+   "action": "Insert a link",
+   "group": "Docs",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "k"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "k"
+   }
+  },
+  {
+   "id": "gdocs:heading1",
+   "action": "Heading 1",
+   "group": "Docs",
+   "mac": {
+    "mods": [
+     "meta",
+     "alt"
+    ],
+    "key": "1"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "alt"
+    ],
+    "key": "1"
+   }
+  },
+  {
+   "id": "gdocs:heading2",
+   "action": "Heading 2",
+   "group": "Docs",
+   "mac": {
+    "mods": [
+     "meta",
+     "alt"
+    ],
+    "key": "2"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "alt"
+    ],
+    "key": "2"
+   }
+  },
+  {
+   "id": "gdocs:normal",
+   "action": "Normal text",
+   "group": "Docs",
+   "mac": {
+    "mods": [
+     "meta",
+     "alt"
+    ],
+    "key": "0"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "alt"
+    ],
+    "key": "0"
+   }
+  },
+  {
+   "id": "gdocs:numbered",
+   "action": "Numbered list",
+   "group": "Docs",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "7"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "7"
+   }
+  },
+  {
+   "id": "gdocs:bulleted",
+   "action": "Bulleted list",
+   "group": "Docs",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "8"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "8"
+   }
+  },
+  {
+   "id": "gdocs:comment",
+   "action": "Insert a comment",
+   "group": "Docs",
+   "mac": {
+    "mods": [
+     "meta",
+     "alt"
+    ],
+    "key": "m"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "alt"
+    ],
+    "key": "m"
+   }
+  },
+  {
+   "id": "gdocs:clear-format",
+   "action": "Clear formatting",
+   "group": "Docs",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "\\"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "\\"
+   }
+  },
+  {
+   "id": "gdocs:plain-paste",
+   "action": "Paste without formatting",
+   "group": "Docs",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "v"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "v"
+   }
+  },
+  {
+   "id": "gdocs:word-count",
+   "action": "Word count",
+   "group": "Docs",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "c"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "c"
+   }
+  },
+  {
+   "id": "gdocs:center",
+   "action": "Center align",
+   "group": "Docs",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "e"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "e"
+   }
+  },
+  {
+   "id": "gdocs:search-menus",
+   "action": "Search the menus",
+   "group": "Docs",
+   "mac": {
+    "mods": [
+     "alt"
+    ],
+    "key": "/"
+   },
+   "other": {
+    "mods": [
+     "alt"
+    ],
+    "key": "/"
+   }
+  },
+  {
+   "id": "gdocs:select-column",
+   "action": "Select the column",
+   "group": "Sheets",
+   "mac": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "Space"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "Space"
+   }
+  },
+  {
+   "id": "gdocs:select-row",
+   "action": "Select the row",
+   "group": "Sheets",
+   "mac": {
+    "mods": [
+     "shift"
+    ],
+    "key": "Space"
+   },
+   "other": {
+    "mods": [
+     "shift"
+    ],
+    "key": "Space"
+   }
+  },
+  {
+   "id": "gdocs:date",
+   "action": "Insert today's date",
+   "group": "Sheets",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": ";"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": ";"
+   }
+  },
+  {
+   "id": "gdocs:fill-down",
+   "action": "Fill down",
+   "group": "Sheets",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "d"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "d"
+   }
+  },
+  {
+   "id": "gdocs:fill-right",
+   "action": "Fill right",
+   "group": "Sheets",
+   "mac": {
+    "mods": [
+     "meta"
+    ],
+    "key": "r"
+   },
+   "other": {
+    "mods": [
+     "ctrl"
+    ],
+    "key": "r"
+   }
+  },
+  {
+   "id": "gdocs:currency",
+   "action": "Format as currency",
+   "group": "Sheets",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "4"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "4"
+   }
+  },
+  {
+   "id": "gdocs:percent",
+   "action": "Format as percent",
+   "group": "Sheets",
+   "mac": {
+    "mods": [
+     "meta",
+     "shift"
+    ],
+    "key": "5"
+   },
+   "other": {
+    "mods": [
+     "ctrl",
+     "shift"
+    ],
+    "key": "5"
+   }
+  }
+ ]
+}
