@@ -2845,3 +2845,144 @@ button.choice:hover {
 .chip {
   white-space: nowrap;
 }
+
+/* Menu: everything in the app, in a panel from the top bar. */
+.menu-label {
+  font-weight: 600;
+}
+@media (max-width: 480px) {
+  .menu-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+.menu-sheet {
+  width: min(420px, 100vw);
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0 0 0 auto;
+  padding: 0 var(--gutter) 1.5rem;
+  border: 0;
+  border-left: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--ink);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.menu-sheet[open] {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  animation: menu-in 160ms ease-out;
+}
+.menu-sheet::backdrop {
+  background: rgb(0 0 0 / 0.35);
+}
+@keyframes menu-in {
+  from {
+    transform: translateX(24px);
+    opacity: 0;
+  }
+}
+.menu-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 64px;
+  padding-top: 1rem;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 1;
+}
+.menu-head h2 {
+  font-size: var(--step-1);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--ink);
+}
+.menu-head .icon-button {
+  margin-right: -0.5rem;
+}
+.menu-group h3 {
+  font-size: var(--step--1);
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 0.4rem;
+}
+.menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  width: 100%;
+  min-height: 52px;
+  padding: 0.55rem 0.75rem;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.menu-item:hover {
+  background: var(--accent-soft);
+}
+.menu-item[aria-current="page"] {
+  background: var(--surface);
+  border-color: var(--line);
+}
+.menu-item[aria-current="page"] .icon {
+  color: var(--accent);
+}
+.menu-item .icon {
+  width: 22px;
+  height: 22px;
+}
+.menu-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+.menu-text span {
+  font-size: var(--step--1);
+  color: var(--muted);
+}
+.menu-badge {
+  font-size: var(--step--1);
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0.1rem 0.55rem;
+  white-space: nowrap;
+}
+.menu-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+.menu-footer .button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
