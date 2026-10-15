@@ -19,6 +19,7 @@ import {
 } from "../../../engine/src";
 import type { App, Screen, ScreenView } from "../app";
 import { nemesisFace } from "../components/nemesisFace";
+import { MENU_OPEN } from "../components/menu";
 import { topBar } from "../components/topBar";
 import { touchKeyboard } from "../components/touchKeyboard";
 import { blocklist, characters, nemesisContent, nemesisContentFor, pack } from "../content";
@@ -303,8 +304,8 @@ export function arcadeGameScreen(app: App, screen: Screen): ScreenView {
     else app.go({ name: "arcade" });
   }
 
-  const onVisibility = () => {
-    if (document.hidden && running && !area.querySelector(".overlay.paused")) {
+  const pause = () => {
+    if (running && !area.querySelector(".overlay.paused")) {
       running = false;
       cancelAnimationFrame(raf);
       area.append(
@@ -321,7 +322,10 @@ export function arcadeGameScreen(app: App, screen: Screen): ScreenView {
       );
     }
   };
+  const onVisibility = () => document.hidden && pause();
   document.addEventListener("visibilitychange", onVisibility);
+  // Opening the menu pauses too, so words don't land behind it.
+  window.addEventListener(MENU_OPEN, pause);
 
   return {
     el,
@@ -331,6 +335,7 @@ export function arcadeGameScreen(app: App, screen: Screen): ScreenView {
       cancelAnimationFrame(raf);
       physical?.dispose();
       document.removeEventListener("visibilitychange", onVisibility);
+      window.removeEventListener(MENU_OPEN, pause);
       window.clearTimeout(toastTimer);
     },
   };

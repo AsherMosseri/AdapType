@@ -73,6 +73,16 @@ export const ICONS = {
   phone: ["M7 2h10a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z", "M11 18h2"],
   progress: ["M4 20V10", "M10 20V4", "M16 20v-7", "M22 20H2"],
   arcade: ["M6 9h12a4 4 0 0 1 4 4v1a3 3 0 0 1-5.4 1.8L15 14H9l-1.6 1.8A3 3 0 0 1 2 14v-1a4 4 0 0 1 4-4z", "M7 11v3M5.5 12.5h3", "M16 12h.01M18 13.5h.01"],
+  menu: ["M4 6h16", "M4 12h16", "M4 18h16"],
+  close: ["M6 6l12 12", "M18 6L6 18"],
+  calendar: ["M4 5h16v15H4z", "M4 10h16", "M8 3v4", "M16 3v4"],
+  code: ["M8 6l-6 6 6 6", "M16 6l6 6-6 6"],
+  quote: ["M5 7h5v5c0 3-2 5-4.5 6", "M14 7h5v5c0 3-2 5-4.5 6"],
+  command: ["M9 6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3z"],
+  creature: ["M12 3c5 0 8 4 8 9s-3 9-8 9-8-4-8-9 3-9 8-9z", "M9 10h.01", "M15 10h.01", "M9.5 15c1.5 1 3.5 1 5 0"],
+  replay: ["M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z", "M10 8.5v7l6-3.5z"],
+  card: ["M3 5h18v14H3z", "M7 9h4", "M7 13h10", "M7 16h6"],
+  info: ["M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z", "M12 11v5", "M12 8h.01"],
 } as const;
 
 export function formatPercent(value: number): string {

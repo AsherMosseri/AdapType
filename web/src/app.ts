@@ -45,6 +45,8 @@ export class App {
   saving = true;
   /** A one-time message for the next practice screen (for example, letters unlocked by the test). */
   notice: string | null = null;
+  /** The screen showing now. */
+  screen: Screen | null = null;
   private root: HTMLElement;
   private current: ScreenView | null = null;
   private renderers: Partial<Record<Screen["name"], ScreenRenderer>> = {};
@@ -97,6 +99,7 @@ export class App {
     this.current?.dispose?.();
     const render = this.renderers[screen.name];
     if (!render) throw new Error(`No screen named ${screen.name}`);
+    this.screen = screen;
     const view = render(this, screen);
     this.current = view;
     this.root.replaceChildren(view.el);
