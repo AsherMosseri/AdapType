@@ -4,7 +4,9 @@ A typing game that learns your weak spots and keeps targeting them. It starts
 as a fun web project. Much later it becomes a micro-app inside a larger app,
 ported to Swift and Kotlin.
 
-Status: phases 1 to 6 built (web). Phase 7 (Swift and Kotlin ports) planned.
+Status: phases 1 to 6 built (web), plus a home menu and a few fixes. Phases 7
+to 10 (more ways to play) outlined; phase 7 is being detailed. Phase 11
+(Swift and Kotlin ports) is last.
 
 ## Principles
 
@@ -904,6 +906,98 @@ shortcut packs; keyboard layouts.
 - All packs, layouts and accessibility options work on physical and touch.
 - An accessibility pass with a screen reader on desktop and phone.
 
+## Phase 7 in detail
+
+Built in three parts, each its own PR.
+
+### Part 1: Install as an app
+
+- **Installable:** a web app manifest (name, icons, standalone window) so
+  AdapType can be added to a phone or computer home screen. Settings gets an
+  "Install app" button where the browser supports it. On iPhone and iPad it
+  shows the steps instead (Share, then Add to Home Screen).
+- **Offline:** a small service worker caches the whole built app (code,
+  fonts, word lists, content packs), so everything works without a
+  connection. Progress already lives in the browser.
+- **Updates ask first:** a new version downloads in the background and a
+  "New version ready, reload" banner appears, never during a round. Reload
+  switches to it. This also ends the old-page problem behind the
+  unreadable-save fix.
+- **iPhone note:** a home-screen app on iOS keeps its own storage, separate
+  from Safari. After installing there, AdapType points to the existing
+  export and import code so progress can move over.
+
+### Part 2: Achievements and rewards
+
+- **Kinds:**
+  - *Milestones:* speed (40, 60, 80, 100, 120 WPM in a round that meets
+    your accuracy goal), all 26 letters, streaks (3, 7, 30, 100 days),
+    nemeses beaten, creatures grown and legendary, daily challenges played.
+  - *Tiered skills:* bronze, silver and gold for accuracy, rhythm, arcade
+    score, races won, daily challenges, code and quotes, shortcut drills.
+  - *Hidden and silly:* secret badges such as a perfect round, typing
+    between 2 and 4am, the word "the" 1,000 times, or losing to your own
+    ghost by under 0.1 seconds.
+  - *Per theme:* a couple of badges for each theme (for example, rounds in
+    terminal, or mechanical with sound on). All badge art is drawn in the
+    current theme's style.
+- **Earning:** checked after each round, game, race, drill or daily, and
+  shown on its results screen with a small celebration and sound. Never
+  mid-round.
+- **Trophy case:** a new menu item under "You", grouped by kind. Bronze,
+  silver and gold show progress toward the next tier. Hidden badges are
+  "???" mystery slots, so you know how many are left without knowing what
+  they are.
+- **Rewards:** some skill milestones unlock cosmetic extras (never the
+  silly or count-based badges, so nobody grinds for them):
+  - cursor styles: block, underline, glow, rainbow trail, a tiny walking
+    creature
+  - creature accessories: hats, scarves, crowns, in each theme's style
+  - celebration effects: confetti, fireworks, pixel sparks, bubbles
+  - heatmap and fingerprint card styles: gold, neon, holographic
+  Picked in Settings, under Look. Reduced motion keeps effects still.
+- **Existing progress counts:** badges already earned (letters, best speed,
+  streaks, creatures) are awarded on the first launch with achievements,
+  with one notice instead of a celebration for each.
+- **Engine:** achievement rules live in the engine (spec, vectors), so the
+  ports award the same badges. Profile version 8 adds earned badges with
+  their dates; reward picks are app settings.
+
+### Part 3: Numbers and symbols course
+
+- **Its own screen:** "Numbers and symbols" in the menu, with a step-by-step
+  path. Key stats are shared with practice, so a weak `;` also shows up in
+  normal rounds (when that modifier is on).
+- **Path:** keys unlock a few at a time, mastered with the same speed and
+  accuracy goal as letters:
+  1. `1 2 3 4 5`, then `6 7 8 9 0`
+  2. Punctuation: `. , ' " ; : ! ? -`
+  3. Everyday symbols: `$ % & @ #`
+  4. Brackets: `( ) [ ] { } < >`
+  5. Operators: `+ = * / \ | _ ~ ^` and backtick
+- **Drills,** free to pick any time, adapting toward your weakest symbols:
+  - *Everyday numbers:* prices, dates, times, phone numbers, addresses
+    (`$14.99`, `3/15`, `10:30`, `555-0142`)
+  - *Math:* sums and formulas (`12 + 7 = 19`, `50%`, `(a + b) / 2`)
+  - *Code symbols:* brackets and operators (`{ }`, `=>`, `!=`, `&&`, `//`)
+  - *Punctuation:* quotes, apostrophes, dashes, semicolons and colons in
+    real sentences
+- **Touch:** works on phones with the number and symbol layers, and counts
+  layer switches as it already does.
+- **Layouts:** follows your keyboard layout (on AZERTY, for example, digits
+  need Shift, and the stats show it).
+- **Engine:** the path and drill text are generated in the engine,
+  deterministically from the profile seed (spec, vectors).
+
+### Done when
+
+- AdapType installs on a phone and a computer, works offline, and asks
+  before updating.
+- Badges are earned, celebrated and shown in the trophy case, rewards can
+  be picked, and existing progress is counted.
+- The numbers and symbols path and all four drills work on keyboard and
+  touch.
+
 ## Phases
 
 This is a lot, and it's meant to be built over time. Each phase is playable on
@@ -957,8 +1051,25 @@ its own; nothing waits for a later phase to be fun.
      Figma, Slack
    - Theme-matched tones for round explanations and nemesis taunts
    - Theme-matched creature styles
-7. **Port (far future):** Swift and Kotlin versions, verified against the
-   test vectors. Not planned in detail yet.
+7. **Groundwork**
+   - Install as an app: add to the home screen, works offline
+   - Achievements: badges for milestones, in a trophy case
+   - Numbers and symbols: a course for the number row and symbols, with
+     code-style drills
+8. **Play together and by ear**
+   - Challenge a friend: a link carries the text and your run, and your
+     friend races your ghost (no server)
+   - Rhythm mode: words scroll to a beat, with combos for typing on it
+   - Spelling by ear: the app says a word and you type it
+9. **Typing adventure:** a story mode where typing explores, opens doors and
+   fights bosses built from your weak keys, in chapters
+10. **Other languages:** word packs beyond English, with accented letters
+    taught as part of unlocking
+11. **Port (far future):** Swift and Kotlin versions, verified against the
+    test vectors. Not planned in detail yet.
+
+Phases 7 to 10 are each detailed (with multiple-choice questions) right
+before they're built, so what one phase teaches can shape the next.
 
 ## Word list research
 
