@@ -1,0 +1,63 @@
+{
+ "texts": {
+  "steps": [
+   "national 4 early 3 those 232 1 112 353 thanks then 1 own 3 1 31 4 5 made 3 352 41 2 3 call 4 15 41 red",
+   "0 looking 67 965 1 set 15 6 8 make 4 98 89 north 9 under 9 8 water due games 0 6 0 07 course 0 3 667",
+   "54 group \"stay\" it's After. 82 problem; 63 821 that-between Others. Told, world. 94 53 Nice, world. it's Power, better. 6 with 8 means; bring:",
+   "#37 million & on #571 620 $65 #3 \"anyone\" building & fire @saying #21 Mean. #0 this & company Bad, kind. big, it's 3 'six'",
+   "(john) (83) {where} { pretty } [89] best, college[608] win-class { care } 061,46 words, since & talk @making living? {made} { services } 15,8 by's",
+   "anything | history playing! ~/being (1) 6 * 34 7 list += 78 [where] school(four) 6 * 4 [126] phone[5] total_key #near 3 == 797 Going, told. 8 story <882>"
+  ],
+  "drills": {
+   "everyday": "551.8 km off@himself.com (555) 730-1189 881 kg Apt. 573 9:34 6/16 Head & Within $595 11/20 #904 2/4/2007",
+   "math": "13 + 11 = 24 15 + 9 = 24 f(x) = 3x f(x) = 7x (18 + 8) / 2 f(x) = 3x 19 / 14 [17, 14] [19, 11] x^2 705% (19 + 13) / 2",
+   "code": "name ** 2 x ** 2 y !== x x ^= y @param value % 0 $name </days> ~/saw if (data > 1) { key[9] = 526; count_user",
+   "punctuation": "'half' It's did. Fact did, way while. Working! We're buy! \"He?\" Front support - go. \"Show,\" saw said. Air feel - nothing. We're only! So say - world. Child home - been."
+  }
+ },
+ "rounds": [
+  {
+   "step": 0,
+   "text": "father 5 back 33 21 we 25 3 531 241 3 day 244 44 13 455 3 444 12 5 2 214 15 3 453 21 looking 5 432 data",
+   "newlyMastered": [],
+   "stepsFinished": [],
+   "currentStep": 0
+  },
+  {
+   "step": 0,
+   "text": "22 almost 13 2 take 11 44 5 party possible tell 3 411 33 5 422 344 24 541 155 side 4 big 433 445 335 11 these my 51",
+   "newlyMastered": [],
+   "stepsFinished": [],
+   "currentStep": 0
+  },
+  {
+   "step": 0,
+   "text": "2 else 12 425 morning 43 344 33 12 1 talk 532 do 345 4 142 1 225 441 445 short wait 3 gets 4 222 4 idea fun 514",
+   "newlyMastered": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5"
+   ],
+   "stepsFinished": [
+    "digits-1"
+   ],
+   "currentStep": 1
+  },
+  {
+   "step": 1,
+   "text": "481 once 929 6 7 640 1 your 060 770 6 fire 08 690 868 oh 978 action 6 645 78 998 local 8 608 think got 96 04 7",
+   "newlyMastered": [],
+   "stepsFinished": [],
+   "currentStep": 1
+  }
+ ],
+ "mastered": [
+  "1",
+  "2",
+  "3",
+  "4",
+  "5"
+ ]
+}

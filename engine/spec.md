@@ -1186,7 +1186,7 @@ Every activity reports an **event** with a **context**. The context is the
 local date (`day`, YYYY-MM-DD) and hour (0 to 23), the theme, whether dark
 mode is on and whether sound is on. Events:
 
-- `round`, `passage`, `daily` (typing): `wpm`, `accuracy`, `chars` (typed
+- `round`, `passage`, `daily`, `course` (typing): `wpm`, `accuracy`, `chars` (typed
   correctly), `durationMs`, `consistency` (0..1, or none outside practice)
   and `words` (the words typed fully and correctly, lowercase: each run of
   non-space characters that ends at or before the position and is correct
@@ -1236,6 +1236,7 @@ event; conditions on "this event" only for that event.
 | `nemesis-1`, `nemesis-5` | at least 1, 5 defeated nemeses (`arcade.hall`) | effect:sparks, none |
 | `creature-grown` | a creature at stage 2 or more | accessory:hat |
 | `creature-legendary` | a creature at stage 3 | cursor:creature |
+| `course-done` | `course.finished` (section 39) | none |
 | `creatures-letters` | all 26 letter creatures at stage 2 or more | none |
 | `accuracy-` bronze, silver, gold | `accurateRounds >=` 10, 50, 200 | none, accessory:glasses, style:gold |
 | `rhythm-` | `steadyRounds >=` 5, 25, 100 | none, effect:bubbles, none |
@@ -1267,6 +1268,79 @@ progress.
 
 Vectors: `achievements.json`.
 
+## 39. Numbers and symbols course
+
+Content is `content/course.json` version 1: **steps** (an id, a name and the
+keys it teaches), **path templates**, four **drills** (each with templates)
+and **identifiers**. A template is typed as written, except placeholders in
+angle quotes (`⟨n⟩`), which are filled in. The course keys are every step's
+keys, in step order.
+
+A profile has `course`: `history` (course key → per-round entries, like
+`keyHistory`), `mastered` (course keys in the order they were mastered) and
+`finished` (false at first).
+
+**currentStep** is the first step with a key not in `mastered`, or the number
+of steps when there's none. The app offers that step and every earlier one
+(for review); later ones are locked. **Progress** for a course key is
+`masteryProgress` of its course history against the symbol goal
+(`modifierGoal` of the profile's goal, or of `DEFAULT_GOAL`).
+
+**courseText(state, content, pack, mode, rng)**, where mode is a step index
+(the path) or a drill id:
+
+1. Allowed keys: the keys of steps 0 to the step (path), or all course keys
+   (drill). The step's own keys are its focus (none for a drill).
+2. Each allowed key's weight is `1 + weakness(keys[k], symbol goal)`, times
+   `COURSE_FOCUS_BOOST` for a focus key not yet mastered.
+3. Digits are the allowed keys among `0123456789`, in that order, with their
+   weights; `digitMean` is their average weight (0 with none).
+4. Templates: the path templates (path) or the drill's (drill), keeping those
+   whose literal course keys (course keys outside placeholders) are all
+   allowed, and that have no number placeholder when there are no digits. A
+   number placeholder is any but `⟨w⟩`, `⟨W⟩` and `⟨id⟩`.
+5. A template's weight: with no literal course keys and no number
+   placeholder, 1. Otherwise 1 + the sum of its literal course keys'
+   weights (each key once) + `digitMean` if it has a number placeholder.
+6. Words: the pack's first `COURSE_WORDS` words made of 2 to 8 letters a to
+   z, in pack order.
+7. Make `COURSE_PATH_ITEMS` items (path) or `COURSE_DRILL_ITEMS` (drill).
+   For each: pick a template with `rng.weightedIndex(weights)`. In a drill,
+   if it has `⟨a⟩`, `⟨b⟩`, `⟨sum⟩`, `⟨diff⟩` or `⟨product⟩`, draw
+   `a = between(2, 20)` then `b = between(2, 20)` (where `between(lo, hi)` is
+   `lo + rng.int(hi - lo + 1)`) and swap them if `a < b`. Then fill the
+   placeholders left to right:
+   - `⟨w⟩`: `words[rng.int(len)]`; `⟨W⟩`: the same, first letter uppercase;
+     `⟨id⟩`: `identifiers[rng.int(len)]`.
+   - Path, any number placeholder: a string of digits, each picked with
+     `weightedIndex` over the digit weights. Its length is 1 for `⟨d⟩`,
+     `1 + rng.int(3)` for `⟨n⟩` and `1 + rng.int(2)` otherwise.
+   - Drill: `⟨n⟩` between(1, 999); `⟨d⟩` rng.int(10); `⟨a⟩`, `⟨b⟩`, `⟨sum⟩`
+     (a + b), `⟨diff⟩` (a − b), `⟨product⟩` (a × b); `⟨dd⟩` rng.int(100)
+     and `⟨mm⟩` rng.int(60), both padded to two digits; `⟨h⟩` and `⟨m⟩`
+     between(1, 12); `⟨day⟩` between(1, 28); `⟨year⟩` between(1990, 2030);
+     `⟨n3⟩` between(100, 999); `⟨n4⟩` between(1000, 9999).
+8. Join the items with single spaces.
+
+The app seeds the rng from the profile seed, "course" and the round counter.
+
+**completeCourseRound(state, content, round, at)**: apply the records to key
+and pair stats with weight 1 (section 3), run error analysis, record key
+days, and add 1 to `roundCounter`. Append the round's per-key entries for
+course keys to `course.history` (capped like `keyHistory`). Then, in course
+key order, every key not yet mastered that meets mastery (section 3's
+`meetsMastery`) against the symbol goal is added to `mastered`. Steps that
+were before the new current step and are now fully mastered are reported as
+finished; when no step is left, `finished` becomes true (reported once).
+Drill rounds count toward course mastery too.
+
+Course rounds are a typing event (`course`) for achievements (section 38),
+and `course-done` is earned once `course.finished` is true.
+
+Profile version 9 adds an empty `course`.
+
+Vectors: `course.json`.
+
 ## Constants
 
 | Name | Value |
@@ -1275,6 +1349,7 @@ Vectors: `achievements.json`.
 | `SPEED_MIN_CHARS`, `PERFECT_MIN_CHARS` | 50, 100 |
 | `ACCURATE_ROUND`, `STEADY_ROUND`, `THEME_ROUNDS` | 0.97, 0.75, 20 |
 | `PHOTO_FINISH_MS`, `MARATHON_MS` | 100, 600000 |
+| `COURSE_PATH_ITEMS`, `COURSE_DRILL_ITEMS`, `COURSE_FOCUS_BOOST`, `COURSE_WORDS` | 18, 12, 3, 500 |
 | `CATCH_UP_KEYS` | 2 |
 | `MIN_AVG_WEIGHT` | 0.1 |
 | `START_LETTERS` | 6 |
@@ -1413,6 +1488,7 @@ Vectors: `achievements.json`.
 | `passages.json` | passage weights and picks, auto-indent, completion, Linux combos |
 | `layouts.json` | every layout's rows, home-row order, hands, fingers, zones and neighbors |
 | `achievements.json` | the badge ids, and events over several days with the badges each earns |
+| `course.json` | path text for every step, every drill's text, and four path rounds with what each masters |
 
 Vectors that use the word pack use the first `packSize` words of
 `content/words-en.json` version 1 and `content/blocklist.json`.

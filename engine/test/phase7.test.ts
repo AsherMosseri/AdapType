@@ -1,7 +1,16 @@
 import { describe, expect, it } from "vitest";
+import courseContent from "../../content/course.json";
+import wordsJson from "../../content/words-en.json";
 import {
   ACHIEVEMENTS,
   achievementProgress,
+  completeCourseRound,
+  COURSE_PATH_ITEMS,
+  courseKeys,
+  courseText,
+  currentStep,
+  Rng,
+  type CourseContent,
   createProfile,
   earnedRewards,
   migrateProfile,
@@ -113,7 +122,7 @@ describe("progress from before achievements", () => {
     delete v7.achievements;
     v7.version = 7;
     const state = migrateProfile(v7);
-    expect(state.version).toBe(8);
+    expect(state.version).toBe(9);
     expect(state.achievements).toEqual({ earned: {}, counters: {}, backfilled: false });
     state.goal = { wpm: 40, accuracy: 0.95 };
     state.unlocked = [..."abcdefghijklm"];
@@ -134,5 +143,80 @@ describe("typedWords", () => {
     const r = new TypingRound("The cat sat", "skip");
     [..."The cxt sa"].forEach((char, i) => r.input({ kind: "char", char, t: i * 100 }));
     expect(typedWords(r)).toEqual(["the"]);
+  });
+});
+
+describe("numbers and symbols course", () => {
+  const content = courseContent as unknown as CourseContent;
+  const pack = { words: (wordsJson as { words: string[] }).words };
+  const typeAll = (text: string, msPerKey: number) => {
+    const round = new TypingRound(text, "block");
+    [...text].forEach((char, i) => round.input({ kind: "char", char, t: i * msPerKey }));
+    return round;
+  };
+  const courseChars = (text: string) => [...new Set([...text].filter((c) => courseKeys(content).includes(c)))].sort().join("");
+
+  it("uses only unlocked keys on the path, and every step's keys", () => {
+    const state = fresh();
+    for (let step = 0; step < content.steps.length; step++) {
+      const allowed = content.steps.slice(0, step + 1).map((s) => s.keys).join("");
+      const text = courseText(state, content, pack, { step }, new Rng(step + 1));
+      for (const ch of courseChars(text)) expect(allowed, `step ${step}: ${text}`).toContain(ch);
+      expect(text.split(" ").length).toBeGreaterThanOrEqual(COURSE_PATH_ITEMS);
+    }
+    const first = courseText(state, content, pack, { step: 0 }, new Rng(7));
+    expect(courseChars(first).length).toBeGreaterThan(0);
+    expect(courseChars(first)).toMatch(/^[12345]+$/);
+  });
+
+  it("makes drills from their own templates, with correct math", () => {
+    const state = fresh();
+    for (const id of Object.keys(content.drills)) {
+      const text = courseText(state, content, pack, { drill: id }, new Rng(3));
+      expect(text.length, id).toBeGreaterThan(20);
+    }
+    const math = courseText(state, content, pack, { drill: "math" }, new Rng(11));
+    for (const m of math.matchAll(/(\d+) ([+*-]) (\d+) = (\d+)/g)) {
+      const [a, op, b, r] = [Number(m[1]), m[2], Number(m[3]), Number(m[4])];
+      expect(op === "+" ? a + b : op === "-" ? a - b : a * b).toBe(r);
+      expect(a).toBeGreaterThanOrEqual(b);
+    }
+  });
+
+  it("is the same for the same seed", () => {
+    const state = fresh();
+    expect(courseText(state, content, pack, { step: 2 }, new Rng(5))).toBe(courseText(state, content, pack, { step: 2 }, new Rng(5)));
+  });
+
+  it("masters keys after enough good rounds and moves to the next step", () => {
+    const state = fresh();
+    expect(currentStep(state, content)).toBe(0);
+    let outcome = null;
+    for (let i = 0; i < 4; i++) {
+      const text = courseText(state, content, pack, { step: currentStep(state, content) }, new Rng(100 + i));
+      outcome = completeCourseRound(state, content, typeAll(text, 150), 1000 * i);
+    }
+    expect(state.course.mastered).toEqual(expect.arrayContaining([..."12345"]));
+    expect(currentStep(state, content)).toBeGreaterThanOrEqual(1);
+    expect(outcome).not.toBeNull();
+    // Slow typing doesn't master anything.
+    const slow = fresh();
+    for (let i = 0; i < 4; i++) completeCourseRound(slow, content, typeAll(courseText(slow, content, pack, { step: 0 }, new Rng(i)), 900), i);
+    expect(slow.course.mastered).toEqual([]);
+  });
+
+  it("counts toward badges and finishes the path badge", () => {
+    const state = fresh();
+    state.course.finished = true;
+    expect(recordAchievements(state, { kind: "course", wpm: 30, accuracy: 1, chars: 60, durationMs: 60000, consistency: null, words: [] }, ctx(), 1)).toContain("course-done");
+  });
+
+  it("is added to version 8 profiles", () => {
+    const v8 = { ...createProfile("physical", 3) } as unknown as Record<string, unknown>;
+    delete v8.course;
+    v8.version = 8;
+    const p = migrateProfile(v8);
+    expect(p.version).toBe(9);
+    expect(p.course).toEqual({ history: {}, mastered: [], finished: false });
   });
 });

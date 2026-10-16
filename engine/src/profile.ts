@@ -49,6 +49,7 @@ import { addSample, appendHistory, applyRecords, emptyStat, isLetter, recordKeyD
 import { wpmToMs, type TypingRound } from "./typing";
 import type {
   AchievementState,
+  CourseState,
   ArcadeState,
   Blocklist,
   CharacterData,
@@ -72,7 +73,7 @@ export const DEFAULT_GOAL: Goal = { wpm: 40, accuracy: 0.95 };
 
 export function createProfile(profile: InputProfile, seed: number, order: UnlockOrder = "frequency", layout: LayoutId = "qwerty"): ProfileState {
   return {
-    version: 8,
+    version: 9,
     profile,
     goal: null,
     calibration: "none",
@@ -96,7 +97,12 @@ export function createProfile(profile: InputProfile, seed: number, order: Unlock
     recentPassages: [],
     layout,
     achievements: emptyAchievements(),
+    course: emptyCourse(),
   };
+}
+
+export function emptyCourse(): CourseState {
+  return { history: {}, mastered: [], finished: false };
 }
 
 export function emptyAchievements(): AchievementState {
@@ -140,7 +146,8 @@ function phase3Defaults() {
  * creatures, replays and daily results (creatures fill in on the next
  * updateCreatures call); 5 → 6 adds recent passages; 6 → 7 adds the
  * keyboard layout (QWERTY for existing profiles); 7 → 8 adds achievements
- * (counted from earlier progress on the first recordAchievements call).
+ * (counted from earlier progress on the first recordAchievements call);
+ * 8 → 9 adds the numbers and symbols course.
  */
 export function migrateProfile(saved: Record<string, unknown>): ProfileState {
   let p = { ...saved } as Record<string, unknown>;
@@ -167,6 +174,9 @@ export function migrateProfile(saved: Record<string, unknown>): ProfileState {
   }
   if (p.version === 7) {
     p = { ...p, achievements: emptyAchievements(), version: 8 };
+  }
+  if (p.version === 8) {
+    p = { ...p, course: emptyCourse(), version: 9 };
   }
   return p as unknown as ProfileState;
 }

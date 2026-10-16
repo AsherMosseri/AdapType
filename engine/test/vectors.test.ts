@@ -9,8 +9,13 @@ import charsJson from "../../content/characters.json";
 import loanwords from "../../content/loanwords.json";
 import nemesisContent from "../../content/nemesis.json";
 import shortcutPack from "../../content/shortcuts-text-editing.json";
+import courseContent from "../../content/course.json";
 import fullPack from "../../content/words-en.json";
 import {
+  completeCourseRound,
+  courseText,
+  currentStep,
+  type CourseContent,
   ACHIEVEMENTS,
   recordAchievements,
   type AchievementContext,
@@ -886,6 +891,27 @@ describe("test vectors", () => {
     state.arcade.scores.falling = [{ score: 1200, level: 6, words: 30, wpm: 40, accuracy: 0.97, at: 6000 }];
     const results = steps.map((step) => ({ ...step, earned: recordAchievements(state, step.event, step.ctx, step.now) }));
     return { ids: ACHIEVEMENTS.map((a) => a.id), steps: results, counters: state.achievements.counters, earned: state.achievements.earned };
+  });
+
+  check("course", () => {
+    // Path text for every step and every drill, then four rounds typed at a steady pace on the path.
+    const content = courseContent as unknown as CourseContent;
+    const state = createProfile("physical", 41);
+    state.goal = { wpm: 40, accuracy: 0.95 };
+    const texts = {
+      steps: content.steps.map((_, step) => courseText(state, content, fullPack, { step }, new Rng(deriveSeed(41, "course", step)))),
+      drills: Object.fromEntries(Object.keys(content.drills).map((id) => [id, courseText(state, content, fullPack, { drill: id }, new Rng(deriveSeed(41, "drill", id)))])),
+    };
+    const rounds = [0, 1, 2, 3].map((i) => {
+      const step = currentStep(state, content);
+      const text = courseText(state, content, fullPack, { step }, new Rng(deriveSeed(41, "round", i)));
+      const round = new TypingRound(text, "block");
+      let t = 0;
+      for (const [j, char] of [...text].entries()) round.input({ kind: "char", char, t: (t += 140 + (j % 5) * 20) });
+      const outcome = completeCourseRound(state, content, round, 1000 * i, { chars: charData });
+      return { step, text, newlyMastered: outcome.newlyMastered, stepsFinished: outcome.stepsFinished, currentStep: currentStep(state, content) };
+    });
+    return { texts, rounds, mastered: state.course.mastered };
   });
 
   check("profile", () => {

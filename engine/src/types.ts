@@ -229,8 +229,18 @@ export interface AchievementState {
   backfilled: boolean;
 }
 
+/** Phase 7: the numbers and symbols course. */
+export interface CourseState {
+  /** Per-round results for course keys, from course rounds and drills (like keyHistory). */
+  history: Record<string, KeyRoundEntry[]>;
+  /** Course keys that reached mastery, in order. Mastery is permanent. */
+  mastered: string[];
+  /** The whole path is done. */
+  finished: boolean;
+}
+
 export interface ProfileState {
-  version: 8;
+  version: 9;
   profile: InputProfile;
   goal: Goal | null;
   calibration: CalibrationStatus;
@@ -290,6 +300,8 @@ export interface ProfileState {
   layout: LayoutId;
   /** Phase 7: badges and their counters. */
   achievements: AchievementState;
+  /** Phase 7: the numbers and symbols course. */
+  course: CourseState;
 }
 
 /**
