@@ -6,16 +6,18 @@ pair, builds each round around what needs work, and unlocks a new letter once
 you've mastered the current ones.
 
 Works with a physical keyboard or AdapType's own on-screen touch keyboard.
-Progress stays in your browser.
+Progress stays in your browser. It can be installed to a home screen or
+desktop and works offline.
 
-See [PLAN.md](PLAN.md) for the full roadmap. This is phase 1.
+See [PLAN.md](PLAN.md) for the full roadmap. Phases 1 to 6 are built, and
+phase 7 is underway.
 
 ## Run it
 
 ```sh
 npm install
 npm run dev       # local dev server
-npm test          # engine tests and test vectors
+npm test          # engine tests, test vectors and web tests
 npm run build     # production build into dist/
 ```
 
@@ -25,7 +27,7 @@ npm run build     # production build into dist/
 | --- | --- |
 | `engine/` | The framework-free engine (TypeScript), its spec (`engine/spec.md`), tests, and shared test vectors (`engine/vectors/`) that future Swift and Kotlin ports must pass |
 | `content/` | The English word pack and blocklist, with credits and the build script |
-| `web/` | The web app: screens, on-screen keyboard, storage, styles |
+| `web/` | The web app: screens, on-screen keyboard, storage, styles, the service worker (`web/sw.js`, filled in by the build) and icons (`web/public/`) |
 | `.github/workflows/` | Tests, builds and deploys to GitHub Pages on every push to `main` |
 
 ## Deploying

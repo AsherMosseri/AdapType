@@ -1,5 +1,11 @@
 // Applies the theme, light or dark, and accessibility settings to the page,
 // and tells sound and creature drawing which theme is active.
+// Every font ships with the app (no font service), so it all works offline.
+import "@fontsource/atkinson-hyperlegible-next/400.css";
+import "@fontsource/atkinson-hyperlegible-next/600.css";
+import "@fontsource/atkinson-hyperlegible-next/800.css";
+import "@fontsource/atkinson-hyperlegible-mono/400.css";
+import "@fontsource/atkinson-hyperlegible-mono/500.css";
 import "@fontsource/jetbrains-mono/400.css";
 import "@fontsource/jetbrains-mono/700.css";
 import "@fontsource/vt323/400.css";

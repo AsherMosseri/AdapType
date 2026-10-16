@@ -19,6 +19,7 @@ import { THEMES } from "../appearance";
 import { h } from "../dom";
 import { MODIFIER_NAMES } from "../explainText";
 import { currentOs, detectOs, detectTouchLayout, OS_NAMES, platformFor, type Os } from "../platform";
+import { applyUpdate, canPromptInstall, isInstalled, isIos, onPwaChange, promptInstall, updateReady } from "../pwa";
 import { playSound, type SoundKind } from "../sound";
 import { clearSaved, defaultData, fromCode, LAYOUT_CHOICES, newProfile, parseData, toCode, type AppData, type LayoutChoice, type OsChoice, type PackWeight, type ThemeId, type TouchLayoutChoice } from "../store";
 import { WEIGHT_CHOICES } from "./words";
@@ -60,6 +61,7 @@ export function settingsScreen(app: App, screen: Screen): ScreenView {
 
   const roundId = ROUND_CHOICES.find((c) => JSON.stringify(c.round) === JSON.stringify(settings.round))?.id ?? "w25";
 
+  const install = appSection();
   const main = h(
     "main",
     { class: "settings" },
@@ -155,12 +157,55 @@ export function settingsScreen(app: App, screen: Screen): ScreenView {
       h("p", { class: "panel-lead" }, "Retake the 1-minute test, for example after a long break. It unlocks any letters you now type at your goal and never locks letters again."),
       h("button", { type: "button", class: "button", onclick: () => app.go({ name: "calibration" }) }, "Retake the test"),
     ),
+    install.el,
     dataSection(app, returnTo),
     h("p", { class: "fine" }, h("a", { href: "#", onclick: (e: Event) => { e.preventDefault(); app.go({ name: "about", returnTo: { name: "settings", returnTo } }); } }, "About AdapType")),
   );
 
   const el = h("div", { class: "screen" }, topBar(app, { back: leave, backLabel: "Done", noSettings: true }), main);
-  return { el };
+  return { el, dispose: install.dispose };
+}
+
+/** Installing AdapType as an app, and updating it. Redraws when the browser's install or update state changes. */
+function appSection(): { el: HTMLElement; dispose: () => void } {
+  const body = h("div", { class: "stack" });
+  const render = () => {
+    const parts: (Node | null)[] = [];
+    if (isInstalled()) {
+      parts.push(h("p", { class: "panel-lead" }, "AdapType is installed on this device and works offline."));
+    } else if (canPromptInstall()) {
+      parts.push(
+        h("p", { class: "panel-lead" }, "Add AdapType to your home screen or apps. It opens in its own window and works offline."),
+        h("div", { class: "actions" }, h("button", { type: "button", class: "button primary", onclick: () => promptInstall() }, "Install AdapType")),
+      );
+    } else if (isIos()) {
+      parts.push(
+        h("p", { class: "panel-lead" }, "In Safari, tap the Share button, then Add to Home Screen. It opens like an app and works offline."),
+        h(
+          "p",
+          { class: "fine" },
+          "On iPhone and iPad the home-screen app keeps its own progress, separate from Safari. To bring yours along, tap Copy as code below first, then use Load code in the app.",
+        ),
+      );
+    } else {
+      parts.push(
+        h(
+          "p",
+          { class: "panel-lead" },
+          "To install AdapType, look in your browser's menu for Install app or Add to Home Screen. Once it's loaded, it also works offline in this browser.",
+        ),
+      );
+    }
+    if (updateReady()) {
+      parts.push(
+        h("p", { class: "status" }, "A new version is ready."),
+        h("div", { class: "actions" }, h("button", { type: "button", class: "button", onclick: () => applyUpdate() }, "Reload to update")),
+      );
+    }
+    body.replaceChildren(...parts.filter((p): p is Node => p !== null));
+  };
+  render();
+  return { el: section("App", body), dispose: onPwaChange(render) };
 }
 
 const MODE_CHOICES: { id: ModifierMode; label: string }[] = [

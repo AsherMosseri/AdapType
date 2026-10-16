@@ -200,9 +200,17 @@ kbd {
   min-height: 64px;
 }
 .wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   font-weight: 800;
   font-size: var(--step-1);
   letter-spacing: -0.02em;
+}
+.wordmark-logo {
+  width: 1.45em;
+  height: 1.45em;
+  flex: none;
 }
 .wordmark b {
   color: var(--accent);
@@ -2985,4 +2993,34 @@ button.choice:hover {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
+}
+
+/* "New version ready" banner, pinned to the bottom of the page. */
+.update-banner {
+  position: fixed;
+  left: 50%;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  width: min(560px, calc(100vw - 2 * var(--gutter)));
+  z-index: 50;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1rem;
+  padding: 0.85rem 1rem;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: calc(var(--radius) + 4px);
+  box-shadow: 0 8px 28px rgb(0 0 0 / 0.18);
+}
+.update-banner p {
+  margin: 0;
+  flex: 1 1 260px;
+}
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
 }

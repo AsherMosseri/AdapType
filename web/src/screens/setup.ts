@@ -9,6 +9,8 @@ import {
 import type { App, Screen, ScreenView } from "../app";
 import { goalControls } from "../components/goalControls";
 import { topBar } from "../components/topBar";
+import { wordmark } from "../components/wordmark";
+import { applyUpdate, isInstalled, isIos } from "../pwa";
 import { h, icon, ICONS } from "../dom";
 import { detectProfile } from "../store";
 
@@ -55,6 +57,15 @@ export function welcomeScreen(app: App): ScreenView {
         choice("touch", "Touch screen", "AdapType's own on-screen keyboard, built for thumbs.", ICONS.phone),
       ),
       otherReady ? h("p", { class: "fine" }, "Keyboard, touch and each keyboard layout keep their own progress, so each starts with its own test.") : null,
+      // A home-screen app on iPhone and iPad starts with empty storage, separate from Safari.
+      isIos() && isInstalled() && !otherReady
+        ? h(
+            "p",
+            { class: "notice" },
+            h("strong", null, "Practiced in Safari before? "),
+            "This app keeps its own progress. In Safari, open AdapType's Settings and tap Copy as code under Your data. Then paste it here in Settings, under Load code.",
+          )
+        : null,
       h(
         "section",
         { class: "panel" },
@@ -132,7 +143,7 @@ export function loadProblemScreen(app: App): ScreenView {
   const el = h(
     "div",
     { class: "screen" },
-    h("header", { class: "top-bar" }, h("span", { class: "wordmark" }, "Adap", h("b", null, "Type"))),
+    h("header", { class: "top-bar" }, wordmark()),
     h(
       "main",
       { class: "load-problem" },
@@ -147,7 +158,7 @@ export function loadProblemScreen(app: App): ScreenView {
       h(
         "div",
         { class: "actions wrap" },
-        h("button", { type: "button", class: "button primary", onclick: () => location.reload() }, "Reload"),
+        h("button", { type: "button", class: "button primary", onclick: () => applyUpdate() }, "Reload"),
         h("button", { type: "button", class: "button", onclick: () => app.startOver() }, "Start over"),
       ),
       h("p", { class: "fine" }, "Starting over keeps a copy of the old progress in this browser rather than deleting it."),
