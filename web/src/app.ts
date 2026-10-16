@@ -1,4 +1,4 @@
-import type { CreatureChange, KeystrokeRecord, LayoutId, NemesisChange, ProfileState, RoundExplanation, RoundOutcome } from "../../engine/src";
+import type { CourseMode, CreatureChange, KeystrokeRecord, LayoutId, NemesisChange, ProfileState, RoundExplanation, RoundOutcome } from "../../engine/src";
 import type { RoundMetrics } from "../../engine/src/typing";
 import { updateCreatures } from "../../engine/src";
 import { configureAnnounce } from "./announce";
@@ -29,7 +29,9 @@ export type Screen =
   | { name: "passages"; kind: "code" | "quotes" }
   | { name: "settings"; returnTo?: Screen }
   | { name: "about"; returnTo?: Screen }
-  | { name: "trophies"; returnTo?: Screen };
+  | { name: "trophies"; returnTo?: Screen }
+  | { name: "course" }
+  | { name: "course-round"; mode: CourseMode };
 
 export interface ScreenView {
   el: HTMLElement;

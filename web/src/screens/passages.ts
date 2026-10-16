@@ -25,7 +25,7 @@ import { playSound } from "../sound";
 import { keystrokeFeedback } from "../typingFeedback";
 
 /** Shows a passage character by character; newlines show as ↵ and break the line. */
-class PassageView {
+export class PassageView {
   readonly el: HTMLElement;
   private readonly chars: HTMLSpanElement[] = [];
   private last = 0;
