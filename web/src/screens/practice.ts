@@ -120,7 +120,14 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
     : null;
 
   let notice: HTMLElement | null = null;
-  if (calibrationTest) {
+  if (!app.saving) {
+    notice = h(
+      "p",
+      { class: "notice", role: "status" },
+      h("strong", null, "Progress isn't being saved. "),
+      "This browser refused to store it (private browsing or full storage), so a refresh starts over. Export your progress in Settings to keep it.",
+    );
+  } else if (calibrationTest) {
     notice = h(
       "p",
       { class: "notice" },
@@ -338,6 +345,7 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
     const creatureChanges = updateCreatures(state, Date.now(), characters);
     const keepReplay = !calibrationTest && !silent && inputEvents.length >= 2;
     const replayRank = keepReplay ? saveReplay(state, makeReplay(round.target, settings.errorMode, inputEvents, Date.now(), "practice")) : null;
+    if (calibrationTest) app.data.pendingTest = { profileKey: app.profileKey, wpm: metrics.wpm };
     app.persist();
     if (calibrationTest) app.go({ name: "goal", measuredWpm: metrics.wpm, from: "test" });
     else app.go({ name: "results", outcome, metrics, calibrationTest, explanation: plan.explanation, warmup, records: round.records, nemesisChange, creatureChanges, replayRank, replay: keepReplay });
