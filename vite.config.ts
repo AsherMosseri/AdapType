@@ -6,5 +6,5 @@ export default defineConfig({
   root: "web",
   base: process.env.ADAPTYPE_BASE ?? "/AdapType/",
   build: { outDir: "../dist", emptyOutDir: true },
-  test: { root: ".", include: ["engine/test/**/*.test.ts"] },
+  test: { root: ".", include: ["engine/test/**/*.test.ts", "web/test/**/*.test.ts"] },
 });

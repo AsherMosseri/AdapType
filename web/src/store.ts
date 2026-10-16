@@ -133,7 +133,7 @@ export function defaultSettings(activeProfile: InputProfile): Settings {
   return {
     activeProfile,
     round: { kind: "words", count: 25 },
-    errorMode: "backspace",
+    errorMode: "block",
     modifiers: structuredClone(DEFAULT_MODIFIER_SETTINGS),
     extraSet: "curated",
     os: "auto",

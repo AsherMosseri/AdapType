@@ -346,10 +346,12 @@ A setting picks the round type:
 
 A setting picks the error mode:
 
-- **Backspace allowed (default):** errors stay until you backspace and fix
-  them, like real typing. Corrections are recorded for the phase 3
-  self-correction score.
-- **Must fix to continue:** a wrong key blocks progress until the right one.
+- **Backspace allowed:** errors stay until you backspace and fix them, like
+  real typing. Corrections are recorded for the phase 3 self-correction
+  score.
+- **Must fix to continue (default for new players):** a wrong key blocks
+  progress until the right one. If you've typed on past a letter (typed it
+  late or skipped it), it catches up and marks that letter (engine spec 2.1).
 - **Mark and move on:** the error shows in red and you keep going.
 
 ### Touch keyboard
