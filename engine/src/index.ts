@@ -4,6 +4,7 @@ export * from "./arcade";
 export * from "./arcadeProfile";
 export * from "./arcadeWords";
 export * from "./constants";
+export * from "./course";
 export * from "./creatures";
 export * from "./daily";
 export * from "./difficulty";

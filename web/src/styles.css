@@ -3416,3 +3416,125 @@ button.choice:hover {
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
   gap: 0.5rem;
 }
+
+/* Phase 7: the numbers and symbols course */
+.course-path {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.course-step {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+  padding: 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.course-step.current {
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+.course-step.locked {
+  opacity: 0.6;
+}
+.course-step-num {
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  background: var(--accent-soft);
+}
+.course-step.done .course-step-num {
+  background: var(--good);
+  color: var(--surface);
+}
+.course-step.current .course-step-num {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.course-step-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.course-step-body h3 {
+  margin: 0;
+}
+.course-keys {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.course-key {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 2.4rem;
+  padding: 0.3rem 0.35rem 0.35rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--bg);
+}
+.course-key-cap {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+.course-key-bar {
+  display: block;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--line);
+  overflow: hidden;
+}
+.course-key-bar > span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+.course-key.mastered {
+  border-color: var(--good);
+}
+.course-key.mastered .course-key-bar > span {
+  background: var(--good);
+}
+.course-drills {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+  gap: 0.75rem;
+}
+.course-drill {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.course-drill h3,
+.course-drill p {
+  margin: 0;
+}
+.course-drill .actions {
+  margin-top: auto;
+}

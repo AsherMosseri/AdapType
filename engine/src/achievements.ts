@@ -44,7 +44,7 @@ export interface AchievementContext {
 export type AchievementEvent =
   | { kind: "check" }
   | {
-      kind: "round" | "passage" | "daily";
+      kind: "round" | "passage" | "daily" | "course";
       wpm: number;
       accuracy: number;
       /** Characters typed correctly. */
@@ -60,7 +60,7 @@ export type AchievementEvent =
   | { kind: "race"; ghost: boolean; won: boolean | null; marginMs: number | null }
   | { kind: "drill" };
 
-type TypingEvent = Extract<AchievementEvent, { kind: "round" | "passage" | "daily" }>;
+type TypingEvent = Extract<AchievementEvent, { kind: "round" | "passage" | "daily" | "course" }>;
 
 export interface AchievementDef {
   id: string;
@@ -91,7 +91,7 @@ export const PHOTO_FINISH_MS = 100;
 export const MARATHON_MS = 10 * 60 * 1000;
 
 const counter = (state: ProfileState, key: string) => state.achievements.counters[key] ?? 0;
-const isTyping = (e: AchievementEvent): e is TypingEvent => e.kind === "round" || e.kind === "passage" || e.kind === "daily";
+const isTyping = (e: AchievementEvent): e is TypingEvent => e.kind === "round" || e.kind === "passage" || e.kind === "daily" || e.kind === "course";
 const letterCount = (state: ProfileState) => state.unlocked.filter((c) => c >= "a" && c <= "z").length;
 const stages = (state: ProfileState) => Object.values(state.creatures).map((c) => c.stage);
 const bestArcade = (state: ProfileState) => Math.max(0, ...[...(state.arcade.scores.falling ?? []), ...(state.arcade.scores.survival ?? [])].map((s) => s.score));
@@ -154,6 +154,7 @@ export const ACHIEVEMENTS: readonly AchievementDef[] = [
   { id: "nemesis-5", group: "milestone", name: "Hall of defeated", description: "Beat 5 nemesis keys.", progress: (s) => s.arcade.hall.length, target: 5, met: (s) => s.arcade.hall.length >= 5 },
   { id: "creature-grown", group: "milestone", name: "All grown up", description: "Grow a key creature.", reward: "accessory:hat", met: (s) => stages(s).some((x) => x >= 2) },
   { id: "creature-legendary", group: "milestone", name: "Legendary", description: "Raise a legendary key creature.", reward: "cursor:creature", met: (s) => stages(s).some((x) => x >= 3) },
+  { id: "course-done", group: "milestone", name: "Every key on the board", description: "Finish the numbers and symbols path.", met: (s) => s.course.finished },
   {
     id: "creatures-letters",
     group: "milestone",

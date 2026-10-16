@@ -4,8 +4,8 @@ A typing game that learns your weak spots and keeps targeting them. It starts
 as a fun web project. Much later it becomes a micro-app inside a larger app,
 ported to Swift and Kotlin.
 
-Status: phases 1 to 6 built (web), plus a home menu and a few fixes. Phases 7
-to 10 (more ways to play) outlined; phase 7 is being detailed. Phase 11
+Status: phases 1 to 7 built (web), plus a home menu and a few fixes. Phases 8
+to 10 (more ways to play) outlined; phase 8 is next to be detailed. Phase 11
 (Swift and Kotlin ports) is last.
 
 ## Principles
@@ -987,6 +987,24 @@ Built, with these choices made along the way:
   their dates; reward picks are app settings.
 
 ### Part 3: Numbers and symbols course
+
+Built, with these choices made along the way:
+
+- **Six steps:** the digits are split into two steps (`1 2 3 4 5`, then
+  `6 7 8 9 0`), so the path has six steps instead of five.
+- **Mastery goal:** keys are mastered against the symbol goal (your speed
+  goal with the extra time Shift or a layer switch needs, and your accuracy
+  goal), over the last few rounds of the course itself. A mastered key stays
+  mastered; a step is done when all its keys are.
+- **Path text:** numbers in a path round use only the digits unlocked so far,
+  mixed with common words. The keys of the step being learned come up three
+  times as often until they're mastered, and weak keys come up more too.
+- **Finished steps** can be reviewed any time. Drills count toward the path:
+  a symbol you master in a drill is mastered on the path too.
+- **Badge:** finishing the whole path earns a new milestone, "Every key on
+  the board". Course rounds count toward speed and accuracy badges.
+- **Engine:** profile version 9 adds the course's own history and mastered
+  keys (spec section 39).
 
 - **Its own screen:** "Numbers and symbols" in the menu, with a step-by-step
   path. Key stats are shared with practice, so a weak `;` also shows up in

@@ -32,6 +32,7 @@ function menuGroups(app: App, returnTo: Screen): { title: string; items: MenuIte
       { label: "Daily challenge", hint: "The same words for everyone today", icon: ICONS.calendar, to: { name: "daily" }, matches: ["daily"], badge: state.daily[localDate()] ? "Done" : undefined },
       { label: "Code", hint: `Snippets in ${codeLanguages.length} languages`, icon: ICONS.code, to: { name: "passages", kind: "code" }, matches: [] },
       { label: "Quotes", hint: "Passages from public-domain books", icon: ICONS.quote, to: { name: "passages", kind: "quotes" }, matches: [] },
+      { label: "Numbers and symbols", hint: "A step-by-step path, and drills", icon: ICONS.hash, to: { name: "course" }, matches: ["course", "course-round"] },
     );
     if (!touch && isOn("shortcuts", state, settings.modifiers)) {
       practice.push({ label: "Shortcut drill", hint: "Keyboard shortcuts for the apps you use", icon: ICONS.command, to: { name: "shortcuts" }, matches: ["shortcuts"] });
