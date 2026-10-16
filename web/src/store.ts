@@ -119,6 +119,8 @@ export interface A11ySettings {
   lineSpacing: 0 | 1 | 2;
   /** Text size in percent, independent of the device setting. */
   textSize: number;
+  /** Zoom for the whole page in percent: text, icons, buttons and keys (like browser zoom). */
+  zoom: number;
   /** Heatmap colors: the theme's, or a color-blind-safe palette with patterns. */
   heatmap: "theme" | "colorblind";
   /** Motion: follow the device setting, or always reduce. */
@@ -155,7 +157,7 @@ export function defaultSettings(activeProfile: InputProfile): Settings {
     rivalPace: { kind: "ahead" },
     theme: "clean",
     colorMode: "auto",
-    a11y: { font: "theme", letterSpacing: 0, lineSpacing: 0, textSize: 100, heatmap: "theme", motion: "auto", announce: true },
+    a11y: { font: "theme", letterSpacing: 0, lineSpacing: 0, textSize: 100, zoom: 100, heatmap: "theme", motion: "auto", announce: true },
     sound: { on: true, volume: 0.5, keyClicks: true },
     content: { english: 2, code: ["javascript", "python", "typescript", "html", "css", "java", "swift", "kotlin", "cpp"] },
     shortcutPack: "text-editing",

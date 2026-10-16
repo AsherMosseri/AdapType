@@ -87,6 +87,10 @@ export function applyAppearance(settings: Settings): void {
   currentAccessory = settings.rewards.accessory;
   currentEffect = settings.rewards.effect;
   root.style.setProperty("--text-scale", String(Math.min(1.6, Math.max(0.8, a.textSize / 100))));
+  const zoom = Math.min(2, Math.max(0.8, (a.zoom ?? 100) / 100));
+  root.style.setProperty("--page-zoom", String(zoom));
+  // The on-screen keyboard already spans the screen, so it stays at its own size.
+  root.style.setProperty("--unzoom", String(1 / zoom));
   root.style.setProperty("--type-tracking", ["0em", "0.06em", "0.12em"][a.letterSpacing]);
   root.style.setProperty("--line-scale", ["1", "1.2", "1.4"][a.lineSpacing]);
   const [light, dark] = CHROME[settings.theme];

@@ -109,6 +109,17 @@ body {
   min-height: 100%;
   padding-top: env(safe-area-inset-top, 0px);
   padding-bottom: env(safe-area-inset-bottom, 0px);
+  /* The Zoom setting: scales everything, like browser zoom (installed apps have none). */
+  zoom: var(--page-zoom, 1);
+}
+/*
+ * Installed apps: newer iPadOS and iOS blur a band under the status bar,
+ * deeper than the safe area, so keep the top bar clear of it.
+ */
+@media (display-mode: standalone) {
+  #app {
+    padding-top: calc(env(safe-area-inset-top, 0px) + 24px);
+  }
 }
 h1,
 h2,
@@ -193,11 +204,31 @@ kbd {
 }
 .top-bar {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.5rem 1rem;
   padding-block: 1rem;
   min-height: 64px;
+  /* Sized by its own width, so it adapts when Zoom leaves little room. */
+  container-type: inline-size;
+}
+@container (max-width: 250px) {
+  .wordmark > span {
+    display: none;
+  }
+}
+@container (max-width: 235px) {
+  .top-actions {
+    gap: 0.25rem;
+  }
+  .top-actions .chip {
+    font-size: 0;
+    gap: 0;
+  }
+  .icon-button.back span {
+    display: none;
+  }
 }
 .wordmark {
   display: inline-flex;
@@ -739,6 +770,8 @@ textarea {
   justify-content: flex-end;
 }
 .touch-keyboard {
+  /* Undoes the Zoom setting: the keys already fill the width (zoomed, they wouldn't fit). */
+  zoom: var(--unzoom, 1);
   position: relative;
   margin-inline: calc(var(--gutter) * -1);
   padding: 8px 4px calc(8px + env(safe-area-inset-bottom, 0px));

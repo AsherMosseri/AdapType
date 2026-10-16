@@ -573,6 +573,15 @@ function appearanceSection(app: App): HTMLElement {
     cute: ["#fff5fa", "#fde3f1", "#d63d8f", "#3a2440"],
     mechanical: ["#e9e6df", "#f7f5f0", "#d9480f", "#24221f"],
   };
+  const a11y = settings.a11y;
+  const zoomValue = h("span", { class: "range-value" }, `${a11y.zoom}%`);
+  const zoom = h("input", { type: "range", id: "page-zoom", min: "80", max: "200", step: "10", value: String(a11y.zoom), "aria-label": "Zoom" });
+  zoom.addEventListener("change", () => {
+    a11y.zoom = Number(zoom.value);
+    zoomValue.textContent = `${a11y.zoom}%`;
+    apply();
+  });
+  zoom.addEventListener("input", () => (zoomValue.textContent = `${zoom.value}%`));
   const themeChoices = h(
     "div",
     { class: "theme-choices", role: "radiogroup", "aria-label": "Theme" },
@@ -608,6 +617,9 @@ function appearanceSection(app: App): HTMLElement {
       settings.colorMode = v as "auto" | "light" | "dark";
       apply();
     }, true),
+    h("h3", null, "Zoom"),
+    h("div", { class: "range-row" }, h("label", { for: "page-zoom", class: "sr-only" }, "Zoom"), zoom, zoomValue),
+    h("p", { class: "fine" }, "Makes everything bigger or smaller: text, buttons, icons and keys."),
   );
 }
 
@@ -730,7 +742,7 @@ function accessibilitySection(app: App): HTMLElement {
     }, true),
     h("h3", null, "Text size"),
     h("div", { class: "range-row" }, h("label", { for: "text-size", class: "sr-only" }, "Text size"), size, sizeValue),
-    h("p", { class: "fine" }, "Applies on top of your device's text size."),
+    h("p", { class: "fine" }, "Only the text, on top of your device's text size. To make everything bigger, use Zoom under Appearance."),
     h("h3", null, "Heatmap colors"),
     radioGroup("a11y-heat", "Heatmap colors", [
       { id: "theme", label: "Theme colors", hint: "Green for strong keys through red for weak ones." },
