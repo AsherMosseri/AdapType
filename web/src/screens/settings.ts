@@ -33,7 +33,7 @@ const ROUND_CHOICES: { id: string; label: string; round: RoundType }[] = [
 
 const ERROR_CHOICES: { id: ErrorMode; label: string; hint: string }[] = [
   { id: "backspace", label: "Fix with backspace", hint: "Errors stay until you backspace and fix them, like real typing." },
-  { id: "block", label: "Must fix to continue", hint: "A wrong key doesn't move you forward until you press the right one." },
+  { id: "block", label: "Must fix to continue", hint: "A wrong key doesn't move you forward until you press the right one. If you've typed on past a letter, it catches up and marks that letter missed." },
   { id: "skip", label: "Mark and move on", hint: "Errors show in red and you keep going." },
 ];
 

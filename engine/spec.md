@@ -91,6 +91,41 @@ Modes:
 | `block` | not typed; you must press the right key | does nothing |
 | `skip` | is typed and stays | does nothing |
 
+### 2.1 Catching up in block mode
+
+In `block` mode a round catches up when you've moved on past a letter, so a
+late or skipped letter doesn't leave you stuck. Two extra pieces of state:
+`ahead` (text, empty at the start) and `refill` (an index and a character, or
+none).
+
+Before step 1, for a character `c` at `index`: if `refill` is set, take it and
+clear it; if its index is `index - 1`, `c` equals its character and `c` isn't
+`target[index]`, ignore the keystroke (no record) apart from setting
+`lastT = t` and `lastWasCleanFirst = false`. This lets you press a letter
+again that was just filled in.
+
+After step 6:
+
+- **Correct, with `ahead` not empty (a late letter):** append each character
+  of `ahead` to `typed`, marking each new index attempted. Set `refill` to the
+  last new index and its character, and clear `ahead`.
+- **Correct, `ahead` empty:** nothing more.
+- **Wrong:** let `next = ahead + c`. If `target` continues with `next` right
+  after `index` (from `index + 1`), set `ahead = next`. Otherwise, if it
+  continues with `c` there, set `ahead = c`; otherwise clear `ahead`. If
+  `len(ahead) >= CATCH_UP_KEYS`, the letter at `index` is **missed**:
+  - Append `ahead[0]` to `typed` (the position stays wrong).
+  - For `k` from 0, append `ahead[k]` to `typed` at `index + 1 + k`. For
+    `k >= 1`, rewrite the record of that keystroke (the last `len(ahead)`
+    records, in order) to `{index: index + 1 + k, expected: target[index + 1 + k],
+    correct: true, first: (that index not yet attempted), interval: none}`.
+  - Mark each `index + 1 + k` attempted, clear `ahead`, and set
+    `lastWasCleanFirst = true`.
+
+So typing "teh" for "the " counts one error on h and continues at the space;
+typing "te " skips h (missed) and continues after the space. A run recorded
+before this existed replays without it (section 31).
+
 **Metrics:**
 
 - `correctChars` = positions where `typed[i] == target[i]`
@@ -995,7 +1030,9 @@ Vectors: `forecast.json`.
 
 ## 31. Replays
 
-A replay stores the target, error mode, and events `[ms, char]` where ms is
+A replay stores the target, error mode, whether block mode caught up
+(`catchUp: true` on block-mode runs; section 2.1, absent on older runs, which
+replay without it), and events `[ms, char]` where ms is
 whole milliseconds after the first event (rounded) and `"\b"` is a
 backspace. The target is cut at the first space at or after where the run
 ended (or kept whole). WPM and accuracy come from feeding the events into a
@@ -1145,6 +1182,7 @@ Vectors: `layouts.json`.
 | Name | Value |
 | --- | --- |
 | `MAX_INTERVAL_MS` | 2000 |
+| `CATCH_UP_KEYS` | 2 |
 | `MIN_AVG_WEIGHT` | 0.1 |
 | `START_LETTERS` | 6 |
 | `KEY_HISTORY_ROUNDS` | 5 |

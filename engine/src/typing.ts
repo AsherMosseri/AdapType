@@ -1,4 +1,4 @@
-import { MAX_INTERVAL_MS } from "./constants";
+import { CATCH_UP_KEYS, MAX_INTERVAL_MS } from "./constants";
 import type { ErrorMode, KeystrokeRecord, TypingEvent } from "./types";
 
 export interface RoundMetrics {
@@ -33,17 +33,29 @@ export class TypingRound {
   private lastT: number | null = null;
   /** True when the previous keystroke was a correct first attempt. */
   private lastWasCleanFirst = false;
+  /** Block mode: wrong keys pressed while stuck that match the text right after the stuck letter. */
+  private ahead = "";
+  /** Block mode: a letter just filled in after a late letter, so pressing it again right away is ignored. */
+  private refill: { index: number; char: string } | null = null;
 
   /**
    * autoIndent: after a correct newline, the spaces that start the next line
    * are filled in automatically (no keystrokes recorded), like a code editor.
    */
   readonly autoIndent: boolean;
+  /**
+   * Block mode catches up when you've moved on (spec 2.1): a late letter
+   * fills in the letters typed ahead of it, and CATCH_UP_KEYS keys that match
+   * the text after a stuck letter mark it missed and move on. Off only to
+   * replay runs recorded before this existed.
+   */
+  readonly catchUp: boolean;
 
-  constructor(target: string, mode: ErrorMode, options: { autoIndent?: boolean } = {}) {
+  constructor(target: string, mode: ErrorMode, options: { autoIndent?: boolean; catchUp?: boolean } = {}) {
     this.target = target;
     this.mode = mode;
     this.autoIndent = !!options.autoIndent;
+    this.catchUp = options.catchUp ?? true;
   }
 
   get position(): number {
@@ -77,6 +89,17 @@ export class TypingRound {
     const index = this.typed.length;
     const expected = this.target[index];
     const correct = actual === expected;
+    const catchUp = this.mode === "block" && this.catchUp;
+    if (catchUp) {
+      // Pressing the letter that was just filled in again (fixing it in place) is ignored.
+      const refill = this.refill;
+      this.refill = null;
+      if (refill && refill.index === index - 1 && actual === refill.char && !correct) {
+        this.lastT = event.t;
+        this.lastWasCleanFirst = false;
+        return null;
+      }
+    }
     const first = !this.attempted.has(index);
     let interval: number | null = null;
     if (this.lastT !== null && this.lastWasCleanFirst) {
@@ -96,7 +119,46 @@ export class TypingRound {
     }
     this.lastT = event.t;
     this.lastWasCleanFirst = correct && first;
+    if (catchUp) this.catchUpAfter(index, actual, correct);
     return record;
+  }
+
+  /** Block mode's catching up, after the keystroke at index (spec 2.1). */
+  private catchUpAfter(index: number, actual: string, correct: boolean): void {
+    if (correct) {
+      // The late letter arrived after the ones typed ahead of it: fill those in too.
+      const ahead = this.ahead;
+      this.ahead = "";
+      if (ahead.length === 0) return;
+      for (const ch of ahead) {
+        this.attempted.add(this.typed.length);
+        this.typed.push(ch);
+      }
+      this.refill = { index: this.typed.length - 1, char: ahead[ahead.length - 1] };
+      return;
+    }
+    const next = this.ahead + actual;
+    this.ahead = this.target.startsWith(next, index + 1) ? next : this.target.startsWith(actual, index + 1) ? actual : "";
+    if (this.ahead.length < CATCH_UP_KEYS) return;
+    // Moved on without the stuck letter: it's missed, and the keys after the first count where they belong.
+    const ahead = this.ahead;
+    this.ahead = "";
+    this.typed.push(ahead[0]);
+    const records = this.records.slice(-ahead.length);
+    for (let k = 0; k < ahead.length; k++) {
+      const at = index + 1 + k;
+      if (k > 0) {
+        const r = records[k];
+        r.index = at;
+        r.expected = this.target[at];
+        r.correct = true;
+        r.first = !this.attempted.has(at);
+        r.interval = null;
+      }
+      this.attempted.add(at);
+      this.typed.push(ahead[k]);
+    }
+    this.lastWasCleanFirst = true;
   }
 
   metrics(): RoundMetrics {

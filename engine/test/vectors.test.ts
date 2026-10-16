@@ -211,6 +211,10 @@ describe("test vectors", () => {
           { kind: "char", char: "o", t: 2500 },
         ],
       },
+      { name: "block, late letter", target: "the cat", mode: "block", events: chars("teh cat", 0, 110) },
+      { name: "block, fixed in place", target: "the cat", mode: "block", events: chars("tehe cat", 0, 110) },
+      { name: "block, skipped letter", target: "the cat", mode: "block", events: chars("te cat", 0, 110) },
+      { name: "block, wrong key then skipped", target: "the cat", mode: "block", events: chars("txe cat", 0, 110) },
     ];
     return cases.map((c) => {
       const round = new TypingRound(c.target, c.mode);
