@@ -2,6 +2,7 @@ import { KEY_LAYOUTS } from "../../../engine/src";
 import type { App, Screen } from "../app";
 import { h, icon, ICONS } from "../dom";
 import { menuButton } from "./menu";
+import { wordmark } from "./wordmark";
 
 export interface TopBarOptions {
   /** Shows a back button that goes here. */
@@ -23,7 +24,7 @@ export function topBar(app: App, options: TopBarOptions = {}): HTMLElement {
         icon([...ICONS.back]),
         h("span", null, options.backLabel ?? "Back"),
       )
-    : h("span", { class: "wordmark" }, "Adap", h("b", null, "Type"));
+    : wordmark();
   // Non-QWERTY layouts keep their own progress, so the chip names the layout (the icon shows keyboard or touch).
   const kind = profile === "touch" ? "Touch" : "Keyboard";
   const label = app.layout === "qwerty" ? kind : KEY_LAYOUTS[app.layout].name;

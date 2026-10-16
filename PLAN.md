@@ -912,6 +912,11 @@ Built in three parts, each its own PR.
 
 ### Part 1: Install as an app
 
+Built. A logo came with it: a white keycap with a rising A, whose right leg
+turns into an orange arrow, on AdapType blue. The fonts for the clean theme
+now ship with the app instead of loading from Google Fonts, so they work
+offline too.
+
 - **Installable:** a web app manifest (name, icons, standalone window) so
   AdapType can be added to a phone or computer home screen. Settings gets an
   "Install app" button where the browser supports it. On iPhone and iPad it

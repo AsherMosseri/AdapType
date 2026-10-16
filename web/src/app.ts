@@ -54,6 +54,8 @@ export class App {
   notice: string | null = null;
   /** The screen showing now. */
   screen: Screen | null = null;
+  /** Called after each screen change (for page-level extras such as the update banner). */
+  onNavigate: ((screen: Screen) => void) | null = null;
   private root: HTMLElement;
   private current: ScreenView | null = null;
   private renderers: Partial<Record<Screen["name"], ScreenRenderer>> = {};
@@ -125,6 +127,7 @@ export class App {
     this.root.dataset.screen = screen.name;
     window.scrollTo(0, 0);
     (view.focus ?? (view.el.querySelector("h1") as HTMLElement | null))?.focus({ preventScroll: true });
+    this.onNavigate?.(screen);
   }
 
   /** Goes to setup or practice, whichever the active profile needs. */
