@@ -1,4 +1,4 @@
-# AdapType engine spec (phases 1 to 4)
+# AdapType engine spec (phases 1 to 7)
 
 This is the rulebook for the AdapType engine. The web version
 (`engine/src`, TypeScript) is the reference implementation. A port (Swift,
@@ -1177,11 +1177,103 @@ its own calibration, unlocks and stats.
 
 Vectors: `layouts.json`.
 
+## 38. Achievements
+
+A profile has `achievements`: `earned` (badge id → time earned), `counters`
+(name → number, missing means 0) and `backfilled` (false at first).
+
+Every activity reports an **event** with a **context**. The context is the
+local date (`day`, YYYY-MM-DD) and hour (0 to 23), the theme, whether dark
+mode is on and whether sound is on. Events:
+
+- `round`, `passage`, `daily` (typing): `wpm`, `accuracy`, `chars` (typed
+  correctly), `durationMs`, `consistency` (0..1, or none outside practice)
+  and `words` (the words typed fully and correctly, lowercase: each run of
+  non-space characters that ends at or before the position and is correct
+  at every index).
+- `arcade`: `score`, `level`, `lives`.
+- `race`: `ghost` (a ghost race), `won` (true, false or none without an
+  opponent) and `marginMs` (the opponent's finish time minus yours, or none).
+- `drill`: a shortcut drill finished.
+- `check`: nothing happened; only saved progress is looked at (at launch).
+
+**recordAchievements(state, event, ctx, now):**
+
+1. If not `backfilled`, backfill (below) and set `backfilled`.
+2. For any event but `check`: count the day toward the streak (below), add 1
+   to `theme:<theme>`, to `dark` if dark mode is on, and to `clack` if the
+   theme is mechanical with sound on.
+3. Typing events: add 1 to `rounds` (round only) or `passages` (passage only).
+   With `accuracy >= goal accuracy` and `chars >= SPEED_MIN_CHARS`, raise
+   `bestWpm` to `wpm`. With `accuracy >= ACCURATE_ROUND` and
+   `chars >= SPEED_MIN_CHARS`, add 1 to `accurateRounds`. With
+   `consistency >= STEADY_ROUND`, add 1 to `steadyRounds`. Add the number of
+   "the" in `words` to `word:the`. A race that was won adds 1 to `racesWon`;
+   a drill adds 1 to `drills`. The goal is the profile's, or `DEFAULT_GOAL`.
+4. Go through the catalog in order. Every badge not yet earned whose
+   condition holds is earned now (`earned[id] = now`). Return those ids.
+
+**Streak days** use date numbers (days since 1970-01-01 of the calendar
+date). For a day `d`: if `streakDay == d`, nothing. Otherwise `streak`
+becomes `streak + 1` if `streakDay == d - 1`, or 1; then `streakDay = d` and
+`bestStreak = max(bestStreak, streak)`.
+
+**Backfill** (progress from before achievements): for each saved round that
+isn't a calibration test, add 1 to `rounds` and apply the `bestWpm`,
+`accurateRounds` and `steadyRounds` rules from step 3. For each daily result
+at the goal accuracy, raise `bestWpm` to its wpm. Then count every day that
+appears in `keyDays`, in increasing order, as a streak day.
+
+**Catalog** (in order). Conditions on saved state are checked after every
+event; conditions on "this event" only for that event.
+
+| Id | Condition | Reward |
+| --- | --- | --- |
+| `speed-40`, `-60`, `-80`, `-100`, `-120` | `bestWpm >= 40`, 60, 80, 100, 120 | cursor:block, cursor:glow, effect:fireworks, cursor:rainbow, style:holo |
+| `letters-half`, `letters-all` | 13, 26 unlocked letters (a to z) | cursor:underline, accessory:crown |
+| `streak-3`, `-7`, `-30`, `-100` | `bestStreak >=` 3, 7, 30, 100 | effect:confetti, accessory:scarf, style:neon, none |
+| `nemesis-1`, `nemesis-5` | at least 1, 5 defeated nemeses (`arcade.hall`) | effect:sparks, none |
+| `creature-grown` | a creature at stage 2 or more | accessory:hat |
+| `creature-legendary` | a creature at stage 3 | cursor:creature |
+| `creatures-letters` | all 26 letter creatures at stage 2 or more | none |
+| `accuracy-` bronze, silver, gold | `accurateRounds >=` 10, 50, 200 | none, accessory:glasses, style:gold |
+| `rhythm-` | `steadyRounds >=` 5, 25, 100 | none, effect:bubbles, none |
+| `arcade-` | best falling or survival score >= 1000, 5000, 15000 | none |
+| `races-` | `racesWon >=` 1, 10, 50 | none |
+| `daily-` | daily results saved >= 3, 15, 50 | none |
+| `passages-` | `passages >=` 5, 25, 100 | none |
+| `drills-` | `drills >=` 3, 15, 50 | none |
+| `rounds-` | `rounds >=` 10, 100, 500 | none |
+| `perfect` | this typing event: accuracy 1, `chars >= PERFECT_MIN_CHARS` | none |
+| `night-owl` | this typing event at hour 2 or 3 | none |
+| `early-bird` | this typing event at hour 5 | none |
+| `the-1000` | `word:the >= 1000` | none |
+| `photo-finish` | this race: ghost, lost, `marginMs < PHOTO_FINISH_MS` | none |
+| `marathon` | this round: `durationMs >= MARATHON_MS` | none |
+| `tortoise` | this round: accuracy 1, wpm < 20, `chars >= SPEED_MIN_CHARS` | none |
+| `hardcore` | this arcade game: hardcore lives, level >= 5 | none |
+| `theme-clean`, `-terminal`, `-cute` | `theme:<theme> >= THEME_ROUNDS` | none |
+| `theme-mechanical` | `clack >= THEME_ROUNDS` | none |
+| `theme-dark` | `dark >= THEME_ROUNDS` | none |
+
+Rewards come only from skill milestones, never from secrets, themes or plain
+counts. A profile's rewards are those of its earned badges; apps may offer
+the rewards of every profile.
+
+Profile version 8 adds `achievements` with nothing earned and `backfilled`
+false, so the first event (usually `check` at launch) counts earlier
+progress.
+
+Vectors: `achievements.json`.
+
 ## Constants
 
 | Name | Value |
 | --- | --- |
 | `MAX_INTERVAL_MS` | 2000 |
+| `SPEED_MIN_CHARS`, `PERFECT_MIN_CHARS` | 50, 100 |
+| `ACCURATE_ROUND`, `STEADY_ROUND`, `THEME_ROUNDS` | 0.97, 0.75, 20 |
+| `PHOTO_FINISH_MS`, `MARATHON_MS` | 100, 600000 |
 | `CATCH_UP_KEYS` | 2 |
 | `MIN_AVG_WEIGHT` | 0.1 |
 | `START_LETTERS` | 6 |
@@ -1319,6 +1411,7 @@ Vectors: `layouts.json`.
 | `packs.json` | words from pasted text, and mixing packs by weight |
 | `passages.json` | passage weights and picks, auto-indent, completion, Linux combos |
 | `layouts.json` | every layout's rows, home-row order, hands, fingers, zones and neighbors |
+| `achievements.json` | the badge ids, and events over several days with the badges each earns |
 
 Vectors that use the word pack use the first `packSize` words of
 `content/words-en.json` version 1 and `content/blocklist.json`.

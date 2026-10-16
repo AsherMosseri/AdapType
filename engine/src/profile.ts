@@ -48,6 +48,7 @@ import { KEY_LAYOUTS, type LayoutId } from "./layouts";
 import { addSample, appendHistory, applyRecords, emptyStat, isLetter, recordKeyDays } from "./stats";
 import { wpmToMs, type TypingRound } from "./typing";
 import type {
+  AchievementState,
   ArcadeState,
   Blocklist,
   CharacterData,
@@ -71,7 +72,7 @@ export const DEFAULT_GOAL: Goal = { wpm: 40, accuracy: 0.95 };
 
 export function createProfile(profile: InputProfile, seed: number, order: UnlockOrder = "frequency", layout: LayoutId = "qwerty"): ProfileState {
   return {
-    version: 7,
+    version: 8,
     profile,
     goal: null,
     calibration: "none",
@@ -94,7 +95,12 @@ export function createProfile(profile: InputProfile, seed: number, order: Unlock
     ...phase5Defaults(),
     recentPassages: [],
     layout,
+    achievements: emptyAchievements(),
   };
+}
+
+export function emptyAchievements(): AchievementState {
+  return { earned: {}, counters: {}, backfilled: false };
 }
 
 /** The letters in unlock order: by frequency (the same on every layout), or the layout's home row first. */
@@ -133,7 +139,8 @@ function phase3Defaults() {
  * (scores, ghost run, nemesis, hall of defeated); 4 → 5 adds key days,
  * creatures, replays and daily results (creatures fill in on the next
  * updateCreatures call); 5 → 6 adds recent passages; 6 → 7 adds the
- * keyboard layout (QWERTY for existing profiles).
+ * keyboard layout (QWERTY for existing profiles); 7 → 8 adds achievements
+ * (counted from earlier progress on the first recordAchievements call).
  */
 export function migrateProfile(saved: Record<string, unknown>): ProfileState {
   let p = { ...saved } as Record<string, unknown>;
@@ -157,6 +164,9 @@ export function migrateProfile(saved: Record<string, unknown>): ProfileState {
   }
   if (p.version === 6) {
     p = { ...p, layout: "qwerty", version: 7 };
+  }
+  if (p.version === 7) {
+    p = { ...p, achievements: emptyAchievements(), version: 8 };
   }
   return p as unknown as ProfileState;
 }

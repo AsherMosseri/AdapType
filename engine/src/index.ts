@@ -1,4 +1,5 @@
 // AdapType engine: framework-free, no DOM. See engine/spec.md.
+export * from "./achievements";
 export * from "./arcade";
 export * from "./arcadeProfile";
 export * from "./arcadeWords";
