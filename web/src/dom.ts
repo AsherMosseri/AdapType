@@ -83,6 +83,7 @@ export const ICONS = {
   replay: ["M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z", "M10 8.5v7l6-3.5z"],
   card: ["M3 5h18v14H3z", "M7 9h4", "M7 13h10", "M7 16h6"],
   info: ["M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z", "M12 11v5", "M12 8h.01"],
+  trophy: ["M8 21h8", "M12 17v4", "M7 4h10v5a5 5 0 0 1-10 0z", "M17 5h3v2a3 3 0 0 1-3 3", "M7 5H4v2a3 3 0 0 0 3 3"],
 } as const;
 
 export function formatPercent(value: number): string {

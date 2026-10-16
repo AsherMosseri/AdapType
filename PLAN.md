@@ -934,6 +934,24 @@ offline too.
 
 ### Part 2: Achievements and rewards
 
+Built, with these choices made along the way:
+
+- **53 badges:** 16 milestones, 8 skill tracks of three tiers, 8 secrets, and
+  5 theme badges (one per theme, plus one for dark mode).
+- **What counts toward speed and accuracy:** practice rounds, the daily
+  challenge, and code and quotes. Arcade games and races have their own
+  badges.
+- **Practice streak:** a day counts once you've done anything (a round, a
+  game, a race, a drill or the daily).
+- **Rewards:** picked in a new Settings section, Rewards. A newly unlocked
+  reward switches on by itself if nothing of its kind was picked yet. The
+  creature cursor walks under the letter you're on, since the gap above is
+  too small.
+- **Celebrations:** the picked effect also plays for a personal best (best
+  run, top arcade or race score).
+- **Badges are per profile** (keyboard, touch, each layout); rewards from any
+  profile can be used everywhere.
+
 - **Kinds:**
   - *Milestones:* speed (40, 60, 80, 100, 120 WPM in a round that meets
     your accuracy goal), all 26 letters, streaks (3, 7, 30, 100 days),
@@ -960,7 +978,7 @@ offline too.
   - creature accessories: hats, scarves, crowns, in each theme's style
   - celebration effects: confetti, fireworks, pixel sparks, bubbles
   - heatmap and fingerprint card styles: gold, neon, holographic
-  Picked in Settings, under Look. Reduced motion keeps effects still.
+  Picked in Settings, under Rewards. Reduced motion keeps effects still.
 - **Existing progress counts:** badges already earned (letters, best speed,
   streaks, creatures) are awarded on the first launch with achievements,
   with one notice instead of a celebration for each.

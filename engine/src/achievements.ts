@@ -56,6 +56,7 @@ export type AchievementEvent =
       words: readonly string[];
     }
   | { kind: "arcade"; score: number; level: number; lives: LivesMode }
+  /** marginMs: the gap between the two finish times (always positive), or null if the opponent didn't finish. */
   | { kind: "race"; ghost: boolean; won: boolean | null; marginMs: number | null }
   | { kind: "drill" };
 

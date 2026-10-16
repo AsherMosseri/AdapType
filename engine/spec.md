@@ -1193,7 +1193,8 @@ mode is on and whether sound is on. Events:
   at every index).
 - `arcade`: `score`, `level`, `lives`.
 - `race`: `ghost` (a ghost race), `won` (true, false or none without an
-  opponent) and `marginMs` (the opponent's finish time minus yours, or none).
+  opponent) and `marginMs` (the gap between the two finish times, never
+  negative, or none if the opponent didn't finish).
 - `drill`: a shortcut drill finished.
 - `check`: nothing happened; only saved progress is looked at (at launch).
 

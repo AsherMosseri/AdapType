@@ -1,5 +1,5 @@
 import type { CreatureStage, CreatureTraits } from "../../../engine/src";
-import { activeTheme } from "../appearance";
+import { activeAccessory, activeTheme } from "../appearance";
 import type { ThemeId } from "../store";
 
 /** Each theme's drawing style. Every style keeps the creature's traits: body, eyes, top, pattern, mouth, tail. */
@@ -33,7 +33,71 @@ const BODIES = {
 export function creatureSvg(
   traits: CreatureTraits,
   stage: CreatureStage | null,
-  options: { health?: number; size?: number; label?: string; legend?: string; style?: CreatureStyle } = {},
+  options: { health?: number; size?: number; label?: string; legend?: string; style?: CreatureStyle; accessory?: string } = {},
+): SVGSVGElement {
+  const svg = drawCreature(traits, stage, options);
+  const accessory = options.accessory ?? activeAccessory();
+  // Hatched creatures wear the accessory picked as a reward (legendary ones already have their crown).
+  if (stage !== null && stage >= 1 && accessory !== "none" && !(accessory === "crown" && stage === 3)) {
+    svg.append(accessorySvg(accessory, traits, stage, options.style ?? THEME_STYLES[activeTheme()]));
+  }
+  return svg;
+}
+
+/** Where a creature's head and eyes are in each style, and how a baby is scaled, so accessories line up. */
+function headGeometry(traits: CreatureTraits, style: CreatureStyle, stage: CreatureStage) {
+  const eyeCount = traits.eyes;
+  if (style === "pixel") {
+    const mask = PIXEL_BODIES[traits.body];
+    let row = 16;
+    for (let y = 0; y < 16; y++) for (let x = 0; x < 16; x++) if (mask(x, y)) row = Math.min(row, y);
+    const eyeRow = row + (traits.body === "wide" ? 2 : 3);
+    const cells = eyeCount === 1 ? [7] : eyeCount === 2 ? [5, 10] : [4, 11];
+    return { top: row * 4, eyeY: eyeRow * 4 + 2, eyes: cells.map((c) => c * 4 + 2), eyeR: 4, neckY: eyeRow * 4 + 14, half: 22, baby: stage === 1 ? "translate(32 60) scale(0.8) translate(-32 -60)" : "" };
+  }
+  if (style === "keycap") {
+    const y0 = 16 + (traits.body === "tall" ? -4 : traits.body === "wide" ? 4 : 0);
+    const xs = eyeCount === 1 ? [32] : eyeCount === 2 ? [27, 37] : [24, 40];
+    return { top: y0, eyeY: y0 + 20, eyes: xs, eyeR: 4, neckY: y0 + 31, half: 20, baby: stage === 1 ? "translate(32 58) scale(0.82) translate(-32 -58)" : "" };
+  }
+  const body = BODIES[traits.body];
+  const eyeY = body.top + (traits.body === "wide" ? 8 : 13);
+  const xs = eyeCount === 1 ? [32] : eyeCount === 2 ? [26, 38] : [23, 41];
+  return { top: body.top, eyeY, eyes: xs, eyeR: 5.2, neckY: eyeY + 15, half: body.half + 2, baby: stage === 1 ? "translate(32 58) scale(0.78) translate(-32 -58)" : "" };
+}
+
+/** A reward accessory drawn over the creature: a top hat, a scarf, glasses, or a paper party crown. */
+function accessorySvg(kind: string, traits: CreatureTraits, stage: CreatureStage, style: CreatureStyle): SVGGElement {
+  const g = el("g", { class: `cr-accessory acc-${kind}` });
+  const { top, eyeY, eyes, eyeR, neckY, half, baby } = headGeometry(traits, style, stage);
+  if (baby) g.setAttribute("transform", baby);
+  if (kind === "hat") {
+    g.append(el("rect", { x: 25, y: top - 13, width: 14, height: 13, rx: 2, class: "acc-fill" }), el("rect", { x: 25, y: top - 5, width: 14, height: 3, class: "acc-band" }), el("rect", { x: 19, y: top - 1.5, width: 26, height: 3.5, rx: 1.75, class: "acc-fill" }));
+  } else if (kind === "scarf") {
+    g.append(
+      el("path", { d: `M${32 - half} ${neckY - 2} Q32 ${neckY + 4} ${32 + half} ${neckY - 2} L${32 + half} ${neckY + 3} Q32 ${neckY + 9} ${32 - half} ${neckY + 3} Z`, class: "acc-fill" }),
+      el("path", { d: `M${32 + half - 9} ${neckY + 3} L${32 + half - 6} ${neckY + 15} L${32 + half - 1} ${neckY + 14} L${32 + half - 3} ${neckY + 2} Z`, class: "acc-fill" }),
+      el("path", { d: `M${32 - half + 4} ${neckY + 1.5} L${32 + half - 4} ${neckY + 1.5}`, class: "acc-stripe" }),
+    );
+  } else if (kind === "glasses") {
+    for (const x of eyes) g.append(el("circle", { cx: x, cy: eyeY, r: eyeR + 1.5, class: "acc-lens" }));
+    if (eyes.length === 2) g.append(el("path", { d: `M${eyes[0] + eyeR + 1.5} ${eyeY - 1} Q32 ${eyeY - 3.5} ${eyes[1] - eyeR - 1.5} ${eyeY - 1}`, class: "acc-line" }));
+    else g.append(el("path", { d: `M${eyes[0] + eyeR + 1.5} ${eyeY} L${eyes[0] + eyeR + 5} ${eyeY + 9}`, class: "acc-line" }));
+  } else if (kind === "crown") {
+    g.append(
+      el("path", { d: `M23 ${top + 1} L23 ${top - 8} L27.5 ${top - 3.5} L32 ${top - 10} L36.5 ${top - 3.5} L41 ${top - 8} L41 ${top + 1} Z`, class: "acc-paper" }),
+      el("circle", { cx: 27.5, cy: top - 2, r: 1.2, class: "acc-dot" }),
+      el("circle", { cx: 32, cy: top - 4, r: 1.2, class: "acc-dot" }),
+      el("circle", { cx: 36.5, cy: top - 2, r: 1.2, class: "acc-dot" }),
+    );
+  }
+  return g;
+}
+
+function drawCreature(
+  traits: CreatureTraits,
+  stage: CreatureStage | null,
+  options: { health?: number; size?: number; label?: string; legend?: string; style?: CreatureStyle },
 ): SVGSVGElement {
   const size = options.size ?? 64;
   const health = options.health ?? 1;

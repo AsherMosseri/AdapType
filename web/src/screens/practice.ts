@@ -14,6 +14,7 @@ import {
   type TypingEvent,
   makeReplay,
   saveReplay,
+  typedWords,
   updateCreatures,
   updateNemesis,
 } from "../../../engine/src";
@@ -28,6 +29,7 @@ import { formatPercent, h } from "../dom";
 import { list, roundBanner } from "../explainText";
 import { announce, wordAt } from "../announce";
 import { attachPhysicalInput } from "../physicalInput";
+import { earn } from "../achievements";
 import { playSound } from "../sound";
 import { keystrokeFeedback } from "../typingFeedback";
 import { practicePack } from "../wordPacks";
@@ -346,9 +348,18 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
     const keepReplay = !calibrationTest && !silent && inputEvents.length >= 2;
     const replayRank = keepReplay ? saveReplay(state, makeReplay(round.target, settings.errorMode, inputEvents, Date.now(), "practice")) : null;
     if (calibrationTest) app.data.pendingTest = { profileKey: app.profileKey, wpm: metrics.wpm };
+    const badges = earn(app, {
+      kind: "round",
+      wpm: metrics.wpm,
+      accuracy: metrics.accuracy,
+      chars: metrics.correctChars,
+      durationMs: metrics.elapsedMs,
+      consistency: calibrationTest ? null : (state.rounds[state.rounds.length - 1]?.consistency ?? null),
+      words: typedWords(round),
+    });
     app.persist();
     if (calibrationTest) app.go({ name: "goal", measuredWpm: metrics.wpm, from: "test" });
-    else app.go({ name: "results", outcome, metrics, calibrationTest, explanation: plan.explanation, warmup, records: round.records, nemesisChange, creatureChanges, replayRank, replay: keepReplay });
+    else app.go({ name: "results", outcome, metrics, calibrationTest, explanation: plan.explanation, warmup, records: round.records, nemesisChange, creatureChanges, replayRank, replay: keepReplay, badges });
   }
 
   const onResize = () => view.scroll();

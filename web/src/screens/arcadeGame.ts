@@ -19,6 +19,7 @@ import {
 } from "../../../engine/src";
 import type { App, Screen, ScreenView } from "../app";
 import { nemesisFace } from "../components/nemesisFace";
+import { earn } from "../achievements";
 import { MENU_OPEN } from "../components/menu";
 import { topBar } from "../components/topBar";
 import { touchKeyboard } from "../components/touchKeyboard";
@@ -280,6 +281,7 @@ export function arcadeGameScreen(app: App, screen: Screen): ScreenView {
     const { entry, rank } = completeArcadeGame(state, game, Date.now(), { chars: characters, pack });
     const nemesisChange = updateNemesis(state, Date.now(), nemesisContent);
     updateCreatures(state, Date.now(), characters);
+    const badges = earn(app, { kind: "arcade", score: entry.score, level: entry.level, lives: game.config.lives });
     app.persist();
     main.append(
       gameOverPanel(app, {
@@ -294,6 +296,7 @@ export function arcadeGameScreen(app: App, screen: Screen): ScreenView {
           ["Best combo", String(game.maxCombo)],
         ],
         nemesisChange,
+        badges,
         again: { name: "arcade-game", mode },
       }),
     );

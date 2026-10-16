@@ -15,7 +15,7 @@ import {
   type RoundType,
 } from "../../engine/src";
 
-export const DATA_VERSION = 8;
+export const DATA_VERSION = 9;
 
 export type OsChoice = "auto" | "mac" | "windows" | "windows-intl" | "linux";
 export type TouchLayoutChoice = "auto" | "ios" | "android";
@@ -60,7 +60,12 @@ export interface Settings {
   shortcutPack: string;
   /** The keyboard layout for each input profile. */
   layouts: Record<InputProfile, LayoutChoice>;
+  /** Phase 7: the cosmetic rewards picked (each "none" until a badge unlocks one). */
+  rewards: RewardSettings;
 }
+
+export type RewardKind = "cursor" | "accessory" | "effect" | "style";
+export type RewardSettings = Record<RewardKind, string>;
 
 /** Layouts you can pick. QWERTY US, UK and International share letters, so they share one set of stats. */
 export type LayoutChoice = "qwerty-us" | "qwerty-uk" | "qwerty-intl" | "azerty" | "qwertz" | "dvorak" | "colemak" | "colemak-dh";
@@ -155,6 +160,7 @@ export function defaultSettings(activeProfile: InputProfile): Settings {
     content: { english: 2, code: ["javascript", "python", "typescript", "html", "css", "java", "swift", "kotlin", "cpp"] },
     shortcutPack: "text-editing",
     layouts: { physical: "qwerty-us", touch: "qwerty-us" },
+    rewards: { cursor: "none", accessory: "none", effect: "none", style: "none" },
   };
 }
 
@@ -267,7 +273,8 @@ export function parseData(text: string): AppData {
  * changes nothing here (profiles gain phase 5 data); 5 → 6 adds theme, color
  * mode, accessibility and sound; 6 → 7 adds content settings, the shortcut
  * pack and custom word packs; 7 → 8 adds a layout per input profile (and
- * profiles keyed by layout). Missing settings take their defaults.
+ * profiles keyed by layout); 8 → 9 adds picked rewards (profiles gain
+ * achievements). Missing settings take their defaults.
  * Profiles migrate in the engine.
  */
 function migrate(data: AppData): AppData {
@@ -281,6 +288,7 @@ function migrate(data: AppData): AppData {
     sound: { ...defaults.sound, ...saved.sound },
     content: { ...defaults.content, ...saved.content },
     layouts: { ...defaults.layouts, ...saved.layouts },
+    rewards: { ...defaults.rewards, ...saved.rewards },
   };
   if (!Array.isArray(data.customPacks)) data.customPacks = [];
   for (const key of Object.keys(data.profiles)) {

@@ -36,9 +36,21 @@ const CHROME: Record<ThemeId, [string, string]> = {
 
 let currentTheme: ThemeId = "clean";
 let reducedByUser = false;
+let currentAccessory = "none";
+let currentEffect = "none";
 
 export function activeTheme(): ThemeId {
   return currentTheme;
+}
+
+/** The creature accessory picked as a reward ("none" by default). */
+export function activeAccessory(): string {
+  return currentAccessory;
+}
+
+/** The celebration effect picked as a reward ("none" by default). */
+export function activeEffect(): string {
+  return currentEffect;
 }
 
 /** Reduced motion from the device or the setting; for motion done in script (smooth scrolling). */
@@ -69,6 +81,11 @@ export function applyAppearance(settings: Settings): void {
   root.dataset.font = a.font;
   root.dataset.heat = a.heatmap;
   root.dataset.motion = a.motion;
+  // Rewards: the cursor and the heatmap and card style are pure CSS; accessories and effects are drawn in script.
+  root.dataset.cursor = settings.rewards.cursor;
+  root.dataset.reward = settings.rewards.style;
+  currentAccessory = settings.rewards.accessory;
+  currentEffect = settings.rewards.effect;
   root.style.setProperty("--text-scale", String(Math.min(1.6, Math.max(0.8, a.textSize / 100))));
   root.style.setProperty("--type-tracking", ["0em", "0.06em", "0.12em"][a.letterSpacing]);
   root.style.setProperty("--line-scale", ["1", "1.2", "1.4"][a.lineSpacing]);
