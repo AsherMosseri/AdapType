@@ -18,6 +18,7 @@ import {
   type TypingEvent,
 } from "../../../engine/src";
 import type { App, Screen, ScreenView } from "../app";
+import { earn } from "../achievements";
 import { topBar } from "../components/topBar";
 import { touchKeyboard } from "../components/touchKeyboard";
 import { TypingView } from "../components/typingView";
@@ -198,9 +199,10 @@ export function raceScreen(app: App, screen: Screen): ScreenView {
     const entry = { score: Math.round(metrics.wpm * metrics.accuracy * 10), level: 1, words: words.length, wpm: metrics.wpm, accuracy: metrics.accuracy, at: now };
     const rank = recordScore(state, kind, entry);
     const nemesisChange = updateNemesis(state, now, nemesisContent);
+    const won = hasOpponent ? opponentDone === null || elapsed < opponentDone : null;
+    const badges = earn(app, { kind: "race", ghost: kind === "ghost", won, marginMs: opponentDone === null ? null : Math.abs(elapsed - opponentDone) });
     app.persist();
 
-    const won = hasOpponent ? opponentDone === null || elapsed < opponentDone : null;
     playSound(won === false ? "error" : "success");
     let verdict: string;
     if (kind === "ghost") {
@@ -226,6 +228,7 @@ export function raceScreen(app: App, screen: Screen): ScreenView {
           ["Time", `${(elapsed / 1000).toFixed(1)}s`],
         ],
         nemesisChange,
+        badges,
         again: { name: "race", kind },
       }),
     );

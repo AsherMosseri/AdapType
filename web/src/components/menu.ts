@@ -49,6 +49,7 @@ function menuGroups(app: App, returnTo: Screen): { title: string; items: MenuIte
         { label: "Progress", hint: "Speed, accuracy and every key", icon: ICONS.progress, to: { name: "progress", returnTo }, matches: ["progress"] },
         { label: "Creatures", hint: "One for each key you practice", icon: ICONS.creature, to: { name: "collection", returnTo }, matches: ["collection"] },
         { label: "Replays", hint: "Watch your rounds back", icon: ICONS.replay, to: { name: "replays", returnTo }, matches: ["replays", "replay"] },
+        { label: "Trophy case", hint: "Badges and the rewards they unlock", icon: ICONS.trophy, to: { name: "trophies", returnTo }, matches: ["trophies"] },
         { label: "Fingerprint card", hint: "Your typing on one card", icon: ICONS.card, to: { name: "card", returnTo }, matches: ["card"] },
       ],
     },

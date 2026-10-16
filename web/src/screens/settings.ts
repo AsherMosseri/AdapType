@@ -1,4 +1,5 @@
 import {
+  ACHIEVEMENTS,
   DEFAULT_GOAL,
   KEY_LAYOUTS,
   MODIFIER_STAGES,
@@ -8,6 +9,7 @@ import {
   type LayoutId,
   type ModifierLevel,
   type ModifierMode,
+  type RewardId,
   type RoundType,
   type UnlockableId,
   type UnlockOrder,
@@ -19,6 +21,8 @@ import { THEMES } from "../appearance";
 import { h } from "../dom";
 import { MODIFIER_NAMES } from "../explainText";
 import { currentOs, detectOs, detectTouchLayout, OS_NAMES, platformFor, type Os } from "../platform";
+import { availableRewards, REWARD_KINDS, REWARDS } from "../achievements";
+import { celebrate } from "../components/celebrate";
 import { applyUpdate, canPromptInstall, isInstalled, isIos, onPwaChange, promptInstall, updateReady } from "../pwa";
 import { playSound, type SoundKind } from "../sound";
 import { clearSaved, defaultData, fromCode, LAYOUT_CHOICES, newProfile, parseData, toCode, type AppData, type LayoutChoice, type OsChoice, type PackWeight, type ThemeId, type TouchLayoutChoice } from "../store";
@@ -67,6 +71,7 @@ export function settingsScreen(app: App, screen: Screen): ScreenView {
     { class: "settings" },
     h("h1", { tabindex: "-1" }, "Settings"),
     appearanceSection(app),
+    rewardsSection(app),
     soundSection(app),
     accessibilitySection(app),
     contentSection(app),
@@ -568,6 +573,15 @@ function appearanceSection(app: App): HTMLElement {
     cute: ["#fff5fa", "#fde3f1", "#d63d8f", "#3a2440"],
     mechanical: ["#e9e6df", "#f7f5f0", "#d9480f", "#24221f"],
   };
+  const a11y = settings.a11y;
+  const zoomValue = h("span", { class: "range-value" }, `${a11y.zoom}%`);
+  const zoom = h("input", { type: "range", id: "page-zoom", min: "80", max: "200", step: "10", value: String(a11y.zoom), "aria-label": "Zoom" });
+  zoom.addEventListener("change", () => {
+    a11y.zoom = Number(zoom.value);
+    zoomValue.textContent = `${a11y.zoom}%`;
+    apply();
+  });
+  zoom.addEventListener("input", () => (zoomValue.textContent = `${zoom.value}%`));
   const themeChoices = h(
     "div",
     { class: "theme-choices", role: "radiogroup", "aria-label": "Theme" },
@@ -603,6 +617,48 @@ function appearanceSection(app: App): HTMLElement {
       settings.colorMode = v as "auto" | "light" | "dark";
       apply();
     }, true),
+    h("h3", null, "Zoom"),
+    h("div", { class: "range-row" }, h("label", { for: "page-zoom", class: "sr-only" }, "Zoom"), zoom, zoomValue),
+    h("p", { class: "fine" }, "Makes everything bigger or smaller: text, buttons, icons and keys."),
+  );
+}
+
+/** Cosmetic rewards from badges: each kind lists every option, with locked ones showing the badge that unlocks them. */
+function rewardsSection(app: App): HTMLElement {
+  const picked = app.data.settings.rewards;
+  const unlocked = availableRewards(app);
+  const groups = REWARD_KINDS.map(({ kind, name, none }) => {
+    const options = (Object.entries(REWARDS) as [RewardId, (typeof REWARDS)[RewardId]][]).filter(([, r]) => r.kind === kind);
+    const choice = (value: string, label: string, locked: string | null) => {
+      const id = `reward-${kind}-${value}`;
+      const input = h("input", { type: "radio", name: `reward-${kind}`, id, value, checked: picked[kind] === value, disabled: !!locked });
+      input.addEventListener("change", () => {
+        picked[kind] = value;
+        app.applyLook();
+        app.persist();
+        if (kind === "effect") celebrate(value);
+      });
+      return h("label", { for: id, class: locked ? "locked" : "" }, input, h("span", { class: "radio-text" }, h("strong", null, label), locked ? h("span", null, `Earn ${locked}`) : null));
+    };
+    return h(
+      "fieldset",
+      { class: "reward-group" },
+      h("legend", null, name),
+      h(
+        "div",
+        { class: "radio-list compact-list", role: "radiogroup", "aria-label": name },
+        choice("none", none, null),
+        options.map(([id, r]) => {
+          const badge = ACHIEVEMENTS.find((a) => a.reward === id)!;
+          return choice(r.value, r.name, unlocked.has(id) ? null : `“${badge.name}${badge.tier ? ` (${badge.tier})` : ""}”: ${badge.description.replace(/\.$/, "").toLowerCase()}`);
+        }),
+      ),
+    );
+  });
+  return section(
+    "Rewards",
+    h("p", { class: "panel-lead" }, `Badges unlock these. ${unlocked.size} of ${Object.keys(REWARDS).length} unlocked so far; see them all in the trophy case.`),
+    ...groups,
   );
 }
 
@@ -686,7 +742,7 @@ function accessibilitySection(app: App): HTMLElement {
     }, true),
     h("h3", null, "Text size"),
     h("div", { class: "range-row" }, h("label", { for: "text-size", class: "sr-only" }, "Text size"), size, sizeValue),
-    h("p", { class: "fine" }, "Applies on top of your device's text size."),
+    h("p", { class: "fine" }, "Only the text, on top of your device's text size. To make everything bigger, use Zoom under Appearance."),
     h("h3", null, "Heatmap colors"),
     radioGroup("a11y-heat", "Heatmap colors", [
       { id: "theme", label: "Theme colors", hint: "Green for strong keys through red for weak ones." },

@@ -1,5 +1,8 @@
 import type { NemesisChange } from "../../../engine/src";
+import { newBadgesPanel } from "../achievements";
 import type { App, Screen } from "../app";
+import { activeEffect } from "../appearance";
+import { celebrate } from "../components/celebrate";
 import { nemesisFace } from "../components/nemesisFace";
 import { nemesisContentFor } from "../content";
 import { h } from "../dom";
@@ -14,6 +17,8 @@ export interface GameOverOptions {
   again: Screen;
   /** A line under the title, such as who won a race. */
   verdict?: string;
+  /** Badges this game earned. */
+  badges?: string[];
 }
 
 /**
@@ -63,6 +68,7 @@ export function gameOverPanel(app: App, o: GameOverOptions): HTMLElement {
           h("p", null, `A new nemesis: ${chosen.name}. Your ${chosen.key} is your weakest key, so it will show up as a boss.`),
         )
       : null,
+    newBadgesPanel(app, o.badges ?? []),
     h(
       "div",
       { class: "actions" },
@@ -71,6 +77,8 @@ export function gameOverPanel(app: App, o: GameOverOptions): HTMLElement {
       h("button", { type: "button", class: "button", onclick: () => app.go({ name: "practice" }) }, "Practice"),
     ),
   );
+  // A personal best gets the picked celebration too (a new badge already brings one).
+  if (best && !o.badges?.length) celebrate(activeEffect());
   requestAnimationFrame(() => again.focus({ preventScroll: true }));
   return panel;
 }

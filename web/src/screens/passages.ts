@@ -6,11 +6,13 @@ import {
   pickPassage,
   Rng,
   TypingRound,
+  typedWords,
   updateCreatures,
   type Passage,
   type TypingEvent,
 } from "../../../engine/src";
 import { announce } from "../announce";
+import { earn, newBadgesPanel } from "../achievements";
 import type { App, Screen, ScreenView } from "../app";
 import { scrollBehavior } from "../appearance";
 import { topBar } from "../components/topBar";
@@ -193,6 +195,7 @@ export function passagesScreen(app: App, screen: Screen): ScreenView {
     refresh();
     const m = completePassage(state, passage as Passage, round, Date.now(), { chars: characters, pack });
     const grown = updateCreatures(state, Date.now(), characters);
+    const badges = earn(app, { kind: "passage", wpm: m.wpm, accuracy: m.accuracy, chars: m.correctChars, durationMs: m.elapsedMs, consistency: null, words: typedWords(round) });
     app.persist();
     playSound("success");
     const summary = `${Math.round(m.wpm)} WPM, ${formatPercent(m.accuracy)} accuracy.`;
@@ -206,6 +209,7 @@ export function passagesScreen(app: App, screen: Screen): ScreenView {
         h("p", null, `It counts toward your key stats${grown.length ? `, and ${grown.map((c) => c.key).join(" ")} evolved` : ""}.`),
         h("div", { class: "actions wrap" }, nextButton),
       ),
+      newBadgesPanel(app, badges) ?? "",
     );
     keyboard?.remove();
     nextButton.focus({ preventScroll: true });

@@ -62,6 +62,42 @@ function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: numbe
   ctx.roundRect(x, y, w, hh, r);
 }
 
+/** The gold, neon or holographic frame picked as a reward (none by default). */
+function cardRewardFrame(ctx: CanvasRenderingContext2D, accent: string): void {
+  const style = document.documentElement.dataset.reward ?? "none";
+  if (style === "none") return;
+  ctx.save();
+  roundRect(ctx, 32, 32, W - 64, HEIGHT - 64, 28);
+  if (style === "gold") {
+    const g = ctx.createLinearGradient(0, 0, W, HEIGHT);
+    g.addColorStop(0, "#f7e08a");
+    g.addColorStop(0.45, "#c9962c");
+    g.addColorStop(0.7, "#fff1b8");
+    g.addColorStop(1, "#a8761c");
+    ctx.strokeStyle = g;
+    ctx.lineWidth = 10;
+  } else if (style === "neon") {
+    ctx.strokeStyle = accent;
+    ctx.shadowColor = accent;
+    ctx.shadowBlur = 28;
+    ctx.lineWidth = 6;
+  } else {
+    const g = ctx.createLinearGradient(0, 0, W, HEIGHT);
+    ["#ff7ac6", "#ffd36e", "#7dffb0", "#6ec8ff", "#b48cff"].forEach((c, i, all) => g.addColorStop(i / (all.length - 1), c));
+    ctx.strokeStyle = g;
+    ctx.lineWidth = 10;
+    ctx.stroke();
+    // A faint sheen over the whole card.
+    ctx.globalAlpha = 0.07;
+    ctx.fillStyle = g;
+    ctx.fill();
+    ctx.restore();
+    return;
+  }
+  ctx.stroke();
+  ctx.restore();
+}
+
 async function drawCard(canvas: HTMLCanvasElement, card: Fingerprint, goalWpm: number, rows: readonly (string | null)[][]): Promise<void> {
   await document.fonts.ready;
   const p = palette();
@@ -76,6 +112,7 @@ async function drawCard(canvas: HTMLCanvasElement, card: Fingerprint, goalWpm: n
   ctx.strokeStyle = p.line;
   ctx.lineWidth = 2;
   ctx.stroke();
+  cardRewardFrame(ctx, p.accent);
 
   ctx.textBaseline = "alphabetic";
   ctx.fillStyle = p.ink;

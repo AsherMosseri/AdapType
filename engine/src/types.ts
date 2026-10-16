@@ -221,8 +221,16 @@ export interface ArcadeState {
   games: number;
 }
 
+/** Phase 7: badges earned (id → when) and the counters behind them. */
+export interface AchievementState {
+  earned: Record<string, number>;
+  counters: Record<string, number>;
+  /** Progress from before achievements existed has been counted (spec 38). */
+  backfilled: boolean;
+}
+
 export interface ProfileState {
-  version: 7;
+  version: 8;
   profile: InputProfile;
   goal: Goal | null;
   calibration: CalibrationStatus;
@@ -280,6 +288,8 @@ export interface ProfileState {
   recentPassages: string[];
   /** Phase 6: the keyboard layout these stats belong to (each layout keeps its own profile). */
   layout: LayoutId;
+  /** Phase 7: badges and their counters. */
+  achievements: AchievementState;
 }
 
 /**

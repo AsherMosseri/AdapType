@@ -1,0 +1,274 @@
+{
+ "ids": [
+  "speed-40",
+  "speed-60",
+  "speed-80",
+  "speed-100",
+  "speed-120",
+  "letters-half",
+  "letters-all",
+  "streak-3",
+  "streak-7",
+  "streak-30",
+  "streak-100",
+  "nemesis-1",
+  "nemesis-5",
+  "creature-grown",
+  "creature-legendary",
+  "creatures-letters",
+  "accuracy-bronze",
+  "accuracy-silver",
+  "accuracy-gold",
+  "rhythm-bronze",
+  "rhythm-silver",
+  "rhythm-gold",
+  "arcade-bronze",
+  "arcade-silver",
+  "arcade-gold",
+  "races-bronze",
+  "races-silver",
+  "races-gold",
+  "daily-bronze",
+  "daily-silver",
+  "daily-gold",
+  "passages-bronze",
+  "passages-silver",
+  "passages-gold",
+  "drills-bronze",
+  "drills-silver",
+  "drills-gold",
+  "rounds-bronze",
+  "rounds-silver",
+  "rounds-gold",
+  "perfect",
+  "night-owl",
+  "early-bird",
+  "the-1000",
+  "photo-finish",
+  "marathon",
+  "tortoise",
+  "hardcore",
+  "theme-clean",
+  "theme-terminal",
+  "theme-cute",
+  "theme-mechanical",
+  "theme-dark"
+ ],
+ "steps": [
+  {
+   "event": {
+    "kind": "round",
+    "wpm": 45,
+    "accuracy": 0.96,
+    "chars": 120,
+    "durationMs": 60000,
+    "consistency": 0.8,
+    "words": [
+     "the",
+     "cat",
+     "the"
+    ]
+   },
+   "ctx": {
+    "day": "2026-03-01",
+    "hour": 12,
+    "theme": "clean",
+    "dark": false,
+    "sound": false
+   },
+   "now": 1000,
+   "earned": [
+    "speed-40",
+    "arcade-bronze"
+   ]
+  },
+  {
+   "event": {
+    "kind": "round",
+    "wpm": 62,
+    "accuracy": 0.9,
+    "chars": 120,
+    "durationMs": 60000,
+    "consistency": null,
+    "words": []
+   },
+   "ctx": {
+    "day": "2026-03-02",
+    "hour": 12,
+    "theme": "clean",
+    "dark": false,
+    "sound": false
+   },
+   "now": 2000,
+   "earned": []
+  },
+  {
+   "event": {
+    "kind": "round",
+    "wpm": 18,
+    "accuracy": 1,
+    "chars": 60,
+    "durationMs": 60000,
+    "consistency": null,
+    "words": []
+   },
+   "ctx": {
+    "day": "2026-03-03",
+    "hour": 3,
+    "theme": "clean",
+    "dark": false,
+    "sound": false
+   },
+   "now": 3000,
+   "earned": [
+    "streak-3",
+    "night-owl",
+    "tortoise"
+   ]
+  },
+  {
+   "event": {
+    "kind": "passage",
+    "wpm": 50,
+    "accuracy": 1,
+    "chars": 140,
+    "durationMs": 60000,
+    "consistency": null,
+    "words": []
+   },
+   "ctx": {
+    "day": "2026-03-03",
+    "hour": 5,
+    "theme": "terminal",
+    "dark": true,
+    "sound": false
+   },
+   "now": 4000,
+   "earned": [
+    "perfect",
+    "early-bird"
+   ]
+  },
+  {
+   "event": {
+    "kind": "race",
+    "ghost": true,
+    "won": false,
+    "marginMs": 40
+   },
+   "ctx": {
+    "day": "2026-03-05",
+    "hour": 12,
+    "theme": "clean",
+    "dark": false,
+    "sound": false
+   },
+   "now": 5000,
+   "earned": [
+    "photo-finish"
+   ]
+  },
+  {
+   "event": {
+    "kind": "arcade",
+    "score": 1200,
+    "level": 6,
+    "lives": "hardcore"
+   },
+   "ctx": {
+    "day": "2026-03-06",
+    "hour": 12,
+    "theme": "mechanical",
+    "dark": false,
+    "sound": true
+   },
+   "now": 6000,
+   "earned": [
+    "hardcore"
+   ]
+  },
+  {
+   "event": {
+    "kind": "drill"
+   },
+   "ctx": {
+    "day": "2026-03-07",
+    "hour": 12,
+    "theme": "clean",
+    "dark": false,
+    "sound": false
+   },
+   "now": 7000,
+   "earned": []
+  },
+  {
+   "event": {
+    "kind": "round",
+    "wpm": 81,
+    "accuracy": 0.98,
+    "chars": 400,
+    "durationMs": 700000,
+    "consistency": 0.7,
+    "words": []
+   },
+   "ctx": {
+    "day": "2026-03-07",
+    "hour": 12,
+    "theme": "clean",
+    "dark": false,
+    "sound": false
+   },
+   "now": 8000,
+   "earned": [
+    "speed-60",
+    "speed-80",
+    "marathon"
+   ]
+  },
+  {
+   "event": {
+    "kind": "check"
+   },
+   "ctx": {
+    "day": "2026-03-08",
+    "hour": 12,
+    "theme": "clean",
+    "dark": false,
+    "sound": false
+   },
+   "now": 9000,
+   "earned": []
+  }
+ ],
+ "counters": {
+  "streak": 3,
+  "streakDay": 20519,
+  "bestStreak": 3,
+  "theme:clean": 6,
+  "rounds": 4,
+  "bestWpm": 81,
+  "steadyRounds": 1,
+  "word:the": 2,
+  "accurateRounds": 3,
+  "theme:terminal": 1,
+  "dark": 1,
+  "passages": 1,
+  "theme:mechanical": 1,
+  "clack": 1,
+  "drills": 1
+ },
+ "earned": {
+  "speed-40": 1000,
+  "arcade-bronze": 1000,
+  "streak-3": 3000,
+  "night-owl": 3000,
+  "tortoise": 3000,
+  "perfect": 4000,
+  "early-bird": 4000,
+  "photo-finish": 5000,
+  "hardcore": 6000,
+  "speed-60": 8000,
+  "speed-80": 8000,
+  "marathon": 8000
+ }
+}

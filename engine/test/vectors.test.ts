@@ -11,6 +11,10 @@ import nemesisContent from "../../content/nemesis.json";
 import shortcutPack from "../../content/shortcuts-text-editing.json";
 import fullPack from "../../content/words-en.json";
 import {
+  ACHIEVEMENTS,
+  recordAchievements,
+  type AchievementContext,
+  type AchievementEvent,
   KEY_LAYOUTS,
   LAYOUT_IDS,
   areNeighbors,
@@ -852,6 +856,36 @@ describe("test vectors", () => {
       neighbors: pairs.map(([a, b]) => ({ a, b, neighbors: areNeighbors(a, b, id) })),
       unlocked: createProfile("physical", 1, "homeRow", id).unlocked,
     }));
+  });
+
+  check("achievements", () => {
+    // A run of events over several days; ports apply the same events and must earn the same badges.
+    const ctx = (day: string, hour = 12, theme = "clean", dark = false, sound = false): AchievementContext => ({ day, hour, theme, dark, sound });
+    const typing = (kind: "round" | "passage" | "daily", wpm: number, accuracy: number, chars: number, extra: Partial<{ durationMs: number; consistency: number | null; words: string[] }> = {}): AchievementEvent => ({
+      kind,
+      wpm,
+      accuracy,
+      chars,
+      durationMs: extra.durationMs ?? 60000,
+      consistency: extra.consistency ?? null,
+      words: extra.words ?? [],
+    });
+    const steps: { event: AchievementEvent; ctx: AchievementContext; now: number }[] = [
+      { event: typing("round", 45, 0.96, 120, { consistency: 0.8, words: ["the", "cat", "the"] }), ctx: ctx("2026-03-01"), now: 1000 },
+      { event: typing("round", 62, 0.9, 120), ctx: ctx("2026-03-02"), now: 2000 },
+      { event: typing("round", 18, 1, 60), ctx: ctx("2026-03-03", 3), now: 3000 },
+      { event: typing("passage", 50, 1, 140), ctx: ctx("2026-03-03", 5, "terminal", true), now: 4000 },
+      { event: { kind: "race", ghost: true, won: false, marginMs: 40 }, ctx: ctx("2026-03-05"), now: 5000 },
+      { event: { kind: "arcade", score: 1200, level: 6, lives: "hardcore" }, ctx: ctx("2026-03-06", 12, "mechanical", false, true), now: 6000 },
+      { event: { kind: "drill" }, ctx: ctx("2026-03-07"), now: 7000 },
+      { event: typing("round", 81, 0.98, 400, { durationMs: 700000, consistency: 0.7 }), ctx: ctx("2026-03-07"), now: 8000 },
+      { event: { kind: "check" }, ctx: ctx("2026-03-08"), now: 9000 },
+    ];
+    const state = createProfile("physical", 5);
+    state.goal = { wpm: 40, accuracy: 0.95 };
+    state.arcade.scores.falling = [{ score: 1200, level: 6, words: 30, wpm: 40, accuracy: 0.97, at: 6000 }];
+    const results = steps.map((step) => ({ ...step, earned: recordAchievements(state, step.event, step.ctx, step.now) }));
+    return { ids: ACHIEVEMENTS.map((a) => a.id), steps: results, counters: state.achievements.counters, earned: state.achievements.earned };
   });
 
   check("profile", () => {

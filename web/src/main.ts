@@ -17,6 +17,8 @@ import { settingsScreen } from "./screens/settings";
 import { shortcutsScreen } from "./screens/shortcuts";
 import { wordsScreen } from "./screens/words";
 import { goalScreen, loadProblemScreen, welcomeScreen } from "./screens/setup";
+import { trophiesScreen } from "./screens/trophies";
+import { checkAchievementsAtLaunch } from "./achievements";
 import { syncUpdateBanner } from "./components/updateBanner";
 import { onPwaChange, registerServiceWorker } from "./pwa";
 import { armSound } from "./sound";
@@ -46,8 +48,15 @@ app.register("daily", dailyScreen);
 app.register("card", cardScreen);
 app.register("words", wordsScreen);
 app.register("passages", passagesScreen);
+app.register("trophies", trophiesScreen);
 armSound();
 app.onNavigate = (screen) => syncUpdateBanner(screen);
 onPwaChange(() => syncUpdateBanner(app.screen));
 registerServiceWorker();
+if (!app.loadProblem) {
+  const already = checkAchievementsAtLaunch(app);
+  if (already > 0 && !app.needsSetup) {
+    app.notice = `Badges are here! You'd already earned ${already === 1 ? "one" : already}. See ${already === 1 ? "it" : "them"} in the trophy case, in the menu.`;
+  }
+}
 app.home();

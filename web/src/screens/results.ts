@@ -20,12 +20,18 @@ import type { App, Screen, ScreenView } from "../app";
 import { rhythmGraph } from "../components/charts";
 import { heatmap } from "../components/heatmap";
 import { announce } from "../announce";
+import { newBadgesPanel } from "../achievements";
+import { activeEffect } from "../appearance";
+import { celebrate } from "../components/celebrate";
 import { creatureSvg } from "../components/creature";
 import { nemesisFace } from "../components/nemesisFace";
 import { topBar } from "../components/topBar";
 import { formatPercent, h } from "../dom";
 import { list, MODIFIER_NAMES } from "../explainText";
 import { playSound } from "../sound";
+
+/** Results that already celebrated a best run, so coming back doesn't celebrate again. */
+const celebratedBest = new WeakSet<object>();
 
 export function resultsScreen(app: App, screen: Screen): ScreenView {
   if (screen.name !== "results") throw new Error("results screen needs an outcome");
@@ -150,6 +156,10 @@ export function resultsScreen(app: App, screen: Screen): ScreenView {
   }
   if (screen.replayRank === 1 && state.replays.best.length > 1) {
     events.push(callout("New best run", "This round is now your best replay. Watch it, or race it side by side with your next one in Replays.", "unlock"));
+    if (!screen.badges?.length && !celebratedBest.has(view)) {
+      celebratedBest.add(view);
+      celebrate(activeEffect());
+    }
   }
   if (outcome.difficultyChange > 0) {
     events.push(h("p", { class: "fine" }, "You've been at your goal, so rounds just got a little harder: longer and less common words, and a bit more focus on weak spots."));
@@ -227,6 +237,7 @@ export function resultsScreen(app: App, screen: Screen): ScreenView {
       { class: "results" },
       h("h1", { class: "sr-only", tabindex: "-1" }, "Round results"),
       headline,
+      newBadgesPanel(app, screen.badges ?? [], view),
       events.length ? h("div", { class: "events" }, events) : null,
       screen.explanation ? targeted(screen.explanation, outcome) : null,
       mistakesPanel(),

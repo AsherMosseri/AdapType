@@ -158,7 +158,7 @@ describe("migration", () => {
     const v4 = { ...createProfile("physical", 1), version: 4 } as Record<string, unknown>;
     for (const k of ["keyDays", "creatures", "replays", "daily"]) delete v4[k];
     const p = migrateProfile(v4);
-    expect(p.version).toBe(7);
+    expect(p.version).toBe(8);
     expect(p.keyDays).toEqual({});
     expect(p.creatures).toEqual({});
     expect(p.replays).toEqual({ recent: [], best: [] });

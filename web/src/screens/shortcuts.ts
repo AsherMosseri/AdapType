@@ -12,6 +12,7 @@ import {
   type ModifierKey,
   type Shortcut,
 } from "../../../engine/src";
+import { earn, newBadgesPanel } from "../achievements";
 import type { App, ScreenView } from "../app";
 import { topBar } from "../components/topBar";
 import { shortcutPacks } from "../content";
@@ -249,6 +250,7 @@ export function shortcutsScreen(app: App): ScreenView {
       return;
     }
     completeShortcutDrill(state);
+    const badges = earn(app, { kind: "drill" });
     app.persist();
     const first = answers.filter((a) => a.firstTry).length / answers.length;
     const avg = answers.reduce((sum, a) => sum + a.ms, 0) / answers.length;
@@ -274,6 +276,7 @@ export function shortcutsScreen(app: App): ScreenView {
         ),
         h("p", { class: "fine" }, "Slow and missed shortcuts come back more often next time."),
       ),
+      newBadgesPanel(app, badges) ?? "",
       h(
         "div",
         { class: "actions" },

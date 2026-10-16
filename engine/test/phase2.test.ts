@@ -298,7 +298,7 @@ describe("migration", () => {
     delete v1.modsUnlocked;
     delete v1.modsMastered;
     const p = migrateProfile(v1);
-    expect(p.version).toBe(7);
+    expect(p.version).toBe(8);
     expect(p.difficulty).toBe(0.3);
     expect(p.modsUnlocked).toEqual([]);
   });

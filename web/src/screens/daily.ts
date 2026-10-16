@@ -9,7 +9,9 @@ import {
   updateCreatures,
   type DailyResult,
   type TypingEvent,
+  typedWords,
 } from "../../../engine/src";
+import { earn, newBadgesPanel } from "../achievements";
 import type { App, ScreenView } from "../app";
 import { topBar } from "../components/topBar";
 import { touchKeyboard } from "../components/touchKeyboard";
@@ -159,6 +161,8 @@ export function dailyScreen(app: App): ScreenView {
     const { scored, result, streak: newStreak } = completeDaily(state, date, round, now, { chars: characters, pack });
     if (inputEvents.length >= 2) saveReplay(state, makeReplay(round.target, round.mode, inputEvents, now, "daily"));
     const grown = updateCreatures(state, now, characters);
+    const m = round.metrics();
+    const badges = earn(app, { kind: "daily", wpm: m.wpm, accuracy: m.accuracy, chars: m.correctChars, durationMs: m.elapsedMs, consistency: null, words: typedWords(round) });
     playSound("success");
     announce(`Done. ${Math.round(result.wpm)} words per minute, ${formatPercent(result.accuracy)} accuracy.${scored ? " This is today's score." : " Practice try; today's score stays."}`);
     app.persist();
@@ -216,6 +220,8 @@ export function dailyScreen(app: App): ScreenView {
         status,
       ),
     );
+    const badgePanel = newBadgesPanel(app, badges);
+    if (badgePanel) resultArea.append(badgePanel);
     requestAnimationFrame(() => {
       resultArea.scrollIntoView({ block: "start", behavior: scrollBehavior() });
       shareButton.focus({ preventScroll: true });

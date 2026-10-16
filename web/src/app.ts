@@ -13,7 +13,7 @@ export type Screen =
   | { name: "calibration" }
   | { name: "goal"; measuredWpm?: number; from: "test" | "skip" }
   | { name: "practice"; skipWarmup?: boolean }
-  | { name: "results"; outcome: RoundOutcome; metrics: RoundMetrics; calibrationTest: boolean; explanation?: RoundExplanation | null; warmup?: boolean; records?: KeystrokeRecord[]; nemesisChange?: NemesisChange | null; creatureChanges?: CreatureChange[]; replayRank?: number | null; replay?: boolean }
+  | { name: "results"; outcome: RoundOutcome; metrics: RoundMetrics; calibrationTest: boolean; explanation?: RoundExplanation | null; warmup?: boolean; records?: KeystrokeRecord[]; nemesisChange?: NemesisChange | null; creatureChanges?: CreatureChange[]; replayRank?: number | null; replay?: boolean; badges?: string[] }
   | { name: "shortcuts" }
   | { name: "progress"; returnTo?: Screen }
   | { name: "session" }
@@ -28,7 +28,8 @@ export type Screen =
   | { name: "words"; id?: string; returnTo?: Screen }
   | { name: "passages"; kind: "code" | "quotes" }
   | { name: "settings"; returnTo?: Screen }
-  | { name: "about"; returnTo?: Screen };
+  | { name: "about"; returnTo?: Screen }
+  | { name: "trophies"; returnTo?: Screen };
 
 export interface ScreenView {
   el: HTMLElement;
