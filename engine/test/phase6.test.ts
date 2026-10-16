@@ -11,9 +11,11 @@ import {
   KEY_LAYOUTS,
   LAYOUT_IDS,
   LETTERS,
+  makeReplay,
   migrateProfile,
   mixWordPacks,
   nextLetter,
+  replayRound,
   screenZoneMap,
   setUnlockOrder,
   thumbMap,
@@ -149,5 +151,41 @@ describe("migration", () => {
     const p = migrateProfile(v5);
     expect(p.version).toBe(7);
     expect(p.recentPassages).toEqual([]);
+  });
+});
+
+describe("block mode catching up", () => {
+  const typeAll = (round: TypingRound, text: string) => [...text].forEach((char, i) => round.input({ kind: "char", char, t: i * 100 }));
+
+  it("moves on after a late letter, a skipped letter, and a letter fixed in place", () => {
+    for (const [keys, typed, errors] of [["teh cat", "the cat", 1], ["te cat", "tee cat", 1], ["tehe cat", "the cat", 1]] as const) {
+      const round = new TypingRound("the cat", "block");
+      typeAll(round, keys);
+      expect(round.done).toBe(true);
+      expect(round.typed.join("")).toBe(typed);
+      expect(round.metrics().firstErrors).toBe(errors);
+    }
+  });
+
+  it("still waits for the right key when the wrong keys don't match what follows", () => {
+    const round = new TypingRound("the cat", "block");
+    typeAll(round, "txy");
+    expect(round.position).toBe(1);
+  });
+
+  it("is off in the other modes and when replaying runs recorded before it", () => {
+    const skip = new TypingRound("the cat", "skip");
+    typeAll(skip, "te cat");
+    expect(skip.typed.join("")).toBe("te cat");
+    const old = replayRound({ target: "the cat", errorMode: "block", events: [..."te cat"].map((c, i): [number, string] => [i * 100, c]) });
+    expect(old.position).toBe(1);
+  });
+
+  it("records block-mode replays with catching up, so they replay as typed", () => {
+    const events = [..."te cat"].map((char, i) => ({ kind: "char" as const, char, t: i * 100 }));
+    const run = makeReplay("the cat", "block", events, 0, "practice");
+    expect(run.catchUp).toBe(true);
+    expect(replayRound(run).done).toBe(true);
+    expect(makeReplay("the cat", "skip", events, 0, "practice")).not.toHaveProperty("catchUp");
   });
 });

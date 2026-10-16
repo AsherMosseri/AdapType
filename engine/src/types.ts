@@ -302,6 +302,8 @@ export interface ReplayRun {
   at: number;
   target: string;
   errorMode: ErrorMode;
+  /** Recorded with block mode's catching up (spec 2.1). Older block-mode runs replay without it. */
+  catchUp?: boolean;
   events: [number, string][];
   wpm: number;
   accuracy: number;

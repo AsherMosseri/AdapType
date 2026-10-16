@@ -14,8 +14,8 @@ export const REPLAY_BACKSPACE = "\b";
  * Feeds a run's events up to and including uptoMs into a fresh round, so
  * any moment of the run can be shown. Without uptoMs, the whole run.
  */
-export function replayRound(run: Pick<ReplayRun, "target" | "errorMode" | "events">, uptoMs = Infinity): TypingRound {
-  const round = new TypingRound(run.target, run.errorMode);
+export function replayRound(run: Pick<ReplayRun, "target" | "errorMode" | "events" | "catchUp">, uptoMs = Infinity): TypingRound {
+  const round = new TypingRound(run.target, run.errorMode, { catchUp: !!run.catchUp });
   for (const [t, ch] of run.events) {
     if (t > uptoMs) break;
     round.input(ch === REPLAY_BACKSPACE ? { kind: "backspace", t } : { kind: "char", char: ch, t });
@@ -36,10 +36,11 @@ export function makeReplay(target: string, errorMode: ErrorMode, input: readonly
     if (e.kind === "backspace") events.push([Math.round(e.t - t0), REPLAY_BACKSPACE]);
     else if (e.char) events.push([Math.round(e.t - t0), e.char]);
   }
-  const full = replayRound({ target, errorMode, events });
+  const catchUp = errorMode === "block" ? { catchUp: true } : {};
+  const full = replayRound({ target, errorMode, events, ...catchUp });
   let end = target.indexOf(" ", full.position);
   if (end < 0) end = target.length;
-  const run = { target: target.slice(0, end), errorMode, events };
+  const run = { target: target.slice(0, end), errorMode, ...catchUp, events };
   const metrics = replayRound(run).metrics();
   return { at, ...run, wpm: metrics.wpm, accuracy: metrics.accuracy, source };
 }
@@ -57,7 +58,7 @@ export interface ReplayMarker {
 }
 
 /** Wrong keystrokes and stalls (intervals over STALL_FACTOR x the median), in time order. */
-export function replayMarkers(run: Pick<ReplayRun, "target" | "errorMode" | "events">): ReplayMarker[] {
+export function replayMarkers(run: Pick<ReplayRun, "target" | "errorMode" | "events" | "catchUp">): ReplayMarker[] {
   const round = replayRound(run);
   const markers: ReplayMarker[] = [];
   for (const r of round.records) if (!r.correct) markers.push({ t: r.t, index: r.index, kind: "error" });

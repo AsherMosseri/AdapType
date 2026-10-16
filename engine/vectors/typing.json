@@ -359,5 +359,480 @@
     "accuracy": 1
    }
   }
+ },
+ {
+  "name": "block, late letter",
+  "target": "the cat",
+  "mode": "block",
+  "events": [
+   {
+    "kind": "char",
+    "char": "t",
+    "t": 0
+   },
+   {
+    "kind": "char",
+    "char": "e",
+    "t": 110
+   },
+   {
+    "kind": "char",
+    "char": "h",
+    "t": 220
+   },
+   {
+    "kind": "char",
+    "char": " ",
+    "t": 330
+   },
+   {
+    "kind": "char",
+    "char": "c",
+    "t": 440
+   },
+   {
+    "kind": "char",
+    "char": "a",
+    "t": 550
+   },
+   {
+    "kind": "char",
+    "char": "t",
+    "t": 660
+   }
+  ],
+  "expected": {
+   "typed": "the cat",
+   "done": true,
+   "records": [
+    {
+     "index": 0,
+     "expected": "t",
+     "actual": "t",
+     "t": 0,
+     "correct": true,
+     "first": true,
+     "interval": null
+    },
+    {
+     "index": 1,
+     "expected": "h",
+     "actual": "e",
+     "t": 110,
+     "correct": false,
+     "first": true,
+     "interval": 110
+    },
+    {
+     "index": 1,
+     "expected": "h",
+     "actual": "h",
+     "t": 220,
+     "correct": true,
+     "first": false,
+     "interval": null
+    },
+    {
+     "index": 3,
+     "expected": " ",
+     "actual": " ",
+     "t": 330,
+     "correct": true,
+     "first": true,
+     "interval": null
+    },
+    {
+     "index": 4,
+     "expected": "c",
+     "actual": "c",
+     "t": 440,
+     "correct": true,
+     "first": true,
+     "interval": 110
+    },
+    {
+     "index": 5,
+     "expected": "a",
+     "actual": "a",
+     "t": 550,
+     "correct": true,
+     "first": true,
+     "interval": 110
+    },
+    {
+     "index": 6,
+     "expected": "t",
+     "actual": "t",
+     "t": 660,
+     "correct": true,
+     "first": true,
+     "interval": 110
+    }
+   ],
+   "metrics": {
+    "correctChars": 7,
+    "keystrokes": 7,
+    "correctKeystrokes": 6,
+    "corrections": 1,
+    "firstErrors": 1,
+    "elapsedMs": 660,
+    "wpm": 127.27272727272727,
+    "accuracy": 0.8571428571428571
+   }
+  }
+ },
+ {
+  "name": "block, fixed in place",
+  "target": "the cat",
+  "mode": "block",
+  "events": [
+   {
+    "kind": "char",
+    "char": "t",
+    "t": 0
+   },
+   {
+    "kind": "char",
+    "char": "e",
+    "t": 110
+   },
+   {
+    "kind": "char",
+    "char": "h",
+    "t": 220
+   },
+   {
+    "kind": "char",
+    "char": "e",
+    "t": 330
+   },
+   {
+    "kind": "char",
+    "char": " ",
+    "t": 440
+   },
+   {
+    "kind": "char",
+    "char": "c",
+    "t": 550
+   },
+   {
+    "kind": "char",
+    "char": "a",
+    "t": 660
+   },
+   {
+    "kind": "char",
+    "char": "t",
+    "t": 770
+   }
+  ],
+  "expected": {
+   "typed": "the cat",
+   "done": true,
+   "records": [
+    {
+     "index": 0,
+     "expected": "t",
+     "actual": "t",
+     "t": 0,
+     "correct": true,
+     "first": true,
+     "interval": null
+    },
+    {
+     "index": 1,
+     "expected": "h",
+     "actual": "e",
+     "t": 110,
+     "correct": false,
+     "first": true,
+     "interval": 110
+    },
+    {
+     "index": 1,
+     "expected": "h",
+     "actual": "h",
+     "t": 220,
+     "correct": true,
+     "first": false,
+     "interval": null
+    },
+    {
+     "index": 3,
+     "expected": " ",
+     "actual": " ",
+     "t": 440,
+     "correct": true,
+     "first": true,
+     "interval": null
+    },
+    {
+     "index": 4,
+     "expected": "c",
+     "actual": "c",
+     "t": 550,
+     "correct": true,
+     "first": true,
+     "interval": 110
+    },
+    {
+     "index": 5,
+     "expected": "a",
+     "actual": "a",
+     "t": 660,
+     "correct": true,
+     "first": true,
+     "interval": 110
+    },
+    {
+     "index": 6,
+     "expected": "t",
+     "actual": "t",
+     "t": 770,
+     "correct": true,
+     "first": true,
+     "interval": 110
+    }
+   ],
+   "metrics": {
+    "correctChars": 7,
+    "keystrokes": 7,
+    "correctKeystrokes": 6,
+    "corrections": 1,
+    "firstErrors": 1,
+    "elapsedMs": 770,
+    "wpm": 109.09090909090908,
+    "accuracy": 0.8571428571428571
+   }
+  }
+ },
+ {
+  "name": "block, skipped letter",
+  "target": "the cat",
+  "mode": "block",
+  "events": [
+   {
+    "kind": "char",
+    "char": "t",
+    "t": 0
+   },
+   {
+    "kind": "char",
+    "char": "e",
+    "t": 110
+   },
+   {
+    "kind": "char",
+    "char": " ",
+    "t": 220
+   },
+   {
+    "kind": "char",
+    "char": "c",
+    "t": 330
+   },
+   {
+    "kind": "char",
+    "char": "a",
+    "t": 440
+   },
+   {
+    "kind": "char",
+    "char": "t",
+    "t": 550
+   }
+  ],
+  "expected": {
+   "typed": "tee cat",
+   "done": true,
+   "records": [
+    {
+     "index": 0,
+     "expected": "t",
+     "actual": "t",
+     "t": 0,
+     "correct": true,
+     "first": true,
+     "interval": null
+    },
+    {
+     "index": 1,
+     "expected": "h",
+     "actual": "e",
+     "t": 110,
+     "correct": false,
+     "first": true,
+     "interval": 110
+    },
+    {
+     "index": 3,
+     "expected": " ",
+     "actual": " ",
+     "t": 220,
+     "correct": true,
+     "first": true,
+     "interval": null
+    },
+    {
+     "index": 4,
+     "expected": "c",
+     "actual": "c",
+     "t": 330,
+     "correct": true,
+     "first": true,
+     "interval": 110
+    },
+    {
+     "index": 5,
+     "expected": "a",
+     "actual": "a",
+     "t": 440,
+     "correct": true,
+     "first": true,
+     "interval": 110
+    },
+    {
+     "index": 6,
+     "expected": "t",
+     "actual": "t",
+     "t": 550,
+     "correct": true,
+     "first": true,
+     "interval": 110
+    }
+   ],
+   "metrics": {
+    "correctChars": 6,
+    "keystrokes": 6,
+    "correctKeystrokes": 5,
+    "corrections": 0,
+    "firstErrors": 1,
+    "elapsedMs": 550,
+    "wpm": 130.9090909090909,
+    "accuracy": 0.8333333333333334
+   }
+  }
+ },
+ {
+  "name": "block, wrong key then skipped",
+  "target": "the cat",
+  "mode": "block",
+  "events": [
+   {
+    "kind": "char",
+    "char": "t",
+    "t": 0
+   },
+   {
+    "kind": "char",
+    "char": "x",
+    "t": 110
+   },
+   {
+    "kind": "char",
+    "char": "e",
+    "t": 220
+   },
+   {
+    "kind": "char",
+    "char": " ",
+    "t": 330
+   },
+   {
+    "kind": "char",
+    "char": "c",
+    "t": 440
+   },
+   {
+    "kind": "char",
+    "char": "a",
+    "t": 550
+   },
+   {
+    "kind": "char",
+    "char": "t",
+    "t": 660
+   }
+  ],
+  "expected": {
+   "typed": "tee cat",
+   "done": true,
+   "records": [
+    {
+     "index": 0,
+     "expected": "t",
+     "actual": "t",
+     "t": 0,
+     "correct": true,
+     "first": true,
+     "interval": null
+    },
+    {
+     "index": 1,
+     "expected": "h",
+     "actual": "x",
+     "t": 110,
+     "correct": false,
+     "first": true,
+     "interval": 110
+    },
+    {
+     "index": 1,
+     "expected": "h",
+     "actual": "e",
+     "t": 220,
+     "correct": false,
+     "first": false,
+     "interval": null
+    },
+    {
+     "index": 3,
+     "expected": " ",
+     "actual": " ",
+     "t": 330,
+     "correct": true,
+     "first": true,
+     "interval": null
+    },
+    {
+     "index": 4,
+     "expected": "c",
+     "actual": "c",
+     "t": 440,
+     "correct": true,
+     "first": true,
+     "interval": 110
+    },
+    {
+     "index": 5,
+     "expected": "a",
+     "actual": "a",
+     "t": 550,
+     "correct": true,
+     "first": true,
+     "interval": 110
+    },
+    {
+     "index": 6,
+     "expected": "t",
+     "actual": "t",
+     "t": 660,
+     "correct": true,
+     "first": true,
+     "interval": 110
+    }
+   ],
+   "metrics": {
+    "correctChars": 6,
+    "keystrokes": 7,
+    "correctKeystrokes": 5,
+    "corrections": 0,
+    "firstErrors": 1,
+    "elapsedMs": 660,
+    "wpm": 109.0909090909091,
+    "accuracy": 0.7142857142857143
+   }
+  }
  }
 ]

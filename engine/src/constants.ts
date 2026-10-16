@@ -3,6 +3,8 @@
 
 /** Gaps longer than this are pauses, not typing speed. */
 export const MAX_INTERVAL_MS = 2000;
+/** Block mode: keys in a row that match the text after a stuck letter before it's marked missed and you move on. */
+export const CATCH_UP_KEYS = 2;
 /** Moving averages use weight max(MIN_AVG_WEIGHT, 1/n): a plain average for the first 10 samples, then recent-weighted. */
 export const MIN_AVG_WEIGHT = 0.1;
 
