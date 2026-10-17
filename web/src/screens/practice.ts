@@ -20,6 +20,7 @@ import {
 } from "../../../engine/src";
 import { TypingRound } from "../../../engine/src/typing";
 import type { App, Screen, ScreenView } from "../app";
+import { challengeFromRound } from "../challenge";
 import { letterStrip } from "../components/letters";
 import { topBar } from "../components/topBar";
 import { touchKeyboard } from "../components/touchKeyboard";
@@ -358,8 +359,9 @@ export function practiceScreen(app: App, screen: Screen): ScreenView {
       words: typedWords(round),
     });
     app.persist();
+    const challenge = keepReplay ? challengeFromRound(round, inputEvents, "practice") : null;
     if (calibrationTest) app.go({ name: "goal", measuredWpm: metrics.wpm, from: "test" });
-    else app.go({ name: "results", outcome, metrics, calibrationTest, explanation: plan.explanation, warmup, records: round.records, nemesisChange, creatureChanges, replayRank, replay: keepReplay, badges });
+    else app.go({ name: "results", outcome, metrics, calibrationTest, explanation: plan.explanation, warmup, records: round.records, nemesisChange, creatureChanges, replayRank, replay: keepReplay, badges, challenge });
   }
 
   const onResize = () => view.scroll();

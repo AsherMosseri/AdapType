@@ -42,7 +42,10 @@ function menuGroups(app: App, returnTo: Screen): { title: string; items: MenuIte
     { title: "Practice", items: practice },
     {
       title: "Play",
-      items: [{ label: "Arcade", hint: "Falling words, survival and races", icon: ICONS.arcade, to: { name: "arcade" }, matches: ["arcade", "arcade-game", "race"] }],
+      items: [
+        { label: "Arcade", hint: "Falling words, survival and races", icon: ICONS.arcade, to: { name: "arcade" }, matches: ["arcade", "arcade-game", "race"] },
+        { label: "Challenge a friend", hint: "Send a link to race your ghost", icon: ICONS.flag, to: { name: "challenge-new" }, matches: ["challenge-new", "challenge"] },
+      ],
     },
     {
       title: "You",

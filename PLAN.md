@@ -1045,6 +1045,26 @@ Built in three parts, each its own PR.
 
 ### Part 1: Challenge a friend
 
+Built, with these choices made along the way:
+
+- **Who wins:** the faster finish, from first key to last. Both speeds and
+  accuracies show, but time decides, like the arcade races.
+- **Your friend** types with their own mistake setting; the ghost replays
+  exactly what you typed. The race counts toward their key stats like an
+  arcade race, and a win counts toward the racer badges.
+- **Your own text:** up to 500 characters. Curly quotes, long dashes and
+  ellipses become plain ones, and emoji are dropped, so everything can be
+  typed.
+- **Link size:** about 230 characters for a short practice round, under
+  1,000 for a long quote. The QR code library (MIT) loads only when a QR
+  code is shown.
+- **Opening a link** takes the challenge out of the address bar, so a reload
+  doesn't restart the race. A damaged link, or one from a newer version,
+  says so.
+- **Phones:** on the results screen, Watch replay, Challenge a friend and
+  End session show just their icons, so the buttons fit on one row.
+- **Data:** app data version 10 adds the remembered name.
+
 - **What you can send:** any finished round (practice, the daily challenge,
   code, quotes, numbers and symbols), arcade races, a saved replay, and your
   own text: paste or write it, type it once, and send that.

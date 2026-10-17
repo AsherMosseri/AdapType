@@ -19,6 +19,8 @@ export interface GameOverOptions {
   verdict?: string;
   /** Badges this game earned. */
   badges?: string[];
+  /** An extra action, such as challenging a friend to this race. */
+  extra?: HTMLElement | null;
 }
 
 /**
@@ -73,6 +75,7 @@ export function gameOverPanel(app: App, o: GameOverOptions): HTMLElement {
       "div",
       { class: "actions" },
       again,
+      o.extra,
       h("button", { type: "button", class: "button", onclick: () => app.go({ name: "arcade" }) }, "Arcade"),
       h("button", { type: "button", class: "button", onclick: () => app.go({ name: "practice" }) }, "Practice"),
     ),

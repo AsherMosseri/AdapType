@@ -3,6 +3,7 @@ import { aboutScreen } from "./screens/about";
 import { arcadeScreen } from "./screens/arcade";
 import { arcadeGameScreen } from "./screens/arcadeGame";
 import { cardScreen } from "./screens/card";
+import { challengeNewScreen, challengeScreen } from "./screens/challenge";
 import { collectionScreen } from "./screens/collection";
 import { courseRoundScreen, courseScreen } from "./screens/course";
 import { dailyScreen } from "./screens/daily";
@@ -20,6 +21,7 @@ import { wordsScreen } from "./screens/words";
 import { goalScreen, loadProblemScreen, welcomeScreen } from "./screens/setup";
 import { trophiesScreen } from "./screens/trophies";
 import { checkAchievementsAtLaunch } from "./achievements";
+import { challengeInHash } from "./challenge";
 import { syncUpdateBanner } from "./components/updateBanner";
 import { onPwaChange, registerServiceWorker } from "./pwa";
 import { armSound } from "./sound";
@@ -52,6 +54,8 @@ app.register("passages", passagesScreen);
 app.register("trophies", trophiesScreen);
 app.register("course", courseScreen);
 app.register("course-round", courseRoundScreen);
+app.register("challenge", challengeScreen);
+app.register("challenge-new", challengeNewScreen);
 armSound();
 app.onNavigate = (screen) => syncUpdateBanner(screen);
 onPwaChange(() => syncUpdateBanner(app.screen));
@@ -62,4 +66,15 @@ if (!app.loadProblem) {
     app.notice = `Badges are here! You'd already earned ${already === 1 ? "one" : already}. See ${already === 1 ? "it" : "them"} in the trophy case, in the menu.`;
   }
 }
-app.home();
+
+/** Opens a challenge link (the part after #c=), taking it out of the address so a reload doesn't restart the race. */
+function openLinkedChallenge(): boolean {
+  const linked = challengeInHash(location.hash);
+  if (!linked) return false;
+  history.replaceState(null, "", location.pathname + location.search);
+  if (app.loadProblem) app.home();
+  else app.go({ name: "challenge", ...linked });
+  return true;
+}
+window.addEventListener("hashchange", () => openLinkedChallenge());
+if (!openLinkedChallenge()) app.home();

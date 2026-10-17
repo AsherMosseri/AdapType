@@ -17,6 +17,7 @@ import {
   type RoundOutcome,
 } from "../../../engine/src";
 import type { App, Screen, ScreenView } from "../app";
+import { challengeButton } from "../challenge";
 import { rhythmGraph } from "../components/charts";
 import { heatmap } from "../components/heatmap";
 import { announce } from "../announce";
@@ -26,7 +27,7 @@ import { celebrate } from "../components/celebrate";
 import { creatureSvg } from "../components/creature";
 import { nemesisFace } from "../components/nemesisFace";
 import { topBar } from "../components/topBar";
-import { formatPercent, h } from "../dom";
+import { formatPercent, h, icon, ICONS } from "../dom";
 import { list, MODIFIER_NAMES } from "../explainText";
 import { playSound } from "../sound";
 
@@ -253,13 +254,23 @@ export function resultsScreen(app: App, screen: Screen): ScreenView {
   );
   if (outcome.newlyUnlocked || outcome.newlyUnlockedMods.length || outcome.newlyMastered.length || grown.length) playSound("success");
   const next = h("button", { type: "button", class: "button primary", onclick: () => app.go({ name: "practice" }) }, "Next round", h("kbd", null, "Enter"));
-  const endSession = h("button", { type: "button", class: "button", onclick: () => app.go({ name: "session" }) }, "End session");
+  const endSession = h(
+    "button",
+    { type: "button", class: "button compact", "aria-label": "End session", title: "End session", onclick: () => app.go({ name: "session" }) },
+    icon([...ICONS.stop]),
+    h("span", { class: "button-label" }, "End session"),
+  );
   const replayIndex = state.replays.recent.length - 1;
   const watch =
     screen.replay && replayIndex >= 0
-      ? h("button", { type: "button", class: "button", onclick: () => app.go({ name: "replay", list: "recent", index: replayIndex, returnTo: view }) }, "Watch replay")
+      ? h(
+          "button",
+          { type: "button", class: "button compact", "aria-label": "Watch replay", title: "Watch replay", onclick: () => app.go({ name: "replay", list: "recent", index: replayIndex, returnTo: view }) },
+          icon([...ICONS.replay]),
+          h("span", { class: "button-label" }, "Watch replay"),
+        )
       : null;
-  el.querySelector("main")!.append(h("div", { class: "actions sticky-actions" }, next, watch, state.session && state.session.rounds > 0 ? endSession : null));
+  el.querySelector("main")!.append(h("div", { class: "actions sticky-actions" }, next, watch, challengeButton(app, screen.challenge ?? null), state.session && state.session.rounds > 0 ? endSession : null));
 
   /** Error types, self-correction, hesitations and reviews. */
   function mistakesPanel(): HTMLElement | null {
