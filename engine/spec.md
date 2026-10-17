@@ -1341,6 +1341,80 @@ Profile version 9 adds an empty `course`.
 
 Vectors: `course.json`.
 
+## 40. Challenge a friend
+
+A **challenge** is a finished run of a text, carried whole in a link, so a
+friend can race it with no server. It has: `target`, `errorMode`,
+`autoIndent`, `catchUp` (true only in block mode), `events` (the sender's
+keystrokes as `[ms, char]`, `"\b"` for a backspace, as in replays, section
+31), `source` (one of `practice`, `daily`, `code`, `quotes`, `course`,
+`race`, `custom`, `rematch`, in that order), `name` (the sender's, or
+empty), `opponent` (who the sender raced, for a rematch, or empty) and
+`score` (races won so far in a rematch series: sender, opponent).
+
+**cleanName**: remove control characters, collapse whitespace to single
+spaces, trim, keep at most `CHALLENGE_MAX_NAME` code points, and trim again.
+
+**challengeText(raw)**, for your own text: `\r\n` and `\r` become `\n`;
+curly double quotes and guillemets become `"`, curly single quotes `'`,
+en and em dashes and minus `-`, the ellipsis `...`; tabs and unusual spaces
+become spaces; surrogates (emoji) and control and zero-width characters go.
+Then each line has runs of spaces shrunk to one and is trimmed, runs of
+newlines shrink to one, the whole is trimmed, cut to `CHALLENGE_MAX_TEXT`
+UTF-16 units and trimmed at the end.
+
+**makeChallenge(run, source, name, rematch?)**: times become
+`round((t − t₀) / CHALLENGE_TIME_STEP) × CHALLENGE_TIME_STEP`, where t₀ is
+the first event's time. The name is cleaned; without a rematch the opponent
+is empty and the score 0, 0. When the run, replayed (section 31, with
+`autoIndent` and `catchUp`), doesn't finish its text, there's no challenge.
+
+**The link** is `#c=` and the challenge packed into bytes, written as
+base64url without padding:
+
+1. The format byte, `CHALLENGE_FORMAT`.
+2. Flags: the error mode's index (`backspace` 0, `block` 1, `skip` 2), plus
+   4 for `autoIndent`, plus 8 for `catchUp`.
+3. The source's index.
+4. The score, sender then opponent, as varints (7 bits per byte, low
+   first, high bit set on every byte but the last).
+5. `name`, `opponent` and `target`, each as a varint byte length and UTF-8.
+6. The number of events, as a varint, then for each event, with `p` (the
+   expected position, starting at 0) and `prev` (the previous time step,
+   starting at 0): let `step = t / CHALLENGE_TIME_STEP`. The event *matches*
+   when it isn't a backspace and its character equals the UTF-16 unit
+   `target[p]`. Write the varint `(step − prev) × 2 + (1 if it matches)`,
+   then, unless it matches, the character as a varint byte length and UTF-8.
+   Then `p` goes back by 1 (not below 0) for a backspace and forward by 1
+   for anything else.
+
+Reading reverses this. A link is refused when its format byte is bigger
+than `CHALLENGE_FORMAT` (made by a newer version) or anything else is wrong:
+a character outside base64url, a length of 1 mod 4, bytes running out or
+left over, an unknown error mode or source, flags over 15, a target that's
+empty or over 5,000 units, over 20,000 events, a varint over 35 bits, or a
+run that doesn't finish its text.
+
+**challengeGhost**: replay the events one by one and keep each one's time
+and the position after it, stopping when the text is finished. `finishMs`
+is the last kept time. **challengeGhostAt(ghost, ms)** is the position after
+the last kept event at or before `ms`, or 0 before the first.
+
+**challengeResult(challenge, round)**: your time is the last record's time
+minus the first's, rounded to a whole `CHALLENGE_TIME_STEP`. Under the
+sender's `finishMs` is a win, over is a loss, equal is a tie. The score after
+the race, yours first, is the challenge's opponent score plus 1 for a win,
+then its sender score plus 1 for a loss.
+
+**rematchChallenge(challenge, round, input, name)**: your run (from your raw
+input events) as a new challenge on the same target, source `rematch`, with
+the sender as the opponent and the score after the race (yours first).
+
+Challenge races are a `race` event for achievements (section 38) with
+`ghost` false.
+
+Vectors: `challenge.json`.
+
 ## Constants
 
 | Name | Value |
@@ -1351,6 +1425,7 @@ Vectors: `course.json`.
 | `PHOTO_FINISH_MS`, `MARATHON_MS` | 100, 600000 |
 | `COURSE_PATH_ITEMS`, `COURSE_DRILL_ITEMS`, `COURSE_FOCUS_BOOST`, `COURSE_WORDS` | 18, 12, 3, 500 |
 | `CATCH_UP_KEYS` | 2 |
+| `CHALLENGE_FORMAT`, `CHALLENGE_TIME_STEP`, `CHALLENGE_MAX_TEXT`, `CHALLENGE_MAX_NAME` | 1, 4, 500, 24 |
 | `MIN_AVG_WEIGHT` | 0.1 |
 | `START_LETTERS` | 6 |
 | `KEY_HISTORY_ROUNDS` | 5 |
@@ -1489,6 +1564,7 @@ Vectors: `course.json`.
 | `layouts.json` | every layout's rows, home-row order, hands, fingers, zones and neighbors |
 | `achievements.json` | the badge ids, and events over several days with the badges each earns |
 | `course.json` | path text for every step, every drill's text, and four path rounds with what each masters |
+| `challenge.json` | challenge links for three runs, reading them back, ghosts, races, rematches, your own text and names |
 
 Vectors that use the word pack use the first `packSize` words of
 `content/words-en.json` version 1 and `content/blocklist.json`.

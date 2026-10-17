@@ -12,6 +12,16 @@ import shortcutPack from "../../content/shortcuts-text-editing.json";
 import courseContent from "../../content/course.json";
 import fullPack from "../../content/words-en.json";
 import {
+  challengeGhost,
+  challengeGhostAt,
+  challengeResult,
+  challengeText,
+  cleanName,
+  decodeChallenge,
+  encodeChallenge,
+  makeChallenge,
+  rematchChallenge,
+  replayEvents,
   completeCourseRound,
   courseText,
   currentStep,
@@ -912,6 +922,39 @@ describe("test vectors", () => {
       return { step, text, newlyMastered: outcome.newlyMastered, stepsFinished: outcome.stepsFinished, currentStep: currentStep(state, content) };
     });
     return { texts, rounds, mastered: state.course.mastered };
+  });
+
+  check("challenge", () => {
+    // Links for three runs (a fixed typo, block mode with a late letter, and
+    // code with auto-indent), what each decodes to, its ghost, and races
+    // against it. Ports must write the same links and read them back.
+    const steady = (text: string, start = 0, ms = 170) => [...text].map((char, i): TypingEvent => ({ kind: "char", char, t: start + i * ms + ((i * 41) % 29) }));
+    const prose = "pack my box with five dozen liquor jugs";
+    const typo: TypingEvent[] = [...steady("pack my bix"), { kind: "backspace", t: 2100 }, { kind: "backspace", t: 2230 }, ...steady("ox with five dozen liquor jugs", 2400)];
+    const late: TypingEvent[] = steady("pack my box wtih five dozen liquor jugs", 0, 150);
+    const code = "if (x) {\n  y();\n}";
+    const indented = steady(code.replace(/\n {2}/g, "\n"), 0, 210);
+    const runs = [
+      makeChallenge({ target: prose, errorMode: "backspace", events: replayEvents(typo) }, "practice", "Asher"),
+      makeChallenge({ target: prose, errorMode: "block", catchUp: true, events: replayEvents(late) }, "race", "Sam", { opponent: "Asher", score: [1, 2] }),
+      makeChallenge({ target: code, errorMode: "skip", autoIndent: true, events: replayEvents(indented) }, "code", ""),
+    ];
+    const challenges = runs.map((ch) => {
+      const link = encodeChallenge(ch!);
+      const ghost = challengeGhost(ch!);
+      const at = [0, 500, 1000, 2500, 4000, ghost.finishMs].map((ms) => [ms, challengeGhostAt(ghost, ms)]);
+      const races = [120, 170, 260].map((ms) => {
+        const input = steady(ch!.target.replace(/\n {2}/g, ch!.autoIndent ? "\n" : "\n  "), 0, ms);
+        const round = new TypingRound(ch!.target, "backspace", { autoIndent: ch!.autoIndent });
+        for (const e of input) round.input(e);
+        const result = challengeResult(ch!, round);
+        const back = rematchChallenge(ch!, round, input, "Lee");
+        return { msPerKey: ms, result, rematch: back && encodeChallenge(back) };
+      });
+      return { challenge: ch, link, decoded: decodeChallenge(link), finishMs: ghost.finishMs, wpm: ghost.metrics.wpm, accuracy: ghost.metrics.accuracy, at, races };
+    });
+    const texts = ["  Hello,\tworld…  “quoted” — fine\r\n\r\n\r\nnext ", "emoji 🦊 gone", "a".repeat(510)].map((raw) => [raw, challengeText(raw)]);
+    return { challenges, texts, names: ["  Sam \n Lee ", "x".repeat(30)].map((n) => [n, cleanName(n)]) };
   });
 
   check("profile", () => {

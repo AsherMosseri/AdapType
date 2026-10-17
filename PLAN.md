@@ -4,9 +4,9 @@ A typing game that learns your weak spots and keeps targeting them. It starts
 as a fun web project. Much later it becomes a micro-app inside a larger app,
 ported to Swift and Kotlin.
 
-Status: phases 1 to 7 built (web), plus a home menu and a few fixes. Phases 8
-to 10 (more ways to play) outlined; phase 8 is next to be detailed. Phase 11
-(Swift and Kotlin ports) is last.
+Status: phases 1 to 7 built (web), plus a home menu and a few fixes. Phase 8
+is detailed and being built; phases 9 and 10 (more ways to play) are
+outlined. Phase 11 (Swift and Kotlin ports) is last.
 
 ## Principles
 
@@ -1038,6 +1038,87 @@ Built, with these choices made along the way:
   be picked, and existing progress is counted.
 - The numbers and symbols path and all four drills work on keyboard and
   touch.
+
+## Phase 8 in detail
+
+Built in three parts, each its own PR.
+
+### Part 1: Challenge a friend
+
+Built, with these choices made along the way:
+
+- **Who wins:** the faster finish, from first key to last. Both speeds and
+  accuracies show, but time decides, like the arcade races.
+- **Your friend** types with their own mistake setting; the ghost replays
+  exactly what you typed. The race counts toward their key stats like an
+  arcade race, and a win counts toward the racer badges.
+- **Your own text:** up to 500 characters. Curly quotes, long dashes and
+  ellipses become plain ones, and emoji are dropped, so everything can be
+  typed.
+- **Link size:** about 230 characters for a short practice round, under
+  1,000 for a long quote. The QR code library (MIT) loads only when a QR
+  code is shown.
+- **Opening a link** takes the challenge out of the address bar, so a reload
+  doesn't restart the race. A damaged link, or one from a newer version,
+  says so.
+- **Phones:** on the results screen, Watch replay, Challenge a friend and
+  End session show just their icons, so the buttons fit on one row.
+- **Data:** app data version 10 adds the remembered name.
+
+- **What you can send:** any finished round (practice, the daily challenge,
+  code, quotes, numbers and symbols), arcade races, a saved replay, and your
+  own text: paste or write it, type it once, and send that.
+- **The link:** carries the text and your run (every keystroke and its
+  timing), packed small. It goes after the `#`, so it never reaches a server,
+  and there are no accounts.
+- **Sharing:** the device's share menu (Messages, WhatsApp and the like),
+  Copy link, and a QR code for a phone nearby. A very long text may be too
+  long for a QR code; the link still works.
+- **Your friend** races your ghost on the same text, on the arcade's race
+  track. Someone new to AdapType races right away, and is offered the
+  placement test afterward. The race still counts toward their key stats, so
+  practice starts off informed.
+- **Results:** who finished first and by how much, with both speeds and
+  accuracies.
+- **Rematch:** your friend can send their run back as a new challenge, and
+  each link carries the score so far ("Sam 2, Asher 1").
+- **Name:** an optional name shown to your friend, remembered for next time.
+- **Engine:** the link format is in the spec, with vectors, so the ports
+  read and write the same links.
+
+### Part 2: Rhythm mode
+
+- **Beat:** synthesized drum loops, one style per theme, made in the app
+  like the other sounds (offline, nothing to license). The tempo adapts to
+  your speed.
+- **Scoring:** each letter lands on a beat, like a rhythm game: perfect,
+  good or miss for each key, with combos for unbroken streaks. Keep up and
+  the tempo goes up a level.
+- **Words** lean toward your weak keys, like practice, and the timing feeds
+  the rhythm stats.
+
+### Part 3: Spelling by ear
+
+- **Voice:** the device's own speech (free, no download, mostly offline),
+  with a voice picker in Settings. Where a device has no voice, the mode
+  says so.
+- **What it says:**
+  - *Your weak words* (the default): words full of your weak keys and pairs
+  - *Tricky spellings:* commonly misspelled words, like "necessary" and
+    "rhythm"
+  - *Sentences,* for dictation practice
+  - *Your own words,* from your custom packs
+- **Say it again** any time, and the word shows after a miss.
+
+### Done when
+
+- A challenge link sent from any finished round, race, replay or your own
+  text opens on another device, races the sender's ghost, and can be sent
+  back as a rematch.
+- Rhythm mode plays to a beat on keyboard and touch, with combos and tempo
+  levels.
+- Spelling by ear works from all four word sources, with a fallback when
+  there's no voice.
 
 ## Phases
 

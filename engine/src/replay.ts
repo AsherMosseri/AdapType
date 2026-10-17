@@ -14,13 +14,24 @@ export const REPLAY_BACKSPACE = "\b";
  * Feeds a run's events up to and including uptoMs into a fresh round, so
  * any moment of the run can be shown. Without uptoMs, the whole run.
  */
-export function replayRound(run: Pick<ReplayRun, "target" | "errorMode" | "events" | "catchUp">, uptoMs = Infinity): TypingRound {
-  const round = new TypingRound(run.target, run.errorMode, { catchUp: !!run.catchUp });
+export function replayRound(run: Pick<ReplayRun, "target" | "errorMode" | "events" | "catchUp"> & { autoIndent?: boolean }, uptoMs = Infinity): TypingRound {
+  const round = new TypingRound(run.target, run.errorMode, { catchUp: !!run.catchUp, autoIndent: !!run.autoIndent });
   for (const [t, ch] of run.events) {
     if (t > uptoMs) break;
     round.input(ch === REPLAY_BACKSPACE ? { kind: "backspace", t } : { kind: "char", char: ch, t });
   }
   return round;
+}
+
+/** Raw input events as a replay's events: whole ms after the first event, "\b" for a backspace. */
+export function replayEvents(input: readonly TypingEvent[]): [number, string][] {
+  const t0 = input.length > 0 ? input[0].t : 0;
+  const events: [number, string][] = [];
+  for (const e of input) {
+    if (e.kind === "backspace") events.push([Math.round(e.t - t0), REPLAY_BACKSPACE]);
+    else if (e.char) events.push([Math.round(e.t - t0), e.char]);
+  }
+  return events;
 }
 
 /**
@@ -30,12 +41,7 @@ export function replayRound(run: Pick<ReplayRun, "target" | "errorMode" | "event
  * come from replaying the events, so they match what the replay shows.
  */
 export function makeReplay(target: string, errorMode: ErrorMode, input: readonly TypingEvent[], at: number, source: ReplayRun["source"]): ReplayRun {
-  const t0 = input.length > 0 ? input[0].t : 0;
-  const events: [number, string][] = [];
-  for (const e of input) {
-    if (e.kind === "backspace") events.push([Math.round(e.t - t0), REPLAY_BACKSPACE]);
-    else if (e.char) events.push([Math.round(e.t - t0), e.char]);
-  }
+  const events = replayEvents(input);
   const catchUp = errorMode === "block" ? { catchUp: true } : {};
   const full = replayRound({ target, errorMode, events, ...catchUp });
   let end = target.indexOf(" ", full.position);

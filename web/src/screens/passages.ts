@@ -14,6 +14,7 @@ import {
 import { announce } from "../announce";
 import { earn, newBadgesPanel } from "../achievements";
 import type { App, Screen, ScreenView } from "../app";
+import { challengeButton, challengeFromRound } from "../challenge";
 import { scrollBehavior } from "../appearance";
 import { topBar } from "../components/topBar";
 import { touchKeyboard } from "../components/touchKeyboard";
@@ -29,6 +30,7 @@ export class PassageView {
   readonly el: HTMLElement;
   private readonly chars: HTMLSpanElement[] = [];
   private last = 0;
+  private ghostAt = -1;
 
   constructor(text: string) {
     this.el = h("div", { class: "passage-text", "aria-hidden": "true" });
@@ -53,6 +55,15 @@ export class PassageView {
     }
     this.last = pos;
     this.chars[Math.min(pos, this.chars.length - 1)]?.scrollIntoView({ block: "nearest", behavior: scrollBehavior() });
+  }
+
+  /** Marks where a racing ghost is. */
+  setGhost(index: number): void {
+    const i = Math.min(index, this.chars.length);
+    if (i === this.ghostAt) return;
+    this.chars[this.ghostAt]?.classList.remove("ghost-at");
+    this.chars[i]?.classList.add("ghost-at");
+    this.ghostAt = i;
   }
 }
 
@@ -207,7 +218,7 @@ export function passagesScreen(app: App, screen: Screen): ScreenView {
         { class: "callout" },
         h("p", { class: "callout-title" }, summary),
         h("p", null, `It counts toward your key stats${grown.length ? `, and ${grown.map((c) => c.key).join(" ")} evolved` : ""}.`),
-        h("div", { class: "actions wrap" }, nextButton),
+        h("div", { class: "actions wrap" }, nextButton, challengeButton(app, challengeFromRound(round, inputEvents, kind))),
       ),
       newBadgesPanel(app, badges) ?? "",
     );

@@ -1,4 +1,4 @@
-import type { CourseMode, CreatureChange, KeystrokeRecord, LayoutId, NemesisChange, ProfileState, RoundExplanation, RoundOutcome } from "../../engine/src";
+import type { Challenge, CourseMode, CreatureChange, KeystrokeRecord, LayoutId, NemesisChange, ProfileState, RoundExplanation, RoundOutcome } from "../../engine/src";
 import type { RoundMetrics } from "../../engine/src/typing";
 import { updateCreatures } from "../../engine/src";
 import { configureAnnounce } from "./announce";
@@ -13,7 +13,7 @@ export type Screen =
   | { name: "calibration" }
   | { name: "goal"; measuredWpm?: number; from: "test" | "skip" }
   | { name: "practice"; skipWarmup?: boolean }
-  | { name: "results"; outcome: RoundOutcome; metrics: RoundMetrics; calibrationTest: boolean; explanation?: RoundExplanation | null; warmup?: boolean; records?: KeystrokeRecord[]; nemesisChange?: NemesisChange | null; creatureChanges?: CreatureChange[]; replayRank?: number | null; replay?: boolean; badges?: string[] }
+  | { name: "results"; outcome: RoundOutcome; metrics: RoundMetrics; calibrationTest: boolean; explanation?: RoundExplanation | null; warmup?: boolean; records?: KeystrokeRecord[]; nemesisChange?: NemesisChange | null; creatureChanges?: CreatureChange[]; replayRank?: number | null; replay?: boolean; badges?: string[]; challenge?: Challenge | null }
   | { name: "shortcuts" }
   | { name: "progress"; returnTo?: Screen }
   | { name: "session" }
@@ -31,7 +31,10 @@ export type Screen =
   | { name: "about"; returnTo?: Screen }
   | { name: "trophies"; returnTo?: Screen }
   | { name: "course" }
-  | { name: "course-round"; mode: CourseMode };
+  | { name: "course-round"; mode: CourseMode }
+  /** Racing a friend's challenge, typing your own text to send, or a link that couldn't be read. */
+  | { name: "challenge"; challenge?: Challenge; text?: string; error?: string }
+  | { name: "challenge-new"; text?: string };
 
 export interface ScreenView {
   el: HTMLElement;
