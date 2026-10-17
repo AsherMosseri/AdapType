@@ -3,6 +3,7 @@ export * from "./achievements";
 export * from "./arcade";
 export * from "./arcadeProfile";
 export * from "./arcadeWords";
+export * from "./challenge";
 export * from "./constants";
 export * from "./course";
 export * from "./creatures";

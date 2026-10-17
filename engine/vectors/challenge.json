@@ -1,0 +1,1122 @@
+{
+ "challenges": [
+  {
+   "challenge": {
+    "target": "pack my box with five dozen liquor jugs",
+    "errorMode": "backspace",
+    "autoIndent": false,
+    "catchUp": false,
+    "events": [
+     [
+      0,
+      "p"
+     ],
+     [
+      184,
+      "a"
+     ],
+     [
+      364,
+      "c"
+     ],
+     [
+      516,
+      "k"
+     ],
+     [
+      700,
+      " "
+     ],
+     [
+      852,
+      "m"
+     ],
+     [
+      1036,
+      "y"
+     ],
+     [
+      1216,
+      " "
+     ],
+     [
+      1368,
+      "b"
+     ],
+     [
+      1552,
+      "i"
+     ],
+     [
+      1704,
+      "x"
+     ],
+     [
+      2100,
+      "\b"
+     ],
+     [
+      2232,
+      "\b"
+     ],
+     [
+      2400,
+      "o"
+     ],
+     [
+      2584,
+      "x"
+     ],
+     [
+      2764,
+      " "
+     ],
+     [
+      2916,
+      "w"
+     ],
+     [
+      3100,
+      "i"
+     ],
+     [
+      3252,
+      "t"
+     ],
+     [
+      3436,
+      "h"
+     ],
+     [
+      3616,
+      " "
+     ],
+     [
+      3768,
+      "f"
+     ],
+     [
+      3952,
+      "i"
+     ],
+     [
+      4104,
+      "v"
+     ],
+     [
+      4288,
+      "e"
+     ],
+     [
+      4468,
+      " "
+     ],
+     [
+      4620,
+      "d"
+     ],
+     [
+      4804,
+      "o"
+     ],
+     [
+      4956,
+      "z"
+     ],
+     [
+      5140,
+      "e"
+     ],
+     [
+      5292,
+      "n"
+     ],
+     [
+      5472,
+      " "
+     ],
+     [
+      5656,
+      "l"
+     ],
+     [
+      5808,
+      "i"
+     ],
+     [
+      5992,
+      "q"
+     ],
+     [
+      6144,
+      "u"
+     ],
+     [
+      6324,
+      "o"
+     ],
+     [
+      6508,
+      "r"
+     ],
+     [
+      6660,
+      " "
+     ],
+     [
+      6844,
+      "j"
+     ],
+     [
+      6996,
+      "u"
+     ],
+     [
+      7176,
+      "g"
+     ],
+     [
+      7332,
+      "s"
+     ]
+    ],
+    "source": "practice",
+    "name": "Asher",
+    "opponent": "",
+    "score": [
+     0,
+     0
+    ]
+   },
+   "link": "AQAAAAAFQXNoZXIAJ3BhY2sgbXkgYm94IHdpdGggZml2ZSBkb3plbiBsaXF1b3IganVncysBXVtNXU1dW01cAWlNxgEBCEIBCFVdW01dTV1bTV1NXVtNXU1dTVtdTV1NW11NXU1bTw",
+   "decoded": {
+    "target": "pack my box with five dozen liquor jugs",
+    "errorMode": "backspace",
+    "autoIndent": false,
+    "catchUp": false,
+    "events": [
+     [
+      0,
+      "p"
+     ],
+     [
+      184,
+      "a"
+     ],
+     [
+      364,
+      "c"
+     ],
+     [
+      516,
+      "k"
+     ],
+     [
+      700,
+      " "
+     ],
+     [
+      852,
+      "m"
+     ],
+     [
+      1036,
+      "y"
+     ],
+     [
+      1216,
+      " "
+     ],
+     [
+      1368,
+      "b"
+     ],
+     [
+      1552,
+      "i"
+     ],
+     [
+      1704,
+      "x"
+     ],
+     [
+      2100,
+      "\b"
+     ],
+     [
+      2232,
+      "\b"
+     ],
+     [
+      2400,
+      "o"
+     ],
+     [
+      2584,
+      "x"
+     ],
+     [
+      2764,
+      " "
+     ],
+     [
+      2916,
+      "w"
+     ],
+     [
+      3100,
+      "i"
+     ],
+     [
+      3252,
+      "t"
+     ],
+     [
+      3436,
+      "h"
+     ],
+     [
+      3616,
+      " "
+     ],
+     [
+      3768,
+      "f"
+     ],
+     [
+      3952,
+      "i"
+     ],
+     [
+      4104,
+      "v"
+     ],
+     [
+      4288,
+      "e"
+     ],
+     [
+      4468,
+      " "
+     ],
+     [
+      4620,
+      "d"
+     ],
+     [
+      4804,
+      "o"
+     ],
+     [
+      4956,
+      "z"
+     ],
+     [
+      5140,
+      "e"
+     ],
+     [
+      5292,
+      "n"
+     ],
+     [
+      5472,
+      " "
+     ],
+     [
+      5656,
+      "l"
+     ],
+     [
+      5808,
+      "i"
+     ],
+     [
+      5992,
+      "q"
+     ],
+     [
+      6144,
+      "u"
+     ],
+     [
+      6324,
+      "o"
+     ],
+     [
+      6508,
+      "r"
+     ],
+     [
+      6660,
+      " "
+     ],
+     [
+      6844,
+      "j"
+     ],
+     [
+      6996,
+      "u"
+     ],
+     [
+      7176,
+      "g"
+     ],
+     [
+      7332,
+      "s"
+     ]
+    ],
+    "source": "practice",
+    "name": "Asher",
+    "opponent": "",
+    "score": [
+     0,
+     0
+    ]
+   },
+   "finishMs": 7332,
+   "wpm": 63.82978723404255,
+   "accuracy": 0.975609756097561,
+   "at": [
+    [
+     0,
+     1
+    ],
+    [
+     500,
+     3
+    ],
+    [
+     1000,
+     6
+    ],
+    [
+     2500,
+     10
+    ],
+    [
+     4000,
+     19
+    ],
+    [
+     7332,
+     39
+    ]
+   ],
+   "races": [
+    {
+     "msPerKey": 120,
+     "result": {
+      "outcome": "win",
+      "yourMs": 4580,
+      "theirMs": 7332,
+      "marginMs": 2752,
+      "score": [
+       1,
+       0
+      ]
+     },
+     "rematch": "AQAHAQADTGVlBUFzaGVyJ3BhY2sgbXkgYm94IHdpdGggZml2ZSBkb3plbiBsaXF1b3IganVncycBQ0M1QzVDQzNDNUNDNUM1QzNDQzVDNUNDNUMzQzVDQzVDNUNDM0M"
+    },
+    {
+     "msPerKey": 170,
+     "result": {
+      "outcome": "win",
+      "yourMs": 6480,
+      "theirMs": 7332,
+      "marginMs": 852,
+      "score": [
+       1,
+       0
+      ]
+     },
+     "rematch": "AQAHAQADTGVlBUFzaGVyJ3BhY2sgbXkgYm94IHdpdGggZml2ZSBkb3plbiBsaXF1b3IganVncycBXVtNXU1dW01dTV1bTV1NXU1bXU1dTVtdTV1NW09bXU1bT1tdTVs"
+    },
+    {
+     "msPerKey": 260,
+     "result": {
+      "outcome": "loss",
+      "yourMs": 9900,
+      "theirMs": 7332,
+      "marginMs": 2568,
+      "score": [
+       0,
+       1
+      ]
+     },
+     "rematch": "AQAHAAEDTGVlBUFzaGVyJ3BhY2sgbXkgYm94IHdpdGggZml2ZSBkb3plbiBsaXF1b3IganVncycBiQGJAXuJAXuJAYkBeYkBe4kBiQF7iQF7iQF5iQGJAXuJAXuJAYkBe4kBeYkBe4kBiQF7iQF7iQGJAXmJAQ"
+    }
+   ]
+  },
+  {
+   "challenge": {
+    "target": "pack my box with five dozen liquor jugs",
+    "errorMode": "block",
+    "autoIndent": false,
+    "catchUp": true,
+    "events": [
+     [
+      0,
+      "p"
+     ],
+     [
+      164,
+      "a"
+     ],
+     [
+      324,
+      "c"
+     ],
+     [
+      456,
+      "k"
+     ],
+     [
+      620,
+      " "
+     ],
+     [
+      752,
+      "m"
+     ],
+     [
+      916,
+      "y"
+     ],
+     [
+      1076,
+      " "
+     ],
+     [
+      1208,
+      "b"
+     ],
+     [
+      1372,
+      "o"
+     ],
+     [
+      1504,
+      "x"
+     ],
+     [
+      1668,
+      " "
+     ],
+     [
+      1828,
+      "w"
+     ],
+     [
+      1960,
+      "t"
+     ],
+     [
+      2124,
+      "i"
+     ],
+     [
+      2256,
+      "h"
+     ],
+     [
+      2420,
+      " "
+     ],
+     [
+      2552,
+      "f"
+     ],
+     [
+      2712,
+      "i"
+     ],
+     [
+      2876,
+      "v"
+     ],
+     [
+      3008,
+      "e"
+     ],
+     [
+      3172,
+      " "
+     ],
+     [
+      3304,
+      "d"
+     ],
+     [
+      3464,
+      "o"
+     ],
+     [
+      3628,
+      "z"
+     ],
+     [
+      3760,
+      "e"
+     ],
+     [
+      3924,
+      "n"
+     ],
+     [
+      4056,
+      " "
+     ],
+     [
+      4216,
+      "l"
+     ],
+     [
+      4352,
+      "i"
+     ],
+     [
+      4512,
+      "q"
+     ],
+     [
+      4676,
+      "u"
+     ],
+     [
+      4808,
+      "o"
+     ],
+     [
+      4968,
+      "r"
+     ],
+     [
+      5104,
+      " "
+     ],
+     [
+      5264,
+      "j"
+     ],
+     [
+      5428,
+      "u"
+     ],
+     [
+      5560,
+      "g"
+     ],
+     [
+      5720,
+      "s"
+     ]
+    ],
+    "source": "race",
+    "name": "Sam",
+    "opponent": "Asher",
+    "score": [
+     1,
+     2
+    ]
+   },
+   "link": "AQkFAQIDU2FtBUFzaGVyJ3BhY2sgbXkgYm94IHdpdGggZml2ZSBkb3plbiBsaXF1b3IganVncycBU1FDU0NTUUNTQ1NRQgF0UgFpQ1NDUVNDU0NRU0NTQ1FFUVNDUUVRU0NR",
+   "decoded": {
+    "target": "pack my box with five dozen liquor jugs",
+    "errorMode": "block",
+    "autoIndent": false,
+    "catchUp": true,
+    "events": [
+     [
+      0,
+      "p"
+     ],
+     [
+      164,
+      "a"
+     ],
+     [
+      324,
+      "c"
+     ],
+     [
+      456,
+      "k"
+     ],
+     [
+      620,
+      " "
+     ],
+     [
+      752,
+      "m"
+     ],
+     [
+      916,
+      "y"
+     ],
+     [
+      1076,
+      " "
+     ],
+     [
+      1208,
+      "b"
+     ],
+     [
+      1372,
+      "o"
+     ],
+     [
+      1504,
+      "x"
+     ],
+     [
+      1668,
+      " "
+     ],
+     [
+      1828,
+      "w"
+     ],
+     [
+      1960,
+      "t"
+     ],
+     [
+      2124,
+      "i"
+     ],
+     [
+      2256,
+      "h"
+     ],
+     [
+      2420,
+      " "
+     ],
+     [
+      2552,
+      "f"
+     ],
+     [
+      2712,
+      "i"
+     ],
+     [
+      2876,
+      "v"
+     ],
+     [
+      3008,
+      "e"
+     ],
+     [
+      3172,
+      " "
+     ],
+     [
+      3304,
+      "d"
+     ],
+     [
+      3464,
+      "o"
+     ],
+     [
+      3628,
+      "z"
+     ],
+     [
+      3760,
+      "e"
+     ],
+     [
+      3924,
+      "n"
+     ],
+     [
+      4056,
+      " "
+     ],
+     [
+      4216,
+      "l"
+     ],
+     [
+      4352,
+      "i"
+     ],
+     [
+      4512,
+      "q"
+     ],
+     [
+      4676,
+      "u"
+     ],
+     [
+      4808,
+      "o"
+     ],
+     [
+      4968,
+      "r"
+     ],
+     [
+      5104,
+      " "
+     ],
+     [
+      5264,
+      "j"
+     ],
+     [
+      5428,
+      "u"
+     ],
+     [
+      5560,
+      "g"
+     ],
+     [
+      5720,
+      "s"
+     ]
+    ],
+    "source": "race",
+    "name": "Sam",
+    "opponent": "Asher",
+    "score": [
+     1,
+     2
+    ]
+   },
+   "finishMs": 5720,
+   "wpm": 81.81818181818181,
+   "accuracy": 0.9743589743589743,
+   "at": [
+    [
+     0,
+     1
+    ],
+    [
+     500,
+     4
+    ],
+    [
+     1000,
+     7
+    ],
+    [
+     2500,
+     17
+    ],
+    [
+     4000,
+     27
+    ],
+    [
+     5720,
+     39
+    ]
+   ],
+   "races": [
+    {
+     "msPerKey": 120,
+     "result": {
+      "outcome": "win",
+      "yourMs": 4580,
+      "theirMs": 5720,
+      "marginMs": 1140,
+      "score": [
+       3,
+       1
+      ]
+     },
+     "rematch": "AQAHAwEDTGVlA1NhbSdwYWNrIG15IGJveCB3aXRoIGZpdmUgZG96ZW4gbGlxdW9yIGp1Z3MnAUNDNUM1Q0MzQzVDQzVDNUMzQ0M1QzVDQzVDM0M1Q0M1QzVDQzND"
+    },
+    {
+     "msPerKey": 170,
+     "result": {
+      "outcome": "loss",
+      "yourMs": 6480,
+      "theirMs": 5720,
+      "marginMs": 760,
+      "score": [
+       2,
+       2
+      ]
+     },
+     "rematch": "AQAHAgIDTGVlA1NhbSdwYWNrIG15IGJveCB3aXRoIGZpdmUgZG96ZW4gbGlxdW9yIGp1Z3MnAV1bTV1NXVtNXU1dW01dTV1NW11NXU1bXU1dTVtPW11NW09bXU1b"
+    },
+    {
+     "msPerKey": 260,
+     "result": {
+      "outcome": "loss",
+      "yourMs": 9900,
+      "theirMs": 5720,
+      "marginMs": 4180,
+      "score": [
+       2,
+       2
+      ]
+     },
+     "rematch": "AQAHAgIDTGVlA1NhbSdwYWNrIG15IGJveCB3aXRoIGZpdmUgZG96ZW4gbGlxdW9yIGp1Z3MnAYkBiQF7iQF7iQGJAXmJAXuJAYkBe4kBe4kBeYkBiQF7iQF7iQGJAXuJAXmJAXuJAYkBe4kBe4kBiQF5iQE"
+    }
+   ]
+  },
+  {
+   "challenge": {
+    "target": "if (x) {\n  y();\n}",
+    "errorMode": "skip",
+    "autoIndent": true,
+    "catchUp": false,
+    "events": [
+     [
+      0,
+      "i"
+     ],
+     [
+      224,
+      "f"
+     ],
+     [
+      444,
+      " "
+     ],
+     [
+      636,
+      "("
+     ],
+     [
+      860,
+      "x"
+     ],
+     [
+      1052,
+      ")"
+     ],
+     [
+      1276,
+      " "
+     ],
+     [
+      1496,
+      "{"
+     ],
+     [
+      1688,
+      "\n"
+     ],
+     [
+      1912,
+      "y"
+     ],
+     [
+      2104,
+      "("
+     ],
+     [
+      2328,
+      ")"
+     ],
+     [
+      2548,
+      ";"
+     ],
+     [
+      2740,
+      "\n"
+     ],
+     [
+      2964,
+      "}"
+     ]
+    ],
+    "source": "code",
+    "name": "",
+    "opponent": "",
+    "score": [
+     0,
+     0
+    ]
+   },
+   "link": "AQYCAAAAABFpZiAoeCkgewogIHkoKTsKfQ8BcW9hcWFxb2FwAXlgAShwASluATtgAQpwAX0",
+   "decoded": {
+    "target": "if (x) {\n  y();\n}",
+    "errorMode": "skip",
+    "autoIndent": true,
+    "catchUp": false,
+    "events": [
+     [
+      0,
+      "i"
+     ],
+     [
+      224,
+      "f"
+     ],
+     [
+      444,
+      " "
+     ],
+     [
+      636,
+      "("
+     ],
+     [
+      860,
+      "x"
+     ],
+     [
+      1052,
+      ")"
+     ],
+     [
+      1276,
+      " "
+     ],
+     [
+      1496,
+      "{"
+     ],
+     [
+      1688,
+      "\n"
+     ],
+     [
+      1912,
+      "y"
+     ],
+     [
+      2104,
+      "("
+     ],
+     [
+      2328,
+      ")"
+     ],
+     [
+      2548,
+      ";"
+     ],
+     [
+      2740,
+      "\n"
+     ],
+     [
+      2964,
+      "}"
+     ]
+    ],
+    "source": "code",
+    "name": "",
+    "opponent": "",
+    "score": [
+     0,
+     0
+    ]
+   },
+   "finishMs": 2964,
+   "wpm": 68.82591093117409,
+   "accuracy": 1,
+   "at": [
+    [
+     0,
+     1
+    ],
+    [
+     500,
+     3
+    ],
+    [
+     1000,
+     5
+    ],
+    [
+     2500,
+     14
+    ],
+    [
+     4000,
+     17
+    ],
+    [
+     2964,
+     17
+    ]
+   ],
+   "races": [
+    {
+     "msPerKey": 120,
+     "result": {
+      "outcome": "win",
+      "yourMs": 1704,
+      "theirMs": 2964,
+      "marginMs": 1260,
+      "score": [
+       1,
+       0
+      ]
+     },
+     "rematch": "AQQHAQADTGVlABFpZiAoeCkgewogIHkoKTsKfQ8BQ0M1QzVDQzNCAXk0AShCASlCATs0AQpCAX0"
+    },
+    {
+     "msPerKey": 170,
+     "result": {
+      "outcome": "win",
+      "yourMs": 2404,
+      "theirMs": 2964,
+      "marginMs": 560,
+      "score": [
+       1,
+       0
+      ]
+     },
+     "rematch": "AQQHAQADTGVlABFpZiAoeCkgewogIHkoKTsKfQ8BXVtNXU1dW01cAXlMAShcASlaATtMAQpcAX0"
+    },
+    {
+     "msPerKey": 260,
+     "result": {
+      "outcome": "loss",
+      "yourMs": 3664,
+      "theirMs": 2964,
+      "marginMs": 700,
+      "score": [
+       0,
+       1
+      ]
+     },
+     "rematch": "AQQHAAEDTGVlABFpZiAoeCkgewogIHkoKTsKfQ8BiQGJAXuJAXuJAYkBeYgBAXl6ASiIAQEpiAEBO3oBCogBAX0"
+    }
+   ]
+  }
+ ],
+ "texts": [
+  [
+   "  Hello,\tworld…  “quoted” — fine\r\n\r\n\r\nnext ",
+   "Hello, world... \"quoted\" - fine\nnext"
+  ],
+  [
+   "emoji 🦊 gone",
+   "emoji gone"
+  ],
+  [
+   "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+   "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  ]
+ ],
+ "names": [
+  [
+   "  Sam \n Lee ",
+   "Sam Lee"
+  ],
+  [
+   "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+   "xxxxxxxxxxxxxxxxxxxxxxxx"
+  ]
+ ]
+}
