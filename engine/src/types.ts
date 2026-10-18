@@ -180,7 +180,7 @@ export interface SessionState {
   gripSignal: { sameMs: number; sameN: number; crossMs: number; crossN: number };
 }
 
-export type ArcadeMode = "falling" | "survival" | "ghost" | "rival";
+export type ArcadeMode = "falling" | "survival" | "ghost" | "rival" | "rhythm";
 export type LivesMode = "lives" | "health" | "hardcore";
 export type PowerUpKind = "slow" | "clear" | "shield" | "double";
 
