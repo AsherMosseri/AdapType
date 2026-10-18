@@ -1879,7 +1879,8 @@ button.choice:hover {
 
 /* Game screens */
 #app[data-screen="arcade-game"],
-#app[data-screen="race"] {
+#app[data-screen="race"],
+#app[data-screen="rhythm"] {
   height: 100%;
 }
 .game-screen {
@@ -3660,5 +3661,175 @@ button.choice:hover {
   }
   .sticky-actions kbd {
     display: none;
+  }
+}
+
+/* Phase 8: rhythm mode */
+.rhythm {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  gap: 1rem;
+}
+.rhythm-screen.touch .rhythm {
+  padding-bottom: 1rem;
+  justify-content: flex-end;
+}
+.rhythm-stats,
+.rhythm-banner {
+  flex: none;
+}
+.rhythm-stats .fine {
+  color: var(--muted);
+}
+.rhythm-track {
+  position: relative;
+  flex: none;
+  height: 112px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.rhythm-strip {
+  position: absolute;
+  top: 0;
+  bottom: 18px;
+  left: 25%;
+  will-change: transform;
+}
+.rhythm-note {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--ink);
+  transition:
+    opacity 300ms ease-out,
+    color 120ms;
+}
+.rhythm-note.space {
+  width: 12px;
+  height: 4px;
+  margin-top: 0.9rem;
+  border-radius: 2px;
+  background: var(--upcoming);
+}
+.rhythm-note.phrase-start::before {
+  content: "";
+  position: absolute;
+  left: -12px;
+  top: -10px;
+  bottom: -10px;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--line);
+}
+.rhythm-note.perfect {
+  color: var(--good);
+  opacity: 0.35;
+}
+.rhythm-note.good {
+  color: var(--accent);
+  opacity: 0.35;
+}
+.rhythm-note.space.perfect,
+.rhythm-note.space.good {
+  background: var(--good);
+}
+.rhythm-note.miss {
+  color: var(--bad);
+  opacity: 0.45;
+}
+.rhythm-note.space.miss {
+  background: var(--bad);
+}
+.rhythm-note.wrong {
+  text-decoration: line-through;
+}
+.rhythm-hit-line {
+  --pulse: 0;
+  position: absolute;
+  top: 12px;
+  bottom: 30px;
+  left: 25%;
+  width: 30px;
+  transform: translateX(-50%);
+  border: 2px solid var(--accent);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--accent) calc(var(--pulse) * 22%), transparent);
+  box-shadow: 0 0 calc(var(--pulse) * 16px) color-mix(in srgb, var(--accent) 60%, transparent);
+  pointer-events: none;
+}
+.rhythm-judgment {
+  position: absolute;
+  left: 25%;
+  bottom: 6px;
+  transform: translateX(-50%);
+  font-weight: 800;
+  font-size: var(--step--1);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 150ms;
+  white-space: nowrap;
+}
+.rhythm-judgment.show {
+  opacity: 1;
+}
+.rhythm-judgment.perfect {
+  color: var(--good);
+}
+.rhythm-judgment.good {
+  color: var(--accent);
+}
+.rhythm-judgment.miss {
+  color: var(--bad);
+}
+.rhythm-banner {
+  min-height: 2.2rem;
+  margin: 0;
+  text-align: center;
+  font-size: var(--step-1);
+  font-weight: 800;
+}
+.rhythm-banner[data-kind="count"] {
+  font-family: var(--font-mono);
+  font-size: var(--step-2);
+}
+.rhythm-lane {
+  position: absolute;
+  inset: 0;
+}
+.rhythm-start {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  text-align: center;
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+}
+.rhythm-screen.touch .rhythm h1 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.rhythm-start[hidden] {
+  display: none;
+}
+.rhythm-start p {
+  margin: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+  .rhythm-hit-line {
+    box-shadow: none;
   }
 }

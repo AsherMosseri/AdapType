@@ -86,6 +86,45 @@ const SETS: Record<ThemeId, Record<SoundKind, Part[]>> = {
   },
 };
 
+export type DrumKind = "kick" | "snare" | "hat" | "click";
+
+/** Each theme's drum kit for rhythm mode. "click" counts in. */
+const DRUMS: Record<ThemeId, Record<DrumKind, Part[]>> = {
+  clean: {
+    kick: [{ wave: "sine", from: 150, to: 50, dur: 0.22, gain: 0.6 }],
+    snare: [
+      { noise: true, filter: "bandpass", freq: 1800, q: 0.9, dur: 0.12, gain: 0.35 },
+      { wave: "sine", from: 220, to: 180, dur: 0.06, gain: 0.15 },
+    ],
+    hat: [{ noise: true, filter: "highpass", freq: 7000, dur: 0.035, gain: 0.14 }],
+    click: [{ wave: "sine", from: 1500, dur: 0.03, gain: 0.25 }],
+  },
+  terminal: {
+    kick: [{ wave: "square", from: 110, to: 50, dur: 0.14, gain: 0.22 }],
+    snare: [{ noise: true, filter: "lowpass", freq: 3000, dur: 0.09, gain: 0.3 }],
+    hat: [{ noise: true, filter: "highpass", freq: 6000, dur: 0.025, gain: 0.12 }],
+    click: [{ wave: "square", from: 1000, dur: 0.02, gain: 0.1 }],
+  },
+  cute: {
+    kick: [{ wave: "triangle", from: 180, to: 70, dur: 0.18, gain: 0.55 }],
+    snare: [
+      { noise: true, filter: "bandpass", freq: 2500, dur: 0.07, gain: 0.3 },
+      { wave: "triangle", from: 900, dur: 0.04, gain: 0.15 },
+    ],
+    hat: [{ wave: "triangle", from: 2600, dur: 0.03, gain: 0.1 }],
+    click: [{ wave: "triangle", from: 1500, dur: 0.035, gain: 0.25 }],
+  },
+  mechanical: {
+    kick: [
+      { wave: "sine", from: 90, to: 45, dur: 0.28, gain: 0.7 },
+      { noise: true, filter: "lowpass", freq: 200, dur: 0.05, gain: 0.4 },
+    ],
+    snare: [{ noise: true, filter: "bandpass", freq: 1500, q: 0.8, dur: 0.1, gain: 0.45 }],
+    hat: [{ noise: true, filter: "highpass", freq: 9000, dur: 0.02, gain: 0.35 }],
+    click: [{ noise: true, filter: "bandpass", freq: 3000, dur: 0.015, gain: 0.5 }],
+  },
+};
+
 let settings: SoundSettings = { on: true, volume: 0.5, keyClicks: true };
 let theme: ThemeId = "clean";
 let ctx: AudioContext | null = null;
@@ -135,13 +174,39 @@ function ensureContext(): AudioContext | null {
 }
 
 export function playSound(kind: SoundKind): void {
-  if (!settings.on || settings.volume <= 0 || !unlocked) return;
   if (kind === "key" && !settings.keyClicks) return;
+  const ac = runningContext();
+  if (ac) playParts(ac, SETS[theme][kind], ac.currentTime);
+}
+
+/** The audio context when sound can play right now, or null. */
+function runningContext(): AudioContext | null {
+  if (!settings.on || settings.volume <= 0 || !unlocked) return null;
   const ac = ensureContext();
-  if (!ac || !master || ac.state !== "running") return;
-  const now = ac.currentTime;
-  for (const part of SETS[theme][kind]) {
-    const start = now + (part.delay ?? 0);
+  return ac && master && ac.state === "running" ? ac : null;
+}
+
+/**
+ * The audio clock for scheduling ahead: the current time in seconds and the
+ * output latency (how late sound reaches the speakers). Null when sound
+ * can't play.
+ */
+export function audioClock(): { now: number; latency: number } | null {
+  const ac = runningContext();
+  if (!ac) return null;
+  return { now: ac.currentTime, latency: ac.outputLatency || ac.baseLatency || 0 };
+}
+
+/** Plays one of the theme's drums at an audio-clock time (seconds). */
+export function playDrum(kind: DrumKind, at: number): void {
+  const ac = runningContext();
+  if (ac) playParts(ac, DRUMS[theme][kind], Math.max(at, ac.currentTime));
+}
+
+function playParts(ac: AudioContext, parts: readonly Part[], when: number): void {
+  if (!master) return;
+  for (const part of parts) {
+    const start = when + (part.delay ?? 0);
     const end = start + part.dur;
     const env = ac.createGain();
     env.gain.setValueAtTime(0.0001, start);
