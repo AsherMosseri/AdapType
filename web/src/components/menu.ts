@@ -44,6 +44,7 @@ function menuGroups(app: App, returnTo: Screen): { title: string; items: MenuIte
       title: "Play",
       items: [
         { label: "Arcade", hint: "Falling words, survival and races", icon: ICONS.arcade, to: { name: "arcade" }, matches: ["arcade", "arcade-game", "race"] },
+        { label: "Rhythm", hint: "Type each letter on the beat", icon: ICONS.music, to: { name: "rhythm" }, matches: ["rhythm"] },
         { label: "Challenge a friend", hint: "Send a link to race your ghost", icon: ICONS.flag, to: { name: "challenge-new" }, matches: ["challenge-new", "challenge"] },
       ],
     },

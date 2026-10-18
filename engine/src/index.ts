@@ -25,6 +25,7 @@ export * from "./race";
 export * from "./replay";
 export * from "./reviews";
 export * from "./rhythm";
+export * from "./rhythmGame";
 export * from "./rng";
 export * from "./scoring";
 export * from "./session";

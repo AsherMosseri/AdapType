@@ -34,7 +34,8 @@ export type Screen =
   | { name: "course-round"; mode: CourseMode }
   /** Racing a friend's challenge, typing your own text to send, or a link that couldn't be read. */
   | { name: "challenge"; challenge?: Challenge; text?: string; error?: string }
-  | { name: "challenge-new"; text?: string };
+  | { name: "challenge-new"; text?: string }
+  | { name: "rhythm" };
 
 export interface ScreenView {
   el: HTMLElement;

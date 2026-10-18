@@ -9,6 +9,7 @@ const MODES: { id: ArcadeMode; title: string; body: string }[] = [
   { id: "survival", title: "Survival", body: "Falling words that keep speeding up until you break. Pick how you can lose below." },
   { id: "ghost", title: "Ghost race", body: "Race your own best run on the same text. Beat it and your run becomes the new ghost." },
   { id: "rival", title: "Rival", body: "Race an opponent through adaptive text. Pick how fast it runs below." },
+  { id: "rhythm", title: "Rhythm", body: "Words scroll to a beat. Type each letter as it crosses the line; keep the combo going and the tempo climbs." },
 ];
 
 const LIVES: { id: LivesMode; label: string; hint: string }[] = [
@@ -31,7 +32,7 @@ export function arcadeScreen(app: App): ScreenView {
         ? `Best ${Math.round(top.wpm)} WPM, ${formatPercent(top.accuracy)}`
         : `Best ${top.score.toLocaleString()} points, level ${top.level}`;
     const play = () =>
-      m.id === "falling" || m.id === "survival" ? app.go({ name: "arcade-game", mode: m.id }) : app.go({ name: "race", kind: m.id });
+      m.id === "falling" || m.id === "survival" ? app.go({ name: "arcade-game", mode: m.id }) : m.id === "rhythm" ? app.go({ name: "rhythm" }) : app.go({ name: "race", kind: m.id });
     let extra: HTMLElement | null = null;
     if (m.id === "survival") {
       extra = segmented("lives", LIVES.map((l) => ({ id: l.id, label: l.label, hint: l.hint })), settings.arcadeLives, (v) => {
