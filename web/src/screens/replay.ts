@@ -1,5 +1,6 @@
-import { replayDuration, replayMarkers, replayRound, type ReplayRun } from "../../../engine/src";
+import { makeChallenge, replayDuration, replayMarkers, replayRound, type ReplayRun } from "../../../engine/src";
 import type { App, Screen, ScreenView } from "../app";
+import { challengeButton } from "../challenge";
 import { topBar } from "../components/topBar";
 import { TypingView } from "../components/typingView";
 import { formatPercent, h } from "../dom";
@@ -98,7 +99,7 @@ export function replayScreen(app: App, screen: Screen): ScreenView {
     h(
       "div",
       { class: "replay-controls" },
-      h("div", { class: "actions wrap" }, playButton, speedControl, timeText),
+      h("div", { class: "actions wrap" }, playButton, speedControl, timeText, challengeButton(app, makeChallenge(run, run.source, ""))),
       h("div", { class: "timeline" }, scrub, markerLayer),
       h("p", { class: "fine legend" }, h("span", { class: "dot error" }), " mistake ", h("span", { class: "dot hesitation" }), " hesitation. Select one to jump just before it. Space plays and pauses, arrow keys step a second."),
     ),

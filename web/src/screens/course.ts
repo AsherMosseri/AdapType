@@ -14,6 +14,7 @@ import {
 import { earn, newBadgesPanel } from "../achievements";
 import { announce } from "../announce";
 import type { App, Screen, ScreenView } from "../app";
+import { challengeButton, challengeFromRound } from "../challenge";
 import { topBar } from "../components/topBar";
 import { touchKeyboard } from "../components/touchKeyboard";
 import { characters, course, pack } from "../content";
@@ -246,7 +247,7 @@ export function courseRoundScreen(app: App, screen: Screen): ScreenView {
         { class: "callout" },
         h("p", { class: "callout-title" }, summary),
         ...lines.filter((l): l is HTMLElement => l !== null),
-        h("div", { class: "actions wrap" }, nextButton, h("button", { type: "button", class: "button", onclick: () => app.go({ name: "course" }) }, "Back to the course")),
+        h("div", { class: "actions wrap" }, nextButton, h("button", { type: "button", class: "button", onclick: () => app.go({ name: "course" }) }, "Back to the course"), challengeButton(app, challengeFromRound(round, inputEvents, "course"))),
       ),
       newBadgesPanel(app, badges) ?? "",
     );

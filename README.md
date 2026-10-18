@@ -41,3 +41,7 @@ time to serve it from a different path.
 Word frequencies from [wordfreq](https://github.com/rspeer/wordfreq) (CC BY-SA
 4.0), filtered with [SCOWL](https://github.com/en-wl/wordlist). See
 [content/README.md](content/README.md).
+
+Challenge QR codes use
+[qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) by
+Kazuhiko Arase (MIT). QR Code is a registered trademark of DENSO WAVE.

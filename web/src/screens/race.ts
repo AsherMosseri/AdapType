@@ -19,6 +19,7 @@ import {
 } from "../../../engine/src";
 import type { App, Screen, ScreenView } from "../app";
 import { earn } from "../achievements";
+import { challengeButton, challengeFromRound } from "../challenge";
 import { topBar } from "../components/topBar";
 import { touchKeyboard } from "../components/touchKeyboard";
 import { TypingView } from "../components/typingView";
@@ -129,6 +130,7 @@ export function raceScreen(app: App, screen: Screen): ScreenView {
   );
   if (physical) main.addEventListener("pointerup", () => physical.focus());
 
+  const inputEvents: TypingEvent[] = [];
   let startedAt: number | null = null;
   let raf = 0;
   let finished = false;
@@ -179,6 +181,7 @@ export function raceScreen(app: App, screen: Screen): ScreenView {
       raf = requestAnimationFrame(frame);
     }
     const before = round.position;
+    inputEvents.push(event);
     keystrokeFeedback(round, round.input(event), before);
     view.update(round);
     if (round.done) finish();
@@ -230,6 +233,7 @@ export function raceScreen(app: App, screen: Screen): ScreenView {
         nemesisChange,
         badges,
         again: { name: "race", kind },
+        extra: challengeButton(app, challengeFromRound(round, inputEvents, "race")),
       }),
     );
   }

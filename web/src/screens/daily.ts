@@ -13,6 +13,7 @@ import {
 } from "../../../engine/src";
 import { earn, newBadgesPanel } from "../achievements";
 import type { App, ScreenView } from "../app";
+import { challengeButton, challengeFromRound } from "../challenge";
 import { topBar } from "../components/topBar";
 import { touchKeyboard } from "../components/touchKeyboard";
 import { TypingView } from "../components/typingView";
@@ -215,6 +216,7 @@ export function dailyScreen(app: App): ScreenView {
           { class: "actions wrap" },
           shareButton,
           h("button", { type: "button", class: "button", onclick: () => app.go({ name: "replay", list: "recent", index: state.replays.recent.length - 1, returnTo: { name: "daily" } }) }, "Watch replay"),
+          challengeButton(app, challengeFromRound(round, inputEvents, "daily")),
           h("button", { type: "button", class: "button", onclick: () => app.go({ name: "practice" }) }, "Practice"),
         ),
         status,

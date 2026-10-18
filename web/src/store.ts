@@ -15,7 +15,7 @@ import {
   type RoundType,
 } from "../../engine/src";
 
-export const DATA_VERSION = 9;
+export const DATA_VERSION = 10;
 
 export type OsChoice = "auto" | "mac" | "windows" | "windows-intl" | "linux";
 export type TouchLayoutChoice = "auto" | "ios" | "android";
@@ -62,6 +62,8 @@ export interface Settings {
   layouts: Record<InputProfile, LayoutChoice>;
   /** Phase 7: the cosmetic rewards picked (each "none" until a badge unlocks one). */
   rewards: RewardSettings;
+  /** Phase 8: the name shown to friends on challenges you send ("" for none). */
+  challengeName: string;
 }
 
 export type RewardKind = "cursor" | "accessory" | "effect" | "style";
@@ -163,6 +165,7 @@ export function defaultSettings(activeProfile: InputProfile): Settings {
     shortcutPack: "text-editing",
     layouts: { physical: "qwerty-us", touch: "qwerty-us" },
     rewards: { cursor: "none", accessory: "none", effect: "none", style: "none" },
+    challengeName: "",
   };
 }
 
@@ -276,7 +279,8 @@ export function parseData(text: string): AppData {
  * mode, accessibility and sound; 6 → 7 adds content settings, the shortcut
  * pack and custom word packs; 7 → 8 adds a layout per input profile (and
  * profiles keyed by layout); 8 → 9 adds picked rewards (profiles gain
- * achievements). Missing settings take their defaults.
+ * achievements); 9 → 10 adds the challenge name. Missing settings take their
+ * defaults.
  * Profiles migrate in the engine.
  */
 function migrate(data: AppData): AppData {

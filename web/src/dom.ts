@@ -84,6 +84,11 @@ export const ICONS = {
   card: ["M3 5h18v14H3z", "M7 9h4", "M7 13h10", "M7 16h6"],
   info: ["M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z", "M12 11v5", "M12 8h.01"],
   hash: ["M4 9h16", "M4 15h16", "M10 3L8 21", "M16 3l-2 18"],
+  flag: ["M5 21V4", "M5 4h11l-2 4 2 4H5"],
+  stop: ["M7 7h10v10H7z"],
+  share: ["M12 3v12", "M8 7l4-4 4 4", "M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"],
+  copy: ["M9 9h11v11H9z", "M5 15H4V4h11v1"],
+  qr: ["M4 4h6v6H4z", "M14 4h6v6h-6z", "M4 14h6v6H4z", "M14 14h2v2h-2z", "M18 18h2v2h-2z", "M18 14h2", "M14 18v2"],
   trophy: ["M8 21h8", "M12 17v4", "M7 4h10v5a5 5 0 0 1-10 0z", "M17 5h3v2a3 3 0 0 1-3 3", "M7 5H4v2a3 3 0 0 0 3 3"],
 } as const;
 

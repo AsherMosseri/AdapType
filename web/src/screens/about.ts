@@ -46,6 +46,8 @@ export function aboutScreen(app: App, screen: Screen): ScreenView {
       ),
       h("h2", null, "Sound"),
       h("p", null, "Every sound is made in code as you play. There are no recorded audio files."),
+      h("h2", null, "QR codes"),
+      h("p", null, "Challenge QR codes are drawn with ", link("https://github.com/kazuhikoarase/qrcode-generator", "qrcode-generator"), ", by Kazuhiko Arase, under the MIT license. QR Code is a registered trademark of DENSO WAVE."),
     ),
   );
   return { el };
