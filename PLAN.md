@@ -1088,6 +1088,29 @@ Built, with these choices made along the way:
 
 ### Part 2: Rhythm mode
 
+Built, with these choices made along the way:
+
+- **Where:** in the menu under Play, and as a fifth card in the arcade,
+  with its own top 10.
+- **A song** is 8 phrases of 5 words (about two minutes), after a bar of
+  count-in. Every character is a note, spaces included. Words scroll toward
+  a box and each letter should be typed as it reaches it.
+- **Tempo:** starts at 80% of your recent speed, with letters on eighth
+  notes (sixteenths for fast typists). After each phrase, 90% or more hit
+  goes up a level (6% faster); under 60% goes down one. A bar of rest
+  between phrases, so the change is never a surprise.
+- **Judging:** perfect and good windows scale with the tempo. A wrong key,
+  a key typed well early, or a note let pass is a miss. Backspace does
+  nothing: the music keeps going. The multiplier grows every 10 hits in a
+  row, up to 4x.
+- **Stats:** mistakes count toward your key stats like the arcade. Speed
+  doesn't, since the beat sets the pace, not you.
+- **Drums:** kick, snare and hats, made in code for each theme (soft in
+  clean, chiptune in terminal, bright in cute, deep in mechanical), and
+  busier at higher levels. With sound off it still plays, silently.
+- **Badges:** "In the groove" for a combo of 25, 50 and 100, and a secret
+  one for a song with no misses.
+
 - **Beat:** synthesized drum loops, one style per theme, made in the app
   like the other sounds (offline, nothing to license). The tempo adapts to
   your speed.

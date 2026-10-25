@@ -12,6 +12,10 @@ import shortcutPack from "../../content/shortcuts-text-editing.json";
 import courseContent from "../../content/course.json";
 import fullPack from "../../content/words-en.json";
 import {
+  RhythmGame,
+  rhythmMultiplier,
+  rhythmTempo,
+  rhythmWindows,
   challengeGhost,
   challengeGhostAt,
   challengeResult,
@@ -955,6 +959,48 @@ describe("test vectors", () => {
     });
     const texts = ["  Hello,\tworld…  “quoted” — fine\r\n\r\n\r\nnext ", "emoji 🦊 gone", "a".repeat(510)].map((raw) => [raw, challengeText(raw)]);
     return { challenges, texts, names: ["  Sam \n Lee ", "x".repeat(30)].map((n) => [n, cleanName(n)]) };
+  });
+
+  check("rhythmGame", () => {
+    // Tempo and windows for sample speeds, then two songs played by a scripted
+    // typist (timing drift, a wrong key now and then, a skipped stretch).
+    // Ports feed the same keys at the same times and must judge them the same.
+    const tempos = [10, 25, 40, 60, 75, 100, 150, 400].map((wpm) => ({ wpm, ...rhythmTempo(wpm) }));
+    const windows = [80, 150, 200, 375, 600, 1000].map((ms) => ({ ms, ...rhythmWindows(ms) }));
+    const songs = [
+      { wpm: 45, phrases: ["the rain in", "spain falls", "mainly on", "the plain"] },
+      { wpm: 110, phrases: ["quick brown fox", "jumps over", "the lazy dog", "and runs"] },
+    ].map(({ wpm, phrases }, s) => {
+      const game = new RhythmGame(phrases, wpm);
+      const hits: unknown[] = [];
+      for (let k = 0; !game.done && k < 1000; k++) {
+        const i = game.cursor;
+        const note = game.notes[i];
+        // Skip phrase 2 (late misses), type a wrong key every 17th note, drift by a pattern.
+        if (note.phrase === 2) {
+          hits.push(...game.update(note.t + 200));
+          continue;
+        }
+        const drift = [0, 12, -25, 38, -50, 20, -8, 30][i % 8] * (s + 1) * 0.6;
+        hits.push(...game.input(i % 17 === 16 ? "#" : note.char, note.t + drift));
+      }
+      return {
+        wpm,
+        phrases,
+        notes: game.notes.map((n) => [n.char, n.t, n.phrase, n.index]),
+        hits,
+        segments: game.segments,
+        phraseResults: game.phraseResults,
+        score: game.score,
+        maxCombo: game.maxCombo,
+        counts: game.counts,
+        topLevel: game.topLevel,
+        topWpm: game.topWpm,
+        endT: game.endT,
+        records: game.records.map((r) => [r.index, r.expected, r.actual, r.t, r.correct]),
+      };
+    });
+    return { tempos, windows, multipliers: [0, 9, 10, 19, 20, 29, 30, 99].map(rhythmMultiplier), songs };
   });
 
   check("profile", () => {

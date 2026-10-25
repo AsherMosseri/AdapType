@@ -1196,6 +1196,8 @@ mode is on and whether sound is on. Events:
   opponent) and `marginMs` (the gap between the two finish times, never
   negative, or none if the opponent didn't finish).
 - `drill`: a shortcut drill finished.
+- `rhythm`: a rhythm song finished (section 41): `score`, `maxCombo`,
+  `misses` (notes missed) and `notes`.
 - `check`: nothing happened; only saved progress is looked at (at launch).
 
 **recordAchievements(state, event, ctx, now):**
@@ -1210,7 +1212,8 @@ mode is on and whether sound is on. Events:
    `chars >= SPEED_MIN_CHARS`, add 1 to `accurateRounds`. With
    `consistency >= STEADY_ROUND`, add 1 to `steadyRounds`. Add the number of
    "the" in `words` to `word:the`. A race that was won adds 1 to `racesWon`;
-   a drill adds 1 to `drills`. The goal is the profile's, or `DEFAULT_GOAL`.
+   a drill adds 1 to `drills`; a rhythm song raises `bestCombo` to its
+   `maxCombo`. The goal is the profile's, or `DEFAULT_GOAL`.
 4. Go through the catalog in order. Every badge not yet earned whose
    condition holds is earned now (`earned[id] = now`). Return those ids.
 
@@ -1241,6 +1244,7 @@ event; conditions on "this event" only for that event.
 | `accuracy-` bronze, silver, gold | `accurateRounds >=` 10, 50, 200 | none, accessory:glasses, style:gold |
 | `rhythm-` | `steadyRounds >=` 5, 25, 100 | none, effect:bubbles, none |
 | `arcade-` | best falling or survival score >= 1000, 5000, 15000 | none |
+| `groove-` | `bestCombo >=` 25, 50, 100 | none |
 | `races-` | `racesWon >=` 1, 10, 50 | none |
 | `daily-` | daily results saved >= 3, 15, 50 | none |
 | `passages-` | `passages >=` 5, 25, 100 | none |
@@ -1253,6 +1257,7 @@ event; conditions on "this event" only for that event.
 | `photo-finish` | this race: ghost, lost, `marginMs < PHOTO_FINISH_MS` | none |
 | `marathon` | this round: `durationMs >= MARATHON_MS` | none |
 | `tortoise` | this round: accuracy 1, wpm < 20, `chars >= SPEED_MIN_CHARS` | none |
+| `full-combo` | this rhythm song: no misses, at least one note | none |
 | `hardcore` | this arcade game: hardcore lives, level >= 5 | none |
 | `theme-clean`, `-terminal`, `-cute` | `theme:<theme> >= THEME_ROUNDS` | none |
 | `theme-mechanical` | `clack >= THEME_ROUNDS` | none |
@@ -1415,6 +1420,65 @@ Challenge races are a `race` event for achievements (section 38) with
 
 Vectors: `challenge.json`.
 
+## 41. Rhythm mode
+
+A song is a list of **phrases** (the app uses `RHYTHM_PHRASES` phrases of
+`RHYTHM_PHRASE_WORDS` words each, planned like a practice round). Every
+character of a phrase, spaces included, is a **note** to type on the beat.
+The song's text is the phrases joined by single spaces; a note's index is
+its position in that text (the joining spaces aren't notes). Times are ms
+from the start of the song.
+
+**rhythmTempo(wpm)**: `cpm = max(1, wpm) × 5 × RHYTHM_START_FACTOR`. Notes
+fall on eighths (`notesPerBeat` 2) when `cpm / 2 ≤ RHYTHM_EIGHTHS_MAX_BPM`,
+otherwise on sixteenths (4). `bpm = clamp(round(cpm / notesPerBeat),
+RHYTHM_MIN_BPM, RHYTHM_MAX_BPM)`. This is level 1. A level's tempo is
+`clamp(round(base × RHYTHM_LEVEL_STEP^(level − 1)), RHYTHM_MIN_BPM,
+RHYTHM_MAX_BPM)`; `notesPerBeat` stays for the whole song. At a level,
+`noteMs = 60000 / (bpm × notesPerBeat)` and a bar is
+`RHYTHM_BEATS_PER_BAR` beats.
+
+**rhythmWindows(noteMs)**: perfect within `min(RHYTHM_PERFECT × noteMs,
+RHYTHM_PERFECT_MAX_MS)` either side of a note's time, good within
+`min(RHYTHM_GOOD × noteMs, RHYTHM_GOOD_MAX_MS)`.
+
+**Scheduling.** The song starts with a tempo segment at 0 (level 1) and one
+bar of count-in; phrase 0's notes follow at `start + i × noteMs`. When a
+phrase's last note is judged, its hit rate (perfect and good over its notes)
+sets the next level: at least `RHYTHM_LEVEL_UP` goes up one, unless that
+level's tempo is no faster; under `RHYTHM_LEVEL_DOWN` goes down one, not
+below 1. The phrase took `ceil(notes × noteMs / bar)` bars at its own tempo;
+then comes one bar of rest at that tempo, and the next phrase starts, at the
+new level's tempo (a new segment is added there when the level changed).
+After the last phrase, `endT` is the end of that rest bar and the song is
+done.
+
+**Judging**, always against the cursor (the next note not yet judged), using
+the windows of the note's own level:
+
+- **update(t)**: each note whose good window has closed (`t > note.t +
+  good`) is a miss ("late").
+- **input(char, t)**: first update(t). Then a key more than one `noteMs`
+  before the note is ignored. Otherwise it's recorded (for key stats: index,
+  expected, actual, t, correct, `first` true and `interval` null, since the
+  beat sets the pace) and judged: a wrong key is a miss ("wrong"); the right
+  key earlier than the good window is a miss ("early"); otherwise perfect if
+  within the perfect window, else good.
+
+A hit scores `RHYTHM_PERFECT_POINTS` or `RHYTHM_GOOD_POINTS` times
+`min(RHYTHM_MAX_MULTIPLIER, 1 + floor(combo / RHYTHM_COMBO_STEP))`, where
+combo is the hits in a row before it; then combo goes up by 1. A miss resets
+combo to 0. The best combo, the top level, and `topWpm` (the top level's
+`bpm × notesPerBeat / 5`) are kept.
+
+The app applies the records like an arcade game (section 25) and keeps the
+score in the arcade's top list for `rhythm` (score, top level, words, top
+WPM, hit rate). A finished song is a `rhythm` event for achievements (section
+38): the `groove` track measures the best combo, and `full-combo` is a song
+with no misses.
+
+Vectors: `rhythmGame.json`.
+
 ## Constants
 
 | Name | Value |
@@ -1426,6 +1490,11 @@ Vectors: `challenge.json`.
 | `COURSE_PATH_ITEMS`, `COURSE_DRILL_ITEMS`, `COURSE_FOCUS_BOOST`, `COURSE_WORDS` | 18, 12, 3, 500 |
 | `CATCH_UP_KEYS` | 2 |
 | `CHALLENGE_FORMAT`, `CHALLENGE_TIME_STEP`, `CHALLENGE_MAX_TEXT`, `CHALLENGE_MAX_NAME` | 1, 4, 500, 24 |
+| `RHYTHM_PHRASES`, `RHYTHM_PHRASE_WORDS`, `RHYTHM_BEATS_PER_BAR` | 8, 5, 4 |
+| `RHYTHM_START_FACTOR`, `RHYTHM_MIN_BPM`, `RHYTHM_MAX_BPM`, `RHYTHM_EIGHTHS_MAX_BPM` | 0.8, 50, 200, 150 |
+| `RHYTHM_LEVEL_STEP`, `RHYTHM_LEVEL_UP`, `RHYTHM_LEVEL_DOWN` | 1.06, 0.9, 0.6 |
+| `RHYTHM_PERFECT`, `RHYTHM_PERFECT_MAX_MS`, `RHYTHM_GOOD`, `RHYTHM_GOOD_MAX_MS` | 0.2, 60, 0.45, 130 |
+| `RHYTHM_PERFECT_POINTS`, `RHYTHM_GOOD_POINTS`, `RHYTHM_COMBO_STEP`, `RHYTHM_MAX_MULTIPLIER` | 100, 50, 10, 4 |
 | `MIN_AVG_WEIGHT` | 0.1 |
 | `START_LETTERS` | 6 |
 | `KEY_HISTORY_ROUNDS` | 5 |
@@ -1565,6 +1634,7 @@ Vectors: `challenge.json`.
 | `achievements.json` | the badge ids, and events over several days with the badges each earns |
 | `course.json` | path text for every step, every drill's text, and four path rounds with what each masters |
 | `challenge.json` | challenge links for three runs, reading them back, ghosts, races, rematches, your own text and names |
+| `rhythmGame.json` | rhythm tempos, windows and multipliers, and two songs played key by key with every judgment |
 
 Vectors that use the word pack use the first `packSize` words of
 `content/words-en.json` version 1 and `content/blocklist.json`.

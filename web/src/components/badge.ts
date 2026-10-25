@@ -22,6 +22,7 @@ const GLYPHS: Record<string, Glyph> = {
   rhythm: { paths: ["M2 12h3l3-7 4 14 3-9 2 2h5"] },
   arcade: { paths: ICONS.arcade },
   races: { paths: ["M5 21V4", "M5 4h11l-2 4 2 4H5"] },
+  groove: { paths: ICONS.music },
   daily: { paths: ICONS.calendar },
   passages: { paths: ICONS.quote },
   drills: { paths: ICONS.command },
@@ -48,7 +49,7 @@ function glyphFor(def: AchievementDef): string {
   if (id.startsWith("creature")) return "creature";
   if (id === "theme-dark") return "moon";
   if (id.startsWith("theme")) return "palette";
-  return { perfect: "perfect", "night-owl": "moon", "early-bird": "sun", "the-1000": "the", "photo-finish": "stopwatch", marathon: "hourglass", tortoise: "tortoise", hardcore: "skull" }[id] ?? "perfect";
+  return { perfect: "perfect", "night-owl": "moon", "early-bird": "sun", "the-1000": "the", "photo-finish": "stopwatch", marathon: "hourglass", tortoise: "tortoise", hardcore: "skull", "full-combo": "groove" }[id] ?? "perfect";
 }
 
 /** The medal shape in each theme's style: a round medal, a pixel frame, a flower, or a keycap. */
@@ -89,7 +90,7 @@ export function badgeSvg(def: AchievementDef, earned: boolean, size = 48): SVGSV
     "aria-hidden": "true",
   });
   svg.append(...frame(theme));
-  const glyph = GLYPHS[hidden ? "mystery" : glyphFor(def)];
+  const glyph = GLYPHS[hidden ? "mystery" : glyphFor(def)] ?? GLYPHS.perfect;
   const cy = theme === "mechanical" ? 29 : 32;
   if ("text" in glyph) {
     const t = el("text", { x: 32, y: cy + 1, "text-anchor": "middle", "dominant-baseline": "central", class: "badge-text-glyph" });
