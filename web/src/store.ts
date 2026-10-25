@@ -13,9 +13,10 @@ import {
   type ModifierSettings,
   type ProfileState,
   type RoundType,
+  type SpellingSource,
 } from "../../engine/src";
 
-export const DATA_VERSION = 10;
+export const DATA_VERSION = 11;
 
 export type OsChoice = "auto" | "mac" | "windows" | "windows-intl" | "linux";
 export type TouchLayoutChoice = "auto" | "ios" | "android";
@@ -64,6 +65,10 @@ export interface Settings {
   rewards: RewardSettings;
   /** Phase 8: the name shown to friends on challenges you send ("" for none). */
   challengeName: string;
+  /** Phase 8: the voice for spelling by ear (a voiceURI; "" for the device's default English voice). */
+  voice: string;
+  /** Phase 8: where spelling by ear's words come from. */
+  spellingSource: SpellingSource;
 }
 
 export type RewardKind = "cursor" | "accessory" | "effect" | "style";
@@ -166,6 +171,8 @@ export function defaultSettings(activeProfile: InputProfile): Settings {
     layouts: { physical: "qwerty-us", touch: "qwerty-us" },
     rewards: { cursor: "none", accessory: "none", effect: "none", style: "none" },
     challengeName: "",
+    voice: "",
+    spellingSource: "weak",
   };
 }
 
@@ -279,8 +286,8 @@ export function parseData(text: string): AppData {
  * mode, accessibility and sound; 6 → 7 adds content settings, the shortcut
  * pack and custom word packs; 7 → 8 adds a layout per input profile (and
  * profiles keyed by layout); 8 → 9 adds picked rewards (profiles gain
- * achievements); 9 → 10 adds the challenge name. Missing settings take their
- * defaults.
+ * achievements); 9 → 10 adds the challenge name; 10 → 11 adds the voice and
+ * word source for spelling by ear. Missing settings take their defaults.
  * Profiles migrate in the engine.
  */
 function migrate(data: AppData): AppData {

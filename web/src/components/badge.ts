@@ -23,6 +23,8 @@ const GLYPHS: Record<string, Glyph> = {
   arcade: { paths: ICONS.arcade },
   races: { paths: ["M5 21V4", "M5 4h11l-2 4 2 4H5"] },
   groove: { paths: ICONS.music },
+  spelling: { paths: ICONS.speaker },
+  abc: { text: "abc" },
   daily: { paths: ICONS.calendar },
   passages: { paths: ICONS.quote },
   drills: { paths: ICONS.command },
@@ -49,7 +51,7 @@ function glyphFor(def: AchievementDef): string {
   if (id.startsWith("creature")) return "creature";
   if (id === "theme-dark") return "moon";
   if (id.startsWith("theme")) return "palette";
-  return { perfect: "perfect", "night-owl": "moon", "early-bird": "sun", "the-1000": "the", "photo-finish": "stopwatch", marathon: "hourglass", tortoise: "tortoise", hardcore: "skull", "full-combo": "groove" }[id] ?? "perfect";
+  return { perfect: "perfect", "night-owl": "moon", "early-bird": "sun", "the-1000": "the", "photo-finish": "stopwatch", marathon: "hourglass", tortoise: "tortoise", hardcore: "skull", "full-combo": "groove", "spelling-bee": "abc" }[id] ?? "perfect";
 }
 
 /** The medal shape in each theme's style: a round medal, a pixel frame, a flower, or a keycap. */

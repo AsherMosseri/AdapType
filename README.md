@@ -9,7 +9,7 @@ Works with a physical keyboard or AdapType's own on-screen touch keyboard.
 Progress stays in your browser. It can be installed to a home screen or
 desktop and works offline.
 
-See [PLAN.md](PLAN.md) for the full roadmap. Phases 1 to 7 are built.
+See [PLAN.md](PLAN.md) for the full roadmap. Phases 1 to 8 are built.
 
 ## Run it
 

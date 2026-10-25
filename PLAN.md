@@ -4,9 +4,9 @@ A typing game that learns your weak spots and keeps targeting them. It starts
 as a fun web project. Much later it becomes a micro-app inside a larger app,
 ported to Swift and Kotlin.
 
-Status: phases 1 to 7 built (web), plus a home menu and a few fixes. Phase 8
-is detailed and being built; phases 9 and 10 (more ways to play) are
-outlined. Phase 11 (Swift and Kotlin ports) is last.
+Status: phases 1 to 8 built (web), plus a home menu and a few fixes. Phases
+9 and 10 (more ways to play) are outlined; phase 9 is next to be detailed.
+Phase 11 (Swift and Kotlin ports) is last.
 
 ## Principles
 
@@ -1121,6 +1121,36 @@ Built, with these choices made along the way:
   the rhythm stats.
 
 ### Part 3: Spelling by ear
+
+Built, with these choices made along the way:
+
+- **Where:** "Spelling by ear" in the menu under Practice. Pick where the
+  words come from, then Start.
+- **A round** is 10 words or 5 sentences. Each is said aloud as it comes up;
+  Listen says it again, Slower says it slowly, and Enter with nothing typed
+  repeats it too.
+- **Sound-alikes are left out:** words like "there" and "their" can't be told
+  apart by ear, so no word from a group of sound-alikes is asked on its own
+  (they're fine in sentences). Too-short words and made-up words are left out
+  too.
+- **Checking:** words ignore capitals and spaces around them; sentences
+  ignore capitals, punctuation and spacing, but not apostrophes ("its" isn't
+  "it's"). A miss shows the right spelling with the missed letters (or
+  words) marked, and comes back once at the end of the round; only the first
+  try counts.
+- **Missed words are remembered** (up to 30) and the three most recent open
+  each later round of words, until you spell them right.
+- **Typing on touch** uses AdapType's own keyboard, so the phone's word
+  suggestions can't give the spelling away. On a computer it's a plain text
+  box with spellcheck and autocorrect off.
+- **Stats:** spelling doesn't count toward key stats, since a misspelling
+  isn't a slip of the finger.
+- **Voice:** picked in Settings, under Sound; it reads even with sound off.
+  With no voice on the device, the screen says so and Start is off.
+- **Badges:** "Good speller" for 25, 100 and 500 items right on the first
+  try, and a secret one for a perfect round of tricky spellings.
+- **Data:** profile version 10 adds the missed words; app data version 11
+  adds the voice and the word source.
 
 - **Voice:** the device's own speech (free, no download, mostly offline),
   with a voice picker in Settings. Where a device has no voice, the mode

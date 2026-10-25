@@ -25,6 +25,7 @@ import { availableRewards, REWARD_KINDS, REWARDS } from "../achievements";
 import { celebrate } from "../components/celebrate";
 import { applyUpdate, canPromptInstall, isInstalled, isIos, onPwaChange, promptInstall, updateReady } from "../pwa";
 import { playSound, type SoundKind } from "../sound";
+import { speak, voicesReady } from "../speech";
 import { clearSaved, defaultData, fromCode, LAYOUT_CHOICES, newProfile, parseData, toCode, type AppData, type LayoutChoice, type OsChoice, type PackWeight, type ThemeId, type TouchLayoutChoice } from "../store";
 import { WEIGHT_CHOICES } from "./words";
 
@@ -694,6 +695,40 @@ function soundSection(app: App): HTMLElement {
       { class: "actions wrap" },
       h("button", { type: "button", class: "button", onclick: () => ["key", "key", "combo"].forEach((k, i) => window.setTimeout(() => playSound(k as SoundKind), i * 140)) }, "Play a sample"),
     ),
+    voicePicker(app),
+  );
+}
+
+/** The voice that reads words aloud in spelling by ear: the device's English voices, filled in once they load. */
+function voicePicker(app: App): HTMLElement {
+  const settings = app.data.settings;
+  const body = h("div", { class: "voice-picker" }, h("p", { class: "fine" }, "Looking for voices…"));
+  void voicesReady().then((voices) => {
+    if (voices.length === 0) {
+      body.replaceChildren(h("p", { class: "fine" }, "This device has no voice for reading aloud, so spelling by ear can't play here."));
+      return;
+    }
+    const select = h(
+      "select",
+      { id: "voice", class: "select" },
+      h("option", { value: "" }, "Device default"),
+      voices.map((v) => h("option", { value: v.voiceURI, selected: v.voiceURI === settings.voice }, `${v.name} (${v.lang})`)),
+    ) as HTMLSelectElement;
+    select.addEventListener("change", () => {
+      settings.voice = select.value;
+      app.persist();
+      speak("Necessary", settings);
+    });
+    body.replaceChildren(
+      h("div", { class: "pack-picker" }, select, h("button", { type: "button", class: "button", onclick: () => speak("Rhythm. Necessary. Separate.", settings) }, "Test")),
+    );
+  });
+  return h(
+    "div",
+    { class: "field" },
+    h("label", { class: "field-label", for: "voice" }, "Voice"),
+    h("p", { class: "fine" }, "Reads words aloud in spelling by ear. These are your device's own voices; it plays even with sound off."),
+    body,
   );
 }
 
@@ -770,7 +805,7 @@ function section(title: string, ...children: (Node | null)[]): HTMLElement {
   return h("section", { class: "panel" }, h("h2", null, title), children);
 }
 
-function radioGroup(
+export function radioGroup(
   name: string,
   label: string,
   choices: { id: string; label: string; hint?: string }[],
