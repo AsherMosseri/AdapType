@@ -122,7 +122,7 @@ describe("progress from before achievements", () => {
     delete v7.achievements;
     v7.version = 7;
     const state = migrateProfile(v7);
-    expect(state.version).toBe(9);
+    expect(state.version).toBe(10);
     expect(state.achievements).toEqual({ earned: {}, counters: {}, backfilled: false });
     state.goal = { wpm: 40, accuracy: 0.95 };
     state.unlocked = [..."abcdefghijklm"];
@@ -216,7 +216,7 @@ describe("numbers and symbols course", () => {
     delete v8.course;
     v8.version = 8;
     const p = migrateProfile(v8);
-    expect(p.version).toBe(9);
+    expect(p.version).toBe(10);
     expect(p.course).toEqual({ history: {}, mastered: [], finished: false });
   });
 });

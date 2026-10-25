@@ -30,6 +30,7 @@ export * from "./rng";
 export * from "./scoring";
 export * from "./session";
 export * from "./shortcuts";
+export * from "./spelling";
 export * from "./stats";
 export * from "./types";
 export * from "./typing";

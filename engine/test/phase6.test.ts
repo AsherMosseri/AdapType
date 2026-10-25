@@ -141,7 +141,7 @@ describe("migration", () => {
     const v6 = { ...createProfile("physical", 1), version: 6 } as Record<string, unknown>;
     delete v6.layout;
     const p = migrateProfile(v6);
-    expect(p.version).toBe(9);
+    expect(p.version).toBe(10);
     expect(p.layout).toBe("qwerty");
   });
 
@@ -149,7 +149,7 @@ describe("migration", () => {
     const v5 = { ...createProfile("physical", 1), version: 5 } as Record<string, unknown>;
     delete v5.recentPassages;
     const p = migrateProfile(v5);
-    expect(p.version).toBe(9);
+    expect(p.version).toBe(10);
     expect(p.recentPassages).toEqual([]);
   });
 });

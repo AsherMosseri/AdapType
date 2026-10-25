@@ -1,0 +1,329 @@
+{
+ "picks": [
+  {
+   "source": "weak",
+   "items": [
+    "rhythm",
+    "separate",
+    "weird",
+    "window",
+    "garden",
+    "planet",
+    "rocket",
+    "silver",
+    "candle",
+    "forest"
+   ]
+  },
+  {
+   "source": "tricky",
+   "items": [
+    "rhythm",
+    "separate",
+    "weird",
+    "necessary",
+    "maneuver",
+    "noticeable",
+    "aggressive",
+    "parallel",
+    "committee",
+    "secretary"
+   ]
+  },
+  {
+   "source": "sentences",
+   "items": [
+    "His bicycle has a flat front tire.",
+    "The puppy chased its tail in circles.",
+    "We planted three trees along the fence.",
+    "We stayed up late talking about everything.",
+    "We walked to the park after dinner."
+   ]
+  },
+  {
+   "source": "own",
+   "items": [
+    "rhythm",
+    "separate",
+    "weird",
+    "button",
+    "window",
+    "forest",
+    "garden",
+    "silver",
+    "planet",
+    "marble"
+   ]
+  }
+ ],
+ "answers": [
+  {
+   "target": "necessary",
+   "typed": "necessary",
+   "correct": true,
+   "letters": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  {
+   "target": "necessary",
+   "typed": "  NECESSARY ",
+   "correct": true,
+   "letters": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  {
+   "target": "necessary",
+   "typed": "neccessary",
+   "correct": false,
+   "letters": [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  {
+   "target": "rhythm",
+   "typed": "rythm",
+   "correct": false,
+   "letters": [
+    true,
+    false,
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  {
+   "target": "accommodate",
+   "typed": "acommodate",
+   "correct": false,
+   "letters": [
+    true,
+    true,
+    false,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  {
+   "target": "weird",
+   "typed": "wierd",
+   "correct": false,
+   "letters": [
+    true,
+    false,
+    true,
+    true,
+    true
+   ]
+  },
+  {
+   "target": "We need eggs, milk, and a loaf of bread.",
+   "typed": "we need eggs milk and a loaf of bread",
+   "correct": true,
+   "words": [
+    {
+     "word": "We",
+     "ok": true
+    },
+    {
+     "word": "need",
+     "ok": true
+    },
+    {
+     "word": "eggs,",
+     "ok": true
+    },
+    {
+     "word": "milk,",
+     "ok": true
+    },
+    {
+     "word": "and",
+     "ok": true
+    },
+    {
+     "word": "a",
+     "ok": true
+    },
+    {
+     "word": "loaf",
+     "ok": true
+    },
+    {
+     "word": "of",
+     "ok": true
+    },
+    {
+     "word": "bread.",
+     "ok": true
+    }
+   ]
+  },
+  {
+   "target": "We need eggs, milk, and a loaf of bread.",
+   "typed": "We need egs, milk, and loaf of bread.",
+   "correct": false,
+   "words": [
+    {
+     "word": "We",
+     "ok": true
+    },
+    {
+     "word": "need",
+     "ok": true
+    },
+    {
+     "word": "eggs,",
+     "ok": false
+    },
+    {
+     "word": "milk,",
+     "ok": true
+    },
+    {
+     "word": "and",
+     "ok": true
+    },
+    {
+     "word": "a",
+     "ok": false
+    },
+    {
+     "word": "loaf",
+     "ok": true
+    },
+    {
+     "word": "of",
+     "ok": true
+    },
+    {
+     "word": "bread.",
+     "ok": true
+    }
+   ]
+  },
+  {
+   "target": "The puppy chased its tail in circles.",
+   "typed": "The puppy chased it's tail in circles",
+   "correct": false,
+   "words": [
+    {
+     "word": "The",
+     "ok": true
+    },
+    {
+     "word": "puppy",
+     "ok": true
+    },
+    {
+     "word": "chased",
+     "ok": true
+    },
+    {
+     "word": "its",
+     "ok": false
+    },
+    {
+     "word": "tail",
+     "ok": true
+    },
+    {
+     "word": "in",
+     "ok": true
+    },
+    {
+     "word": "circles.",
+     "ok": true
+    }
+   ]
+  }
+ ],
+ "steps": [
+  {
+   "asked": "garden",
+   "retrying": false,
+   "typed": "garden",
+   "correct": true
+  },
+  {
+   "asked": "rhythm",
+   "retrying": false,
+   "typed": "rythm",
+   "correct": false
+  },
+  {
+   "asked": "planet",
+   "retrying": false,
+   "typed": "planet",
+   "correct": true
+  },
+  {
+   "asked": "weird",
+   "retrying": false,
+   "typed": "wierd",
+   "correct": false
+  },
+  {
+   "asked": "rhythm",
+   "retrying": true,
+   "typed": "rhythm",
+   "correct": true
+  },
+  {
+   "asked": "weird",
+   "retrying": true,
+   "typed": "weird",
+   "correct": true
+  }
+ ],
+ "outcome": {
+  "correct": 2,
+  "total": 4,
+  "missed": [
+   "rhythm",
+   "weird"
+  ],
+  "learned": [
+   "garden"
+  ]
+ },
+ "missed": [
+  "weird",
+  "rhythm",
+  "there",
+  "separate"
+ ],
+ "sessions": 1
+}

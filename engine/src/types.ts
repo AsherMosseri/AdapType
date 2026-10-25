@@ -239,8 +239,16 @@ export interface CourseState {
   finished: boolean;
 }
 
+/** Phase 8: spelling by ear. */
+export interface SpellingState {
+  /** Words spelled wrong and not yet spelled right since, most recent first (at most SPELLING_MISSED_MAX). */
+  missed: string[];
+  /** Spelling sessions finished. */
+  sessions: number;
+}
+
 export interface ProfileState {
-  version: 9;
+  version: 10;
   profile: InputProfile;
   goal: Goal | null;
   calibration: CalibrationStatus;
@@ -302,6 +310,8 @@ export interface ProfileState {
   achievements: AchievementState;
   /** Phase 7: the numbers and symbols course. */
   course: CourseState;
+  /** Phase 8: spelling by ear. */
+  spelling: SpellingState;
 }
 
 /**

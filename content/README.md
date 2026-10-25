@@ -12,6 +12,8 @@ Kotlin later).
 | `nemesis.json` | Nemesis names, taunts and defeat lines, in each theme's tone. | Part of AdapType |
 | `code.json` | Code snippets in nine languages, written for AdapType. | Part of AdapType |
 | `quotes.json` | Passages from public-domain works, each credited. | Public domain |
+| `course.json` | The numbers and symbols course: steps, templates and drills. | Part of AdapType |
+| `spelling.json` | Spelling by ear: commonly misspelled words (American spelling), dictation sentences written for AdapType, and groups of words that sound alike. | Part of AdapType |
 | `shortcuts-*.json` | Shortcut packs: text editing, macOS, Windows, Linux (GNOME), browser, VS Code, Google Docs and Sheets, Figma, Slack. | Part of AdapType |
 
 ## Credits
