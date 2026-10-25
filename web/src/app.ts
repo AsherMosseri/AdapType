@@ -1,4 +1,4 @@
-import type { Challenge, CourseMode, CreatureChange, KeystrokeRecord, LayoutId, NemesisChange, ProfileState, RoundExplanation, RoundOutcome } from "../../engine/src";
+import type { Challenge, CourseMode, SpellingSource, CreatureChange, KeystrokeRecord, LayoutId, NemesisChange, ProfileState, RoundExplanation, RoundOutcome } from "../../engine/src";
 import type { RoundMetrics } from "../../engine/src/typing";
 import { updateCreatures } from "../../engine/src";
 import { configureAnnounce } from "./announce";
@@ -35,7 +35,9 @@ export type Screen =
   /** Racing a friend's challenge, typing your own text to send, or a link that couldn't be read. */
   | { name: "challenge"; challenge?: Challenge; text?: string; error?: string }
   | { name: "challenge-new"; text?: string }
-  | { name: "rhythm" };
+  | { name: "rhythm" }
+  | { name: "spelling" }
+  | { name: "spelling-round"; source: SpellingSource };
 
 export interface ScreenView {
   el: HTMLElement;

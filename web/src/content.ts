@@ -4,6 +4,7 @@ import loanwordsJson from "../../content/loanwords.json";
 import nemesisJson from "../../content/nemesis.json";
 import codeJson from "../../content/code.json";
 import courseJson from "../../content/course.json";
+import spellingJson from "../../content/spelling.json";
 import quotesJson from "../../content/quotes.json";
 import browserShortcuts from "../../content/shortcuts-browser.json";
 import figmaShortcuts from "../../content/shortcuts-figma.json";
@@ -16,7 +17,7 @@ import shortcutsJson from "../../content/shortcuts-text-editing.json";
 import vscodeShortcuts from "../../content/shortcuts-vscode.json";
 import touchJson from "../../content/touch-layouts.json";
 import packJson from "../../content/words-en.json";
-import type { Blocklist, CharacterData, CourseContent, NemesisContent, Passage, ShortcutPack, WordPack } from "../../engine/src";
+import type { Blocklist, CharacterData, CourseContent, NemesisContent, Passage, ShortcutPack, SpellingContent, WordPack } from "../../engine/src";
 
 export const pack: WordPack = { words: packJson.words, id: packJson.id, version: packJson.version };
 export const blocklist: Blocklist = blocklistJson;
@@ -47,6 +48,7 @@ export function codePassages(langs: readonly CodeLanguage[]): Passage[] {
 
 /** The numbers and symbols course: steps, path templates and drills. */
 export const course = courseJson as unknown as CourseContent;
+export const spelling = spellingJson as unknown as SpellingContent;
 
 export const quotePassages: Passage[] = quotesJson.quotes.map((q, i) => ({ id: `quote-${i}`, text: q.text, credit: q.credit }));
 

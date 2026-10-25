@@ -50,6 +50,7 @@ import { wpmToMs, type TypingRound } from "./typing";
 import type {
   AchievementState,
   CourseState,
+  SpellingState,
   ArcadeState,
   Blocklist,
   CharacterData,
@@ -73,7 +74,7 @@ export const DEFAULT_GOAL: Goal = { wpm: 40, accuracy: 0.95 };
 
 export function createProfile(profile: InputProfile, seed: number, order: UnlockOrder = "frequency", layout: LayoutId = "qwerty"): ProfileState {
   return {
-    version: 9,
+    version: 10,
     profile,
     goal: null,
     calibration: "none",
@@ -98,7 +99,12 @@ export function createProfile(profile: InputProfile, seed: number, order: Unlock
     layout,
     achievements: emptyAchievements(),
     course: emptyCourse(),
+    spelling: emptySpelling(),
   };
+}
+
+export function emptySpelling(): SpellingState {
+  return { missed: [], sessions: 0 };
 }
 
 export function emptyCourse(): CourseState {
@@ -147,7 +153,7 @@ function phase3Defaults() {
  * updateCreatures call); 5 → 6 adds recent passages; 6 → 7 adds the
  * keyboard layout (QWERTY for existing profiles); 7 → 8 adds achievements
  * (counted from earlier progress on the first recordAchievements call);
- * 8 → 9 adds the numbers and symbols course.
+ * 8 → 9 adds the numbers and symbols course; 9 → 10 adds spelling by ear.
  */
 export function migrateProfile(saved: Record<string, unknown>): ProfileState {
   let p = { ...saved } as Record<string, unknown>;
@@ -177,6 +183,9 @@ export function migrateProfile(saved: Record<string, unknown>): ProfileState {
   }
   if (p.version === 8) {
     p = { ...p, course: emptyCourse(), version: 9 };
+  }
+  if (p.version === 9) {
+    p = { ...p, spelling: emptySpelling(), version: 10 };
   }
   return p as unknown as ProfileState;
 }

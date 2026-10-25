@@ -58,6 +58,8 @@ export type AchievementEvent =
   | { kind: "arcade"; score: number; level: number; lives: LivesMode }
   /** marginMs: the gap between the two finish times (always positive), or null if the opponent didn't finish. */
   | { kind: "race"; ghost: boolean; won: boolean | null; marginMs: number | null }
+  /** A finished spelling session: items right on the first try, out of total. */
+  | { kind: "spelling"; source: "weak" | "tricky" | "sentences" | "own"; correct: number; total: number }
   /** A finished rhythm song: misses counts every missed note. */
   | { kind: "rhythm"; score: number; maxCombo: number; misses: number; notes: number }
   | { kind: "drill" };
@@ -169,6 +171,7 @@ export const ACHIEVEMENTS: readonly AchievementDef[] = [
   ...tiers("accuracy", "Sharpshooter", (n) => `Finish ${n} rounds at 97% accuracy or better.`, (s) => counter(s, "accurateRounds"), [10, 50, 200], [undefined, "accessory:glasses", "style:gold"]),
   ...tiers("rhythm", "Steady hands", (n) => `Keep an even rhythm (75% or steadier) in ${n} rounds.`, (s) => counter(s, "steadyRounds"), [5, 25, 100], [undefined, "effect:bubbles"]),
   ...tiers("arcade", "Arcade ace", (n) => `Score ${n.toLocaleString("en-US")} in falling words or survival.`, bestArcade, [1000, 5000, 15000]),
+  ...tiers("spelling", "Good speller", (n) => `Spell ${n} words or sentences right on the first try.`, (s) => counter(s, "spelled"), [25, 100, 500]),
   ...tiers("groove", "In the groove", (n) => `Hit ${n} notes in a row in rhythm mode.`, (s) => counter(s, "bestCombo"), [25, 50, 100]),
   ...tiers("races", "Racer", (n) => (n === 1 ? "Win a race." : `Win ${n} races.`), (s) => counter(s, "racesWon"), [1, 10, 50]),
   ...tiers("daily", "Daily regular", (n) => `Play ${n} daily challenges.`, (s) => Object.keys(s.daily).length, [3, 15, 50]),
@@ -182,6 +185,7 @@ export const ACHIEVEMENTS: readonly AchievementDef[] = [
   { id: "photo-finish", group: "secret", name: "Photo finish", description: "Lose to your own ghost by less than a tenth of a second.", on: (e) => e.kind === "race" && e.ghost && e.won === false && e.marginMs !== null && e.marginMs < PHOTO_FINISH_MS },
   { id: "marathon", group: "secret", name: "Marathon", description: "Keep a single round going for 10 minutes.", on: (e) => e.kind === "round" && e.durationMs >= MARATHON_MS },
   { id: "tortoise", group: "secret", name: "Slow and steady", description: "Finish a round under 20 WPM with no mistakes.", on: (e) => e.kind === "round" && e.accuracy === 1 && e.wpm < 20 && e.chars >= SPEED_MIN_CHARS },
+  { id: "spelling-bee", group: "secret", name: "Spelling bee", description: "Spell every tricky word in a session right on the first try.", on: (e) => e.kind === "spelling" && e.source === "tricky" && e.total > 0 && e.correct === e.total },
   { id: "full-combo", group: "secret", name: "Full combo", description: "Finish a rhythm song without missing a note.", on: (e) => e.kind === "rhythm" && e.misses === 0 && e.notes > 0 },
   { id: "hardcore", group: "secret", name: "Iron fingers", description: "Reach level 5 in hardcore mode.", on: (e) => e.kind === "arcade" && e.lives === "hardcore" && e.level >= 5 },
   themed("clean", "Minimalist", `Play ${THEME_ROUNDS} times in the clean theme.`),
@@ -290,6 +294,8 @@ export function recordAchievements(state: ProfileState, event: AchievementEvent,
     bump(state, "racesWon");
   } else if (event.kind === "drill") {
     bump(state, "drills");
+  } else if (event.kind === "spelling") {
+    if (event.correct > 0) bump(state, "spelled", event.correct);
   } else if (event.kind === "rhythm") {
     a.counters.bestCombo = Math.max(counter(state, "bestCombo"), event.maxCombo);
   }

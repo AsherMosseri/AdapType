@@ -1198,6 +1198,8 @@ mode is on and whether sound is on. Events:
 - `drill`: a shortcut drill finished.
 - `rhythm`: a rhythm song finished (section 41): `score`, `maxCombo`,
   `misses` (notes missed) and `notes`.
+- `spelling`: a spelling session finished (section 42): `source`,
+  `correct` and `total`.
 - `check`: nothing happened; only saved progress is looked at (at launch).
 
 **recordAchievements(state, event, ctx, now):**
@@ -1213,7 +1215,7 @@ mode is on and whether sound is on. Events:
    `consistency >= STEADY_ROUND`, add 1 to `steadyRounds`. Add the number of
    "the" in `words` to `word:the`. A race that was won adds 1 to `racesWon`;
    a drill adds 1 to `drills`; a rhythm song raises `bestCombo` to its
-   `maxCombo`. The goal is the profile's, or `DEFAULT_GOAL`.
+   `maxCombo`; a spelling session adds `correct` to `spelled`. The goal is the profile's, or `DEFAULT_GOAL`.
 4. Go through the catalog in order. Every badge not yet earned whose
    condition holds is earned now (`earned[id] = now`). Return those ids.
 
@@ -1244,6 +1246,7 @@ event; conditions on "this event" only for that event.
 | `accuracy-` bronze, silver, gold | `accurateRounds >=` 10, 50, 200 | none, accessory:glasses, style:gold |
 | `rhythm-` | `steadyRounds >=` 5, 25, 100 | none, effect:bubbles, none |
 | `arcade-` | best falling or survival score >= 1000, 5000, 15000 | none |
+| `spelling-` | `spelled >=` 25, 100, 500 | none |
 | `groove-` | `bestCombo >=` 25, 50, 100 | none |
 | `races-` | `racesWon >=` 1, 10, 50 | none |
 | `daily-` | daily results saved >= 3, 15, 50 | none |
@@ -1257,6 +1260,7 @@ event; conditions on "this event" only for that event.
 | `photo-finish` | this race: ghost, lost, `marginMs < PHOTO_FINISH_MS` | none |
 | `marathon` | this round: `durationMs >= MARATHON_MS` | none |
 | `tortoise` | this round: accuracy 1, wpm < 20, `chars >= SPEED_MIN_CHARS` | none |
+| `spelling-bee` | this spelling session: tricky, every item right first try | none |
 | `full-combo` | this rhythm song: no misses, at least one note | none |
 | `hardcore` | this arcade game: hardcore lives, level >= 5 | none |
 | `theme-clean`, `-terminal`, `-cute` | `theme:<theme> >= THEME_ROUNDS` | none |
@@ -1479,6 +1483,70 @@ with no misses.
 
 Vectors: `rhythmGame.json`.
 
+## 42. Spelling by ear
+
+Content is `content/spelling.json` version 1: **tricky** (commonly
+misspelled words, lowercase, American spelling), **sentences** (short
+sentences for dictation) and **homophones** (groups of words that sound
+alike).
+
+A profile has `spelling`: `missed` (words spelled wrong and not yet spelled
+right since, most recent first) and `sessions` (0 at first). Profile
+version 10 adds it empty.
+
+A word is **spellable** when it has at least `SPELLING_MIN_LENGTH` letters,
+all a to z, and is in no homophone group (you can't tell "there" from
+"their" by ear). **shuffle(items, rng)**: from the last position down to
+the second, swap position `i` with `rng.int(i + 1)`.
+
+**pickSpelling(state, content, source, candidates, rng)**, where source is
+`weak`, `tricky`, `sentences` or `own`:
+
+- `sentences`: the sentences shuffled, the first `SPELLING_SENTENCES`.
+- Otherwise, up to `SPELLING_MISSED_PER_SESSION` spellable words from
+  `missed` (in order), then the pool, skipping words that aren't spellable
+  or are already picked, up to `SPELLING_WORDS`. The pool is the candidates
+  in order for `weak` (the app plans a practice round of 30 words with no
+  made-up words, so they lean toward weak keys), the tricky list shuffled
+  for `tricky`, and the candidates shuffled for `own` (the words of your
+  custom packs).
+
+The app seeds the rng from the profile seed, "spelling", the source and
+`sessions`.
+
+**checkSpelling(target, typed, kind):**
+
+- A word is right when `typed`, trimmed and lowercase, equals the target in
+  lowercase. `letters` marks each letter of the target that is in a longest
+  common subsequence with the typed letters.
+- A sentence: split both on whitespace and **normalize** each word
+  (lowercase, curly apostrophes made straight, then keep only a to z, 0 to 9
+  and apostrophes), dropping words that end up empty. It's right when the
+  two lists are equal. `words` marks each of the sentence's words (as
+  written) as typed when it's in the longest common subsequence (a word that
+  normalizes to nothing counts as typed).
+
+The **longest common subsequence** match walks both lists from the start
+with the usual table of suffix lengths: on equal items both advance (and
+the item is marked), otherwise skip in the first list when that keeps the
+length at least as long, else in the second.
+
+**A session** asks its items in order. An item missed on its first try is
+asked once more after the others; only the first try counts.
+
+**completeSpelling(state, session)**: for word sessions, each word right on
+the first try that is in `missed` leaves it (learned); the words missed this
+time move to the front of `missed` (the last missed first), without
+repeats, keeping `SPELLING_MISSED_MAX`. Sentences don't touch `missed`.
+`sessions` goes up by 1.
+
+A finished session is a `spelling` event for achievements (section 38):
+`source`, `correct` (right on the first try) and `total`. It adds `correct`
+to the `spelled` counter; the `spelling` track measures it, and
+`spelling-bee` is a tricky session with every item right.
+
+Vectors: `spelling.json`.
+
 ## Constants
 
 | Name | Value |
@@ -1495,6 +1563,8 @@ Vectors: `rhythmGame.json`.
 | `RHYTHM_LEVEL_STEP`, `RHYTHM_LEVEL_UP`, `RHYTHM_LEVEL_DOWN` | 1.06, 0.9, 0.6 |
 | `RHYTHM_PERFECT`, `RHYTHM_PERFECT_MAX_MS`, `RHYTHM_GOOD`, `RHYTHM_GOOD_MAX_MS` | 0.2, 60, 0.45, 130 |
 | `RHYTHM_PERFECT_POINTS`, `RHYTHM_GOOD_POINTS`, `RHYTHM_COMBO_STEP`, `RHYTHM_MAX_MULTIPLIER` | 100, 50, 10, 4 |
+| `SPELLING_WORDS`, `SPELLING_SENTENCES`, `SPELLING_MIN_LENGTH` | 10, 5, 3 |
+| `SPELLING_MISSED_MAX`, `SPELLING_MISSED_PER_SESSION` | 30, 3 |
 | `MIN_AVG_WEIGHT` | 0.1 |
 | `START_LETTERS` | 6 |
 | `KEY_HISTORY_ROUNDS` | 5 |
@@ -1635,6 +1705,7 @@ Vectors: `rhythmGame.json`.
 | `course.json` | path text for every step, every drill's text, and four path rounds with what each masters |
 | `challenge.json` | challenge links for three runs, reading them back, ghosts, races, rematches, your own text and names |
 | `rhythmGame.json` | rhythm tempos, windows and multipliers, and two songs played key by key with every judgment |
+| `spelling.json` | picks for every source with missed words saved, checked answers, and a session with second tries |
 
 Vectors that use the word pack use the first `packSize` words of
 `content/words-en.json` version 1 and `content/blocklist.json`.

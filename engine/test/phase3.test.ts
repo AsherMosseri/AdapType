@@ -308,7 +308,7 @@ describe("migration", () => {
     const v2 = { ...createProfile("touch", 1), version: 2 } as Record<string, unknown>;
     for (const k of ["reviews", "hesitations", "errorCounts", "typos", "confusions", "errorBias", "missedWords", "session", "touchTyping", "gripKeys", "gripTaps"]) delete v2[k];
     const p = migrateProfile(v2);
-    expect(p.version).toBe(9);
+    expect(p.version).toBe(10);
     expect(p.reviews).toEqual({});
     expect(p.errorBias).toEqual({ swap: 0, double: 0, neighbor: 0 });
     expect(p.session).toBeNull();

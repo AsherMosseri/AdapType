@@ -10,8 +10,14 @@ import loanwords from "../../content/loanwords.json";
 import nemesisContent from "../../content/nemesis.json";
 import shortcutPack from "../../content/shortcuts-text-editing.json";
 import courseContent from "../../content/course.json";
+import spellingContent from "../../content/spelling.json";
 import fullPack from "../../content/words-en.json";
 import {
+  checkSpelling,
+  completeSpelling,
+  pickSpelling,
+  SpellingSession,
+  type SpellingContent,
   RhythmGame,
   rhythmMultiplier,
   rhythmTempo,
@@ -1001,6 +1007,32 @@ describe("test vectors", () => {
       };
     });
     return { tempos, windows, multipliers: [0, 9, 10, 19, 20, 29, 30, 99].map(rhythmMultiplier), songs };
+  });
+
+  check("spelling", () => {
+    // Picks for every source (with missed words saved), answers checked,
+    // and a session with retries recorded into the profile.
+    const content = spellingContent as unknown as SpellingContent;
+    const state = createProfile("physical", 51);
+    state.spelling.missed = ["rhythm", "there", "separate", "weird", "garden"];
+    const candidates = ["there", "window", "garden", "it", "planet", "rocket", "silver", "window", "candle", "forest", "pocket", "button", "yellow", "marble"];
+    const picks = (["weak", "tricky", "sentences", "own"] as const).map((source) => ({ source, items: pickSpelling(state, content, source, candidates, new Rng(deriveSeed(51, "spelling", source))) }));
+    const answers = [
+      ["necessary", "necessary"],
+      ["necessary", "  NECESSARY "],
+      ["necessary", "neccessary"],
+      ["rhythm", "rythm"],
+      ["accommodate", "acommodate"],
+      ["weird", "wierd"],
+      ["We need eggs, milk, and a loaf of bread.", "we need eggs milk and a loaf of bread"],
+      ["We need eggs, milk, and a loaf of bread.", "We need egs, milk, and loaf of bread."],
+      ["The puppy chased its tail in circles.", "The puppy chased it's tail in circles"],
+    ].map(([target, typed]) => ({ target, typed, ...checkSpelling(target, typed, target.includes(" ") ? "sentence" : "word") }));
+    const session = new SpellingSession(["garden", "rhythm", "planet", "weird"], "weak");
+    const typed = ["garden", "rythm", "planet", "wierd", "rhythm", "weird"];
+    const steps = typed.map((t) => ({ asked: session.current!.text, retrying: session.retrying, typed: t, correct: session.answer(t).correct }));
+    const outcome = completeSpelling(state, session);
+    return { picks, answers, steps, outcome, missed: state.spelling.missed, sessions: state.spelling.sessions };
   });
 
   check("profile", () => {

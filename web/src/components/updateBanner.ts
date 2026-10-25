@@ -3,7 +3,7 @@ import { h } from "../dom";
 import { applyUpdate, updateReady } from "../pwa";
 
 /** Screens where you're typing: the banner waits until you leave them. */
-const TYPING: ReadonlySet<Screen["name"]> = new Set(["practice", "calibration", "daily", "race", "arcade-game", "shortcuts", "passages", "course-round", "challenge", "rhythm"]);
+const TYPING: ReadonlySet<Screen["name"]> = new Set(["practice", "calibration", "daily", "race", "arcade-game", "shortcuts", "passages", "course-round", "challenge", "rhythm", "spelling-round"]);
 
 let banner: HTMLElement | null = null;
 let dismissed = false;
